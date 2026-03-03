@@ -1,21 +1,22 @@
 import { useState } from "react";
 import "./App.css";
-import { Button } from "./components/ui/button";
 import BeautifulModal from "./components/BeautifulModal";
-import "./App.css";
 import { BrowserRouter, Routes, Route, NavLink, Link } from "react-router";
 import Dashboard from "./features/dashboard/dashboard";
 import { QueryProvider } from "./providers/query-provider";
-import UserForm from './features/forms/form'
+import UserForm from "./features/forms/form";
+import Layout from "./layout/layout";
 
 function AppWrapper() {
   return (
     <BrowserRouter>
       <QueryProvider>
         <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/userform" element={<UserForm />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<App />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/userform" element={<UserForm />} />
+          </Route>
         </Routes>
       </QueryProvider>
     </BrowserRouter>
@@ -41,12 +42,9 @@ function App() {
       </nav>
 
       <div className="flex my-2 items-center justify-center">
-        <Button
-          variant={"outline"}
-          onClick={() => setCount((count) => count + 1)}
-        >
+        <button onClick={() => setCount((count) => count + 1)}>
           Click me {count}
-        </Button>
+        </button>
       </div>
 
       <BeautifulModal />
