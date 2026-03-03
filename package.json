@@ -19,6 +19,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.576.0",
     "radix-ui": "^1.4.3",
+    "@tanstack/react-query": "^5.90.21",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwind-merge": "^3.5.0",
