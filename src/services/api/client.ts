@@ -10,7 +10,7 @@ export async function apiClient({
     body?: any;
     headers?: Record<string, string>;
 }) {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token") as unknown as string;
 
     const base = (import.meta.env.VITE_API_BASE_URL as string) ?? "";
     const response = await fetch(`${base}${endpoint}`, {
