@@ -2,7 +2,6 @@ import './App.css'
 import { BrowserRouter, Routes, Route, NavLink, Link } from "react-router";
 import Dashboard from './features/dashboard/dashboard';
 import { QueryProvider } from './providers/query-provider';
-import { useUsers } from './services/hooks/query/useDummy';
 
 function AppWrapper() {
   return <BrowserRouter>
@@ -16,9 +15,6 @@ function AppWrapper() {
 }
 
 function App() {
-  const { data, isLoading, error } = useUsers();
-
-  console.log("Users data:", { data, isLoading, error });
   return (
     <nav>
       {/* NavLink makes it easy to show active states */}
