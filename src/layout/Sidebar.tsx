@@ -5,8 +5,11 @@ import {
   Users,
   FolderKanban,
   BarChart3,
-  Settings
+  Settings,
+  CirclePower,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import useAuth from "@/lib/hooks/use-auth/use-auth";
 
 const Sidebar: React.FC = () => {
   const menuItems = [
@@ -18,20 +21,18 @@ const Sidebar: React.FC = () => {
     { name: "Settings", path: "/settings", icon: <Settings size={18} /> },
   ];
 
+  const { logout } = useAuth()
+
   return (
     <aside className="w-64 bg-white border-r shadow-lg flex flex-col h-full">
-
       {/* Logo */}
       <div className="p-5 border-b">
-        <h1 className="text-xl font-bold text-gray-900">
-          🚀 Admin Panel
-        </h1>
+        <h1 className="text-xl font-bold text-gray-900">🚀 Admin Panel</h1>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
-
           {menuItems.map((item) => (
             <li key={item.name}>
               <NavLink
@@ -50,23 +51,28 @@ const Sidebar: React.FC = () => {
               </NavLink>
             </li>
           ))}
-
         </ul>
       </nav>
 
       {/* Bottom Profile */}
-      <div className="p-4 border-t flex items-center gap-3">
-        <img
-          src="https://i.pravatar.cc/40"
-          alt="profile"
-          className="w-9 h-9 rounded-full"
-        />
-        <div>
-          <p className="text-sm font-medium text-gray-900">Admin</p>
-          <p className="text-xs text-gray-500">admin@email.com</p>
+      <div className="p-4 border-t flex items-center gap-3 ml-4">
+        Logout
+        <Button
+          variant="outline"
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={logout}
+        >
+          <CirclePower className="w-4 h-4 text-red-500" />
+        </Button>
+        {/* <div className="min-w-10 w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-300 transition">
+          <User className="w-5 h-5 text-gray-700" />
         </div>
-      </div>
 
+        <div>
+          <p className="text-sm font-medium text-gray-900">{getUserName()}</p>
+          <p className="text-xs text-gray-500">{emailId}</p>
+        </div> */}
+      </div>
     </aside>
   );
 };
