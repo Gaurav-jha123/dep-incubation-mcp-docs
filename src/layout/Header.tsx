@@ -1,0 +1,47 @@
+import React from "react";
+
+const Header: React.FC = () => {
+  return (
+    <header className="w-full bg-white text-gray-900 px-6 py-3 flex items-center justify-between shadow-lg border-b">
+
+      {/* Left Section */}
+      <div className="flex items-center gap-4">
+        <h1 className="text-xl font-bold">Dashboard</h1>
+
+        {/* Search */}
+        <input
+          type="text"
+          placeholder="Search..."
+          className="hidden md:block px-3 py-1.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+        />
+      </div>
+
+      {/* Right Section */}
+      <div className="flex items-center gap-6">
+
+        {/* Notifications */}
+        <button className="relative text-gray-600 hover:text-gray-900">
+          🔔
+          <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+            3
+          </span>
+        </button>
+
+        {/* Profile */}
+        <div className="flex items-center gap-2 cursor-pointer">
+          <img
+            src="https://i.pravatar.cc/40"
+            alt="profile"
+            className="w-8 h-8 rounded-full"
+          />
+          <span className="text-sm font-medium hidden md:block">
+            Admin
+          </span>
+        </div>
+
+      </div>
+    </header>
+  );
+};
+
+export default Header;
