@@ -7,15 +7,18 @@ import { BrowserRouter, Routes, Route, NavLink, Link } from "react-router";
 import Dashboard from "./features/dashboard/dashboard";
 import { QueryProvider } from "./providers/query-provider";
 import UserForm from './features/forms/form'
+import Layout from "./layout/Layout";
 
 function AppWrapper() {
   return (
     <BrowserRouter>
       <QueryProvider>
         <Routes>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<Layout />}>
+          <Route index element={<App />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/userform" element={<UserForm />} />
+          </Route>
         </Routes>
       </QueryProvider>
     </BrowserRouter>
