@@ -53,6 +53,10 @@ const Sidebar: React.FC = () => {
         </ul>
       </nav>
 
+
+
+      
+
       {/* Bottom Profile */}
       <div className="p-4 border-t flex items-center gap-3">
         <img
