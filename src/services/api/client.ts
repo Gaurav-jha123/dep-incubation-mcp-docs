@@ -1,5 +1,5 @@
 
-export async function apiClient({
+export async function apiClient<TResponse, TBody = unknown>({
     endpoint,
     method = "GET",
     body,
@@ -7,9 +7,9 @@ export async function apiClient({
 }: {
     endpoint: string;
     method?: string;
-    body?: any;
+    body?: TBody;
     headers?: Record<string, string>;
-}) {
+}):Promise<TResponse> {
     const token = localStorage.getItem("token") as unknown as string;
 
     const base = (import.meta.env.VITE_API_BASE_URL as string) ?? "";
