@@ -12,6 +12,7 @@ import {
   Textarea,
   Button,
 } from "@headlessui/react";
+import logger from "@/lib/logger";
 
 const formSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -69,9 +70,9 @@ export default function UserForm() {
     name: "skills",
   });
 
- const onSubmit: SubmitHandler<FormValues> = (data) => {
-  console.log(data);
-};
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    logger.info('data', data);
+  };
 
   return (
     <form
@@ -208,11 +209,10 @@ export default function UserForm() {
                   <RadioGroup.Option key={value} value={value}>
                     {({ checked }) => (
                       <span
-                        className={`cursor-pointer rounded-full border px-3 py-1 text-sm capitalize ${
-                          checked
-                            ? "border-blue-500 bg-blue-50 text-blue-700"
-                            : "border-gray-300 text-gray-700 hover:bg-gray-50"
-                        }`}
+                        className={`cursor-pointer rounded-full border px-3 py-1 text-sm capitalize ${checked
+                          ? "border-blue-500 bg-blue-50 text-blue-700"
+                          : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                          }`}
                       >
                         {value}
                       </span>
@@ -249,8 +249,7 @@ export default function UserForm() {
                         key={role}
                         value={role}
                         className={({ active }) =>
-                          `cursor-pointer select-none py-2 px-3 capitalize ${
-                            active ? "bg-blue-50 text-blue-700" : "text-gray-900"
+                          `cursor-pointer select-none py-2 px-3 capitalize ${active ? "bg-blue-50 text-blue-700" : "text-gray-900"
                           }`
                         }
                       >
@@ -307,8 +306,7 @@ export default function UserForm() {
                         key={hobby}
                         value={hobby}
                         className={({ active, selected }) =>
-                          `cursor-pointer select-none py-2 px-3 capitalize ${
-                            active ? "bg-blue-50 text-blue-700" : "text-gray-900"
+                          `cursor-pointer select-none py-2 px-3 capitalize ${active ? "bg-blue-50 text-blue-700" : "text-gray-900"
                           } ${selected ? "font-medium" : "font-normal"}`
                         }
                       >
@@ -337,14 +335,12 @@ export default function UserForm() {
               <Switch
                 checked={field.value}
                 onChange={field.onChange}
-                className={`${
-                  field.value ? "bg-blue-600" : "bg-gray-300"
-                } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className={`${field.value ? "bg-blue-600" : "bg-gray-300"
+                  } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500`}
               >
                 <span
-                  className={`${
-                    field.value ? "translate-x-5" : "translate-x-1"
-                  } inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform`}
+                  className={`${field.value ? "translate-x-5" : "translate-x-1"
+                    } inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform`}
                 />
               </Switch>
             )}
