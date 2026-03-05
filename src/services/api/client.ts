@@ -1,25 +1,32 @@
-export const apiClient = async (url: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem("token");
 
-  const base = (import.meta.env.VITE_API_BASE_URL as string) ?? "";
+export async function apiClient<TResponse, TBody = unknown>({
+    endpoint,
+    method = "GET",
+    body,
+    headers = {},
+}: {
+    endpoint: string;
+    method?: string;
+    body?: TBody;
+    headers?: Record<string, string>;
+}):Promise<TResponse> {
+    const token = localStorage.getItem("token") as unknown as string;
 
-  const defaultHeaders = {
-    "Content-Type": "application/json",
-    Authorization: token ? `Bearer ${token}` : "",
-  };
+    const base = (import.meta.env.VITE_API_BASE_URL as string) ?? "";
+    const response = await fetch(`${base}${endpoint}`, {
+        method,
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            ...headers,
+        },
+        body: body ? JSON.stringify(body) : undefined,
+    });
 
-  const response = await fetch(`${base}/${url}`, {
-    ...options,
-    headers: {
-      ...defaultHeaders,
-      ...(options.headers as Record<string, string>),
-    },
-  });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "API Error");
+    }
 
-  if (!response.ok) {
-    const text = await response.text().catch(() => "");
-    throw new Error(`API Error: ${response.status} ${response.statusText} ${text}`);
-  }
-
-  return response.json();
-};
+    return response.json();
+}  

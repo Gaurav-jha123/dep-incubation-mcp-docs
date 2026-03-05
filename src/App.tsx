@@ -1,21 +1,41 @@
-import { useState } from "react";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import "./App.css";
-import BeautifulModal from "./components/BeautifulModal";
-import { BrowserRouter, Routes, Route, NavLink, Link } from "react-router";
-import Dashboard from "./features/dashboard/dashboard";
-import { QueryProvider } from "./providers/query-provider";
-import UserForm from './features/forms/form'
-import Layout from "./layout/Layout";
 
-function AppWrapper() {
+import { QueryProvider } from "./providers/query-provider";
+import UserForm from './features/forms/form';
+import Dashboard from "./features/dashboard/dashboard";
+import Layout from "./layout/Layout";
+import Projects from "./features/projects/Projects";
+import Reports from "./features/reports/Reports";
+import Settings from "./features/settings/Settings";
+
+function App() {
   return (
     <BrowserRouter>
       <QueryProvider>
+        {/* <nav>
+          <NavLink
+            to="/"
+            className={({ isActive }) => (isActive ? "active" : "")}
+            end
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Dashboard
+          </NavLink>
+        </nav> */}
         <Routes>
           <Route path="/" element={<Layout />}>
-          <Route index element={<App />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/userform" element={<UserForm />} />
+            <Route index element={<div>Welcome Home!</div>} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="userform" element={<UserForm />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
         </Routes>
       </QueryProvider>
@@ -23,33 +43,4 @@ function AppWrapper() {
   );
 }
 
-function App() {
-  const [count, setCount] = useState(0);
-  return (
-    <>
-      <nav>
-        {/* NavLink makes it easy to show active states */}
-        <NavLink
-          to="/"
-          className={({ isActive }: { isActive: boolean }) =>
-            isActive ? "active" : ""
-          }
-        >
-          Home
-        </NavLink>
-
-        <Link to="/dashboard">Dashboard</Link>
-      </nav>
-
-      <div className="flex my-2 items-center justify-center">
-        <button onClick={() => setCount((count) => count + 1)}>
-          Click me {count}
-        </button>
-      </div>
-
-      <BeautifulModal />
-    </>
-  );
-}
-
-export default AppWrapper;
+export default App;
