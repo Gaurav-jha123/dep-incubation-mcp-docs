@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import { Listbox } from "@headlessui/react";
 import type { ReactNode } from "react";
 
@@ -71,8 +71,8 @@ export const Select: React.FC<SelectProps> = ({
   className = "",
   id,
 }) => {
-  const selectId =
-    id || `select-${Math.random().toString(36).substr(2, 9)}`;
+  const reactId = useId();
+  const selectId = id || `select-${reactId}`;
 
   const baseStyles =
     "font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed text-left";
