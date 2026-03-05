@@ -1,0 +1,16 @@
+$primary: #4f46e5;
+
+.container {
+  padding: 20px;
+
+  h1 {
+    color: $primary;
+  }
+
+  button {
+    background: $primary;
+    color: white;
+    border: none;
+    padding: 10px;
+  }
+}
