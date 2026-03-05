@@ -13,11 +13,11 @@ const Layout: React.FC = () => {
         <Sidebar />
       </div>
       {/* Header */}
-      <div className="col-start-2 row-start-1 ">
+      <div className="col-start-2 row-start-1">
         <Header />
       </div>
       {/* Main Content */}
-      <main className="main-wrapper col-start-2 row-start-2 p-4 bg-white-50">
+      <main className="col-start-2 row-start-2 p-4 bg-gray-50">
         <Outlet />
       </main>
 

@@ -1,17 +1,4 @@
-#root {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-html, body, #root {
-  height: 100%;
-}
-
-body {
- font-family: "Raleway", sans-serif;
- background:  #e5e7eb;
-}
 
 .logo {
   height: 6em;
@@ -47,16 +34,4 @@ body {
 
 .read-the-docs {
   color: #888;
-}
-
-
-.main-wrapper {
-  display: flex;
-  overflow: auto;
-
-}
-
-.header-wrapper{
-  padding-top: 16px;
- padding-bottom: 10px;
 }
