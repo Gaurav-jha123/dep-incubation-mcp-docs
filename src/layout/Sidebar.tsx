@@ -10,8 +10,9 @@ import {
 
 const Sidebar: React.FC = () => {
   const menuItems = [
-    { name: "Dashboard", path: "/", icon: <LayoutDashboard size={18} /> },
-    { name: "Users", path: "/users", icon: <Users size={18} /> },
+    { name: "Home", path: "/", icon: <LayoutDashboard size={18} /> },
+    { name: "SkillMatrix", path: "/dashboard", icon: <LayoutDashboard size={18} /> },
+    { name: "Users", path: "/userform", icon: <Users size={18} /> },
     { name: "Projects", path: "/projects", icon: <FolderKanban size={18} /> },
     { name: "Reports", path: "/reports", icon: <BarChart3 size={18} /> },
     { name: "Settings", path: "/settings", icon: <Settings size={18} /> },
