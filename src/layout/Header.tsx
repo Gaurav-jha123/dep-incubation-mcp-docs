@@ -1,3 +1,4 @@
+import UserProfileMenu from "@/components/user-profile-menu/user-profile-menu";
 import React from "react";
 
 const Header: React.FC = () => {
@@ -29,16 +30,8 @@ const Header: React.FC = () => {
 
         {/* Profile */}
         <div className="flex items-center gap-2 cursor-pointer">
-          <img
-            src="https://i.pravatar.cc/40"
-            alt="profile"
-            className="w-8 h-8 rounded-full"
-          />
-          <span className="text-sm font-medium hidden md:block">
-            Admin
-          </span>
+          <UserProfileMenu />
         </div>
-
       </div>
     </header>
   );
