@@ -70,7 +70,7 @@ export default function UserForm() {
     name: "skills",
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data: any) => {
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
     logger.info('data', data);
   };
 

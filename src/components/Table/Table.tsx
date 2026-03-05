@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-export interface TableProps {
+export interface TableProps<T> {
   /** Table headers */
   headers: string[];
 
   /** Data array */
-  data: Record<string, any>[];
+  data: T[];
 
   /** Keys from the data to display in each row */
-  keys: string[];
+  keys: (keyof T)[];
 
   /** Rows per page */
   rowsPerPage?: number;
@@ -17,13 +17,13 @@ export interface TableProps {
   className?: string;
 }
 
-export const Table: React.FC<TableProps> = ({
+export const Table = <T extends Record<string, unknown>>({
   headers,
   data,
   keys,
   rowsPerPage = 5,
   className = "",
-}) => {
+}: TableProps<T>) => {
   const [page, setPage] = useState(0);
 
   const totalPages = Math.ceil(data.length / rowsPerPage);
@@ -33,10 +33,8 @@ export const Table: React.FC<TableProps> = ({
 
   return (
     <div className={`w-full space-y-3 ${className}`}>
-      {/* Table */}
       <div className="overflow-x-auto border border-gray-200 rounded-lg">
         <table className="min-w-full text-left">
-          {/* Header */}
           <thead className="bg-gray-100 text-gray-700">
             <tr>
               {headers.map((h, idx) => (
@@ -47,13 +45,12 @@ export const Table: React.FC<TableProps> = ({
             </tr>
           </thead>
 
-          {/* Body */}
           <tbody>
             {currentRows.map((row, idx) => (
               <tr key={idx} className="border-b hover:bg-gray-50">
                 {keys.map((key) => (
-                  <td key={key} className="px-4 py-3 whitespace-nowrap text-gray-800">
-                    {row[key]}
+                  <td key={String(key)} className="px-4 py-3 whitespace-nowrap text-gray-800">
+                    {String(row[key])}
                   </td>
                 ))}
               </tr>
@@ -62,7 +59,6 @@ export const Table: React.FC<TableProps> = ({
         </table>
       </div>
 
-      {/* Pagination Controls */}
       <div className="flex justify-between items-center mt-2 text-sm">
         <button
           disabled={page === 0}
