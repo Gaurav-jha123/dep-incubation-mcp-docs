@@ -35,3 +35,15 @@
 .read-the-docs {
   color: #888;
 }
+
+
+.main-wrapper {
+  display: flex;
+  overflow: auto;
+
+}
+
+.header-wrapper{
+  padding-top: 16px;
+ padding-bottom: 10px;
+}

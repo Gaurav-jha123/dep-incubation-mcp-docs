@@ -22,7 +22,7 @@ const Sidebar: React.FC = () => {
     <aside className="w-64 bg-white border-r shadow-lg flex flex-col h-full">
 
       {/* Logo */}
-      <div className="p-5 border-b">
+      <div className="p-4 border-b">
         <h1 className="text-xl font-bold text-gray-900">
           🚀 Admin Panel
         </h1>
