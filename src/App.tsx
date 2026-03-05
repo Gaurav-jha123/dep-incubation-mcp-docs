@@ -1,35 +1,55 @@
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import BeautifulModal from "./components/BeautifulModal";
 import { BrowserRouter, Routes, Route, NavLink, Link } from "react-router";
-import Dashboard from './features/dashboard/dashboard';
-import { QueryProvider } from './providers/query-provider';
+import Dashboard from "./features/dashboard/dashboard";
+import { QueryProvider } from "./providers/query-provider";
+import UserForm from './features/forms/form'
+import Layout from "./layout/Layout";
 
 function AppWrapper() {
-  return <BrowserRouter>
-    <QueryProvider>
-      <Routes>
-        <Route path='/' element={<App />} />
-        <Route path='/dashboard' element={<Dashboard />} />
-      </Routes>
-    </QueryProvider>
-  </BrowserRouter>
+  return (
+    <BrowserRouter>
+      <QueryProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+          <Route index element={<App />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/userform" element={<UserForm />} />
+          </Route>
+        </Routes>
+      </QueryProvider>
+    </BrowserRouter>
+  );
 }
 
 function App() {
+  const [count, setCount] = useState(0);
   return (
-    <nav>
-      {/* NavLink makes it easy to show active states */}
-      <NavLink
-        to="/"
-        className={({ isActive }) =>
-          isActive ? "active" : ""
-        }
-      >
-        Home
-      </NavLink>
+    <>
+      <nav>
+        {/* NavLink makes it easy to show active states */}
+        <NavLink
+          to="/"
+          className={({ isActive }: { isActive: boolean }) =>
+            isActive ? "active" : ""
+          }
+        >
+          Home
+        </NavLink>
 
-      <Link to="/dashboard">Dashboard</Link>
-    </nav>
-  )
+        <Link to="/dashboard">Dashboard</Link>
+      </nav>
+
+      <div className="flex my-2 items-center justify-center">
+        <button onClick={() => setCount((count) => count + 1)}>
+          Click me {count}
+        </button>
+      </div>
+
+      <BeautifulModal />
+    </>
+  );
 }
 
-export default AppWrapper
+export default AppWrapper;
