@@ -60,7 +60,6 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
 
   return (
     <div className="w-full">
-      {/* Filters Section - Now using separate component */}
       <SkillMatrixFilters
         sortColumn={sortColumn}
         sortOrder={sortOrder}
