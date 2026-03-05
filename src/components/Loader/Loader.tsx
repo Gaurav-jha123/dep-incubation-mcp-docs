@@ -3,7 +3,7 @@ import { Dialog } from "@headlessui/react";
 type LoaderProps = {
   open: boolean;
   size?: 'small' | 'medium' | 'large';
-  color?: 'blue' | 'red' | 'green' | 'gray';
+  color?: 'blue';
 };
 
 export default function Loader({ open, size = 'medium', color = 'blue' }: LoaderProps) {
@@ -15,9 +15,6 @@ export default function Loader({ open, size = 'medium', color = 'blue' }: Loader
 
   const colorClasses = {
     blue: 'border-blue-500',
-    red: 'border-red-500',
-    green: 'border-green-500',
-    gray: 'border-gray-500',
   };
 
   return (

@@ -6,25 +6,22 @@ const meta: Meta<typeof Stepper> = {
   title: "Components/Stepper",
   component: Stepper,
   tags: ["autodocs"],
-
   parameters: {
+    layout: "centered",
     docs: {
       description: {
         component:
-          "Stepper component built using Headless UI and Tailwind. It helps users navigate through multi-step processes like forms, onboarding, or checkout flows.",
+          "Stepper component built using Headless UI and Tailwind. Useful for multi-step flows like onboarding, forms, and checkout.",
       },
     },
-    layout: "centered",
   },
   argTypes: {
-    currentStep: {
-      description: "Current active step index",
-      control: { type: "number" },
-    },
     variant: {
-      description: "Visual variant of the stepper",
       control: { type: "radio" },
       options: ["default", "minimal"],
+    },
+    currentStep: {
+      control: { type: "number", min: 0, max: 3 },
     },
   },
 };
@@ -45,13 +42,13 @@ export const Default: Story = {
     steps,
     variant: "default",
   },
-
   render: (args) => {
     const [step, setStep] = useState(1);
-
     return (
-      <Stepper {...args} currentStep={step} onChange={setStep} />
-    );
+        <div className="w-[700px] p-8">
+            <Stepper {...args} currentStep={step} onChange={setStep} />
+        </div>
+    )
   },
 };
 
@@ -60,12 +57,12 @@ export const Minimal: Story = {
     steps,
     variant: "minimal",
   },
-
   render: (args) => {
     const [step, setStep] = useState(2);
-
     return (
-      <Stepper {...args} currentStep={step} onChange={setStep} />
-    );
+        <div className="w-[700px] p-8">
+            <Stepper {...args} currentStep={step} onChange={setStep} />
+        </div>
+    )
   },
 };

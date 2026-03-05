@@ -21,7 +21,7 @@ const meta = {
     },
     color: {
       control: { type: 'select' },
-      options: ['blue', 'red', 'green', 'gray'],
+      options: ['blue'],
       description: 'Color of the loader spinner',
     },
   },
@@ -57,21 +57,4 @@ export const Blue: Story = {
     color: 'blue',
   },
 };
-
-export const Red: Story = {
-  args: {
-    color: 'red',
-  },
-};
-
-export const Green: Story = {
-  args: {
-    color: 'green',
-  },
-};
-
-export const Gray: Story = {
-  args: {
-    color: 'gray',
-  },
-};
+  
