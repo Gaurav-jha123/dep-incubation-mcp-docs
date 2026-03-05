@@ -69,9 +69,9 @@ export default function UserForm() {
     name: "skills",
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data:any) => {
-    console.log(data);
-  };
+ const onSubmit: SubmitHandler<FormValues> = (data) => {
+  console.log(data);
+};
 
   return (
     <form
