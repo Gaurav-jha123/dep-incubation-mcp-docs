@@ -2,6 +2,7 @@ import React from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { Outlet } from "react-router-dom";
+import Footer from "./Footer";
 
 // Layout component
 const Layout: React.FC = () => {
@@ -19,6 +20,11 @@ const Layout: React.FC = () => {
       <main className="col-start-2 row-start-2 p-4 bg-gray-50">
         <Outlet />
       </main>
+
+       {/* Footer */}
+      <div className="col-start-2 row-start-3">
+        <Footer />
+      </div>
     </div>
   );
 };
