@@ -54,3 +54,11 @@ export const Caption: Story = {
         children: 'This is caption text',
     },
 };
+
+export const CollapsibleHeading: Story = {
+    args: {
+        variant: 'h3',
+        children: 'Click to expand',
+        collapsible: true,
+    },
+};
