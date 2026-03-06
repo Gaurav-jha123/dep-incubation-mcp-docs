@@ -1,4 +1,5 @@
 import React from 'react';
+import { Menu } from '@headlessui/react';
 
 interface PaginationProps {
     currentPage: number;
@@ -26,7 +27,7 @@ export const Pagination: React.FC<PaginationProps> = ({
     };
 
     const renderPageButtons = () => {
-        const pages = [];
+        const pages: React.ReactNode[] = [];
         const maxVisible = 5;
 
         let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
@@ -36,15 +37,39 @@ export const Pagination: React.FC<PaginationProps> = ({
             startPage = Math.max(1, endPage - maxVisible + 1);
         }
 
+        const addButton = (p: number) => (
+            <Menu.Item key={p}>
+                {({ active }) => (
+                    <button
+                        onClick={() => onPageChange(p)}
+                        className={`px-3 py-1 text-sm border rounded ${
+                            currentPage === p
+                                ? 'bg-blue-500 text-white border-blue-500'
+                                : active
+                                ? 'bg-gray-100'
+                                : 'hover:bg-gray-100'
+                        }`}
+                    >
+                        {p}
+                    </button>
+                )}
+            </Menu.Item>
+        );
+
         if (startPage > 1) {
             pages.push(
-                <button
-                    key="1"
-                    onClick={() => onPageChange(1)}
-                    className="px-3 py-1 text-sm border rounded hover:bg-gray-100"
-                >
-                    1
-                </button>
+                <Menu.Item key={1}>
+                    {({ active }) => (
+                        <button
+                            onClick={() => onPageChange(1)}
+                            className={`px-3 py-1 text-sm border rounded ${
+                                active ? 'bg-gray-100' : 'hover:bg-gray-100'
+                            }`}
+                        >
+                            1
+                        </button>
+                    )}
+                </Menu.Item>
             );
             if (startPage > 2) {
                 pages.push(
@@ -56,18 +81,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         }
 
         for (let i = startPage; i <= endPage; i++) {
-            pages.push(
-                <button
-                    key={i}
-                    onClick={() => onPageChange(i)}
-                    className={`px-3 py-1 text-sm border rounded ${currentPage === i
-                            ? 'bg-blue-500 text-white border-blue-500'
-                            : 'hover:bg-gray-100'
-                        }`}
-                >
-                    {i}
-                </button>
-            );
+            pages.push(addButton(i));
         }
 
         if (endPage < totalPages) {
@@ -79,13 +93,18 @@ export const Pagination: React.FC<PaginationProps> = ({
                 );
             }
             pages.push(
-                <button
-                    key={totalPages}
-                    onClick={() => onPageChange(totalPages)}
-                    className="px-3 py-1 text-sm border rounded hover:bg-gray-100"
-                >
-                    {totalPages}
-                </button>
+                <Menu.Item key={totalPages}>
+                    {({ active }) => (
+                        <button
+                            onClick={() => onPageChange(totalPages)}
+                            className={`px-3 py-1 text-sm border rounded ${
+                                active ? 'bg-gray-100' : 'hover:bg-gray-100'
+                            }`}
+                        >
+                            {totalPages}
+                        </button>
+                    )}
+                </Menu.Item>
             );
         }
 
@@ -102,7 +121,11 @@ export const Pagination: React.FC<PaginationProps> = ({
                 Previous
             </button>
 
-            <div className="flex gap-1">{renderPageButtons()}</div>
+            <Menu as="nav" className="flex gap-1">
+                <Menu.Items static className="flex gap-1">
+                    {renderPageButtons()}
+                </Menu.Items>
+            </Menu>
 
             <button
                 onClick={handleNext}
