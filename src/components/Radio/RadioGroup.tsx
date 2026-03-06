@@ -36,7 +36,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
   };
 
   return (
-    <div className={`flex flex-col gap-2 ${className}`}>
+    <div className={`flex flex-col gap-2 ${className}`} data-testid="radio-group-wrapper">
       {options.map((option) => (
         <Radio
           key={option.value}
