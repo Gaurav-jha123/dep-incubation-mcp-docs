@@ -241,7 +241,6 @@ export const IconOnlyTrigger: Story = {
 // ─── Profile Dropdown Menu ──────────────────────────────────────────
 
 export const ProfileDropdownMenu: Story = {
-  name: "Profile Dropdown Menu",
   render: () => (
     <Dropdown>
       <Dropdown.Trigger className="text-gray-500 hover:bg-gray-100 px-2">
