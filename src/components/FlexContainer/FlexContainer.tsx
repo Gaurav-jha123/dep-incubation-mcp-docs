@@ -4,20 +4,14 @@ export interface FlexContainerProps {
   /** Horizontal or Vertical direction */
   direction?: "row" | "col";
 
-  /** Gap between items */
+  /** Gap between items (number uses Tailwind spacing convention: 1 = 0.25rem) or any CSS value like '12px', '1rem' */
   gap?: number | string;
 
   /** Alignment on cross-axis */
   align?: "start" | "center" | "end" | "stretch" | "baseline";
 
   /** Alignment on main-axis */
-  justify?:
-    | "start"
-    | "center"
-    | "end"
-    | "between"
-    | "around"
-    | "evenly";
+  justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
 
   /** Flex wrap */
   wrap?: "wrap" | "nowrap" | "wrap-reverse";
@@ -33,7 +27,9 @@ export interface FlexContainerProps {
 }
 
 /**
- * Reusable Flex Container component using Tailwind CSS.
+ * FlexContainer
+ * - Tailwind for direction/justify/align/wrap
+ * - Inline style for `gap` to support dynamic values without Tailwind safelist
  */
 export const FlexContainer: React.FC<FlexContainerProps> = ({
   direction = "row",
@@ -45,43 +41,55 @@ export const FlexContainer: React.FC<FlexContainerProps> = ({
   className = "",
   children,
 }) => {
-  const baseStyles = "flex";
+  const directionClass = direction === "col" ? "flex-col" : "flex-row";
 
-  const directionClass = `flex-${direction}`;
-  const wrapClass = wrap ? `flex-${wrap}` : "";
-  const gapClass = typeof gap === "number" ? `gap-${gap}` : `gap-[${gap}]`;
-
-  const justifyMap: Record<string, string> = {
+  const justifyMap = {
     start: "justify-start",
     center: "justify-center",
     end: "justify-end",
     between: "justify-between",
     around: "justify-around",
     evenly: "justify-evenly",
-  };
+  } as const;
 
-  const alignMap: Record<string, string> = {
+  const alignMap = {
     start: "items-start",
     center: "items-center",
     end: "items-end",
     stretch: "items-stretch",
     baseline: "items-baseline",
-  };
+  } as const;
+
+  const wrapMap = {
+    wrap: "flex-wrap",
+    nowrap: "flex-nowrap",
+    "wrap-reverse": "flex-wrap-reverse",
+  } as const;
 
   const containerClass = [
-    baseStyles,
+    "flex",
     directionClass,
-    wrapClass,
+    wrapMap[wrap],
     justifyMap[justify],
     alignMap[align],
-    gapClass,
     fullWidth ? "w-full" : "",
     className,
   ]
     .filter(Boolean)
     .join(" ");
 
-  return <div className={containerClass}>{children}</div>;
+  // Inline style for dynamic gap:
+  // - If number, we follow Tailwind convention where 1 = 0.25rem
+  // - If string, we use it as-is (e.g., '10px', '1rem', '2ch', etc.)
+  const style: React.CSSProperties = {
+    gap: typeof gap === "number" ? `${gap * 0.25}rem` : gap,
+  };
+
+  return (
+    <div className={containerClass} style={style}>
+      {children}
+    </div>
+  );
 };
 
 FlexContainer.displayName = "FlexContainer";
