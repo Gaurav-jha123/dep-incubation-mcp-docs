@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Table } from "./Table";
 
 const meta: Meta<typeof Table> = {
-  title: "Components/Table/Table",
+  title: "Components/Table",
   component: Table,
   tags: ["autodocs"],
   parameters: {
@@ -31,16 +31,7 @@ export const Default: Story = {
     headers: ["Name", "Role", "Email"],
     data: sampleData,
     keys: ["name", "role", "email"],
-    rowsPerPage: 5,
-  },
-};
-
-export const ThreeRowsPerPage: Story = {
-  args: {
-    headers: ["Name", "Role", "Email"],
-    data: sampleData,
-    keys: ["name", "role", "email"],
-    rowsPerPage: 3,
+    rowsPerPageOptions: [5, 10, 20],
   },
 };
 
@@ -49,7 +40,7 @@ export const SmallDataset: Story = {
     headers: ["Name", "Role", "Email"],
     data: sampleData.slice(0, 3),
     keys: ["name", "role", "email"],
-    rowsPerPage: 2,
+    rowsPerPageOptions: [2, 3, 5],
   },
 };
 
@@ -62,6 +53,15 @@ export const LargeDataset: Story = {
       email: `user${i + 1}@example.com`,
     })),
     keys: ["name", "role", "email"],
-    rowsPerPage: 10,
+    rowsPerPageOptions: [5, 10, 20],
+  },
+};
+
+export const ManyRowsPerPageOptions: Story = {
+  args: {
+    headers: ["Name", "Role", "Email"],
+    data: sampleData,
+    keys: ["name", "role", "email"],
+    rowsPerPageOptions: [3, 5, 8, 10],
   },
 };

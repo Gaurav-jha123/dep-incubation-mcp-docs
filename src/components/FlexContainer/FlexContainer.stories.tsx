@@ -81,10 +81,12 @@ export const RowAlignment: Story = {
     justify: "between",
     align: "center",
     gap: 6,
-    fullWidth: true,
   },
   render: (args) => (
-    <FlexContainer {...args} className="p-6 bg-gray-50 rounded w-[720px]">
+    <FlexContainer
+      {...args}
+      className="p-6 bg-gray-50 rounded w-[720px] h-[160px]"
+    >
       <Item>Left</Item>
       <Item>Center</Item>
       <Item>Right</Item>
