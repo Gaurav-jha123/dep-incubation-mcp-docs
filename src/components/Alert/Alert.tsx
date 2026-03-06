@@ -1,5 +1,12 @@
 import { Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
+import {
+  AlertCircle,
+  AlertTriangle,
+  CheckCircle2,
+  Info,
+  X,
+} from "lucide-react";
 
 type AlertType = "success" | "error" | "warning" | "info";
 type IconKey = AlertType | "close";
@@ -23,93 +30,11 @@ const alertVariantClasses: Record<AlertType, string> = {
 };
 
 const icons: Record<IconKey, React.ReactNode> = {
-  success: (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M5 13l4 4L19 7"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
-  error: (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-      <path
-        d="M9 9l6 6M15 9l-6 6"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
-  warning: (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M12 9v4m0 4h.01M4.93 19h14.14c.86 0 1.4-.93.97-1.67L12.97 5.3a1.1 1.1 0 00-1.94 0L3.96 17.33c-.43.74.11 1.67.97 1.67z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
-  info: (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-      <path
-        d="M12 8h.01M11 11h1v5"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
-  close: (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M6 6l12 12M18 6L6 18"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
+  success: <CheckCircle2 size={20} aria-hidden="true" />,
+  error: <AlertCircle size={20} aria-hidden="true" />,
+  warning: <AlertTriangle size={20} aria-hidden="true" />,
+  info: <Info size={20} aria-hidden="true" />,
+  close: <X size={16} aria-hidden="true" />,
 };
 
 export const Alert: React.FC<AlertProps> = ({
@@ -153,7 +78,7 @@ export const Alert: React.FC<AlertProps> = ({
       leaveTo="opacity-0 -translate-y-1"
     >
       <div className={combinedClassName} role="alert" {...rest}>
-        <span className="mt-0.5 flex shrink-0 items-center">{icons[type]}</span>
+        <span className="flex shrink-0 items-center">{icons[type]}</span>
         <span className="flex-1">{children ?? message}</span>
         {closable && (
           <button
