@@ -17,7 +17,7 @@ const Layout: React.FC = () => {
         <Header />
       </div>
       {/* Main Content */}
-      <main className="col-start-2 row-start-2 p-4 bg-gray-50">
+      <main className="main-wrapper col-start-2 row-start-2 p-4 bg-gray-50">
         <Outlet />
       </main>
 

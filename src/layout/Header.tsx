@@ -3,7 +3,7 @@ import React from "react";
 
 const Header: React.FC = () => {
   return (
-    <header className="w-full bg-white text-gray-900 px-6 py-3 flex items-center justify-between shadow-lg border-b">
+    <header className="header-wrapper w-full bg-white text-gray-900 px-6 py-3 flex items-center justify-between shadow-lg border-b">
 
       {/* Left Section */}
       <div className="flex items-center gap-4">
