@@ -1,9 +1,12 @@
 import React from 'react';
+import { Disclosure } from '@headlessui/react';
+import { ChevronUpIcon } from 'lucide-react';
 
 interface TypographyProps {
     variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body' | 'caption';
     children: React.ReactNode;
     className?: string;
+    collapsible?: boolean;
 }
 
 const variantMap = {
@@ -21,8 +24,27 @@ export const Typography: React.FC<TypographyProps> = ({
     variant = 'body',
     children,
     className = '',
+    collapsible = false,
 }) => {
     const baseClass = variantMap[variant];
+
+    if (collapsible) {
+        return (
+            <Disclosure>
+                {({ open }) => (
+                    <>
+                        <Disclosure.Button className={`${baseClass} ${className} flex items-center gap-2 hover:text-blue-600 transition-colors`}>
+                            {children}
+                            <ChevronUpIcon className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="px-4 py-2 text-gray-700 bg-gray-50 rounded mt-2">
+                            Additional content goes here
+                        </Disclosure.Panel>
+                    </>
+                )}
+            </Disclosure>
+        );
+    }
 
     return (
         <div className={`${baseClass} ${className}`}>
