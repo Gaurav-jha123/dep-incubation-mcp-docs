@@ -4,7 +4,7 @@ import skillMatrix from "./../../mocks/skillMatrix"
 
 const Dashboard = () => {
   return (
-    <div><SkillMatrixTable data={skillMatrix} /></div>
+    <><SkillMatrixTable data={skillMatrix} /></>
   )
 }
 
