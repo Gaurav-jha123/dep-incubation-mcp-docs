@@ -1,70 +1,57 @@
-import React from 'react';
-import type { ReactNode } from 'react';
+import React from "react";
+import { Button as HeadlessButton } from "@headlessui/react";
+import type { ReactNode } from "react";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Button variant style */
-  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
-  /** Button size */
-  size?: 'sm' | 'md' | 'lg';
-  /** Button contents */
+  variant?: "primary" | "secondary" | "danger" | "ghost";
+  size?: "sm" | "md" | "lg";
   children: ReactNode;
-  /** Whether button is disabled */
-  disabled?: boolean;
-  /** Whether button is loading */
   isLoading?: boolean;
 }
 
-/** Reusable button component with Tailwind CSS */
+const sizeStyles = {
+  sm: "px-3 py-1.5 text-sm rounded",
+  md: "px-4 py-2 text-base rounded-md",
+  lg: "px-6 py-3 text-lg rounded-lg",
+};
+
+const variantStyles = {
+  primary:
+    "bg-blue-600 text-white data-hover:bg-blue-500 data-active:bg-blue-700",
+  secondary:
+    "bg-gray-200 text-gray-800 data-hover:bg-gray-300 data-active:bg-gray-400",
+  danger: "bg-red-600 text-white data-hover:bg-red-500 data-active:bg-red-700",
+  ghost: "text-gray-700 data-hover:bg-gray-100 data-active:bg-gray-200",
+};
+
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      variant = 'primary',
-      size = 'md',
-      disabled = false,
+      variant = "primary",
+      size = "md",
       isLoading = false,
-      className = '',
+      className = "",
       children,
+      disabled,
       ...props
     },
-    ref
+    ref,
   ) => {
-    // Base styles
-    const baseStyles = 'inline-flex items-center justify-center font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+    const base =
+      "inline-flex items-center justify-center font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
 
-    // Size styles
-    const sizeStyles = {
-      sm: 'px-3 py-1.5 text-sm rounded',
-      md: 'px-4 py-2 text-base rounded-md',
-      lg: 'px-6 py-3 text-lg rounded-lg',
-    };
-
-    // Variant styles
-    const variantStyles = {
-      primary:
-        'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-      secondary:
-        'bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-500',
-      danger:
-        'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
-      ghost:
-        'text-gray-700 hover:bg-gray-100 focus:ring-gray-500',
-    };
-
-    const combinedClassName = [
-      baseStyles,
+    const classes = [
+      base,
       sizeStyles[size],
       variantStyles[variant],
       className,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    ].join(" ");
 
     return (
-      <button
+      <HeadlessButton
         ref={ref}
-        type="button"
         disabled={disabled || isLoading}
-        className={combinedClassName}
+        className={classes}
         {...props}
       >
         {isLoading && (
@@ -75,22 +62,25 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             viewBox="0 0 24 24"
           >
             <circle
-              className="opacity-25"
               cx="12"
               cy="12"
               r="10"
               stroke="currentColor"
               strokeWidth="4"
-            ></circle>
+              className="opacity-25"
+            />
             <path
-              className="opacity-75"
               fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
+              className="opacity-75"
+              d="M4 12a8 8 0 018-8V0A12 12 0 000 12h4z"
+            />
           </svg>
         )}
+
         {children}
-      </button>
+      </HeadlessButton>
     );
-  }
+  },
 );
+
+Button.displayName = "Button";

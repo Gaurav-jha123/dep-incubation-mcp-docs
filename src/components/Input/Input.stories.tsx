@@ -1,105 +1,124 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Input } from './Input';
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Input } from "./Input";
 
-const meta: Meta<typeof Input> = {
-  title: 'Components/Input',
+const meta = {
+  title: "Components/Input",
   component: Input,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
+  args: {
+    placeholder: "Enter text...",
+    label: "Label",
+    variant: "default",
+    inputSize: "md",
+    disabled: false,
+    required: false,
+    fullWidth: false,
+  },
   argTypes: {
     variant: {
-      control: { type: 'select' },
-      options: ['default', 'error', 'success'],
+      control: { type: "select" },
+      options: ["default", "error", "success"],
     },
     inputSize: {
-      control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      control: { type: "select" },
+      options: ["sm", "md", "lg"],
     },
-    disabled: { control: 'boolean' },
-    required: { control: 'boolean' },
-    fullWidth: { control: 'boolean' },
+    label: {
+      control: "text",
+    },
+    helperText: {
+      control: "text",
+    },
+    error: {
+      control: "text",
+    },
+    placeholder: {
+      control: "text",
+    },
+    disabled: { control: "boolean" },
+    required: { control: "boolean" },
+    fullWidth: { control: "boolean" },
+    leftIcon: { control: false },
+    rightIcon: { control: false },
+    className: { control: false },
   },
-};
+} satisfies Meta<typeof Input>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    placeholder: 'Enter some text...',
-    label: 'Full Name',
-  },
-};
+export const Default: Story = {};
 
 export const WithHelper: Story = {
   args: {
-    placeholder: 'example@email.com',
-    label: 'Email Address',
-    helperText: 'We will never share your email with anyone',
+    placeholder: "example@email.com",
+    label: "Email Address",
+    helperText: "We will never share your email with anyone",
     required: true,
   },
 };
 
 export const Error: Story = {
   args: {
-    placeholder: 'Enter password',
-    label: 'Password',
-    variant: 'error',
-    error: 'Password must be at least 8 characters',
-    value: 'short',
+    placeholder: "Enter password",
+    label: "Password",
+    variant: "error",
+    error: "Password must be at least 8 characters",
+    defaultValue: "short",
   },
 };
 
 export const Success: Story = {
   args: {
-    placeholder: 'Username',
-    label: 'Username',
-    variant: 'success',
-    helperText: 'This username is available',
-    value: 'johndoe',
+    placeholder: "Username",
+    label: "Username",
+    variant: "success",
+    helperText: "This username is available",
+    defaultValue: "johndoe",
   },
 };
 
 export const Disabled: Story = {
   args: {
-    placeholder: 'Disabled input',
-    label: 'Disabled',
+    placeholder: "Disabled input",
+    label: "Disabled",
     disabled: true,
-    value: 'Cannot edit this',
+    defaultValue: "Cannot edit this",
   },
 };
 
 export const Small: Story = {
   args: {
-    placeholder: 'Small input',
-    label: 'Small Size',
-    inputSize: 'sm',
+    placeholder: "Small input",
+    label: "Small Size",
+    inputSize: "sm",
   },
 };
 
 export const Large: Story = {
   args: {
-    placeholder: 'Large input',
-    label: 'Large Size',
-    inputSize: 'lg',
+    placeholder: "Large input",
+    label: "Large Size",
+    inputSize: "lg",
   },
 };
 
 export const FullWidth: Story = {
   args: {
-    placeholder: 'Full width input',
-    label: 'Full Width',
+    placeholder: "Full width input",
+    label: "Full Width",
     fullWidth: true,
   },
 };
 
 export const Required: Story = {
   args: {
-    placeholder: 'Required field',
-    label: 'Required Field',
+    placeholder: "Required field",
+    label: "Required Field",
     required: true,
-    helperText: 'This field is mandatory',
+    helperText: "This field is mandatory",
   },
 };
