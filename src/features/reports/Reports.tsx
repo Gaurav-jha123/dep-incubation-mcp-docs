@@ -74,7 +74,7 @@ export default function Reports() {
 
             <SummaryCards skills={sortedSkills} user={selectedUserObj} />
 
-           <SkillsPieChart data={chartData} />
+            <SkillsPieChart data={chartData} />
 
             <TopSkillsChart data={topSkills} />
 
