@@ -56,15 +56,6 @@ export const MultiSelect: Story = {
   },
 };
 
-/* Disabled */
-export const Disabled: Story = {
-  args: {
-    options,
-    value: "",
-    disabled: true,
-  },
-};
-
 /* Preselected Multi */
 export const WithPreselectedValues: Story = {
   render: (args) => <StatefulTemplate {...args} />,
