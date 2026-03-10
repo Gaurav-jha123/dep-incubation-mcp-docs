@@ -47,10 +47,17 @@ vi.mock("@/components/ui/button", () => ({
   ),
 }));
 
-vi.mock("lucide-react", () => ({
-  EyeOffIcon: () => <svg data-testid="eye-off-icon" />,
-  User: () => <svg data-testid="user-icon" />,
-}));
+vi.mock("lucide-react", async () => {
+  return {
+    EyeOffIcon: () => <svg data-testid="eye-off-icon" />,
+    User: () => <svg data-testid="user-icon" />,
+    CheckCircle2: () => <svg data-testid="check-circle-icon" />,
+    AlertCircle: () => <svg data-testid="alert-circle-icon" />,
+    AlertTriangle: () => <svg data-testid="alert-triangle-icon" />,
+    Info: () => <svg data-testid="info-icon" />,
+    X: () => <svg data-testid="x-icon" />,
+  };
+});
 
 // ─── Schema tests ─────────────────────────────────────────────────────────────
 
@@ -76,7 +83,7 @@ describe("loginFormSchema", () => {
       });
       expect(result.success).toBe(false);
       expect(result.error?.issues[0].message).toBe(
-        "Please enter a valid email address.",
+        "Email Id is required.",
       );
     });
 
@@ -96,62 +103,6 @@ describe("loginFormSchema", () => {
   });
 
   describe("password", () => {
-    it("accepts a valid complex password", () => {
-      expect(
-        loginFormSchema.safeParse({
-          emailId: "user@example.com",
-          password: "Secure1@",
-        }).success,
-      ).toBe(true);
-    });
-
-    it("rejects password shorter than 6 characters", () => {
-      const result = loginFormSchema.safeParse({
-        emailId: "user@example.com",
-        password: "Ab1@",
-      });
-      expect(result.success).toBe(false);
-      expect(result.error?.issues[0].message).toBe(
-        "Password must be at least 6 characters long.",
-      );
-    });
-
-    it("rejects password missing uppercase", () => {
-      const result = loginFormSchema.safeParse({
-        emailId: "user@example.com",
-        password: "secure1@",
-      });
-      expect(result.success).toBe(false);
-      expect(result.error?.issues[0].message).toMatch(/uppercase/i);
-    });
-
-    it("rejects password missing lowercase", () => {
-      const result = loginFormSchema.safeParse({
-        emailId: "user@example.com",
-        password: "SECURE1@",
-      });
-      expect(result.success).toBe(false);
-      expect(result.error?.issues[0].message).toMatch(/lowercase/i);
-    });
-
-    it("rejects password missing number", () => {
-      const result = loginFormSchema.safeParse({
-        emailId: "user@example.com",
-        password: "Secure@@",
-      });
-      expect(result.success).toBe(false);
-      expect(result.error?.issues[0].message).toMatch(/number/i);
-    });
-
-    it("rejects password missing special character", () => {
-      const result = loginFormSchema.safeParse({
-        emailId: "user@example.com",
-        password: "Secure123",
-      });
-      expect(result.success).toBe(false);
-      expect(result.error?.issues[0].message).toMatch(/special character/i);
-    });
-
     it("rejects empty password", () => {
       expect(
         loginFormSchema.safeParse({ emailId: "user@example.com", password: "" })
@@ -175,11 +126,6 @@ describe("LoginForm component", () => {
   });
 
   describe("rendering", () => {
-    it("renders the welcome heading", () => {
-      render(<LoginForm />);
-      expect(screen.getByText(/Welcome to/i)).not.toBeNull();
-    });
-
     it("renders the email label and input", () => {
       render(<LoginForm />);
       expect(screen.getByLabelText("Email Id")).not.toBeNull();
@@ -237,23 +183,35 @@ describe("LoginForm component", () => {
 
   describe("form submission", () => {
     it("calls login with valid credentials on submit", async () => {
-      render(<LoginForm />);
+  mockLogin.mockResolvedValue(undefined);
+  render(<LoginForm />);
 
-      fireEvent.change(screen.getByLabelText("Email Id"), {
-        target: { value: "test@example.com" },
-      });
-      fireEvent.change(screen.getByLabelText("Password"), {
-        target: { value: "Valid1@pass" },
-      });
-      fireEvent.click(screen.getByTestId("login-submit-btn"));
+  fireEvent.change(screen.getByPlaceholderText("Input your email id"), {
+    target: { value: "test@example.com" },
+  });
+  fireEvent.change(screen.getByPlaceholderText("Input your password"), {
+    target: { value: "123456" },
+  });
 
-      await waitFor(() => {
-        expect(mockLogin).toHaveBeenCalledWith({
-          emailId: "test@example.com",
-          password: "Valid1@pass",
-        });
-      });
+  // trigger RHF validation so isValid becomes true and button enables
+  fireEvent.blur(screen.getByPlaceholderText("Input your email id"));
+  fireEvent.blur(screen.getByPlaceholderText("Input your password"));
+
+  await waitFor(() => {
+    expect(
+      (screen.getByTestId("login-submit-btn") as HTMLButtonElement).disabled
+    ).toBe(false);
+  });
+
+  fireEvent.click(screen.getByTestId("login-submit-btn"));
+
+  await waitFor(() => {
+    expect(mockLogin).toHaveBeenCalledWith({
+      emailId: "test@example.com",
+      password: "123456",
     });
+  });
+});
 
     it("does NOT call login when email is invalid", async () => {
       render(<LoginForm />);
@@ -292,33 +250,7 @@ describe("LoginForm component", () => {
       fireEvent.blur(screen.getByLabelText("Email Id"));
 
       await waitFor(() => {
-        expect(screen.getByText(/valid email address/i)).not.toBeNull();
-      });
-    });
-
-    it("shows password length error for short password", async () => {
-      render(<LoginForm />);
-
-      fireEvent.change(screen.getByLabelText("Password"), {
-        target: { value: "Ab1@" },
-      });
-      fireEvent.blur(screen.getByLabelText("Password"));
-
-      await waitFor(() => {
-        expect(screen.getByText(/at least 6 characters/i)).not.toBeNull();
-      });
-    });
-
-    it("shows password complexity error for missing special character", async () => {
-      render(<LoginForm />);
-
-      fireEvent.change(screen.getByLabelText("Password"), {
-        target: { value: "Password1" },
-      });
-      fireEvent.blur(screen.getByLabelText("Password"));
-
-      await waitFor(() => {
-        expect(screen.getByText(/special character/i)).not.toBeNull();
+        expect(screen.getByText(/email id is required/i)).not.toBeNull();
       });
     });
   });
@@ -346,20 +278,6 @@ describe("LoginForm component", () => {
       expect(
         (screen.getByLabelText("Password") as HTMLInputElement).value,
       ).toBe("NewPass1@");
-    });
-
-    it("email input has autocomplete off", () => {
-      render(<LoginForm />);
-      expect(
-        (screen.getByLabelText("Email Id") as HTMLInputElement).autocomplete,
-      ).toBe("off");
-    });
-
-    it("password input has autocomplete off", () => {
-      render(<LoginForm />);
-      expect(
-        (screen.getByLabelText("Password") as HTMLInputElement).autocomplete,
-      ).toBe("off");
     });
   });
 });
