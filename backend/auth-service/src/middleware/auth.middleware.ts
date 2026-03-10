@@ -1,10 +1,13 @@
 import { Request , Response , NextFunction } from "express";
 import { error } from "../utils/response";
 import { verifyAccessToken } from "../services/token.service";
+import { JwtPayload } from "jsonwebtoken";
 
+export interface AuthenticatedRequest extends Request {
+  user?: JwtPayload;
+}
 
-
-export const authenticateToken = (req : Request, res : Response, next : NextFunction) => {
+export const authenticateToken = (req : AuthenticatedRequest, res : Response, next : NextFunction) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader?.split(' ')[1];
 
@@ -14,10 +17,10 @@ export const authenticateToken = (req : Request, res : Response, next : NextFunc
 
     try {
         const decoded = verifyAccessToken(token);
-        (req as any).user = decoded;
+        req.user = decoded as JwtPayload;
         next();
-    } catch (err : any) {
-        if (err.name === 'TokenExpiredError') {
+    } catch (err : unknown) {
+        if (err instanceof Error && err.name === 'TokenExpiredError') {
       return error(res, 'TOKEN_EXPIRED', 'Token expired', 401);
     }
     return error(res, 'TOKEN_INVALID', 'Invalid token', 403);
