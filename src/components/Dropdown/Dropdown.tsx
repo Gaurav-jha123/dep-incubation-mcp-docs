@@ -18,7 +18,7 @@ interface RootProps {
 
 const Root: React.FC<RootProps> = ({ children, className }) => {
   return (
-    <Menu as="div" className={cn("relative inline-block", className)}>
+    <Menu as="div" data-testid="dropdown-root" className={cn("relative inline-block", className)}>
       {children}
     </Menu>
   )
@@ -32,6 +32,7 @@ interface TriggerProps {
 const Trigger: React.FC<TriggerProps> = ({ children, className }) => {
   return (
     <MenuButton
+      data-testid="dropdown-trigger"
       className={cn(
         "inline-flex items-center px-4 py-2 text-sm rounded-md",
         className
@@ -55,6 +56,7 @@ const Content: React.FC<ContentProps> = ({
 }) => {
   return (
     <MenuItems
+      data-testid="dropdown-content"
       className={cn(
         "absolute z-50 min-w-[180px] rounded-md border bg-white shadow-lg p-1",
         placementStyles[placement],
@@ -82,6 +84,7 @@ const Item: React.FC<ItemProps> = ({
   return (
     <MenuItem disabled={disabled}>
       <button
+        data-testid="dropdown-item"
         onClick={onClick}
         disabled={disabled}
         className={cn(
@@ -102,7 +105,7 @@ interface DividerProps {
 }
 
 const Divider: React.FC<DividerProps> = ({ className }) => {
-  return <div role="separator" className={cn("my-1 h-px bg-gray-100", className)} />
+  return <div data-testid="dropdown-separator" className={cn("my-1 h-px bg-gray-100", className)} />
 }
 
 export const Dropdown = Object.assign(Root, {

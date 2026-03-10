@@ -1,24 +1,12 @@
-import { Spinner } from "@/components/ui/spinner";
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 
 const LoginForm = lazy(() => import("./components/login-form/login-form"));
-const SkillMatrixLottie = lazy(
-  () => import("./components/skill-matrix-lottie"),
-);
+
 
 const Login = () => {
   return (
-    <div className="bg-gray-200 flex h-full">
+    <div className="bg-gray-200 flex items-center justify-center h-screen">
       <LoginForm />
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center">
-            <Spinner />
-          </div>
-        }
-      >
-        <SkillMatrixLottie />
-      </Suspense>
     </div>
   );
 };

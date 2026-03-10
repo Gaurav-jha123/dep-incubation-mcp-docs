@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { User, Moon, Settings, LogOut } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { User, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store/use-auth-store";
 import useAuth from "@/lib/hooks/use-auth/use-auth";
 
@@ -46,25 +45,25 @@ export default function UserProfileMenu() {
             </div>
           </div>
 
-          <div className="my-4 border-t border-gray-200" />
+          {/* <div className="my-4 border-t border-gray-200" /> */}
 
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 px-2 py-2 rounded-lg transition text-gray-700">
               <Moon size={18} />
               <span className="text-sm font-medium">Dark Mode</span>
             </div>
             <Switch data-testid="dark-mode-switch" />
-          </div>
+          </div> */}
 
           <div className="my-3 border-t border-gray-200" />
 
           <div className="space-y-1">
-            <MenuItem
+            {/* <MenuItem
               data-testid="menu-item-settings"
               icon={<Settings size={18} />}
               label="Settings"
               onClick={() => setIsOpen(false)}
-            />
+            /> */}
             <MenuItem
               data-testid="menu-item-logout"
               icon={<LogOut size={18} />}

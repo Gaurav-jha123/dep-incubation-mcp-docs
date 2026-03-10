@@ -1,20 +1,30 @@
 import { test, expect } from '@playwright/test';
 
-test('should display the correct title on the about page', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+test('should display the correct title on the home page', async ({ page }) => {
+  await page.goto('/');
   
-  // Expect the title to be "About Playwright"
+  // Expect the title to be correct
   await expect(page).toHaveTitle('dep-incubation-dashboard');
-  await expect(page.locator('h1').nth(1)).toHaveText('Dashboard');
+  
+  // Since home page redirects to login, check for login form
+  await expect(page.locator('form')).toBeVisible();
+  await expect(page.locator('text=Welcome to')).toBeVisible();
 });
 
-test('should navigate to the user form page and display the form', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+test('should navigate to dashboard after login', async ({ page }) => {
+  await page.goto('/login');
   
-  // Click on the user form link
-  await page.click('a[href="/userform"]');
+  // Wait for login form to load
+  await page.waitForSelector('#login-form-email-id');
   
-  // Expect the user form to be visible
-  await expect(page.locator('form')).toBeVisible();
-  await expect(page.locator('h2')).toHaveText('User Form');
+  // Perform login
+  await page.fill('#login-form-email-id', 'test@example.com');
+  await page.fill('#login-form-password', 'Password123!');
+  await page.click('[data-testid="login-submit-btn"]');
+  
+  // Should redirect to dashboard
+  await page.waitForURL('**/dashboard');
+  
+  // Expect the skill matrix table to be visible on dashboard
+  await expect(page.locator('table')).toBeVisible();
 });

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { registerUser, loginUser } from '../services/auth.service';
 import { verifyRefreshToken, findRefreshToken, deleteRefreshToken, signAccessToken } from '../services/token.service';
 import { success, error } from '../utils/response';
-
+import { AuthenticatedRequest } from '../middleware/auth.middleware';
 /**
  login -> refresh token created 
  day 7 -> /auth/refresh -> new Token issued have to integrate in frontend
@@ -30,8 +30,8 @@ export const register = async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
     const user = await registerUser(name, email, password);
     return success(res, { user }, 201);
-  } catch (err: any) {
-    if (err.message === 'EMAIL_TAKEN') {
+  } catch (err: unknown) {
+    if (err instanceof Error && err.message === 'EMAIL_TAKEN') {
       return error(res, 'EMAIL_TAKEN', 'Email already in use', 409);
     }
     return error(res, 'SERVER_ERROR', 'Something went wrong', 500);
@@ -44,8 +44,8 @@ export const login = async (req: Request, res: Response) => {
     const { accessToken, refreshToken, user } = await loginUser(email, password);
     res.cookie('refreshToken', refreshToken, COOKIE_OPTIONS);
     return success(res, { accessToken, user });
-  } catch (err: any) {
-    if (err.message === 'INVALID_CREDENTIALS') {
+  } catch (err: unknown) {
+    if (err instanceof Error && err.message === 'INVALID_CREDENTIALS') {
       return error(res, 'INVALID_CREDENTIALS', 'Email or password is incorrect', 401);
     }
     return error(res, 'SERVER_ERROR', 'Something went wrong', 500);
@@ -76,6 +76,6 @@ export const logout = async (req: Request, res: Response) => {
   return success(res, { message: 'Logged out' });
 };
 
-export const me = async (req: Request, res: Response) => {
-  return success(res, { user: (req as any).user });
+export const me = async (req: AuthenticatedRequest, res: Response) => {
+  return success(res, { user: req.user });
 };
