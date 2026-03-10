@@ -5,7 +5,7 @@ import {
   ComboboxOptions,
   ComboboxButton,
 } from "@headlessui/react";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 export interface Option {
@@ -35,7 +35,6 @@ export function Select({
   className = "",
 }: SelectProps) {
   const [query, setQuery] = useState("");
-  const [typed, setTyped] = useState(false);
 
   const values = Array.isArray(value) ? value : value ? [value] : [];
 
@@ -53,13 +52,8 @@ export function Select({
     } else {
       onChange(selected.value);
     }
-    setQuery("");
-    setTyped(false);
-  }
 
-  function removeValue(val: string) {
-    if (!multiple) return;
-    onChange(values.filter((v) => v !== val));
+    setQuery("");
   }
 
   return (
@@ -70,49 +64,15 @@ export function Select({
       disabled={disabled}
     >
       <div className={`w-full ${className}`}>
-        {/* Selected Tags */}
-        {multiple && selectedOptions.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-2">
-            {selectedOptions.map((item) => (
-              <span
-                key={item.value}
-                className="flex items-center gap-1 px-2 py-1 text-sm bg-blue-100 text-blue-900 rounded"
-              >
-                {item.label}
-
-                <button
-                  type="button"
-                  onClick={() => removeValue(item.value)}
-                  className="hover:text-blue-700"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </span>
-            ))}
-          </div>
-        )}
-
         <div className="relative">
           {/* Input */}
           {searchable ? (
             <ComboboxInput
               className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              displayValue={(option: Option) => option?.label ?? ""}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setTyped(true);
-              }}
-              onKeyDown={(e) => {
-                if (
-                  multiple &&
-                  e.key === "Backspace" &&
-                  query === "" &&
-                  typed &&
-                  values.length > 0
-                ) {
-                  removeValue(values[values.length - 1]);
-                }
-              }}
+              displayValue={(option: Option) =>
+                multiple ? "" : (option?.label ?? "")
+              }
+              onChange={(e) => setQuery(e.target.value)}
               placeholder={placeholder}
             />
           ) : (
@@ -122,7 +82,10 @@ export function Select({
           )}
 
           {/* Dropdown Button */}
-          <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+          <ComboboxButton
+            aria-label="Toggle options"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
+          >
             <ChevronDown className="h-5 w-5" />
           </ComboboxButton>
 
@@ -145,14 +108,14 @@ export function Select({
                   } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`
                 }
               >
-                {({ selected }) => (
+                {() => (
                   <>
                     {multiple && (
                       <input
                         type="checkbox"
-                        checked={selected}
+                        checked={values.includes(option.value)}
                         readOnly
-                        className="pointer-events-none"
+                        className="pointer-events-none accent-black"
                       />
                     )}
 
