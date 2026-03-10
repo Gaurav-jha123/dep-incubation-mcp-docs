@@ -15,7 +15,7 @@ class ResizeObserverMock {
     disconnect() { }
 }
 
-(global as any).ResizeObserver = ResizeObserverMock;
+(global as typeof global & { ResizeObserver: typeof ResizeObserverMock }).ResizeObserver = ResizeObserverMock;
 
 describe("UserForm", () => {
     let user: ReturnType<typeof userEvent.setup>;

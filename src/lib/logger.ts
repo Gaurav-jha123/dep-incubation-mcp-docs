@@ -13,23 +13,23 @@ const isProd = process.env.NODE_ENV === 'production';
 const logger: Logger = {
   debug: (...args: unknown[]) => {
     if (!isProd) {
-      // eslint-disable-next-line no-console
+       
       console.debug('[DEBUG]', ...args);
     }
   },
   info: (...args: unknown[]) => {
     if (!isProd) {
-      // eslint-disable-next-line no-console
+       
       console.info('[INFO]', ...args);
     }
   },
   warn: (...args: unknown[]) => {
-    // eslint-disable-next-line no-console
+     
     console.warn('[WARN]', ...args);
     // Optionally: send to remote server here
   },
   error: (...args: unknown[]) => {
-    // eslint-disable-next-line no-console
+     
     console.error('[ERROR]', ...args);
     // Optionally: send to remote server or monitoring tool here
   },
