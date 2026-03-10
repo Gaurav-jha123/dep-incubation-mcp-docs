@@ -1,31 +1,53 @@
-import TinyBarChart from "./components/TinyBarChart";
-import TwoLevelPieChart from "./components/TwoLevelPieChart";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import "./Reports.scss";
+import { useState } from "react";
+import skillMatrix from "./../../mocks/skillMatrix";
 
 export default function Reports() {
+  const [selectedUser, setSelectedUser] = useState("");
+
+  const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedUser(e.target.value);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center p-8">
-      <Card className="w-full max-w-3xl shadow-2xl">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold text-indigo-700">Reports</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-lg text-indigo-600 mb-6">View and generate reports here.</p>
-          <Separator className="mb-6" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h2 className="text-xl font-semibold text-indigo-600 mb-2">Bar Chart Overview</h2>
-              <TinyBarChart />
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-indigo-600 mb-2">Pie Chart Analysis</h2>
-              <TwoLevelPieChart isAnimationActive={true} />
-            </div>
+    <div className="w-full justify-center p-6">
+      
+      <div className="w-full bg-white shadow-xl rounded-2xl p-8 border border-gray-100">
+        
+        {/* Header */}
+        <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
+          Reports Dashboard
+        </h1>
+
+        {/* User Selection */}
+        <div className="flex flex-col gap-2 mb-6">
+          <label className="text-sm font-semibold text-gray-600">
+            Select User
+          </label>
+
+          <select
+            value={selectedUser}
+            onChange={handleUserChange}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
+          >
+            <option value="">-- Select User --</option>
+
+            {skillMatrix.users.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Report Section */}
+        {selectedUser && (
+          <div className="mt-6 p-6 bg-indigo-50 border border-indigo-200 rounded-xl text-center">
+            <p className="text-indigo-700 font-medium">
+              Generating report for selected user...
+            </p>
           </div>
-        </CardContent>
-      </Card>
+        )}
+      </div>
     </div>
   );
 }
