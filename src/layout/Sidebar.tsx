@@ -63,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
       <div className="p-4 border-t">
         <Button
           variant="destructive"
-          className="w-full flex items-center justify-center gap-2"
+          className="w-full flex items-center justify-center gap-2 cursor-pointer"
           onClick={logout}
         >
           Logout

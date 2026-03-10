@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { User, Moon, Settings, LogOut } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { User, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store/use-auth-store";
 import useAuth from "@/lib/hooks/use-auth/use-auth";
 

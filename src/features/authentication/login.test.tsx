@@ -40,7 +40,7 @@ describe("Login component", () => {
       const root = container.firstChild as HTMLElement;
       expect(root.className).toContain("bg-gray-200");
       expect(root.className).toContain("flex");
-      expect(root.className).toContain("h-full");
+      expect(root.className).toContain("h-screen");
     });
   });
 
