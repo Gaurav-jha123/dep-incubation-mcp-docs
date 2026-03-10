@@ -7,6 +7,7 @@ export interface TableProps<T> {
   keys: (keyof T)[];
   rowsPerPageOptions?: number[];
   className?: string;
+  showSearch?: boolean; // <-- Added this
 }
 
 export const Table = <T extends Record<string, unknown>>({
@@ -15,9 +16,18 @@ export const Table = <T extends Record<string, unknown>>({
   keys,
   rowsPerPageOptions = [5, 10, 20],
   className = "",
+  showSearch = true, // <-- Defaults to true so it doesn't break other teams' tables
 }: TableProps<T>) => {
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
   const [page, setPage] = useState(0);
+
+  const [prevDefaultRowOption, setPrevDefaultRowOption] = useState(rowsPerPageOptions[0]);
+
+  if (rowsPerPageOptions[0] !== prevDefaultRowOption) {
+    setPrevDefaultRowOption(rowsPerPageOptions[0]);
+    setRowsPerPage(rowsPerPageOptions[0]);
+    setPage(0);
+  }
 
   const [sortKey, setSortKey] = useState<keyof T | null>(null);
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
@@ -26,23 +36,37 @@ export const Table = <T extends Record<string, unknown>>({
 
   /* Filtering */
   const filteredData = useMemo(() => {
+    // If search is hidden or empty, skip filtering to save performance
+    if (!showSearch || !search) return data; 
+
     return data.filter((row) =>
       keys.some((key) =>
         String(row[key]).toLowerCase().includes(search.toLowerCase())
       )
     );
-  }, [data, keys, search]);
+  }, [data, keys, search, showSearch]);
 
   /* Sorting */
   const sortedData = useMemo(() => {
     if (!sortKey) return filteredData;
 
     return [...filteredData].sort((a, b) => {
-      const aValue = String(a[sortKey]);
-      const bValue = String(b[sortKey]);
+      const aValue = a[sortKey];
+      const bValue = b[sortKey];
 
-      if (sortDir === "asc") return aValue.localeCompare(bValue);
-      return bValue.localeCompare(aValue);
+      const isNumeric = (val: unknown) => 
+        val !== "" && val !== null && val !== undefined && !isNaN(Number(val));
+
+      if (isNumeric(aValue) && isNumeric(bValue)) {
+        const diff = Number(aValue) - Number(bValue);
+        return sortDir === "asc" ? diff : -diff;
+      }
+
+      const aStr = String(aValue ?? "");
+      const bStr = String(bValue ?? "");
+
+      if (sortDir === "asc") return aStr.localeCompare(bStr);
+      return bStr.localeCompare(aStr);
     });
   }, [filteredData, sortKey, sortDir]);
 
@@ -64,44 +88,54 @@ export const Table = <T extends Record<string, unknown>>({
   return (
     <div className={`w-full space-y-4 ${className}`}>
       
-      {/* Search Filter */}
-      <div className="flex justify-between items-center">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(0);
-          }}
-          className="border px-3 py-1 rounded w-60"
-        />
+      {/* Search Filter and Row Options - Only render top bar if one of them is active */}
+      {(showSearch || rowsPerPageOptions.length > 1) && (
+        <div className="flex justify-between items-center">
+          
+          {/* Conditionally render the search input */}
+          {showSearch ? (
+            <input
+              type="text"
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(0);
+              }}
+              className="border px-3 py-1 rounded w-60"
+            />
+          ) : (
+            <div /> // Empty div to keep flex-between spacing intact if search is hidden but listbox is shown
+          )}
 
-        {/* Rows per page */}
-        <Listbox value={rowsPerPage} onChange={setRowsPerPage}>
-          <div className="relative">
-            <Listbox.Button className="px-3 py-1 border rounded bg-white">
-              Rows: {rowsPerPage}
-            </Listbox.Button>
+          {/* Conditionally render rows per page */}
+          {rowsPerPageOptions.length > 1 && (
+            <Listbox value={rowsPerPage} onChange={setRowsPerPage}>
+              <div className="relative">
+                <Listbox.Button className="px-3 py-1 border rounded bg-white">
+                  Rows: {rowsPerPage}
+                </Listbox.Button>
 
-            <Listbox.Options className="absolute mt-1 bg-white border rounded shadow z-10">
-              {rowsPerPageOptions.map((opt) => (
-                <Listbox.Option
-                  key={opt}
-                  value={opt}
-                  className={({ active }) =>
-                    `px-3 py-1 cursor-pointer ${
-                      active ? "bg-gray-100" : ""
-                    }`
-                  }
-                >
-                  {opt}
-                </Listbox.Option>
-              ))}
-            </Listbox.Options>
-          </div>
-        </Listbox>
-      </div>
+                <Listbox.Options className="absolute right-0 mt-1 bg-white border rounded shadow z-10">
+                  {rowsPerPageOptions.map((opt) => (
+                    <Listbox.Option
+                      key={opt}
+                      value={opt}
+                      className={({ active }) =>
+                        `px-3 py-1 cursor-pointer ${
+                          active ? "bg-gray-100" : ""
+                        }`
+                      }
+                    >
+                      {opt}
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+              </div>
+            </Listbox>
+          )}
+        </div>
+      )}
 
       {/* Table */}
       <div className="overflow-x-auto border border-gray-200 rounded-lg">
@@ -146,7 +180,7 @@ export const Table = <T extends Record<string, unknown>>({
                     key={String(key)}
                     className="px-4 py-3 text-gray-800 whitespace-nowrap"
                   >
-                    {String(row[key])}
+                    {row[key] !== undefined ? String(row[key]) : ""}
                   </td>
                 ))}
               </tr>
@@ -181,7 +215,7 @@ export const Table = <T extends Record<string, unknown>>({
         </span>
 
         <button
-          disabled={page === totalPages - 1}
+          disabled={page === totalPages - 1 || totalPages === 0}
           onClick={() => setPage(page + 1)}
           className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
         >
