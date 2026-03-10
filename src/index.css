@@ -129,6 +129,13 @@
 
 .pdf-mode * {
   color: #000 !important;
-  background: #fff !important;
-  border-color: #ddd !important;
+  background-color: #fff !important;
+  border-color: #ccc !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.pdf-mode svg * {
+  fill: #000 !important;
+  stroke: #000 !important;
 }
