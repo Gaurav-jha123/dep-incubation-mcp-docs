@@ -21,7 +21,9 @@ export const Table = <T extends Record<string, unknown>>({
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
   const [page, setPage] = useState(0);
 
-  const [prevDefaultRowOption, setPrevDefaultRowOption] = useState(rowsPerPageOptions[0]);
+  const [prevDefaultRowOption, setPrevDefaultRowOption] = useState(
+    rowsPerPageOptions[0],
+  );
 
   if (rowsPerPageOptions[0] !== prevDefaultRowOption) {
     setPrevDefaultRowOption(rowsPerPageOptions[0]);
@@ -37,12 +39,12 @@ export const Table = <T extends Record<string, unknown>>({
   /* Filtering */
   const filteredData = useMemo(() => {
     // If search is hidden or empty, skip filtering to save performance
-    if (!showSearch || !search) return data; 
+    if (!showSearch || !search) return data;
 
     return data.filter((row) =>
       keys.some((key) =>
-        String(row[key]).toLowerCase().includes(search.toLowerCase())
-      )
+        String(row[key]).toLowerCase().includes(search.toLowerCase()),
+      ),
     );
   }, [data, keys, search, showSearch]);
 
@@ -54,7 +56,7 @@ export const Table = <T extends Record<string, unknown>>({
       const aValue = a[sortKey];
       const bValue = b[sortKey];
 
-      const isNumeric = (val: unknown) => 
+      const isNumeric = (val: unknown) =>
         val !== "" && val !== null && val !== undefined && !isNaN(Number(val));
 
       if (isNumeric(aValue) && isNumeric(bValue)) {
@@ -87,11 +89,9 @@ export const Table = <T extends Record<string, unknown>>({
 
   return (
     <div className={`w-full space-y-4 ${className}`}>
-      
       {/* Search Filter and Row Options - Only render top bar if one of them is active */}
       {(showSearch || rowsPerPageOptions.length > 1) && (
         <div className="flex justify-between items-center">
-          
           {/* Conditionally render the search input */}
           {showSearch ? (
             <input
@@ -139,8 +139,7 @@ export const Table = <T extends Record<string, unknown>>({
 
       {/* Table */}
       <div className="overflow-x-auto border border-gray-200 rounded-lg">
-        <table className="min-w-full text-left text-sm">
-          
+        <table className="table-fixed min-w-full text-left text-sm">
           {/* Header */}
           <thead className="bg-gray-100 text-gray-700">
             <tr>
@@ -151,13 +150,15 @@ export const Table = <T extends Record<string, unknown>>({
                   <th
                     key={idx}
                     onClick={() => handleSort(key)}
-                    className="px-4 py-3 font-semibold border-b cursor-pointer select-none"
+                    className="w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none"
                   >
-                    <div className="flex items-center gap-1">
-                      {header}
+                    <div className="flex items-start gap-1">
+                      <span className="line-clamp-2 leading-tight">
+                        {header}
+                      </span>
 
                       {sortKey === key && (
-                        <span>
+                        <span className="flex-shrink-0">
                           {sortDir === "asc" ? "▲" : "▼"}
                         </span>
                       )}
@@ -171,10 +172,7 @@ export const Table = <T extends Record<string, unknown>>({
           {/* Body */}
           <tbody>
             {currentRows.map((row, idx) => (
-              <tr
-                key={idx}
-                className="border-b hover:bg-gray-50 transition"
-              >
+              <tr key={idx} className="border-b hover:bg-gray-50 transition">
                 {keys.map((key) => (
                   <td
                     key={String(key)}
