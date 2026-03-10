@@ -33,66 +33,65 @@ export default function ExportButtons({ skills }: ExportButtonsProps) {
     link.click()
   }
 
-  const downloadPDF = async () => {
-    const element = document.getElementById("report-section")
+const downloadPDF = async () => {
+  const element = document.getElementById("report-section")
 
-    if (!element) {
-      alert("Select a user first")
-      return
-    }
-
-    try {
-      document.body.classList.add("pdf-mode")
-
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        backgroundColor: "#ffffff",
-        useCORS: true
-      })
-
-      const imgData = canvas.toDataURL("image/png")
-
-      const pdf = new jsPDF("p", "mm", "a4")
-
-      const pageWidth = pdf.internal.pageSize.getWidth()
-      const pageHeight = pdf.internal.pageSize.getHeight()
-
-      const margin = 10
-
-      const imgWidth = pageWidth - margin * 2
-      const imgHeight = (canvas.height * imgWidth) / canvas.width
-
-      let yOffset = 0
-      let pageNumber = 0
-
-      while (yOffset < imgHeight) {
-
-        if (pageNumber > 0) {
-          pdf.addPage()
-        }
-
-        pdf.addImage(
-          imgData,
-          "PNG",
-          margin,
-          margin - yOffset,
-          imgWidth,
-          imgHeight
-        )
-
-        yOffset += pageHeight - margin * 2
-        pageNumber++
-      }
-
-      pdf.save("skill-report.pdf")
-
-      document.body.classList.remove("pdf-mode")
-
-    } catch (error) {
-      console.error("PDF generation failed:", error)
-      document.body.classList.remove("pdf-mode")
-    }
+  if (!element) {
+    alert("Select a user first")
+    return
   }
+
+  try {
+
+    // Activate safe color mode
+    document.body.classList.add("pdf-mode")
+
+    // wait for styles to apply
+    await new Promise((resolve) => setTimeout(resolve, 300))
+
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+      useCORS: true,
+      logging: false,
+      allowTaint: true
+    })
+
+    const imgData = canvas.toDataURL("image/png")
+
+    const pdf = new jsPDF("p", "mm", "a4")
+
+    const pageWidth = pdf.internal.pageSize.getWidth()
+    const pageHeight = pdf.internal.pageSize.getHeight()
+
+    const margin = 10
+    const imgWidth = pageWidth - margin * 2
+    const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+    let heightLeft = imgHeight
+    let position = 0
+
+    pdf.addImage(imgData, "PNG", margin, position + margin, imgWidth, imgHeight)
+    heightLeft -= pageHeight
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight
+      pdf.addPage()
+      pdf.addImage(imgData, "PNG", margin, position + margin, imgWidth, imgHeight)
+      heightLeft -= pageHeight
+    }
+
+    pdf.save("skill-report.pdf")
+
+    document.body.classList.remove("pdf-mode")
+
+  } catch (error) {
+
+    console.error("PDF generation failed:", error)
+    document.body.classList.remove("pdf-mode")
+
+  }
+}
   return (
     <div className="flex gap-4 mb-6">
 
