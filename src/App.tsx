@@ -53,12 +53,12 @@ function App() {
 
           <Route element={<ProtectedRoute isAuthenticated={isLoggedIn} />}>
             <Route element={<Layout />}>
-              <Route index element={<div>Welcome Home!</div>} />
-              <Route path="dashboard" element={<Dashboard />} />
+              {/* <Route index element={<div>Welcome Home!</div>} /> */}
+              <Route index path="dashboard" element={<Dashboard />} />
               <Route path="userform" element={<UserForm />} />
-              <Route path="projects" element={<Projects />} />
+              {/* <Route path="projects" element={<Projects />} /> */}
               <Route path="reports" element={<Reports />} />
-              <Route path="settings" element={<Settings />} />
+              {/* <Route path="settings" element={<Settings />} /> */}
             </Route>
           </Route>
 

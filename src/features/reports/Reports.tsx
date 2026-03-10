@@ -1,31 +1,91 @@
-import TinyBarChart from "./components/TinyBarChart";
-import TwoLevelPieChart from "./components/TwoLevelPieChart";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import "./Reports.scss";
+import { useState, useMemo } from "react";
+import skillMatrix from "../../mocks/skillMatrix";
+
+import SkillsBarChart from "./components/SkillsBarChart";
+import SkillsRadarChart from "./components/SkillsRadarChart";
+import TopSkillsChart from "./components/TopSkillsChart";
+import SkillsTable from "./components/SkillsTable";
+
+import UserSelector from "./components/UserSelector";
+import SummaryCards from "./components/SummaryCards";
+import ExportButtons from "./components/ExportButtons";
 
 export default function Reports() {
+  const [selectedUser, setSelectedUser] = useState("");
+
+  // Filter skills for selected user
+  const filteredSkills = useMemo(() => {
+    return skillMatrix.skills.filter(
+      (skill) => skill.userId === selectedUser
+    );
+  }, [selectedUser]);
+
+  // Map topic labels
+  const mappedSkills = useMemo(() => {
+    return filteredSkills.map((skill) => {
+      const topic = skillMatrix.topics.find(
+        (t) => t.id === skill.topicId
+      );
+
+      return {
+        topic: topic?.label || skill.topicId,
+        value: skill.value,
+      };
+    });
+  }, [filteredSkills]);
+
+  // Sort skills
+  const sortedSkills = useMemo(() => {
+    return [...mappedSkills].sort((a, b) => b.value - a.value);
+  }, [mappedSkills]);
+
+  // Chart data
+  const chartData = sortedSkills.map((item) => ({
+    name: item.topic,
+    score: item.value,
+  }));
+
+  // Top skills
+  const topSkills = chartData.slice(0, 5);
+
+  const selectedUserObj = skillMatrix.users.find(
+    (u) => u.id === selectedUser
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center p-8">
-      <Card className="w-full max-w-3xl shadow-2xl">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold text-indigo-700">Reports</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-lg text-indigo-600 mb-6">View and generate reports here.</p>
-          <Separator className="mb-6" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h2 className="text-xl font-semibold text-indigo-600 mb-2">Bar Chart Overview</h2>
-              <TinyBarChart />
+    <div className="p-8 space-y-8">
+
+      <h1 className="text-3xl font-bold text-center">
+        Developer Skill Reports
+      </h1>
+
+      <UserSelector
+        users={skillMatrix.users}
+        selectedUser={selectedUser}
+        onChange={setSelectedUser}
+      />
+
+      {selectedUser && (
+        <>
+          <ExportButtons skills={sortedSkills} />
+
+          <div id="report-section" className="space-y-6">
+
+            <SummaryCards skills={sortedSkills} user={selectedUserObj} />
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <SkillsBarChart data={chartData} />
+              <SkillsRadarChart data={chartData} />
             </div>
-            <div>
-              <h2 className="text-xl font-semibold text-indigo-600 mb-2">Pie Chart Analysis</h2>
-              <TwoLevelPieChart isAnimationActive={true} />
-            </div>
+
+            <TopSkillsChart data={topSkills} />
+
+            <SkillsTable skills={sortedSkills} />
+
           </div>
-        </CardContent>
-      </Card>
+        </>
+      )}
+
     </div>
   );
 }
