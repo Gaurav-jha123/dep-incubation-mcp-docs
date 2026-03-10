@@ -59,7 +59,7 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       <SkillMatrixFilters
         sortColumn={sortColumn}
         sortOrder={sortOrder}
@@ -69,9 +69,9 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
       />
 
       {/* Table Section */}
-      <div className="overflow-x-auto max-w-full">
-        <div className="max-h-[600px] overflow-y-auto">
-          <table className="min-w-[900px] w-full border border-gray-400 border-separate">
+      <div className="w-full border rounded-lg bg-white shadow-sm">
+        <div className="overflow-x-auto overflow-y-auto max-h-[600px]">
+          <table className="min-w-[1200px] w-full border-separate border-spacing-0">
             <thead>
               <tr>
                 <th

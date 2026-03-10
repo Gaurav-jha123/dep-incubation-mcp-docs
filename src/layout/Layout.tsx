@@ -7,17 +7,17 @@ import { Outlet } from "react-router-dom";
 // Layout component
 const Layout: React.FC = () => {
   return (
-    <div className="min-h-screen grid grid-cols-[16rem_1fr] grid-rows-[4rem_1fr]">
+    <div className="min-h-screen grid grid-cols-[250px_1fr] grid-rows-[auto_1fr] lg:grid-cols-[280px_1fr]">
       {/* Sidebar */}
-      <div className="row-span-2">
+      <div className="row-span-2 bg-white border-r shadow-sm">
         <Sidebar />
       </div>
       {/* Header */}
-      <div className="col-start-2 row-start-1">
+      <div className="col-start-2 row-start-1 bg-white border-b shadow-sm">
         <Header />
       </div>
       {/* Main Content */}
-      <main className="main-wrapper col-start-2 row-start-2 p-4 bg-gray-50">
+      <main className="main-wrapper col-start-2 row-start-2 p-6 bg-gray-50 overflow-x-hidden overflow-y-auto min-w-0">
         <Outlet />
       </main>
 

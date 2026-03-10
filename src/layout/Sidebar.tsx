@@ -24,9 +24,9 @@ const Sidebar: React.FC = () => {
   const { logout } = useAuth()
 
   return (
-    <aside className="w-64 bg-white border-r shadow-lg flex flex-col h-full">
+    <aside className="w-full h-full bg-white flex flex-col">
       {/* Logo */}
-      <div className="p-4 border-b">
+      <div className="p-4 border-b flex-shrink-0">
         <h1 className="text-xl font-bold text-gray-900">🚀 Admin Panel</h1>
       </div>
 
@@ -55,7 +55,7 @@ const Sidebar: React.FC = () => {
       </nav>
 
       {/* Bottom Profile */}
-      <div className="p-4 border-t flex items-center gap-3 ml-4">
+      <div className="p-4 border-t flex items-center gap-3 ml-4 flex-shrink-0">
         Logout
         <Button
           variant="outline"
