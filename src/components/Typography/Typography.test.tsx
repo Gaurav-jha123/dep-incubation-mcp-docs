@@ -8,21 +8,19 @@ afterEach(() => {
 });
 
 describe("Typography Component", () => {
-    // 1️ Rendering Test
     it("should render children text", () => {
         render(<Typography>Hello</Typography>);
         const el = screen.getByText("Hello");
-        expect(el).toBeDefined(); // Basic check without jest-dom
+        expect(el).toBeDefined();
     });
 
-    // 2️ Default Variant Test
     it("should render with body style by default", () => {
         render(<Typography>Text</Typography>);
         const el = screen.getByText("Text");
         expect(el.className).toContain("text-base");
     });
 
-    // 3️ Variant Styling Tests
+
     const variants: Array<[string, string]> = [
         ["h1", "text-4xl"],
         ["h2", "text-3xl"],
@@ -42,14 +40,14 @@ describe("Typography Component", () => {
         });
     });
 
-    // 4️ Custom ClassName Test
+
     it("should apply custom className", () => {
         render(<Typography className="custom-class">Text</Typography>);
         const el = screen.getByText("Text");
         expect(el.className).toContain("custom-class");
     });
 
-    // 5️ Icon Rotation Test (for collapsible Typography)
+
     it("Chevron icon should rotate when panel opens", () => {
         render(<Typography collapsible>Expand</Typography>);
 
