@@ -126,3 +126,9 @@
     @apply bg-background text-foreground;
     }
 }
+
+.pdf-mode * {
+  color: #000 !important;
+  background: #fff !important;
+  border-color: #ddd !important;
+}

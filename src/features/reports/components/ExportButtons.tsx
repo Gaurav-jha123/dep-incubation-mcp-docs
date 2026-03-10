@@ -12,7 +12,7 @@ type ExportButtonsProps = {
 
 export default function ExportButtons({ skills }: ExportButtonsProps) {
 
-  const downloadCSV = (skills: Skill[]) => {
+  const downloadCSV = () => {
 
     const headers = ["Skill", "Score"]
 
@@ -33,31 +33,45 @@ export default function ExportButtons({ skills }: ExportButtonsProps) {
     link.click()
   }
 
-const downloadPDF = async () => {
+  const downloadPDF = async () => {
 
-  const element = document.getElementById("report-section")
+    const element = document.getElementById("report-section")
 
-  if (!element) {
-    alert("Select a user first")
-    return
+    if (!element) {
+      alert("Select a user first")
+      return
+    }
+
+    try {
+
+      /* Disable Tailwind temporarily */
+      document.body.classList.add("pdf-mode")
+
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+        useCORS: true
+      })
+
+      const imgData = canvas.toDataURL("image/png")
+
+      const pdf = new jsPDF("p", "mm", "a4")
+
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight)
+
+      pdf.save("skill-report.pdf")
+
+      /* Restore styles */
+      document.body.classList.remove("pdf-mode")
+
+    } catch (error) {
+      console.error("PDF generation failed:", error)
+      document.body.classList.remove("pdf-mode")
+    }
   }
-
-  const canvas = await html2canvas(element, {
-    scale: 2,
-    useCORS: true
-  })
-
-  const imgData = canvas.toDataURL("image/png")
-
-  const pdf = new jsPDF("p", "mm", "a4")
-
-  const imgWidth = 190
-  const imgHeight = (canvas.height * imgWidth) / canvas.width
-
-  pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight)
-
-  pdf.save("skill-report.pdf")
-}
 
   const printReport = () => {
     window.print()
@@ -67,7 +81,7 @@ const downloadPDF = async () => {
     <div className="flex gap-4 mb-6">
 
       <button
-        onClick={() => downloadCSV(skills)}
+        onClick={downloadCSV}
         className="px-4 py-2 bg-blue-600 text-white rounded"
       >
         Download CSV
