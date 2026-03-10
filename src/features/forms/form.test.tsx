@@ -15,13 +15,7 @@ class ResizeObserverMock {
   disconnect() {}
 }
 
-<<<<<<< HEAD
 (global as typeof global & { ResizeObserver: typeof ResizeObserverMock }).ResizeObserver = ResizeObserverMock;
-=======
-/* eslint-disable-next-line
-@typescript-eslint/no-explicit-any */
-(global as any).ResizeObserver = ResizeObserverMock;
->>>>>>> f87371e0891811339a8709ed35d2d1add73d1c70
 
 describe("UserForm", () => {
   let user: ReturnType<typeof userEvent.setup>;
