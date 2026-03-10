@@ -34,7 +34,6 @@ export default function ExportButtons({ skills }: ExportButtonsProps) {
   }
 
   const downloadPDF = async () => {
-
     const element = document.getElementById("report-section")
 
     if (!element) {
@@ -43,8 +42,6 @@ export default function ExportButtons({ skills }: ExportButtonsProps) {
     }
 
     try {
-
-      /* Disable Tailwind temporarily */
       document.body.classList.add("pdf-mode")
 
       const canvas = await html2canvas(element, {
@@ -57,14 +54,38 @@ export default function ExportButtons({ skills }: ExportButtonsProps) {
 
       const pdf = new jsPDF("p", "mm", "a4")
 
-      const pdfWidth = pdf.internal.pageSize.getWidth()
-      const imgHeight = (canvas.height * pdfWidth) / canvas.width
+      const pageWidth = pdf.internal.pageSize.getWidth()
+      const pageHeight = pdf.internal.pageSize.getHeight()
 
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight)
+      const margin = 10
+
+      const imgWidth = pageWidth - margin * 2
+      const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+      let yOffset = 0
+      let pageNumber = 0
+
+      while (yOffset < imgHeight) {
+
+        if (pageNumber > 0) {
+          pdf.addPage()
+        }
+
+        pdf.addImage(
+          imgData,
+          "PNG",
+          margin,
+          margin - yOffset,
+          imgWidth,
+          imgHeight
+        )
+
+        yOffset += pageHeight - margin * 2
+        pageNumber++
+      }
 
       pdf.save("skill-report.pdf")
 
-      /* Restore styles */
       document.body.classList.remove("pdf-mode")
 
     } catch (error) {
@@ -72,7 +93,6 @@ export default function ExportButtons({ skills }: ExportButtonsProps) {
       document.body.classList.remove("pdf-mode")
     }
   }
-
   return (
     <div className="flex gap-4 mb-6">
 
