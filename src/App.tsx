@@ -15,7 +15,7 @@ function ProtectedRoute({ isAuthenticated }: { isAuthenticated: boolean }) {
 export const APP_ROUTES = [
   { path: "dashboard", element: <Dashboard />, title: "Dashboard" },
   { path: "userform", element: <UserForm />, title: "User Form" },
-  { path: "reports", element: <Reports />, title: "Analytics Reports" },
+  { path: "reports", element: <Reports />, title: "Reports" },
 ];
 
 function App() {
