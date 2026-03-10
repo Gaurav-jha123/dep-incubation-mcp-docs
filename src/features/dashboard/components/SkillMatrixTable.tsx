@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { type SkillMatrixData } from "./types";
-import SkillMatrixFilters from "./SkillMatrixFilters";
+import SkillMatrixFilters from "./skillMatrixFilters";
 
 interface SkillMatrixTableProps {
   data: SkillMatrixData;
