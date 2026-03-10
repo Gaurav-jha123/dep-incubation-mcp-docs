@@ -16,16 +16,30 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [calculatedRows, setCalculatedRows] = useState(5);
 
+  const MAIN_CONTAINER_PADDING = 30;
+  const FILTER_COMPONENT_HEIGHT = 50;
+  // Bottom and top spacing we set
+  const SPACER = 20;
+
   useLayoutEffect(() => {
     const calculateVisibleRows = () => {
-      if (!containerRef.current) return;
-
-      const availableHeight = containerRef.current.clientHeight;
-      const estimatedStaticHeight = 200; // Search bar, header, pagination + gaps
+      const mainHeight = document.getElementsByTagName("main")[0].clientHeight;
+      console.log("mainHeight", mainHeight);
+      const ESTIMATED_TABLE_HEADER_FOOTER_HEIGHT = 100; //  header, pagination + gaps
       const estimatedRowHeight = 50; // Table row height
 
-      const availableHeightForRows = availableHeight - estimatedStaticHeight;
-      const rowsThatFit = Math.floor(availableHeightForRows / estimatedRowHeight);
+      const availableHeightForRows =
+        mainHeight -
+        (MAIN_CONTAINER_PADDING +
+          FILTER_COMPONENT_HEIGHT +
+          SPACER +
+          ESTIMATED_TABLE_HEADER_FOOTER_HEIGHT);
+
+      const rowsThatFit = Math.floor(
+        availableHeightForRows / estimatedRowHeight,
+      );
+
+      console.log("rowsThatFit", rowsThatFit);
 
       setCalculatedRows(Math.max(1, rowsThatFit));
     };
@@ -38,7 +52,7 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
 
   const tableData = useMemo(() => {
     const skillLookup: Record<string, Record<string, number>> = {};
-    
+
     data.skills.forEach(({ userId, topicId, value }) => {
       if (!skillLookup[userId]) skillLookup[userId] = {};
       skillLookup[userId][topicId] = value;
@@ -68,7 +82,7 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
         keys={keys}
         data={tableData}
         // ONLY pass the dynamically calculated row count!
-        rowsPerPageOptions={[calculatedRows]} 
+        rowsPerPageOptions={[calculatedRows]}
         showSearch={false}
       />
     </div>
