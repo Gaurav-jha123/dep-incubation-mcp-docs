@@ -4,7 +4,7 @@ import { FlexContainer } from "./FlexContainer";
 
 describe("FlexContainer Component", () => {
 
-  it("renders children correctly", () => {
+  it("renders children correctly ", () => {
     render(
       <FlexContainer>
         <div>Child 1</div>

@@ -72,7 +72,7 @@ it("passes correct item to onChange", () => {
     expect(checkmark).toBeTruthy();
   });
 
-  it("renders icon when provided", () => {
+  it("renders icon when provided ", () => {
     const itemsWithIcon = [
       {
         label: "Item with icon",
