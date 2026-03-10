@@ -8,18 +8,19 @@ import SkillsTable from "./components/SkillsTable";
 
 import UserSelector from "./components/UserSelector";
 import SummaryCards from "./components/SummaryCards";
+import ExportButtons from "./components/ExportButtons";
 
 export default function Reports() {
   const [selectedUser, setSelectedUser] = useState("");
 
-  // Task 2 → Filter skills
+  // Filter skills for selected user
   const filteredSkills = useMemo(() => {
     return skillMatrix.skills.filter(
       (skill) => skill.userId === selectedUser
     );
   }, [selectedUser]);
 
-  // Task 3 → Map topic labels
+  // Map topic labels
   const mappedSkills = useMemo(() => {
     return filteredSkills.map((skill) => {
       const topic = skillMatrix.topics.find(
@@ -33,18 +34,18 @@ export default function Reports() {
     });
   }, [filteredSkills]);
 
-  // Task 8 → Sort skills
+  // Sort skills
   const sortedSkills = useMemo(() => {
     return [...mappedSkills].sort((a, b) => b.value - a.value);
   }, [mappedSkills]);
 
-  // Task 4 → Chart data
+  // Chart data
   const chartData = sortedSkills.map((item) => ({
     name: item.topic,
     score: item.value,
   }));
 
-  // Task 9 → Top skills
+  // Top skills
   const topSkills = chartData.slice(0, 5);
 
   const selectedUserObj = skillMatrix.users.find(
@@ -66,18 +67,25 @@ export default function Reports() {
 
       {selectedUser && (
         <>
-          <SummaryCards skills={sortedSkills} user={selectedUserObj} />
+          <ExportButtons skills={sortedSkills} />
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <SkillsBarChart data={chartData} />
-            <SkillsRadarChart data={chartData} />
+          <div id="report-section" className="space-y-6">
+
+            <SummaryCards skills={sortedSkills} user={selectedUserObj} />
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <SkillsBarChart data={chartData} />
+              <SkillsRadarChart data={chartData} />
+            </div>
+
+            <TopSkillsChart data={topSkills} />
+
+            <SkillsTable skills={sortedSkills} />
+
           </div>
-
-          <TopSkillsChart data={topSkills} />
-
-          <SkillsTable skills={sortedSkills} />
         </>
       )}
+
     </div>
   );
 }
