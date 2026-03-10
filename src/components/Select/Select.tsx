@@ -82,7 +82,10 @@ export function Select({
           )}
 
           {/* Dropdown Button */}
-          <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+          <ComboboxButton
+            aria-label="Toggle options"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
+          >
             <ChevronDown className="h-5 w-5" />
           </ComboboxButton>
 
