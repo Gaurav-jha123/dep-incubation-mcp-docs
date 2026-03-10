@@ -16,39 +16,33 @@ describe("RadioGroup Component", () => {
   describe("rendering", () => {
     it("renders all options", () => {
       render(<RadioGroup name="group1" options={options} />);
-
       options.forEach((option) => {
-        const radio = screen.getByLabelText(option.label);
+        const radio = screen.getByRole("radio", { name: option.label });
         expect(radio).not.toBeNull();
-        expect((radio as HTMLInputElement).value).toBe(option.value);
+        expect(radio.getAttribute("aria-checked")).toBe("false");
       });
     });
+
     it("applies disabled attribute correctly", () => {
       render(<RadioGroup name="group1" options={options} />);
-      const disabledRadio = screen.getByLabelText(
-        "Option C",
-      ) as HTMLInputElement;
-      expect(disabledRadio.disabled).toBe(true);
+      const disabledRadio = screen.getByRole("radio", { name: "Option C" });
+      expect(disabledRadio.getAttribute("aria-disabled")).toBe("true");
     });
-    it("applies custom className to wrapper", () => {
+
+    it("applies custom className to radio group", () => {
       render(
-        <RadioGroup
-          name="group1"
-          options={options}
-          className="custom-group"
-          data-testid="radio-group-wrapper"
-        />,
+        <RadioGroup name="group1" options={options} className="custom-group" />,
       );
-      const wrapper = screen.getByTestId("radio-group-wrapper");
-      expect(wrapper.className.includes("custom-group")).toBe(true);
+      const radio = screen.getByTestId("radio-group");
+      expect(radio.className.includes("custom-group")).toBe(true);
     });
   });
 
   describe("controlled behavior", () => {
     it("checks the radio matching controlled value", () => {
       render(<RadioGroup name="group1" options={options} value="b" />);
-      const radioB = screen.getByLabelText("Option B") as HTMLInputElement;
-      expect(radioB.checked).toBe(true);
+      const radioB = screen.getByRole("radio", { name: "Option B" });
+      expect(radioB.getAttribute("aria-checked")).toBe("true");
     });
 
     it("calls onChange when a radio is clicked", () => {
@@ -56,8 +50,7 @@ describe("RadioGroup Component", () => {
       render(
         <RadioGroup name="group1" options={options} onChange={handleChange} />,
       );
-
-      const radioA = screen.getByLabelText("Option A");
+      const radioA = screen.getByRole("radio", { name: "Option A" });
       fireEvent.click(radioA);
       expect(handleChange).toHaveBeenCalledTimes(1);
       expect(handleChange).toHaveBeenCalledWith("a");
@@ -67,28 +60,31 @@ describe("RadioGroup Component", () => {
   describe("uncontrolled behavior (defaultValue)", () => {
     it("checks defaultValue initially", () => {
       render(<RadioGroup name="group1" options={options} defaultValue="a" />);
-      const radioA = screen.getByLabelText("Option A") as HTMLInputElement;
-      expect(radioA.checked).toBe(true);
+      const radioA = screen.getByRole("radio", { name: "Option A" });
+      expect(radioA.getAttribute("aria-checked")).toBe("true");
     });
 
     it("updates selection when another radio is clicked", () => {
       render(<RadioGroup name="group1" options={options} defaultValue="a" />);
-      const radioB = screen.getByLabelText("Option B") as HTMLInputElement;
-      const radioA = screen.getByLabelText("Option A") as HTMLInputElement;
+      const radioB = screen.getByRole("radio", { name: "Option B" });
 
       fireEvent.click(radioB);
 
-      expect(radioB.checked).toBe(true);
-      expect(radioA.checked).toBe(false);
+      const radioAUpdated = screen.getByRole("radio", { name: "Option A" });
+      const radioBUpdated = screen.getByRole("radio", { name: "Option B" });
+
+      expect(radioBUpdated.getAttribute("aria-checked")).toBe("true");
+      expect(radioAUpdated.getAttribute("aria-checked")).toBe("false");
     });
   });
 
   describe("size prop", () => {
-    it("passes size to child radios", () => {
+    it("applies correct size classes to radios", () => {
       render(<RadioGroup name="group1" options={options} size="lg" />);
-      const radioA = screen.getByLabelText("Option A");
-      expect(radioA.className.includes("h-5")).toBe(true);
-      expect(radioA.className.includes("w-5")).toBe(true);
+      const radioA = screen.getByRole("radio", { name: "Option A" });
+      const className = radioA.className;
+      expect(className.includes("h-5")).toBe(true);
+      expect(className.includes("w-5")).toBe(true);
     });
   });
 });
