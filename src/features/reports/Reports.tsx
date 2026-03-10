@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
 import skillMatrix from "../../mocks/skillMatrix";
 
-import SkillsBarChart from "./components/SkillsBarChart";
-import SkillsRadarChart from "./components/SkillsRadarChart";
 import TopSkillsChart from "./components/TopSkillsChart";
 import SkillsTable from "./components/SkillsTable";
 
