@@ -7,6 +7,7 @@ import NotFound from "./components/not-found/not-found";
 import Dashboard from "./features/dashboard/dashboard";
 import UserForm from "./features/forms/form";
 import Reports from "./features/reports/Reports";
+import "./App.css";
 
 function ProtectedRoute({ isAuthenticated }: { isAuthenticated: boolean }) {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
