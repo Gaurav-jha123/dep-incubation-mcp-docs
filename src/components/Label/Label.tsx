@@ -1,4 +1,4 @@
-import { Label as HeadlessLabel } from "@headlessui/react";
+import { Field, Label as HeadlessLabel } from "@headlessui/react";
 import React from "react";
 
 export interface LabelProps {
@@ -45,7 +45,7 @@ export const Label: React.FC<LabelProps> = ({
   const errorClass = "text-xs text-red-500 font-medium mt-1";
 
   return (
-    <div>
+    <Field>
       <HeadlessLabel htmlFor={htmlFor} className={labelClass}>
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
@@ -56,7 +56,7 @@ export const Label: React.FC<LabelProps> = ({
       ) : helperText ? (
         <p className={helperClass}>{helperText}</p>
       ) : null}
-    </div>
+    </Field>
   );
 };
 

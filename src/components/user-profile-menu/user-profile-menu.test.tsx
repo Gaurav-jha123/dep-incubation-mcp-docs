@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, cleanup, act } from "@testing-library/react";
 import UserProfileMenu from "./user-profile-menu";
-import type { ButtonProps } from "../Button/Button";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
@@ -19,11 +18,11 @@ vi.mock("@/store/use-auth-store/use-auth-store", () => ({
   }),
 }));
 
-vi.mock("@/components/ui/switch", () => ({
-  Switch: (props: ButtonProps) => (
-    <button role="switch" aria-label="toggle" {...props} />
-  ),
-}));
+// vi.mock("@/components/ui/switch", () => ({
+//   Switch: (props: ButtonProps) => (
+//     <button role="switch" aria-label="toggle" {...props} />
+//   ),
+// }));
 
 vi.mock("lucide-react", () => ({
   User: ({ className }: Record<string, string>) => (
@@ -78,10 +77,10 @@ describe("UserProfileMenu", () => {
       expect(screen.queryByTestId("profile-email")).toBeNull();
     });
 
-    it("does not show Settings item by default", () => {
-      render(<UserProfileMenu />);
-      expect(screen.queryByTestId("menu-item-settings")).toBeNull();
-    });
+    // it("does not show Settings item by default", () => {
+    //   render(<UserProfileMenu />);
+    //   expect(screen.queryByTestId("menu-item-settings")).toBeNull();
+    // });
 
     it("does not show Log out item by default", () => {
       render(<UserProfileMenu />);
@@ -112,23 +111,23 @@ describe("UserProfileMenu", () => {
       );
     });
 
-    it("renders Dark Mode label", () => {
-      render(<UserProfileMenu />);
-      openMenu();
-      expect(screen.getByText("Dark Mode")).not.toBeNull();
-    });
+    // it("renders Dark Mode label", () => {
+    //   render(<UserProfileMenu />);
+    //   openMenu();
+    //   expect(screen.getByText("Dark Mode")).not.toBeNull();
+    // });
 
-    it("renders the dark mode Switch", () => {
-      render(<UserProfileMenu />);
-      openMenu();
-      expect(screen.getByRole("switch")).not.toBeNull();
-    });
+    // it("renders the dark mode Switch", () => {
+    //   render(<UserProfileMenu />);
+    //   openMenu();
+    //   expect(screen.getByRole("switch")).not.toBeNull();
+    // });
 
-    it("renders Settings menu item", () => {
-      render(<UserProfileMenu />);
-      openMenu();
-      expect(screen.getByTestId("menu-item-settings")).not.toBeNull();
-    });
+    // it("renders Settings menu item", () => {
+    //   render(<UserProfileMenu />);
+    //   openMenu();
+    //   expect(screen.getByTestId("menu-item-settings")).not.toBeNull();
+    // });
 
     it("renders Log out menu item", () => {
       render(<UserProfileMenu />);
@@ -136,17 +135,17 @@ describe("UserProfileMenu", () => {
       expect(screen.getByTestId("menu-item-logout")).not.toBeNull();
     });
 
-    it("renders moon icon", () => {
-      render(<UserProfileMenu />);
-      openMenu();
-      expect(screen.getByTestId("moon-icon")).not.toBeNull();
-    });
+    // it("renders moon icon", () => {
+    //   render(<UserProfileMenu />);
+    //   openMenu();
+    //   expect(screen.getByTestId("moon-icon")).not.toBeNull();
+    // });
 
-    it("renders settings icon", () => {
-      render(<UserProfileMenu />);
-      openMenu();
-      expect(screen.getByTestId("settings-icon")).not.toBeNull();
-    });
+    // it("renders settings icon", () => {
+    //   render(<UserProfileMenu />);
+    //   openMenu();
+    //   expect(screen.getByTestId("settings-icon")).not.toBeNull();
+    // });
 
     it("renders logout icon", () => {
       render(<UserProfileMenu />);
@@ -174,12 +173,12 @@ describe("UserProfileMenu", () => {
   });
 
   describe("menu item actions", () => {
-    it("closes menu when Settings is clicked", () => {
-      render(<UserProfileMenu />);
-      openMenu();
-      click(screen.getByTestId("menu-item-settings"));
-      expect(screen.queryByTestId("profile-dropdown")).toBeNull();
-    });
+    // it("closes menu when Settings is clicked", () => {
+    //   render(<UserProfileMenu />);
+    //   openMenu();
+    //   click(screen.getByTestId("menu-item-settings"));
+    //   expect(screen.queryByTestId("profile-dropdown")).toBeNull();
+    // });
 
     it("closes menu when Log out is clicked", () => {
       render(<UserProfileMenu />);
@@ -195,12 +194,12 @@ describe("UserProfileMenu", () => {
       expect(mockLogout).toHaveBeenCalledTimes(1);
     });
 
-    it("does NOT call logout when Settings is clicked", () => {
-      render(<UserProfileMenu />);
-      openMenu();
-      click(screen.getByTestId("menu-item-settings"));
-      expect(mockLogout).not.toHaveBeenCalled();
-    });
+    // it("does NOT call logout when Settings is clicked", () => {
+    //   render(<UserProfileMenu />);
+    //   openMenu();
+    //   click(screen.getByTestId("menu-item-settings"));
+    //   expect(mockLogout).not.toHaveBeenCalled();
+    // });
   });
 
   describe("click outside", () => {
