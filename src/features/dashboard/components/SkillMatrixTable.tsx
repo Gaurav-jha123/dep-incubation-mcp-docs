@@ -1,121 +1,76 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState, useLayoutEffect, useRef } from "react";
 import { type SkillMatrixData } from "./types";
-import SkillMatrixFilters from "./skillMatrixFilters";
+import { Table } from "../../../components/Table/Table";
 
 interface SkillMatrixTableProps {
   data: SkillMatrixData;
 }
 
-export type sortOrder = "ascending" | "descending";
+type FlatUserRow = {
+  id: string;
+  name: string;
+  [key: string]: string | number;
+};
 
 const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
-  const [sortColumn, setSortColumn] = useState<string>("User / Skill");
-  const [sortOrder, setSortOrder] = useState<sortOrder>("ascending");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [calculatedRows, setCalculatedRows] = useState(5);
 
-  // Create a lookup for skills: { [userId]: { [topicId]: value } }
-  const skillLookup: Record<string, Record<string, number>> = {};
+  useLayoutEffect(() => {
+    const calculateVisibleRows = () => {
+      if (!containerRef.current) return;
 
-  data.skills.forEach(({ userId, topicId, value }) => {
-    if (!skillLookup[userId]) skillLookup[userId] = {};
-    skillLookup[userId][topicId] = value;
-  });
+      const availableHeight = containerRef.current.clientHeight;
+      const estimatedStaticHeight = 200; // Search bar, header, pagination + gaps
+      const estimatedRowHeight = 50; // Table row height
 
-  // Get sorted users based on selected column and order
-  const sortedUsers = useMemo(() => {
-    const usersCopy = [...data.users];
-    const isAscending = sortOrder === "ascending";
+      const availableHeightForRows = availableHeight - estimatedStaticHeight;
+      const rowsThatFit = Math.floor(availableHeightForRows / estimatedRowHeight);
 
-    usersCopy.sort((a, b) => {
-      let valueA: string | number;
-      let valueB: string | number;
+      setCalculatedRows(Math.max(1, rowsThatFit));
+    };
 
-      if (sortColumn === "User / Skill") {
-        valueA = a.name;
-        valueB = b.name;
-        const comparison = valueA.localeCompare(valueB);
-        return isAscending ? comparison : -comparison;
-      }
+    calculateVisibleRows();
 
-      valueA = skillLookup[a.id]?.[sortColumn] ?? -Infinity;
-      valueB = skillLookup[b.id]?.[sortColumn] ?? -Infinity;
-      const comparison = valueA - valueB;
-      return isAscending ? comparison : -comparison;
+    window.addEventListener("resize", calculateVisibleRows);
+    return () => window.removeEventListener("resize", calculateVisibleRows);
+  }, []);
+
+  const tableData = useMemo(() => {
+    const skillLookup: Record<string, Record<string, number>> = {};
+    
+    data.skills.forEach(({ userId, topicId, value }) => {
+      if (!skillLookup[userId]) skillLookup[userId] = {};
+      skillLookup[userId][topicId] = value;
     });
 
-    return usersCopy;
-  }, [sortColumn, sortOrder, data.users, skillLookup]);
+    return data.users.map((user) => {
+      const row: FlatUserRow = {
+        id: user.id,
+        name: user.name,
+      };
 
-  const columnOptions = [
-    "User / Skill",
-    ...data.topics.map(topic => topic.id)
-  ];
+      data.topics.forEach((topic) => {
+        row[topic.id] = skillLookup[user.id]?.[topic.id] ?? "";
+      });
 
-  // Helper function to render sort arrow
-  const renderSortArrow = (columnId: string) => {
-    if (sortColumn !== columnId) return null;
+      return row;
+    });
+  }, [data]);
 
-    const arrowIcon = sortOrder === "ascending" ? "▲" : "▼";
-    return <span className="ml-2">{arrowIcon}</span>;
-  };
+  const headers = ["User / Skill", ...data.topics.map((topic) => topic.label)];
+  const keys = ["name", ...data.topics.map((topic) => topic.id)];
 
   return (
-    <div className="w-full min-w-0">
-      <SkillMatrixFilters
-        sortColumn={sortColumn}
-        sortOrder={sortOrder}
-        columnOptions={columnOptions}
-        onSortColumnChange={setSortColumn}
-        onSortOrderChange={setSortOrder}
+    <div ref={containerRef} className="w-full h-full min-h-[400px] min-w-0">
+      <Table
+        headers={headers}
+        keys={keys}
+        data={tableData}
+        // ONLY pass the dynamically calculated row count!
+        rowsPerPageOptions={[calculatedRows]} 
+        showSearch={false}
       />
-
-      {/* Table Section */}
-      <div className="w-full border rounded-lg bg-white shadow-sm">
-        <div className="overflow-x-auto overflow-y-auto max-h-[600px]">
-          <table className="min-w-[1200px] w-full border-separate border-spacing-0">
-            <thead>
-              <tr>
-                <th
-                  className="sticky top-0 left-0 z-30 bg-white border border-gray-400 px-4 py-2 shadow whitespace-nowrap max-w-[200px] overflow-hidden text-ellipsis"
-                  style={{ boxShadow: "2px 2px 4px rgba(0,0,0,0.04)" }}
-                >
-                  User / Skill
-                  {renderSortArrow("User / Skill")}
-                </th>
-                {data.topics.map(topic => (
-                  <th
-                    key={topic.id}
-                    className="sticky top-0 z-20 bg-white border border-gray-400 px-4 py-2 text-left whitespace-nowrap max-w-[200px] overflow-hidden text-ellipsis"
-                    style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.04)" }}
-                    title={topic.label}
-                  >
-                    {topic.label}
-                    {renderSortArrow(topic.id)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sortedUsers.map(user => (
-                <tr key={user.id}>
-                  <td
-                    className="sticky left-0 z-10 bg-white border border-gray-400 px-4 py-2 font-medium shadow"
-                    style={{ boxShadow: "2px 0 4px rgba(0,0,0,0.04)" }}
-                  >
-                    {user.name}
-                  </td>
-                  {data.topics.map(topic => (
-                    <td key={topic.id} className="border border-gray-400 px-4 py-2">
-                      {skillLookup[user.id] && skillLookup[user.id][topic.id] !== undefined
-                        ? skillLookup[user.id][topic.id]
-                        : ""}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   );
 };
