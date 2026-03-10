@@ -18,10 +18,14 @@ import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import useAuth from "@/lib/hooks/use-auth/use-auth";
 import { loginFormSchema } from "@/lib/schema/login-form.zod";
-
+import { Alert } from "@/components/Alert/Alert";
 
 function LoginForm() {
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
       emailId: "",
@@ -43,80 +47,126 @@ function LoginForm() {
 
   return (
     <form
-      className="w-full lg:w-1/2 flex justify-center items-center"
+      className="w-[90%] lg:w-1/2 flex justify-center items-center"
       onSubmit={handleSubmit(handleOnSubmit)}
+      aria-labelledby="login-form-title"
+      noValidate
     >
-      <FieldSet className="w-full max-w-lg bg-white rounded-xl !p-8 gap-0">
-        <p className="text-2xl font-bold text-left mb-1">
-          Welcome to <br /> DEP Incubation Dashboard
-        </p>
-        <p className="text-xs text-left text-gray-500">
-          The DEP Incubation Dashboard is a centralized analytics platform
-          designed to evaluate and visualize the skill matrix of developers
-          within EPAM Systems.
-        </p>
+      <FieldSet
+        className="w-full max-w-lg bg-white rounded-xl !p-8 gap-0"
+        role="group"
+      >
+        <h1
+          id="login-form-title"
+          className="text-2xl font-bold mb-1 text-center"
+        >
+          DEP Dashboard Login
+        </h1>
+
         <FieldGroup className="mt-6">
+          {/* EMAIL FIELD */}
           <Controller
             name="emailId"
             control={control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="login-form-email-id">Email Id</FieldLabel>
+            render={({ field, fieldState }) => {
+              const errorId = "login-email-error";
 
-                <InputGroup>
-                  <InputGroupInput
-                    {...field}
-                    id="login-form-email-id"
-                    type="text"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Input your email id"
-                    autoComplete="off"
-                  />
-                  <InputGroupAddon align="inline-start" className="mx-2">
-                    <User />
-                  </InputGroupAddon>
-                </InputGroup>
+              return (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="login-form-email-id">
+                    Email Id
+                  </FieldLabel>
 
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
+                  <InputGroup>
+                    <InputGroupInput
+                      {...field}
+                      id="login-form-email-id"
+                      type="email"
+                      placeholder="Input your email id"
+                      aria-invalid={fieldState.invalid}
+                      aria-describedby={
+                        fieldState.invalid ? errorId : undefined
+                      }
+                    />
+
+                    <InputGroupAddon
+                      align="inline-start"
+                      className="mx-2"
+                      aria-hidden="true"
+                    >
+                      <User aria-hidden="true" focusable="false" />
+                    </InputGroupAddon>
+                  </InputGroup>
+
+                  {fieldState.invalid && (
+                    <FieldError
+                      id={errorId}
+                      role="alert"
+                      aria-live="assertive"
+                      errors={[fieldState.error]}
+                    />
+                  )}
+                </Field>
+              );
+            }}
           />
 
+          {/* PASSWORD FIELD */}
           <Controller
             name="password"
             control={control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="login-form-password">Password</FieldLabel>
+            render={({ field, fieldState }) => {
+              const errorId = "login-password-error";
 
-                <InputGroup>
-                  <InputGroupInput
-                    {...field}
-                    id="login-form-password"
-                    type="password"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Input your password"
-                    autoComplete="off"
-                  />
-                  <InputGroupAddon align="inline-start" className="mx-2">
-                    <EyeOffIcon />
-                  </InputGroupAddon>
-                </InputGroup>
+              return (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="login-form-password">
+                    Password
+                  </FieldLabel>
 
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
+                  <InputGroup>
+                    <InputGroupInput
+                      {...field}
+                      id="login-form-password"
+                      type="password"
+                      placeholder="Input your password"
+                      aria-invalid={fieldState.invalid}
+                      aria-describedby={
+                        fieldState.invalid ? errorId : undefined
+                      }
+                    />
+
+                    <InputGroupAddon
+                      align="inline-start"
+                      className="mx-2"
+                      aria-hidden="true"
+                    >
+                      <EyeOffIcon aria-hidden="true" focusable="false" />
+                    </InputGroupAddon>
+                  </InputGroup>
+
+                  {fieldState.invalid && (
+                    <FieldError
+                      id={errorId}
+                      role="alert"
+                      aria-live="assertive"
+                      errors={[fieldState.error]}
+                    />
+                  )}
+                </Field>
+              );
+            }}
           />
 
-          <p className="text-xs text-gray-500">
-            Note: you can use any email id and password till we integrate apis.
-          </p>
-
-          <Button data-testid="login-submit-btn" type="submit" variant={"default"}>
+          <Alert message="Note: You can use any valid email and password until APIs are integrated." type="info" />
+          
+          <Button
+            disabled={!isValid}
+            data-testid="login-submit-btn"
+            type="submit"
+            variant="default"
+            aria-disabled={!isValid}
+          >
             Login
           </Button>
         </FieldGroup>

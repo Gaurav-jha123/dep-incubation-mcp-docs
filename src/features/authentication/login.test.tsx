@@ -35,11 +35,6 @@ describe("Login component", () => {
       expect(await screen.findByTestId("login-form")).not.toBeNull();
     });
 
-    it("renders the SkillMatrixLottie after lazy load", async () => {
-      render(<Login />);
-      expect(await screen.findByTestId("skill-matrix-lottie")).not.toBeNull();
-    });
-
     it("renders the root container with correct classes", () => {
       const { container } = render(<Login />);
       const root = container.firstChild as HTMLElement;

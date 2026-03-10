@@ -56,13 +56,14 @@ const Sidebar: React.FC = () => {
 
       {/* Bottom Profile */}
       <div className="p-4 border-t flex items-center gap-3 ml-4 flex-shrink-0">
-        Logout
+        
         <Button
-          variant="outline"
+          variant="destructive"
           className="flex items-center gap-2 cursor-pointer"
           onClick={logout}
         >
-          <CirclePower className="w-4 h-4 text-red-500" />
+          Logout
+          <CirclePower className="w-4 h-4 text-white" />
         </Button>
         {/* <div className="min-w-10 w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-300 transition">
           <User className="w-5 h-5 text-gray-700" />
