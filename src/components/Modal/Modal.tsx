@@ -94,7 +94,7 @@ export const Modal: React.FC<ModalProps> = ({
                       <button
                         type="button"
                         aria-label="Close modal"
-                        className="inline-flex size-8 items-center justify-center rounded-md border border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground"
+                        className="inline-flex cursor-pointer size-8 items-center justify-center rounded-md border border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground"
                         onClick={onClose}
                       >
                         <X size={16} />
