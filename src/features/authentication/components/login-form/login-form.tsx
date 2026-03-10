@@ -166,6 +166,7 @@ function LoginForm() {
             type="submit"
             variant="default"
             aria-disabled={!isValid}
+            className="cursor-pointer"
           >
             Login
           </Button>

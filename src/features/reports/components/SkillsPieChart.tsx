@@ -58,7 +58,7 @@ export default function SkillsPieChart({ data }: Props) {
                 stroke="#fff"
                 strokeWidth={2}
               >
-                {sorted.map((entry, index) => (
+                {sorted.map((_, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={SHADES[index % SHADES.length]}
