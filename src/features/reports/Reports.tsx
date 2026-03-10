@@ -9,6 +9,7 @@ import SkillsTable from "./components/SkillsTable";
 import UserSelector from "./components/UserSelector";
 import SummaryCards from "./components/SummaryCards";
 import ExportButtons from "./components/ExportButtons";
+import SkillsPieChart from "./components/SkillsPieChart";
 
 export default function Reports() {
   const [selectedUser, setSelectedUser] = useState("");
@@ -73,10 +74,7 @@ export default function Reports() {
 
             <SummaryCards skills={sortedSkills} user={selectedUserObj} />
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <SkillsBarChart data={chartData} />
-              <SkillsRadarChart data={chartData} />
-            </div>
+           <SkillsPieChart data={chartData} />
 
             <TopSkillsChart data={topSkills} />
 

@@ -73,10 +73,6 @@ export default function ExportButtons({ skills }: ExportButtonsProps) {
     }
   }
 
-  const printReport = () => {
-    window.print()
-  }
-
   return (
     <div className="flex gap-4 mb-6">
 
@@ -94,12 +90,7 @@ export default function ExportButtons({ skills }: ExportButtonsProps) {
         Download PDF
       </button>
 
-      <button
-        onClick={printReport}
-        className="px-4 py-2 bg-gray-800 text-white rounded"
-      >
-        Print Report
-      </button>
+
 
     </div>
   )
