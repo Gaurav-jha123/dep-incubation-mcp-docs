@@ -24,27 +24,35 @@ export default function SummaryCards({ skills, user }: SummaryCardsProps) {
     <div className="grid md:grid-cols-4 gap-4">
 
       <div className="p-4 bg-white shadow rounded">
-        <h4>User</h4>
-        <p className="font-bold">{user?.name}</p>
+        <div className="flex flex-col gap-2">
+          <h4>User</h4>
+          <p className="font-bold">{user?.name}</p>
+        </div>
       </div>
 
       <div className="p-4 bg-white shadow rounded">
-        <h4>Average Skill</h4>
-        <p className="font-bold">{avg.toFixed(1)}</p>
+        <div className="flex flex-col gap-2">
+          <h4>Average Skill</h4>
+          <p className="font-bold">{avg.toFixed(1)}</p>
+        </div>
       </div>
 
       <div className="p-4 bg-white shadow rounded">
-        <h4>Strongest</h4>
-        <p className="font-bold">
-          {strongest.topic} ({strongest.value})
-        </p>
+        <div className="flex flex-col gap-2">
+          <h4>Strongest</h4>
+          <p className="font-bold">
+            {strongest.topic} ({strongest.value})
+          </p>
+        </div>
       </div>
 
       <div className="p-4 bg-white shadow rounded">
-        <h4>Weakest</h4>
-        <p className="font-bold">
-          {weakest.topic} ({weakest.value})
-        </p>
+        <div className="flex flex-col gap-2">
+          <h4>Weakest</h4>
+          <p className="font-bold">
+            {weakest.topic} ({weakest.value})
+          </p>
+        </div>
       </div>
 
     </div>
