@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
 import skillMatrix from "@/mocks/skillMatrix";
 import type { Topic } from "./components/types";
@@ -65,38 +65,35 @@ const Dashboard = () => {
     };
   }, [selectedUsers, selectedTopics]);
 
-  const [orderedTopics, setOrderedTopics] = useState<Topic[]>(() => filteredData.topics);
+  // Store custom topic order as IDs only
+  const [topicOrder, setTopicOrder] = useState<string[]>(() => allTopicIds);
 
-  // Sync orderedTopics when filteredData.topics changes (filter applied)
-  useEffect(() => {
-    const filteredTopicIds = new Set(filteredData.topics.map((t) => t.id));
+  // Compute ordered topics based on current filter and custom order
+  const orderedTopics = useMemo(() => {
+    const topicById = new Map(filteredData.topics.map((t) => [t.id, t]));
     
-    // Keep existing order for topics still in filter, remove deselected ones
-    const syncedTopics = orderedTopics.filter((t) => filteredTopicIds.has(t.id));
-    
-    // Add any newly selected topics that weren't in orderedTopics
-    const existingIds = new Set(syncedTopics.map((t) => t.id));
-    const newTopics = filteredData.topics.filter((t) => !existingIds.has(t.id));
-    
-    const finalTopics = [...syncedTopics, ...newTopics];
-    
-    // Only update if there's an actual change
-    if (finalTopics.length !== orderedTopics.length || 
-        finalTopics.some((t, i) => t.id !== orderedTopics[i]?.id)) {
-        setOrderedTopics(finalTopics);
+    // Keep topics from custom order that are still in filtered set
+    const ordered: Topic[] = [];
+    for (const id of topicOrder) {
+      const topic = topicById.get(id);
+      if (topic) {
+        ordered.push(topic);
+      }
     }
-  }, [filteredData.topics]);
-
+    
+    // Add any newly selected topics not in custom order
+    const orderedIds = new Set(ordered.map((t) => t.id));
+    for (const topic of filteredData.topics) {
+      if (!orderedIds.has(topic.id)) {
+        ordered.push(topic);
+      }
+    }
+    
+    return ordered;
+  }, [filteredData.topics, topicOrder]);
 
   const handleColumnOrderChange = (orderedTopicIds: string[]) => {
-    const topicById = new Map(
-      filteredData.topics.map((topic) => [topic.id, topic]),
-    );
-    const nextTopics = orderedTopicIds
-      .map((topicId) => topicById.get(topicId))
-      .filter((topic): topic is Topic => Boolean(topic));
-
-    setOrderedTopics(nextTopics);
+    setTopicOrder(orderedTopicIds);
   };
 
   const orderedFilteredData = useMemo(

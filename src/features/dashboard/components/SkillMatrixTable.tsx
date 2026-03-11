@@ -108,6 +108,8 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
           data={tableData}
           rowsPerPageOptions={[calculatedRows]}
           showSearch={false}
+          stickyHeader
+          stickyFirstColumn
           cellRenderer={(value, key) => {
             if (key === "name") {
               return (

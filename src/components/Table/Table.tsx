@@ -8,6 +8,8 @@ export interface TableProps<T> {
   rowsPerPageOptions?: number[];
   className?: string;
   showSearch?: boolean;
+  stickyHeader?: boolean;
+  stickyFirstColumn?: boolean;
 
   // Optional custom cell renderer
   cellRenderer?: (value: unknown, key: keyof T, row: T) => React.ReactNode;
@@ -20,6 +22,8 @@ export const Table = <T extends Record<string, unknown>>({
   rowsPerPageOptions = [5, 10, 20],
   className = "",
   showSearch = true,
+  stickyHeader = false,
+  stickyFirstColumn = false,
   cellRenderer,
 }: TableProps<T>) => {
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
@@ -138,9 +142,9 @@ export const Table = <T extends Record<string, unknown>>({
       )}
 
       {/* Table */}
-      <div className="overflow-x-auto border border-gray-200 rounded-lg">
+      <div className="overflow-auto border border-gray-200 rounded-lg max-h-full">
         <table className="table-fixed min-w-full text-left text-sm">
-          <thead className="bg-gray-100 text-gray-700">
+          <thead className={`bg-gray-100 text-gray-700 ${stickyHeader ? 'sticky top-0 z-20' : ''}`}>
             <tr>
               {headers.map((header, idx) => {
                 const key = keys[idx];
@@ -149,7 +153,9 @@ export const Table = <T extends Record<string, unknown>>({
                   <th
                     key={idx}
                     onClick={() => handleSort(key)}
-                    className="w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none align-top"
+                    className={`w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none align-top bg-gray-100 ${
+                      stickyFirstColumn && idx === 0 ? 'sticky left-0 z-30' : ''
+                    }`}
                   >
                     <div className="flex items-start gap-1">
                       <span
@@ -175,13 +181,15 @@ export const Table = <T extends Record<string, unknown>>({
           <tbody>
             {currentRows.map((row, idx) => (
               <tr key={idx} className="border-b hover:bg-gray-50 transition">
-                {keys.map((key) => {
+                {keys.map((key, colIdx) => {
                   const value = row[key];
 
                   return (
                     <td
                       key={String(key)}
-                      className={`text-gray-800 whitespace-nowrap`}
+                      className={`text-gray-800 whitespace-nowrap ${
+                        stickyFirstColumn && colIdx === 0 ? 'sticky left-0 z-10 bg-white' : ''
+                      }`}
                     >
                       {cellRenderer
                         ? cellRenderer(value, key, row)
