@@ -116,18 +116,18 @@ export const Table = <T extends Record<string, unknown>>({
           {rowsPerPageOptions.length > 1 && (
             <Listbox value={rowsPerPage} onChange={setRowsPerPage}>
               <div className="relative">
-                <Listbox.Button className="px-3 py-1 border rounded bg-white">
+                <Listbox.Button className="px-3 py-1 border rounded bg-secondary-50">
                   Rows: {rowsPerPage}
                 </Listbox.Button>
 
-                <Listbox.Options className="absolute right-0 mt-1 bg-white border rounded shadow z-10">
+                <Listbox.Options className="absolute right-0 mt-1 bg-secondary-50 border rounded shadow z-10">
                   {rowsPerPageOptions.map((opt) => (
                     <Listbox.Option
                       key={opt}
                       value={opt}
                       className={({ active }) =>
                         `px-3 py-1 cursor-pointer ${
-                          active ? "bg-gray-100" : ""
+                          active ? "bg-secondary-200" : ""
                         }`
                       }
                     >
@@ -142,9 +142,9 @@ export const Table = <T extends Record<string, unknown>>({
       )}
 
       {/* Table */}
-      <div className="overflow-auto border border-gray-200 rounded-lg max-h-full">
+      <div className="overflow-auto border border-secondary-200 rounded-lg max-h-full">
         <table className="table-fixed min-w-full text-left text-sm">
-          <thead className={`bg-gray-100 text-gray-700 ${stickyHeader ? 'sticky top-0 z-20' : ''}`}>
+          <thead className={`bg-secondary-200 text-secondary-700 ${stickyHeader ? "sticky top-0 z-20" : ""}`}>
             <tr>
               {headers.map((header, idx) => {
                 const key = keys[idx];
@@ -154,7 +154,7 @@ export const Table = <T extends Record<string, unknown>>({
                     key={idx}
                     onClick={() => handleSort(key)}
                     className={`w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none align-top bg-gray-100 ${
-                      stickyFirstColumn && idx === 0 ? 'sticky left-0 z-30' : ''
+                      stickyFirstColumn && idx === 0 ? "sticky left-0 z-30" : ""
                     }`}
                   >
                     <div className="flex items-start gap-1">
@@ -180,16 +180,16 @@ export const Table = <T extends Record<string, unknown>>({
           {/* Body */}
           <tbody>
             {currentRows.map((row, idx) => (
-              <tr key={idx} className="border-b hover:bg-gray-50 transition">
+              <tr key={idx} className="border-b hover:bg-secondary-50 transition">
                 {keys.map((key, colIdx) => {
                   const value = row[key];
 
                   return (
                     <td
                       key={String(key)}
-                      className={`text-gray-800 whitespace-nowrap ${
-                        stickyFirstColumn && colIdx === 0 ? 'sticky left-0 z-10 bg-white' : ''
-                      }`}
+                      className={`text-secondary-900 whitespace-nowrap ${
+                        stickyFirstColumn && colIdx === 0? "sticky left-0 z-10 bg-white": ""
+                        }`}
                     >
                       {cellRenderer
                         ? cellRenderer(value, key, row)
@@ -206,7 +206,7 @@ export const Table = <T extends Record<string, unknown>>({
               <tr>
                 <td
                   colSpan={headers.length}
-                  className="text-center py-6 text-gray-500"
+                  className="text-center py-6 text-secondary-500"
                 >
                   No data found
                 </td>
@@ -221,7 +221,7 @@ export const Table = <T extends Record<string, unknown>>({
         <button
           disabled={page === 0}
           onClick={() => setPage(page - 1)}
-          className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+          className="px-3 py-1 rounded bg-secondary-200 disabled:opacity-50"
         >
           Previous
         </button>
@@ -233,7 +233,7 @@ export const Table = <T extends Record<string, unknown>>({
         <button
           disabled={page === totalPages - 1 || totalPages === 0}
           onClick={() => setPage(page + 1)}
-          className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+          className="px-3 py-1 rounded bg-secondary-200 disabled:opacity-50"
         >
           Next
         </button>
