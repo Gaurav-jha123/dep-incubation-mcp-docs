@@ -30,8 +30,8 @@ export const Default: Story = {};
 export const InvalidEmail: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const email = canvas.getByPlaceholderText("Input your email id");
-    const password = canvas.getByPlaceholderText("Input your password");
+    const email = canvas.getByPlaceholderText("Enter email");
+    const password = canvas.getByPlaceholderText("Enter password");
 
     await userEvent.type(email, "invalid-email");
     await userEvent.type(password, "ValidPass123!");
@@ -42,8 +42,8 @@ export const InvalidEmail: Story = {
 export const InvalidPassword: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const email = canvas.getByPlaceholderText("Input your email id");
-    const password = canvas.getByPlaceholderText("Input your password");
+    const email = canvas.getByPlaceholderText("Enter email");
+    const password = canvas.getByPlaceholderText("Enter password");
 
     await userEvent.type(email, "user@example.com");
     await userEvent.type(password, "123"); // invalid, assuming min 6-8 chars
@@ -54,8 +54,8 @@ export const InvalidPassword: Story = {
 export const InvalidBoth: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const email = canvas.getByPlaceholderText("Input your email id");
-    const password = canvas.getByPlaceholderText("Input your password");
+    const email = canvas.getByPlaceholderText("Enter email");
+    const password = canvas.getByPlaceholderText("Enter password");
 
     await userEvent.type(email, "invalid-email");
     await userEvent.type(password, "123"); // invalid
@@ -66,8 +66,8 @@ export const InvalidBoth: Story = {
 export const DisabledButtonInvalidEmail: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const email = canvas.getByPlaceholderText("Input your email id");
-    const password = canvas.getByPlaceholderText("Input your password");
+    const email = canvas.getByPlaceholderText("Enter email");
+    const password = canvas.getByPlaceholderText("Enter password");
     const submitButton = canvas.getByTestId("login-submit-btn");
 
     await userEvent.type(email, "invalid-email");
@@ -84,8 +84,8 @@ export const DisabledButtonInvalidEmail: Story = {
 export const ValidLogin: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const email = canvas.getByPlaceholderText("Input your email id");
-    const password = canvas.getByPlaceholderText("Input your password");
+    const email = canvas.getByPlaceholderText("Enter email");
+    const password = canvas.getByPlaceholderText("Enter password");
 
     await userEvent.type(email, "user@example.com");
     await userEvent.type(password, "ValidPass123!");

@@ -21,43 +21,50 @@ vi.mock("@/lib/hooks/use-auth/use-auth", () => ({
 }));
 
 vi.mock("@/components/ui/field", () => ({
-  Field: ({ children, ...props }: React.ComponentProps<'div'>) => <div {...props}>{children}</div>,
-  FieldError: ({ errors }: React.ComponentProps<"div"> & {
-  errors?: Array<{ message?: string } | undefined> }) => (
-    <span role="alert">{errors?.[0]?.message}</span>
+  Field: ({ children, ...props }: React.ComponentProps<"div">) => (
+    <div {...props}>{children}</div>
   ),
-  FieldGroup: ({ children, ...props }: React.ComponentProps<'div'>) => <div {...props}>{children}</div>,
+  FieldError: ({
+    errors,
+  }: React.ComponentProps<"div"> & {
+    errors?: Array<{ message?: string } | undefined>;
+  }) => <span role="alert">{errors?.[0]?.message}</span>,
+  FieldGroup: ({ children, ...props }: React.ComponentProps<"div">) => (
+    <div {...props}>{children}</div>
+  ),
   FieldLabel: ({ children, htmlFor }: React.ComponentProps<typeof Label>) => (
     <label htmlFor={htmlFor}>{children}</label>
   ),
-  FieldSet: ({ children, ...props }: React.ComponentProps<'fieldset'>) => (
+  FieldSet: ({ children, ...props }: React.ComponentProps<"fieldset">) => (
     <fieldset {...props}>{children}</fieldset>
   ),
 }));
 
 vi.mock("@/components/ui/input-group", () => ({
-  InputGroup: ({ children }: React.ComponentProps<'div'>) => <div>{children}</div>,
-  InputGroupAddon: ({ children }: React.ComponentProps<'div'>) => <span>{children}</span>,
-  InputGroupInput: ({ ...props }: React.ComponentProps<'input'>) => <input {...props} />,
+  InputGroup: ({ children }: React.ComponentProps<"div">) => (
+    <div>{children}</div>
+  ),
+  InputGroupAddon: ({ children }: React.ComponentProps<"div">) => (
+    <span>{children}</span>
+  ),
+  InputGroupInput: ({ ...props }: React.ComponentProps<"input">) => (
+    <input {...props} />
+  ),
 }));
 
 vi.mock("@/components/ui/button", () => ({
-  Button: ({ children, ...props }: React.ComponentProps<'button'>) => (
+  Button: ({ children, ...props }: React.ComponentProps<"button">) => (
     <button {...props}>{children}</button>
   ),
 }));
 
-vi.mock("lucide-react", async () => {
-  return {
-    EyeOffIcon: () => <svg data-testid="eye-off-icon" />,
-    User: () => <svg data-testid="user-icon" />,
-    CheckCircle2: () => <svg data-testid="check-circle-icon" />,
-    AlertCircle: () => <svg data-testid="alert-circle-icon" />,
-    AlertTriangle: () => <svg data-testid="alert-triangle-icon" />,
-    Info: () => <svg data-testid="info-icon" />,
-    X: () => <svg data-testid="x-icon" />,
-  };
-});
+vi.mock("@/components/Alert/Alert", () => ({
+  Alert: ({ message, type }: { message: string; type: string }) => (
+    <div role="note" data-type={type}>
+      {message}
+    </div>
+  ),
+}));
 
 // ─── Schema tests ─────────────────────────────────────────────────────────────
 
@@ -66,11 +73,11 @@ afterEach(() => {
 });
 
 describe("loginFormSchema", () => {
-  describe("emailId", () => {
+  describe("email", () => {
     it("accepts a valid email", () => {
       expect(
         loginFormSchema.safeParse({
-          emailId: "user@example.com",
+          email: "user@example.com",
           password: "Valid1@pass",
         }).success,
       ).toBe(true);
@@ -78,25 +85,23 @@ describe("loginFormSchema", () => {
 
     it("rejects email without @", () => {
       const result = loginFormSchema.safeParse({
-        emailId: "invalidemail",
+        email: "invalidemail",
         password: "Valid1@pass",
       });
       expect(result.success).toBe(false);
-      expect(result.error?.issues[0].message).toBe(
-        "Email Id is required.",
-      );
+      expect(result.error?.issues[0].message).toBe("Email is required.");
     });
 
     it("rejects empty email", () => {
       expect(
-        loginFormSchema.safeParse({ emailId: "", password: "Valid1@pass" })
+        loginFormSchema.safeParse({ email: "", password: "Valid1@pass" })
           .success,
       ).toBe(false);
     });
 
     it("rejects email without domain", () => {
       expect(
-        loginFormSchema.safeParse({ emailId: "user@", password: "Valid1@pass" })
+        loginFormSchema.safeParse({ email: "user@", password: "Valid1@pass" })
           .success,
       ).toBe(false);
     });
@@ -105,7 +110,7 @@ describe("loginFormSchema", () => {
   describe("password", () => {
     it("rejects empty password", () => {
       expect(
-        loginFormSchema.safeParse({ emailId: "user@example.com", password: "" })
+        loginFormSchema.safeParse({ email: "user@example.com", password: "" })
           .success,
       ).toBe(false);
     });
@@ -126,12 +131,12 @@ describe("LoginForm component", () => {
   });
 
   describe("rendering", () => {
-    it("renders the email label and input", () => {
+    it("renders the email input", () => {
       render(<LoginForm />);
-      expect(screen.getByLabelText("Email Id")).not.toBeNull();
+      expect(screen.getByLabelText("Email")).not.toBeNull();
     });
 
-    it("renders the password label and input", () => {
+    it("renders the password input", () => {
       render(<LoginForm />);
       expect(screen.getByLabelText("Password")).not.toBeNull();
     });
@@ -143,19 +148,19 @@ describe("LoginForm component", () => {
 
     it("renders password input as type password", () => {
       render(<LoginForm />);
-      expect((screen.getByLabelText("Password") as HTMLInputElement).type).toBe(
-        "password",
-      );
+      expect(
+        (screen.getByLabelText("Password") as HTMLInputElement).type,
+      ).toBe("password");
     });
 
-    it("renders user icon", () => {
+    it("renders the info alert message", () => {
       render(<LoginForm />);
-      expect(screen.getByTestId("user-icon")).not.toBeNull();
+      expect(screen.getByRole("note")).not.toBeNull();
     });
 
-    it("renders eye-off icon", () => {
+    it("renders the Login heading", () => {
       render(<LoginForm />);
-      expect(screen.getByTestId("eye-off-icon")).not.toBeNull();
+      expect(screen.getByRole("heading", { name: /login/i })).not.toBeNull();
     });
   });
 
@@ -183,40 +188,39 @@ describe("LoginForm component", () => {
 
   describe("form submission", () => {
     it("calls login with valid credentials on submit", async () => {
-  mockLogin.mockResolvedValue(undefined);
-  render(<LoginForm />);
+      mockLogin.mockResolvedValue(undefined);
+      render(<LoginForm />);
 
-  fireEvent.change(screen.getByPlaceholderText("Input your email id"), {
-    target: { value: "test@example.com" },
-  });
-  fireEvent.change(screen.getByPlaceholderText("Input your password"), {
-    target: { value: "123456" },
-  });
+      fireEvent.change(screen.getByPlaceholderText("Enter email"), {
+        target: { value: "test@example.com" },
+      });
+      fireEvent.change(screen.getByPlaceholderText("Enter password"), {
+        target: { value: "123456" },
+      });
 
-  // trigger RHF validation so isValid becomes true and button enables
-  fireEvent.blur(screen.getByPlaceholderText("Input your email id"));
-  fireEvent.blur(screen.getByPlaceholderText("Input your password"));
+      fireEvent.blur(screen.getByPlaceholderText("Enter email"));
+      fireEvent.blur(screen.getByPlaceholderText("Enter password"));
 
-  await waitFor(() => {
-    expect(
-      (screen.getByTestId("login-submit-btn") as HTMLButtonElement).disabled
-    ).toBe(false);
-  });
+      await waitFor(() => {
+        expect(
+          (screen.getByTestId("login-submit-btn") as HTMLButtonElement).disabled,
+        ).toBe(false);
+      });
 
-  fireEvent.click(screen.getByTestId("login-submit-btn"));
+      fireEvent.click(screen.getByTestId("login-submit-btn"));
 
-  await waitFor(() => {
-    expect(mockLogin).toHaveBeenCalledWith({
-      emailId: "test@example.com",
-      password: "123456",
+      await waitFor(() => {
+        expect(mockLogin).toHaveBeenCalledWith({
+          email: "test@example.com",
+          password: "123456",
+        });
+      });
     });
-  });
-});
 
     it("does NOT call login when email is invalid", async () => {
       render(<LoginForm />);
 
-      fireEvent.change(screen.getByLabelText("Email Id"), {
+      fireEvent.change(screen.getByLabelText("Email"), {
         target: { value: "not-an-email" },
       });
       fireEvent.click(screen.getByTestId("login-submit-btn"));
@@ -226,11 +230,11 @@ describe("LoginForm component", () => {
       });
     });
 
-    it("does NOT call login when password is too weak", async () => {
+    it("does NOT call login when password is empty", async () => {
       render(<LoginForm />);
 
       fireEvent.change(screen.getByLabelText("Password"), {
-        target: { value: "weak" },
+        target: { value: "" },
       });
       fireEvent.click(screen.getByTestId("login-submit-btn"));
 
@@ -244,13 +248,13 @@ describe("LoginForm component", () => {
     it("shows email error on invalid input", async () => {
       render(<LoginForm />);
 
-      fireEvent.change(screen.getByLabelText("Email Id"), {
+      fireEvent.change(screen.getByLabelText("Email"), {
         target: { value: "bad-email" },
       });
-      fireEvent.blur(screen.getByLabelText("Email Id"));
+      fireEvent.blur(screen.getByLabelText("Email"));
 
       await waitFor(() => {
-        expect(screen.getByText(/email id is required/i)).not.toBeNull();
+        expect(screen.getByText(/email is required/i)).not.toBeNull();
       });
     });
   });
@@ -259,12 +263,12 @@ describe("LoginForm component", () => {
     it("updates email field on change", () => {
       render(<LoginForm />);
 
-      fireEvent.change(screen.getByLabelText("Email Id"), {
+      fireEvent.change(screen.getByLabelText("Email"), {
         target: { value: "new@test.com" },
       });
 
       expect(
-        (screen.getByLabelText("Email Id") as HTMLInputElement).value,
+        (screen.getByLabelText("Email") as HTMLInputElement).value,
       ).toBe("new@test.com");
     });
 
