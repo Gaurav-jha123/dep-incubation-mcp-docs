@@ -1,17 +1,14 @@
-import React, { useId } from "react";
+import React, { useId, useCallback } from "react";
 import type { ReactNode } from "react";
 import {
   Field,
-  Label,
   Input as HeadlessInput,
   Description,
 } from "@headlessui/react";
 
-export interface InputProps extends Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  "size"
-> {
-  variant?: "default" | "error" | "success";
+export interface InputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
+  variant?: "default" | "error" | "success" | "outlined";
   inputSize?: "sm" | "md" | "lg";
   label?: string;
   error?: string;
@@ -20,7 +17,16 @@ export interface InputProps extends Omit<
   rightIcon?: ReactNode;
   fullWidth?: boolean;
   required?: boolean;
+  onClear?: () => void;
+  maxLength?: number;
+  showCharCount?: boolean;
 }
+
+const sizeStyles = {
+  sm: "h-9 text-sm",
+  md: "h-11 text-base",
+  lg: "h-12 text-lg",
+};
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
@@ -34,88 +40,160 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       rightIcon,
       fullWidth = false,
       required = false,
-      className = "",
       disabled = false,
       id,
+      // onClear,
+      maxLength,
+      showCharCount = false,
+      onChange,
+      value,
+      className = "",
       ...props
     },
     ref,
   ) => {
     const reactId = useId();
     const inputId = id || `input-${reactId}`;
+    const descriptionId = `${inputId}-description`;
+    const [charCount, setCharCount] = React.useState(
+      typeof value === "string" ? value.length : 0,
+    );
 
-    const baseStyles =
-      "font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed w-full";
+    const handleChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCharCount(e.target.value.length);
+        onChange?.(e);
+      },
+      [onChange],
+    );
 
-    const sizeStyles = {
-      sm: "px-2 py-1 text-sm rounded",
-      md: "px-3 py-2 text-base rounded-md",
-      lg: "px-4 py-3 text-lg rounded-lg",
-    };
-
-    const variantStyles = {
-      default:
-        "border border-gray-300 bg-white text-gray-900 hover:border-gray-400 focus:ring-blue-500 focus:border-blue-500",
-      error:
-        "border border-red-500 bg-red-50 text-gray-900 hover:border-red-600 focus:ring-red-500 focus:border-red-500",
-      success:
-        "border border-green-500 bg-green-50 text-gray-900 hover:border-green-600 focus:ring-green-500 focus:border-green-500",
-    };
-
-    const wrapperStyles = "relative flex items-center";
-
-    const inputClass = [
-      baseStyles,
-      sizeStyles[inputSize],
-      variantStyles[error ? "error" : variant],
-      leftIcon ? "pl-10" : "",
-      rightIcon ? "pr-10" : "",
-      className,
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-    const iconBase = "absolute top-1/2 -translate-y-1/2 text-gray-400";
-    const leftIconClass = leftIcon ? `left-3 ${iconBase}` : "";
-    const rightIconClass = rightIcon ? `right-3 ${iconBase}` : "";
-
-    const labelClass = "block text-sm font-medium text-gray-700 mb-1.5";
-    const helperClass = "text-sm text-gray-500 mt-1";
-    const errorClass = "text-sm text-red-500 font-medium mt-1";
+    const isCharLimitExceeded =
+      maxLength && charCount > maxLength;
 
     return (
-      <Field className={fullWidth ? "w-full" : ""}>
-        {label && (
-          <Label htmlFor={inputId} className={labelClass}>
-            {label}
-            {required && <span className="text-red-500 ml-1">*</span>}
-          </Label>
+      <Field className={fullWidth ? "w-full" : "w-72"}>
+        {variant === "outlined" ? (
+          <div className="relative">
+            <HeadlessInput
+              ref={ref}
+              id={inputId}
+              disabled={disabled}
+              placeholder=" "
+              maxLength={maxLength}
+              aria-describedby={
+                error || helperText || showCharCount ? descriptionId : undefined
+              }
+              aria-invalid={!!error}
+              aria-required={required}
+              className={`peer w-full border rounded-md bg-white px-3 pt-4 pb-2 outline-none transition-all
+              ${sizeStyles[inputSize]}
+              ${error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-600"}
+              ${leftIcon ? "pl-10" : ""}
+              ${rightIcon ? "pr-10" : ""}
+              ${className}`}
+              onChange={handleChange}
+              value={value}
+              {...props}
+            />
+
+            {leftIcon && (
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-gray-400">
+                {leftIcon}
+              </span>
+            )}
+
+            {rightIcon && (
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-gray-400">
+                {rightIcon}
+              </span>
+            )}
+
+            {label && (
+              <label
+                htmlFor={inputId}
+                className="absolute left-3 bg-white px-1 text-gray-500 transition-all
+                peer-placeholder-shown:top-3
+                peer-placeholder-shown:text-base
+                peer-focus:-top-2
+                peer-focus:text-xs
+                peer-focus:text-blue-600
+                peer-not-placeholder-shown:-top-2
+                peer-not-placeholder-shown:text-xs"
+              >
+                {label}
+                {required && <span className="text-red-500 ml-1">*</span>}
+              </label>
+            )}
+          </div>
+        ) : (
+          <>
+            {label && (
+              <label
+                htmlFor={inputId}
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                {label}
+                {required && <span className="text-red-500 ml-1">*</span>}
+              </label>
+            )}
+
+            <div className="relative">
+              <HeadlessInput
+                ref={ref}
+                id={inputId}
+                disabled={disabled}
+                maxLength={maxLength}
+                aria-describedby={
+                  error || helperText || showCharCount
+                    ? descriptionId
+                    : undefined
+                }
+                aria-invalid={!!error}
+                aria-required={required}
+                className={`w-full border rounded-md px-3 py-2 outline-none transition-colors
+                ${error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-600"}
+                ${leftIcon ? "pl-10" : ""}
+                ${rightIcon ? "pr-10" : ""}
+                ${className}`}
+                onChange={handleChange}
+                value={value}
+                {...props}
+              />
+
+              {leftIcon && (
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-gray-400">
+                  {leftIcon}
+                </span>
+              )}
+
+              {rightIcon && (
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-gray-400">
+                  {rightIcon}
+                </span>
+              )}
+            </div>
+          </>
         )}
 
-        <div className={wrapperStyles}>
-          {leftIcon && <span className={leftIconClass}>{leftIcon}</span>}
+        {(error || helperText || showCharCount) && (
+          <Description as="div" id={descriptionId} className="mt-1 space-y-1">
+            {error && (
+              <p className="text-sm text-red-500 font-medium">{error}</p>
+            )}
 
-          <HeadlessInput
-            ref={ref}
-            id={inputId}
-            disabled={disabled}
-            className={inputClass}
-            aria-invalid={error ? "true" : "false"}
-            {...props}
-          />
+            {!error && helperText && (
+              <p className="text-sm text-gray-500">{helperText}</p>
+            )}
 
-          {rightIcon && <span className={rightIconClass}>{rightIcon}</span>}
-        </div>
-
-        {error && (
-          <Description as="p" className={errorClass}>
-            {error}
-          </Description>
-        )}
-
-        {!error && helperText && (
-          <Description as="p" className={helperClass}>
-            {helperText}
+            {showCharCount && maxLength && (
+              <p
+                className={`text-xs ${
+                  isCharLimitExceeded ? "text-red-500" : "text-gray-400"
+                }`}
+              >
+                {charCount} / {maxLength}
+              </p>
+            )}
           </Description>
         )}
       </Field>
