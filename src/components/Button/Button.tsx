@@ -16,12 +16,12 @@ const sizeStyles = {
 };
 
 const variantStyles = {
-  primary:
-    "bg-blue-600 text-white data-hover:bg-blue-500 data-active:bg-blue-700",
+  primary: "bg-primary-500 hover:bg-primary-700 text-secondary-50",
   secondary:
-    "bg-gray-200 text-gray-800 data-hover:bg-gray-300 data-active:bg-gray-400",
-  danger: "bg-red-600 text-white data-hover:bg-red-500 data-active:bg-red-700",
-  ghost: "text-gray-700 data-hover:bg-gray-100 data-active:bg-gray-200",
+    "bg-secondary-50 border border-secondary-200 text-secondary-700 data-hover:bg-gray-300",
+  danger: " bg-danger-500 hover:bg-danger-700 text-secondary-50",
+  ghost:
+    "text-secondary-700 data-hover:bg-secondary-200 data-active:bg-secondary-200",
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
