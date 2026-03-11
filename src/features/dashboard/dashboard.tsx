@@ -1,9 +1,8 @@
-import {  useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
-import SkillMatrixFilter from "./components/SkillMatrixFilter";
 import skillMatrix from "@/mocks/skillMatrix";
 import type { Topic } from "./components/types";
-import SkillMatrixColumnRearrange from "./components/SkillMatrixColumnRearrange";
+import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
 
 const Dashboard = () => {
   const allUserIds = skillMatrix.users.map((u) => u.id);
@@ -66,18 +65,35 @@ const Dashboard = () => {
     };
   }, [selectedUsers, selectedTopics]);
 
-  const [orderedTopics, setOrderedTopics] = useState<Topic[]>(() => filteredData.topics);
+  // Store custom topic order as IDs only
+  const [topicOrder, setTopicOrder] = useState<string[]>(() => allTopicIds);
 
+  // Compute ordered topics based on current filter and custom order
+  const orderedTopics = useMemo(() => {
+    const topicById = new Map(filteredData.topics.map((t) => [t.id, t]));
+    
+    // Keep topics from custom order that are still in filtered set
+    const ordered: Topic[] = [];
+    for (const id of topicOrder) {
+      const topic = topicById.get(id);
+      if (topic) {
+        ordered.push(topic);
+      }
+    }
+    
+    // Add any newly selected topics not in custom order
+    const orderedIds = new Set(ordered.map((t) => t.id));
+    for (const topic of filteredData.topics) {
+      if (!orderedIds.has(topic.id)) {
+        ordered.push(topic);
+      }
+    }
+    
+    return ordered;
+  }, [filteredData.topics, topicOrder]);
 
   const handleColumnOrderChange = (orderedTopicIds: string[]) => {
-    const topicById = new Map(
-      filteredData.topics.map((topic) => [topic.id, topic]),
-    );
-    const nextTopics = orderedTopicIds
-      .map((topicId) => topicById.get(topicId))
-      .filter((topic): topic is Topic => Boolean(topic));
-
-    setOrderedTopics(nextTopics);
+    setTopicOrder(orderedTopicIds);
   };
 
   const orderedFilteredData = useMemo(
@@ -91,18 +107,15 @@ const Dashboard = () => {
   return (
     <div className="p-6 space-y-6 h-full flex flex-col">
       <div className="flex justify-end items-center">
-        <SkillMatrixFilter
+        <SkillMatrixDrawer
           users={skillMatrix.users}
           topics={skillMatrix.topics}
           selectedUsers={selectedUsers}
           selectedTopics={selectedTopics}
           onUsersChange={handleUsersChange}
           onTopicsChange={handleTopicsChange}
-        />
-
-        <SkillMatrixColumnRearrange
-          topics={orderedTopics}
-          onOrderChange={handleColumnOrderChange}
+          orderedTopics={orderedTopics}
+          onColumnOrderChange={handleColumnOrderChange}
         />
       </div>
 
