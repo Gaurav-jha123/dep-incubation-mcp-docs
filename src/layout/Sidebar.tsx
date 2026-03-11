@@ -5,6 +5,7 @@ import {
   Users,
   BarChart3,
   X,
+  DatabaseBackupIcon,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -14,11 +15,17 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
 
   const menuItems = [
+     {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: <DatabaseBackupIcon size={18} />,
+    },
     {
       name: "SkillMatrix",
-      path: "/dashboard",
+      path: "/skillMatrix",
       icon: <LayoutDashboard size={18} />,
     },
+   
     { name: "Users", path: "/userform", icon: <Users size={18} /> },
     { name: "Reports", path: "/reports", icon: <BarChart3 size={18} /> },
   ];
