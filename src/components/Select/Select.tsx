@@ -101,7 +101,6 @@ export function Select({
               <ComboboxOption
                 key={option.value}
                 value={option}
-                disabled={multiple && values.includes(option.value)}
                 className={({ focus, disabled }) =>
                   `cursor-pointer select-none px-3 py-2 flex items-center gap-2 ${
                     focus ? "bg-blue-100 text-blue-900" : "text-gray-900"
