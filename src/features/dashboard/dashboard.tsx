@@ -2,7 +2,6 @@ import skillMatrix from "@/mocks/skillMatrix";
 import {
   PieChart,
   Pie,
-  Cell,
   Tooltip,
   ResponsiveContainer,
   Legend
@@ -16,7 +15,7 @@ const Dashboard = () => {
   const totalSkills = skillMatrix.skills.length;
   const avgSkillsPerUser = (totalSkills / totalUsers).toFixed(1);
 
-  /* skill range distribution */
+  /* skill range groups */
   const ranges = [
     { name: "Beginner (0-40)", min: 0, max: 40 },
     { name: "Intermediate (41-60)", min: 41, max: 60 },
@@ -24,26 +23,30 @@ const Dashboard = () => {
     { name: "Expert (81-100)", min: 81, max: 100 }
   ];
 
-  const chartData = ranges.map((range) => {
+  /* chart colors */
+  const colors = [
+    "#4f46e5",
+    "#16a34a",
+    "#ca8a04",
+    "#dc2626"
+  ];
+
+  /* prepare pie chart data */
+  const chartData = ranges.map((range, index) => {
 
     const count = skillMatrix.skills.filter(
-      (skill) => skill.value >= range.min && skill.value <= range.max
+      (skill) =>
+        skill.value >= range.min &&
+        skill.value <= range.max
     ).length;
 
     return {
       name: range.name,
-      value: count
+      value: count,
+      fill: colors[index]
     };
 
   });
-
-  /* soft dashboard colors */
- const colors = [
-  "#4f46e5", // indigo
-  "#16a34a", // green
-  "#ca8a04", // amber
-  "#dc2626"  // red
-];
 
   return (
     <div className="p-6 space-y-8 bg-gray-100 min-h-screen">
@@ -86,7 +89,7 @@ const Dashboard = () => {
       {/* Pie Chart */}
       <div className="bg-white rounded-lg shadow p-8 h-[420px]">
 
-        <h2 className="text-lg font-semibold  text-gray-700">
+        <h2 className="text-lg font-semibold text-gray-700 mb-4">
           Skill Level Distribution
         </h2>
 
@@ -100,16 +103,7 @@ const Dashboard = () => {
               nameKey="name"
               outerRadius={140}
               label
-            >
-
-              {chartData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={colors[index % colors.length]}
-                />
-              ))}
-
-            </Pie>
+            />
 
             <Tooltip />
             <Legend />

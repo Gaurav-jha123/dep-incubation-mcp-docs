@@ -24,7 +24,7 @@ describe("Badge Component", () => {
     };
 
     Object.entries(variants).forEach(([variant, classes]) => {
-      render(<Badge text="Test" variant={variant as any} />);
+      render(<Badge text="Test" variant={variant as 'default' | 'success' | 'warning' | 'error' | 'info'} />);
       const el = screen.getByText("Test");
       expect(el.className).toContain(classes.split(" ")[0]);
       cleanup();
