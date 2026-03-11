@@ -7,6 +7,11 @@ export const APP_ROUTES = [
     title: "Dashboard" 
   },
   { 
+    path: "skillMatrix", 
+    element: lazy(() => import("../features/skillMatrix/SkillMatrix")), 
+    title: "Skill Matrix" 
+  },
+  { 
     path: "userform", 
     element: lazy(() => import("../features/forms/form").then(mod => ({ default: mod.default }))), 
     title: "User Form" 
