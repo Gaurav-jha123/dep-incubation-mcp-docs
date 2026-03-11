@@ -7,7 +7,10 @@ export interface TableProps<T> {
   keys: (keyof T)[];
   rowsPerPageOptions?: number[];
   className?: string;
-  showSearch?: boolean; // <-- Added this
+  showSearch?: boolean;
+
+  // Optional custom cell renderer
+  cellRenderer?: (value: unknown, key: keyof T, row: T) => React.ReactNode;
 }
 
 export const Table = <T extends Record<string, unknown>>({
@@ -16,7 +19,8 @@ export const Table = <T extends Record<string, unknown>>({
   keys,
   rowsPerPageOptions = [5, 10, 20],
   className = "",
-  showSearch = true, // <-- Defaults to true so it doesn't break other teams' tables
+  showSearch = true,
+  cellRenderer,
 }: TableProps<T>) => {
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
   const [page, setPage] = useState(0);
@@ -38,7 +42,6 @@ export const Table = <T extends Record<string, unknown>>({
 
   /* Filtering */
   const filteredData = useMemo(() => {
-    // If search is hidden or empty, skip filtering to save performance
     if (!showSearch || !search) return data;
 
     return data.filter((row) =>
@@ -89,10 +92,8 @@ export const Table = <T extends Record<string, unknown>>({
 
   return (
     <div className={`w-full space-y-4 ${className}`}>
-      {/* Search Filter and Row Options - Only render top bar if one of them is active */}
       {(showSearch || rowsPerPageOptions.length > 1) && (
         <div className="flex justify-between items-center">
-          {/* Conditionally render the search input */}
           {showSearch ? (
             <input
               type="text"
@@ -105,10 +106,9 @@ export const Table = <T extends Record<string, unknown>>({
               className="border px-3 py-1 rounded w-60"
             />
           ) : (
-            <div /> // Empty div to keep flex-between spacing intact if search is hidden but listbox is shown
+            <div />
           )}
 
-          {/* Conditionally render rows per page */}
           {rowsPerPageOptions.length > 1 && (
             <Listbox value={rowsPerPage} onChange={setRowsPerPage}>
               <div className="relative">
@@ -140,7 +140,6 @@ export const Table = <T extends Record<string, unknown>>({
       {/* Table */}
       <div className="overflow-x-auto border border-gray-200 rounded-lg">
         <table className="table-fixed min-w-full text-left text-sm">
-          {/* Header */}
           <thead className="bg-gray-100 text-gray-700">
             <tr>
               {headers.map((header, idx) => {
@@ -150,10 +149,13 @@ export const Table = <T extends Record<string, unknown>>({
                   <th
                     key={idx}
                     onClick={() => handleSort(key)}
-                    className="w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none"
+                    className="w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none align-top"
                   >
                     <div className="flex items-start gap-1">
-                      <span className="line-clamp-2 leading-tight">
+                      <span
+                        className="line-clamp-2 leading-tight"
+                        title={header}
+                      >
                         {header}
                       </span>
 
@@ -173,14 +175,22 @@ export const Table = <T extends Record<string, unknown>>({
           <tbody>
             {currentRows.map((row, idx) => (
               <tr key={idx} className="border-b hover:bg-gray-50 transition">
-                {keys.map((key) => (
-                  <td
-                    key={String(key)}
-                    className="px-4 py-3 text-gray-800 whitespace-nowrap"
-                  >
-                    {row[key] !== undefined ? String(row[key]) : ""}
-                  </td>
-                ))}
+                {keys.map((key) => {
+                  const value = row[key];
+
+                  return (
+                    <td
+                      key={String(key)}
+                      className={`text-gray-800 whitespace-nowrap`}
+                    >
+                      {cellRenderer
+                        ? cellRenderer(value, key, row)
+                        : value !== undefined
+                          ? String(value)
+                          : ""}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
 
@@ -199,7 +209,7 @@ export const Table = <T extends Record<string, unknown>>({
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-between items-center text-sm">
+      <div className="flex justify-center items-center gap-5 text-sm">
         <button
           disabled={page === 0}
           onClick={() => setPage(page - 1)}
