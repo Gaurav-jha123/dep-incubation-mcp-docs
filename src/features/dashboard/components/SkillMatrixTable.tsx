@@ -71,8 +71,9 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
       return row;
     });
   }, [data]);
+  
 
-  const headers = ["User / Skill", ...data.topics.map((topic) => topic.label)];
+  const headers = ["User / Topic", ...data.topics.map((topic) => topic.label)];
   const keys = ["name", ...data.topics.map((topic) => topic.id)];
 
   return (

@@ -1,8 +1,8 @@
 import React from "react";
 import { Menu } from "lucide-react";
 import UserProfileMenu from "@/components/user-profile-menu/user-profile-menu";
-import { APP_ROUTES } from "@/App";
 import { useLocation } from "react-router";
+import APP_ROUTES from "@/route-config";
 
 interface HeaderProps {
   onMenuClick: () => void;
