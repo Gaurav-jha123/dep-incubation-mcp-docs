@@ -43,7 +43,7 @@ function LoginForm() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     verifyUser(token || "");
-  }, []);
+  }, [verifyUser]);
 
   return (
     <form
@@ -159,7 +159,7 @@ function LoginForm() {
           />
 
           <Alert message="Note: You can use any valid email and password until APIs are integrated." type="info" />
-          
+
           <Button
             disabled={!isValid}
             data-testid="login-submit-btn"
