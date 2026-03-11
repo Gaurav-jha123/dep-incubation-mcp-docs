@@ -38,10 +38,10 @@ export default function Stepper({
                     ${circleSize}
                     ${
                       isCompleted
-                        ? "bg-blue-500 border-blue-500 text-white"
+                        ? "bg-primary-500 border-primary-500 text-primary-50"
                         : isActive
-                        ? "border-blue-500 text-blue-500"
-                        : "border-gray-300 text-gray-400"
+                          ? "border-primary-500 text-primary-500"
+                          : "border-secondary-200 text-secondary-400"
                     }
                   `}
                   >
@@ -50,7 +50,9 @@ export default function Stepper({
 
                   <span
                     className={`mt-2 text-sm ${
-                      isActive ? "text-blue-600 font-medium" : "text-gray-500"
+                      isActive
+                        ? "text-primary-700 font-medium"
+                        : "text-secondary-500"
                     }`}
                   >
                     {step.title}
@@ -63,9 +65,9 @@ export default function Stepper({
                     className={`
                     flex-1 h-[2px] mx-3 mt-5
                     ${
-                      variant === "minimal" ? "mt-[14px]" : "mt-[20px]"
+                    variant === "minimal" ? "mt-[14px]" : "mt-[20px]"
                     }
-                    ${index < currentStep ? "bg-blue-500" : "bg-gray-300"}
+                    ${index < currentStep ? "bg-primary-500" : "bg-secondary-200"}
                   `}
                   />
                 )}
