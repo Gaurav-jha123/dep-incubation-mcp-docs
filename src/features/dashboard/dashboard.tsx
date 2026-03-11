@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
 import SkillMatrixFilter from "./components/SkillMatrixFilter";
 import skillMatrix from "@/mocks/skillMatrix";
+import type { Topic } from "./components/types";
+import SkillMatrixColumnRearrange from "./components/SkillMatrixColumnRearrange";
 
 const Dashboard = () => {
   const allUserIds = skillMatrix.users.map((u) => u.id);
@@ -9,6 +11,7 @@ const Dashboard = () => {
 
   const [selectedUsers, setSelectedUsers] = useState<string[]>(allUserIds);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(allTopicIds);
+  const [orderedTopics, setOrderedTopics] = useState<Topic[]>([]);
 
   /**
    * USER FILTER HANDLER
@@ -64,18 +67,47 @@ const Dashboard = () => {
     };
   }, [selectedUsers, selectedTopics]);
 
+  useEffect(() => {
+    setOrderedTopics(filteredData.topics);
+  }, [filteredData.topics]);
+
+  const handleColumnOrderChange = (orderedTopicIds: string[]) => {
+    const topicById = new Map(
+      filteredData.topics.map((topic) => [topic.id, topic]),
+    );
+    const nextTopics = orderedTopicIds
+      .map((topicId) => topicById.get(topicId))
+      .filter((topic): topic is Topic => Boolean(topic));
+
+    setOrderedTopics(nextTopics);
+  };
+
+  const orderedFilteredData = useMemo(
+    () => ({
+      ...filteredData,
+      topics: orderedTopics,
+    }),
+    [filteredData, orderedTopics],
+  );
+
   return (
     <div className="p-6 space-y-6">
-      <SkillMatrixFilter
-        users={skillMatrix.users}
-        topics={skillMatrix.topics}
-        selectedUsers={selectedUsers}
-        selectedTopics={selectedTopics}
-        onUsersChange={handleUsersChange}
-        onTopicsChange={handleTopicsChange}
-      />
+      <div className="flex justify-end items-center">
+        <SkillMatrixFilter
+          users={skillMatrix.users}
+          topics={skillMatrix.topics}
+          selectedUsers={selectedUsers}
+          selectedTopics={selectedTopics}
+          onUsersChange={handleUsersChange}
+          onTopicsChange={handleTopicsChange}
+        />
+        <SkillMatrixColumnRearrange
+          topics={orderedTopics}
+          onOrderChange={handleColumnOrderChange}
+        />
+      </div>
 
-      <SkillMatrixTable data={filteredData} />
+      <SkillMatrixTable data={orderedFilteredData} />
     </div>
   );
 };
