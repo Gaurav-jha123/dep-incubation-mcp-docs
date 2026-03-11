@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import {  useMemo, useState } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
 import SkillMatrixFilter from "./components/SkillMatrixFilter";
 import skillMatrix from "@/mocks/skillMatrix";
@@ -11,7 +11,6 @@ const Dashboard = () => {
 
   const [selectedUsers, setSelectedUsers] = useState<string[]>(allUserIds);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(allTopicIds);
-  const [orderedTopics, setOrderedTopics] = useState<Topic[]>([]);
 
   /**
    * USER FILTER HANDLER
@@ -67,12 +66,8 @@ const Dashboard = () => {
     };
   }, [selectedUsers, selectedTopics]);
 
-  useEffect(() => {
-    function updateState() {
-      setOrderedTopics(filteredData.topics);
-    }
-    updateState();
-  }, [filteredData.topics]);
+  const [orderedTopics, setOrderedTopics] = useState<Topic[]>(() => filteredData.topics);
+
 
   const handleColumnOrderChange = (orderedTopicIds: string[]) => {
     const topicById = new Map(
