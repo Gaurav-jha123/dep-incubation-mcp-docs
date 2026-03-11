@@ -68,7 +68,10 @@ const Dashboard = () => {
   }, [selectedUsers, selectedTopics]);
 
   useEffect(() => {
-    setOrderedTopics(filteredData.topics);
+    function updateState() {
+      setOrderedTopics(filteredData.topics);
+    }
+    updateState();
   }, [filteredData.topics]);
 
   const handleColumnOrderChange = (orderedTopicIds: string[]) => {
