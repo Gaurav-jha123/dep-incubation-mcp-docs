@@ -60,7 +60,7 @@ describe("use-auth", () => {
 
     act(() => {
       result.current.login({
-        emailId: "test@test.com",
+        email: "test@test.com",
         password: "123456",
       });
     });
