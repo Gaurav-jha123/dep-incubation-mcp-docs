@@ -2,8 +2,6 @@ import {useEffect, useMemo, useRef, useState} from 'react';
 import {DragDropProvider} from '@dnd-kit/react';
 import {useSortable} from '@dnd-kit/react/sortable';
 import {move} from '@dnd-kit/helpers';
-import {Modal} from '@/components/Modal/Modal';
-import {Columns3} from 'lucide-react';
 import type {Topic} from './types';
 
 type ItemId = string;
@@ -38,7 +36,6 @@ interface SkillMatrixColumnRearrangeProps {
 }
 
 export default function SkillMatrixColumnRearrange({topics, onOrderChange}: SkillMatrixColumnRearrangeProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<ItemId[]>(() => createItemsFromTopics(topics));
   const topicLabelById = useMemo(
     () => Object.fromEntries(topics.map((topic) => [topic.id, topic.label])),
@@ -50,56 +47,37 @@ export default function SkillMatrixColumnRearrange({topics, onOrderChange}: Skil
   }, [topics]);
 
   return (
-    <>
-      <button
-        type="button"
-        className="cursor-pointer bg-transparent ml-5 rounded-md border border-input px-3 py-2 text-sm font-medium text-foreground hover:bg-accent"
-        onClick={() => setIsOpen(true)}
-        aria-label="Rearrange Columns"
-        title="Rearrange Columns"
+    <div>
+      <h4 className="text-sm font-medium text-foreground mb-2">Rearrange Columns</h4>
+      <p className="text-xs text-muted-foreground mb-3">Drag and drop topics to reorder the column list.</p>
+      <DragDropProvider
+        onDragEnd={(event) => {
+          setItems((prevItems) => {
+            if (!hasValidDropTarget(event)) {
+              return prevItems;
+            }
+
+            const nextItems = safelyMoveItems(prevItems, event);
+
+            if (!nextItems || !isValidReorder(prevItems, nextItems)) {
+              return prevItems;
+            }
+
+            if (!areSameOrder(prevItems, nextItems)) {
+              onOrderChange(nextItems);
+            }
+
+            return nextItems;
+          });
+        }}
       >
-        <Columns3 className="size-5" />
-      </button>
-
-      <Modal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Rearrange Skill Matrix Columns"
-        description="Drag and drop topics to reorder the column list."
-        size="md"
-        showCancelButton
-      >
-        <DragDropProvider
-          onDragEnd={(event) => {
-            setItems((prevItems) => {
-              if (!hasValidDropTarget(event)) {
-                return prevItems;
-              }
-
-              const nextItems = safelyMoveItems(prevItems, event);
-
-              if (!nextItems || !isValidReorder(prevItems, nextItems)) {
-                return prevItems;
-              }
-
-              if (!areSameOrder(prevItems, nextItems)) {
-                
-                console.log('nextItems: ', nextItems);
-                onOrderChange(nextItems);
-              }
-
-              return nextItems;
-            });
-          }}
-        >
-          <ul className="mt-1 space-y-2">
-            {items.map((id, index) => (
-              <Sortable key={id} id={id} label={topicLabelById[id] ?? id} index={index} />
-            ))}
-          </ul>
-        </DragDropProvider>
-      </Modal>
-    </>
+        <ul className="space-y-2 rounded-md border border-border p-3">
+          {items.map((id, index) => (
+            <Sortable key={id} id={id} label={topicLabelById[id] ?? id} index={index} />
+          ))}
+        </ul>
+      </DragDropProvider>
+    </div>
   );
 }
 

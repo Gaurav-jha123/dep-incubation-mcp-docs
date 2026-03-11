@@ -1,9 +1,8 @@
-import {  useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
-import SkillMatrixFilter from "./components/SkillMatrixFilter";
 import skillMatrix from "@/mocks/skillMatrix";
 import type { Topic } from "./components/types";
-import SkillMatrixColumnRearrange from "./components/SkillMatrixColumnRearrange";
+import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
 
 const Dashboard = () => {
   const allUserIds = skillMatrix.users.map((u) => u.id);
@@ -68,6 +67,26 @@ const Dashboard = () => {
 
   const [orderedTopics, setOrderedTopics] = useState<Topic[]>(() => filteredData.topics);
 
+  // Sync orderedTopics when filteredData.topics changes (filter applied)
+  useEffect(() => {
+    const filteredTopicIds = new Set(filteredData.topics.map((t) => t.id));
+    
+    // Keep existing order for topics still in filter, remove deselected ones
+    const syncedTopics = orderedTopics.filter((t) => filteredTopicIds.has(t.id));
+    
+    // Add any newly selected topics that weren't in orderedTopics
+    const existingIds = new Set(syncedTopics.map((t) => t.id));
+    const newTopics = filteredData.topics.filter((t) => !existingIds.has(t.id));
+    
+    const finalTopics = [...syncedTopics, ...newTopics];
+    
+    // Only update if there's an actual change
+    if (finalTopics.length !== orderedTopics.length || 
+        finalTopics.some((t, i) => t.id !== orderedTopics[i]?.id)) {
+        setOrderedTopics(finalTopics);
+    }
+  }, [filteredData.topics]);
+
 
   const handleColumnOrderChange = (orderedTopicIds: string[]) => {
     const topicById = new Map(
@@ -91,18 +110,15 @@ const Dashboard = () => {
   return (
     <div className="p-6 space-y-6 h-full flex flex-col">
       <div className="flex justify-end items-center">
-        <SkillMatrixFilter
+        <SkillMatrixDrawer
           users={skillMatrix.users}
           topics={skillMatrix.topics}
           selectedUsers={selectedUsers}
           selectedTopics={selectedTopics}
           onUsersChange={handleUsersChange}
           onTopicsChange={handleTopicsChange}
-        />
-
-        <SkillMatrixColumnRearrange
-          topics={orderedTopics}
-          onOrderChange={handleColumnOrderChange}
+          orderedTopics={orderedTopics}
+          onColumnOrderChange={handleColumnOrderChange}
         />
       </div>
 
