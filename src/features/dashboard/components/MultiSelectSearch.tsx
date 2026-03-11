@@ -59,14 +59,14 @@ const MultiSelectSearch = ({ label, options, selected, onChange }: Props) => {
               <div
                 key={option.value}
                 onClick={() => toggleValue(option.value)}
-                className="flex items-center gap-3 px-2 py-1 cursor-pointer hover:bg-gray-100 rounded"
+                className="flex items-start gap-3 px-2 py-1 cursor-pointer hover:bg-gray-100 rounded"
               >
                 <Checkbox
                   checked={selected.includes(option.value)}
-                  className="group flex size-4 items-center justify-center rounded border bg-white 
-             data-[checked]:bg-black 
-             data-[disabled]:cursor-not-allowed 
-             data-[disabled]:opacity-50"
+                  className="group shrink-0 flex size-4 items-center justify-center rounded border bg-white 
+        data-[checked]:bg-black 
+        data-[disabled]:cursor-not-allowed 
+        data-[disabled]:opacity-50"
                 >
                   <svg
                     className="stroke-white opacity-0 group-data-checked:opacity-100"
@@ -81,7 +81,10 @@ const MultiSelectSearch = ({ label, options, selected, onChange }: Props) => {
                     />
                   </svg>
                 </Checkbox>
-                <span>{option.label}</span>
+
+                <span className="whitespace-normal break-words">
+                  {option.label}
+                </span>
               </div>
             ))}
           </div>
