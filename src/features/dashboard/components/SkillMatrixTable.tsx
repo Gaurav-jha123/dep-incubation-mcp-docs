@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useLayoutEffect, useRef } from "react";
-import { type SkillMatrixData } from "./types";
 import { Table } from "../../../components/Table/Table";
+import { type SkillMatrixData } from "./types";
+import HeatmapLegend from "./SkillMatrixTableLegend";
 
 interface SkillMatrixTableProps {
   data: SkillMatrixData;
@@ -9,52 +10,60 @@ interface SkillMatrixTableProps {
 type FlatUserRow = {
   id: string;
   name: string;
-  [key: string]: string | number;
+} & Record<string, number | string>;
+
+const getHeatmapColor = (value: number): string => {
+  const hue = (value / 100) * 120;
+  return `hsl(${hue}, 70%, 60%)`;
 };
 
 const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [calculatedRows, setCalculatedRows] = useState(5);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const [calculatedRows, setCalculatedRows] = useState<number>(5);
 
   const MAIN_CONTAINER_PADDING = 30;
   const FILTER_COMPONENT_HEIGHT = 50;
-  // Bottom and top spacing we set
   const SPACER = 20;
 
   useLayoutEffect(() => {
-    const calculateVisibleRows = () => {
-      const mainHeight = document.getElementsByTagName("main")[0].clientHeight;
-      console.log("mainHeight", mainHeight);
-      const ESTIMATED_TABLE_HEADER_FOOTER_HEIGHT = 100; //  header, pagination + gaps
-      const estimatedRowHeight = 50; // Table row height
+    const calculateVisibleRows = (): void => {
+      const main = document.getElementsByTagName("main")[0];
 
-      const availableHeightForRows =
+      if (!main) return;
+
+      const mainHeight = main.clientHeight;
+
+      const ESTIMATED_TABLE_HEADER_FOOTER_HEIGHT = 100;
+      const estimatedRowHeight = 50;
+
+      const availableHeight =
         mainHeight -
         (MAIN_CONTAINER_PADDING +
           FILTER_COMPONENT_HEIGHT +
           SPACER +
           ESTIMATED_TABLE_HEADER_FOOTER_HEIGHT);
 
-      const rowsThatFit = Math.floor(
-        availableHeightForRows / estimatedRowHeight,
-      );
+      const rows = Math.floor(availableHeight / estimatedRowHeight);
 
-      console.log("rowsThatFit", rowsThatFit);
-
-      setCalculatedRows(Math.max(1, rowsThatFit));
+      setCalculatedRows(Math.max(1, rows));
     };
 
     calculateVisibleRows();
 
     window.addEventListener("resize", calculateVisibleRows);
+
     return () => window.removeEventListener("resize", calculateVisibleRows);
   }, []);
 
-  const tableData = useMemo(() => {
+  const tableData = useMemo<FlatUserRow[]>(() => {
     const skillLookup: Record<string, Record<string, number>> = {};
 
     data.skills.forEach(({ userId, topicId, value }) => {
-      if (!skillLookup[userId]) skillLookup[userId] = {};
+      if (!skillLookup[userId]) {
+        skillLookup[userId] = {};
+      }
+
       skillLookup[userId][topicId] = value;
     });
 
@@ -65,27 +74,66 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
       };
 
       data.topics.forEach((topic) => {
-        row[topic.id] = skillLookup[user.id]?.[topic.id] ?? "";
+        const value = skillLookup[user.id]?.[topic.id];
+        row[topic.id] = value ?? "";
       });
 
       return row;
     });
   }, [data]);
-  
 
   const headers = ["User / Topic", ...data.topics.map((topic) => topic.label)];
-  const keys = ["name", ...data.topics.map((topic) => topic.id)];
+
+  const keys = [
+    "name",
+    ...data.topics.map((topic) => topic.id),
+  ] as (keyof FlatUserRow)[];
 
   return (
-    <div ref={containerRef} className="w-full h-full min-h-[400px] min-w-0">
-      <Table
-        headers={headers}
-        keys={keys}
-        data={tableData}
-        // ONLY pass the dynamically calculated row count!
-        rowsPerPageOptions={[calculatedRows]}
-        showSearch={false}
-      />
+    <div
+      ref={containerRef}
+      className="w-full h-full min-w-0 overflow-hidden flex"
+    >
+      {/* legend */}
+      <HeatmapLegend />
+
+      {/* spacing */}
+      <div className="w-4" />
+
+      {/* table */}
+      <div className="flex-1 min-h-0 overflow-auto">
+        <Table
+          headers={headers}
+          keys={keys}
+          data={tableData}
+          rowsPerPageOptions={[calculatedRows]}
+          showSearch={false}
+          cellRenderer={(value, key) => {
+            if (key === "name") {
+              return (
+                <div className="px-4 py-3 w-full h-full flex items-center font-medium">
+                  {value as string}
+                </div>
+              );
+            }
+
+            if (typeof value === "number") {
+              return (
+                <div
+                  className="px-4 py-3 w-full h-full flex items-center justify-center font-medium"
+                  style={{
+                    backgroundColor: getHeatmapColor(value),
+                  }}
+                >
+                  {value}
+                </div>
+              );
+            }
+
+            return "";
+          }}
+        />
+      </div>
     </div>
   );
 };
