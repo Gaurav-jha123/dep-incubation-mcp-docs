@@ -89,7 +89,7 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 h-full flex flex-col">
       <div className="flex justify-end items-center">
         <SkillMatrixFilter
           users={skillMatrix.users}
@@ -99,13 +99,17 @@ const Dashboard = () => {
           onUsersChange={handleUsersChange}
           onTopicsChange={handleTopicsChange}
         />
+
         <SkillMatrixColumnRearrange
           topics={orderedTopics}
           onOrderChange={handleColumnOrderChange}
         />
       </div>
 
-      <SkillMatrixTable data={orderedFilteredData} />
+      {/* table area */}
+      <div className="flex-1 min-h-0">
+        <SkillMatrixTable data={orderedFilteredData} />
+      </div>
     </div>
   );
 };
