@@ -4,18 +4,14 @@ import {
   LayoutDashboard,
   Users,
   BarChart3,
-  CirclePower,
   X,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import useAuth from "@/lib/hooks/use-auth/use-auth";
 
 interface SidebarProps {
   onClose?: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
-  const { logout } = useAuth();
 
   const menuItems = [
     {
@@ -59,17 +55,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
           ))}
         </ul>
       </nav>
-
-      <div className="p-4 border-t">
-        <Button
-          variant="destructive"
-          className="w-full flex items-center justify-center gap-2 cursor-pointer"
-          onClick={logout}
-        >
-          Logout
-          <CirclePower className="w-4 h-4" />
-        </Button>
-      </div>
     </aside>
   );
 };
