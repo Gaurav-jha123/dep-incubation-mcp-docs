@@ -23,12 +23,11 @@ interface AlertProps extends Omit<
 }
 
 const alertVariantClasses: Record<AlertType, string> = {
-  success: "border-green-200 bg-green-50 text-green-800",
-  error: "border-red-200 bg-red-50 text-red-800",
-  warning: "border-amber-200 bg-amber-50 text-amber-800",
-  info: "border-sky-200 bg-sky-50 text-sky-800",
+  success: "border-success-500 bg-success-100 text-success-500",
+  error: "border-danger-500 bg-danger-100 text-danger-500",
+  warning: "border-warning-500 bg-warning-100 text-warning-500",
+  info: "border-info-500 bg-info-100 text-info-500",
 };
-
 const icons: Record<IconKey, React.ReactNode> = {
   success: <CheckCircle2 size={20} aria-hidden="true" />,
   error: <AlertCircle size={20} aria-hidden="true" />,
@@ -78,8 +77,8 @@ export const Alert: React.FC<AlertProps> = ({
       leaveTo="opacity-0 -translate-y-1"
     >
       <div className={combinedClassName} role="alert" {...rest}>
-        <span className="flex shrink-0 items-center">{icons[type]}</span>
-        <span className="flex-1">{children ?? message}</span>
+        <span className="flex shrink-0 items-center text-current">{icons[type]}</span>
+        <span className="flex-1 text-current">{children ?? message}</span>
         {closable && (
           <button
             type="button"
