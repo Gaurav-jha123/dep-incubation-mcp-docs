@@ -3,53 +3,66 @@ import skillMatrix from "../../mocks/skillMatrix";
 
 import TopSkillsChart from "./components/TopSkillsChart";
 import SkillsTable from "./components/SkillsTable";
-
 import UserSelector from "./components/UserSelector";
 import SummaryCards from "./components/SummaryCards";
 import ExportButtons from "./components/ExportButtons";
-import SkillsPieChart from "./components/SkillsPieChart";
+import MemberProfileView from "./components/MemberProfileView";
+
+import { getScore } from "@/lib/data-helpers";
 
 export default function Reports() {
-  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedUser, setSelectedUser] = useState(skillMatrix.users[0]?.id);
 
-  // Filter skills for selected user
-  const filteredSkills = useMemo(() => {
-    return skillMatrix.skills.filter(
-      (skill) => skill.userId === selectedUser
-    );
-  }, [selectedUser]);
-
-  // Map topic labels
-  const mappedSkills = useMemo(() => {
-    return filteredSkills.map((skill) => {
-      const topic = skillMatrix.topics.find(
-        (t) => t.id === skill.topicId
-      );
-
+  const {
+    sortedSkills,
+    topSkills,
+    selectedUserObj,
+    userSkills,
+  } = useMemo(() => {
+    if (!selectedUser) {
       return {
-        topic: topic?.label || skill.topicId,
-        value: skill.value,
+        sortedSkills: [],
+        topSkills: [],
+        selectedUserObj: null,
+        userSkills: [],
       };
-    });
-  }, [filteredSkills]);
+    }
 
-  // Sort skills
-  const sortedSkills = useMemo(() => {
-    return [...mappedSkills].sort((a, b) => b.value - a.value);
-  }, [mappedSkills]);
+    const topicMap = new Map(
+      skillMatrix.topics.map((t) => [t.id, t.label])
+    );
 
-  // Chart data
-  const chartData = sortedSkills.map((item) => ({
-    name: item.topic,
-    score: item.value,
-  }));
+    const skills = skillMatrix.skills
+      .filter((skill) => skill.userId === selectedUser)
+      .map((skill) => ({
+        topic: topicMap.get(skill.topicId) || skill.topicId,
+        value: skill.value,
+      }));
 
-  // Top skills
-  const topSkills = chartData.slice(0, 5);
+    const sorted = skills.sort((a, b) => b.value - a.value);
 
-  const selectedUserObj = skillMatrix.users.find(
-    (u) => u.id === selectedUser
-  );
+    const top = sorted.slice(0, 5).map((item) => ({
+      name: item.topic,
+      score: item.value,
+    }));;
+
+    const user = skillMatrix.users.find(
+      (u) => u.id === selectedUser
+    );
+
+    const userSkillsData = skillMatrix.topics.map((t) => ({
+      subject: t.label,
+      A: getScore(skillMatrix, selectedUser, t.id),
+      fullMark: 100,
+    }));
+
+    return {
+      sortedSkills: sorted,
+      topSkills: top,
+      selectedUserObj: user,
+      userSkills: userSkillsData,
+    };
+  }, [selectedUser]);
 
   return (
     <div className="p-8 space-y-8">
@@ -69,18 +82,18 @@ export default function Reports() {
 
       {selectedUser && (
         <div id="report-section" className="space-y-6">
-
           <SummaryCards skills={sortedSkills} user={selectedUserObj} />
 
-          <SkillsPieChart data={chartData} />
+          <MemberProfileView
+            userSkills={userSkills}
+            user={selectedUserObj}
+          />
 
           <TopSkillsChart data={topSkills} />
 
           <SkillsTable skills={sortedSkills} />
-
         </div>
       )}
-
     </div>
   );
 }
