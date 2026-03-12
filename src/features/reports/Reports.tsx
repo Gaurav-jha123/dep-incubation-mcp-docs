@@ -53,10 +53,12 @@ export default function Reports() {
 
   return (
     <div className="p-8 space-y-8">
-
-      <h1 className="text-3xl font-bold text-center">
-        Developer Skill Reports
-      </h1>
+      <div className="flex items-center justify-between gap-4">
+        <h1 className="text-xl font-semibold text-gray-900">Reports</h1>
+        {selectedUser ? (
+          <ExportButtons skills={sortedSkills} />
+        ) : null}
+      </div>
 
       <UserSelector
         users={skillMatrix.users}
@@ -66,8 +68,6 @@ export default function Reports() {
 
       {selectedUser && (
         <>
-          <ExportButtons skills={sortedSkills} />
-
           <div id="report-section" className="space-y-6">
 
             <SummaryCards skills={sortedSkills} user={selectedUserObj} />
