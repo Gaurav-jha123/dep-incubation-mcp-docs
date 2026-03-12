@@ -153,7 +153,7 @@ export const Table = <T extends Record<string, unknown>>({
                   <th
                     key={idx}
                     onClick={() => handleSort(key)}
-                    className={`w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none align-top bg-gray-100 ${
+                    className={`w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none align-top bg-secondary-50 ${
                       stickyFirstColumn && idx === 0 ? "sticky left-0 z-30" : ""
                     }`}
                   >
@@ -188,8 +188,10 @@ export const Table = <T extends Record<string, unknown>>({
                     <td
                       key={String(key)}
                       className={`text-secondary-900 whitespace-nowrap ${
-                        stickyFirstColumn && colIdx === 0? "sticky left-0 z-10 bg-white": ""
-                        }`}
+                        stickyFirstColumn && colIdx === 0
+                          ? "sticky left-0 z-10 bg-primary-50"
+                          : ""
+                      }`}
                     >
                       {cellRenderer
                         ? cellRenderer(value, key, row)

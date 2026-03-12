@@ -10,7 +10,7 @@ interface BadgeProps {
 }
 
 const variantClasses: Record<string, string> = {
-  default: "bg-secondary-200 text-secondary-900",
+  default: "bg-primary-200 text-primary-900",
   success: "bg-success-200 text-success-900",
   warning: "bg-warning-200 text-warning-900",
   error: "bg-danger-200 text-danger-900",

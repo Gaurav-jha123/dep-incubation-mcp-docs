@@ -16,11 +16,11 @@ describe("Badge Component", () => {
 
   it("applies correct variant classes", () => {
     const variants: Record<string, string> = {
-      default: "bg-gray-200 text-gray-800",
-      success: "bg-green-100 text-green-800",
-      warning: "bg-yellow-100 text-yellow-800",
-      error: "bg-red-100 text-red-800",
-      info: "bg-blue-100 text-blue-800",
+      default: "bg-primary-200 text-primary-900",
+      success: "bg-success-200 text-success-900",
+      warning: "bg-warning-200 text-warning-900",
+      error: "bg-danger-200 text-danger-900",
+      info: "bg-info-200 text-info-900",
     };
 
     Object.entries(variants).forEach(([variant, classes]) => {
