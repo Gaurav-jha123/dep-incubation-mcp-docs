@@ -7,6 +7,7 @@ import NotFound from "./components/not-found/not-found";
 import "./App.css";
 import APP_ROUTES from "./route-config";
 import { Suspense } from "react";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 
 function ProtectedRoute({ isAuthenticated }: { isAuthenticated: boolean }) {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
@@ -18,41 +19,43 @@ function App() {
   return (
     <BrowserRouter>
       <QueryProvider>
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center h-screen">
-              Loading...
-            </div>
-          }
-        >
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Navigate to={isLoggedIn ? "/skillMatrix" : "/login"} replace />
-              }
-            />
-            <Route path="/login" element={<Login />} />
+        <ErrorBoundary>
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center h-screen">
+                Loading...
+              </div>
+            }
+          >
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Navigate to={isLoggedIn ? "/skillMatrix" : "/login"} replace />
+                }
+              />
+              <Route path="/login" element={<Login />} />
 
-            <Route element={<ProtectedRoute isAuthenticated={isLoggedIn} />}>
-              <Route element={<Layout />}>
-                {/* Map through the routes object */}
-                {APP_ROUTES.map((route) => {
-                  const Component = route.element;
-                  return (
-                    <Route
-                      key={route.path}
-                      path={route.path}
-                      element={<Component />}
-                    />
-                  );
-                })}
+              <Route element={<ProtectedRoute isAuthenticated={isLoggedIn} />}>
+                <Route element={<Layout />}>
+                  {/* Map through the routes object */}
+                  {APP_ROUTES.map((route) => {
+                    const Component = route.element;
+                    return (
+                      <Route
+                        key={route.path}
+                        path={route.path}
+                        element={<Component />}
+                      />
+                    );
+                  })}
+                </Route>
               </Route>
-            </Route>
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
       </QueryProvider>
     </BrowserRouter>
   );
