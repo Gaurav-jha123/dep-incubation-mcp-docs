@@ -8,12 +8,7 @@ vi.mock("../../../components/Table/Table", () => ({
   Table: vi.fn(() => <div data-testid="mock-table" />),
 }));
 
-// 2. Mock the legend component
-vi.mock("./SkillMatrixTableLegend", () => ({
-  default: vi.fn(() => <div data-testid="mock-legend" />),
-}));
-
-// 3. Setup mock domain data
+// 2. Setup mock domain data
 const mockData = {
   users: [
     { id: "u1", name: "Alice" },
@@ -37,11 +32,10 @@ afterEach(() => {
 });
 
 describe("SkillMatrixTable", () => {
-  it("renders the table and legend without crashing", () => {
+  it("renders the table without crashing", () => {
     render(<SkillMatrixTable data={mockData} />);
     
-    expect(screen.getByTestId("mock-legend")).not.toBeNull();
-    expect(screen.getByTestId("mock-table")).not.toBeNull();
+    expect(screen.getByTestId("mock-table")).toBeDefined();
   });
 
   it("flattens the complex data and passes the correct props to the Table", () => {

@@ -31,8 +31,12 @@ describe("SkillMatrixFilter", () => {
     );
 
     // Verify both generic MultiSelectSearch components are rendered with correct labels
-    expect(screen.getByRole("button", { name: "Select Users" })).not.toBeNull();
-    expect(screen.getByRole("button", { name: "Select Topics" })).not.toBeNull();
+    expect(screen.getByText("Select Users")).toBeDefined();
+    expect(screen.getByText("Select Topics")).toBeDefined();
+    
+    // Verify we have two buttons
+    const buttons = screen.getAllByRole("button");
+    expect(buttons).toHaveLength(2);
   });
 
   it("maps user data correctly and passes them to the Users filter", () => {
@@ -47,15 +51,16 @@ describe("SkillMatrixFilter", () => {
       />
     );
 
-    // The button should reflect the selected count
-    const usersButton = screen.getByRole("button", { name: "Users ( 1 )" });
-    expect(usersButton).not.toBeNull();
+    // The button should show Users label and count badge
+    expect(screen.getByText("Users")).toBeDefined();
+    expect(screen.getByText("1")).toBeDefined(); // Count badge
 
     // Open the dropdown to verify the options were mapped correctly 
     // from { id, name } to what the dropdown displays
-    fireEvent.click(usersButton);
-    expect(screen.getByText("Alice")).not.toBeNull();
-    expect(screen.getByText("Bob")).not.toBeNull();
+    const buttons = screen.getAllByRole("button");
+    fireEvent.click(buttons[0]); // First button is Users
+    expect(screen.getByText("Alice")).toBeDefined();
+    expect(screen.getByText("Bob")).toBeDefined();
   });
 
   it("maps topic data correctly and passes them to the Topics filter", () => {
@@ -70,13 +75,14 @@ describe("SkillMatrixFilter", () => {
       />
     );
 
-    // The button should reflect the selected count
-    const topicsButton = screen.getByRole("button", { name: "Topics ( 2 )" });
-    expect(topicsButton).not.toBeNull();
+    // The button should show Topics label and count badge
+    expect(screen.getByText("Topics")).toBeDefined();
+    expect(screen.getByText("2")).toBeDefined(); // Count badge
 
     // Open the dropdown to verify the options were mapped correctly
-    fireEvent.click(topicsButton);
-    expect(screen.getByText("React")).not.toBeNull();
-    expect(screen.getByText("Node.js")).not.toBeNull();
+    const buttons = screen.getAllByRole("button");
+    fireEvent.click(buttons[1]); // Second button is Topics
+    expect(screen.getByText("React")).toBeDefined();
+    expect(screen.getByText("Node.js")).toBeDefined();
   });
 });

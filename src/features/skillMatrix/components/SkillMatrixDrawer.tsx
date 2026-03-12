@@ -63,21 +63,20 @@ export default function SkillMatrixDrawer({
             </button>
           </DrawerClose>
         </DrawerHeader>
-        <div className="flex-1 overflow-y-auto">
-          <div className="flex flex-col gap-6 p-4">
-            <SkillMatrixFilter
-              users={users}
-              topics={topics}
-              selectedUsers={selectedUsers}
-              selectedTopics={selectedTopics}
-              onUsersChange={onUsersChange}
-              onTopicsChange={onTopicsChange}
-            />
-            <SkillMatrixColumnRearrange
-              topics={orderedTopics}
-              onOrderChange={onColumnOrderChange}
-            />
-          </div>
+        <div className="flex flex-1 flex-col gap-6 overflow-hidden p-4">
+          <SkillMatrixFilter
+            users={users}
+            topics={topics}
+            selectedUsers={selectedUsers}
+            selectedTopics={selectedTopics}
+            onUsersChange={onUsersChange}
+            onTopicsChange={onTopicsChange}
+          />
+          <SkillMatrixColumnRearrange
+            topics={orderedTopics}
+            onOrderChange={onColumnOrderChange}
+            className="flex-1 min-h-0"
+          />
         </div>
       </DrawerContent>
     </Drawer>

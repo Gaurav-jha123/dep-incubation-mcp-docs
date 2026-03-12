@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Listbox } from "@headlessui/react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface TableProps<T> {
   headers: string[];
@@ -144,7 +145,9 @@ export const Table = <T extends Record<string, unknown>>({
       {/* Table */}
       <div className="overflow-auto border border-secondary-200 rounded-lg max-h-full">
         <table className="table-fixed min-w-full text-left text-sm">
-          <thead className={`bg-secondary-200 text-secondary-700 ${stickyHeader ? "sticky top-0 z-20" : ""}`}>
+          <thead
+            className={`bg-secondary-200 text-secondary-700 ${stickyHeader ? "sticky top-0 z-20" : ""}`}
+          >
             <tr>
               {headers.map((header, idx) => {
                 const key = keys[idx];
@@ -153,7 +156,7 @@ export const Table = <T extends Record<string, unknown>>({
                   <th
                     key={idx}
                     onClick={() => handleSort(key)}
-                    className={`w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none align-top bg-gray-100 ${
+                    className={`w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none align-top bg-secondary-50 ${
                       stickyFirstColumn && idx === 0 ? "sticky left-0 z-30" : ""
                     }`}
                   >
@@ -180,7 +183,10 @@ export const Table = <T extends Record<string, unknown>>({
           {/* Body */}
           <tbody>
             {currentRows.map((row, idx) => (
-              <tr key={idx} className="border-b hover:bg-secondary-50 transition">
+              <tr
+                key={idx}
+                className="border-b hover:bg-secondary-50 transition"
+              >
                 {keys.map((key, colIdx) => {
                   const value = row[key];
 
@@ -188,8 +194,10 @@ export const Table = <T extends Record<string, unknown>>({
                     <td
                       key={String(key)}
                       className={`text-secondary-900 whitespace-nowrap ${
-                        stickyFirstColumn && colIdx === 0? "sticky left-0 z-10 bg-white": ""
-                        }`}
+                        stickyFirstColumn && colIdx === 0
+                          ? "sticky left-0 z-10 bg-primary-50"
+                          : ""
+                      }`}
                     >
                       {cellRenderer
                         ? cellRenderer(value, key, row)
@@ -217,26 +225,28 @@ export const Table = <T extends Record<string, unknown>>({
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center items-center gap-5 text-sm">
-        <button
-          disabled={page === 0}
-          onClick={() => setPage(page - 1)}
-          className="px-3 py-1 rounded bg-secondary-200 disabled:opacity-50"
-        >
-          Previous
-        </button>
-
+      <div className="flex justify-between items-center gap-5 text-sm">
         <span>
           Page {page + 1} of {totalPages}
         </span>
-
-        <button
-          disabled={page === totalPages - 1 || totalPages === 0}
-          onClick={() => setPage(page + 1)}
-          className="px-3 py-1 rounded bg-secondary-200 disabled:opacity-50"
-        >
-          Next
-        </button>
+        <div className="flex gap-2">
+          <button
+            aria-label="Previous"
+            disabled={page === 0}
+            onClick={() => setPage(page - 1)}
+            className="w-10 h-10 flex items-center justify-center border border-grey-300 rounded-md cursor-pointer hover:bg-grey-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            aria-label="Next"
+            disabled={page === totalPages - 1 || totalPages === 0}
+            onClick={() => setPage(page + 1)}
+            className="w-10 h-10 flex items-center justify-center border border-grey-300 rounded-md cursor-pointer hover:bg-grey-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
       </div>
     </div>
   );

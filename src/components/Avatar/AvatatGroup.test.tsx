@@ -61,5 +61,31 @@ describe("AvatarGroup Component", () => {
     const remaining = screen.getByText("+5");
     expect(remaining).toBeTruthy();
   });
+  it("applies correct size class for sm avatars", () => {
+  const { container } = render(
+    <AvatarGroup avatars={avatars} size="sm" maxVisible={2} />
+  );
+
+  const avatar = container.querySelector(".h-8");
+  expect(avatar).toBeTruthy();
+});
+
+  it("applies correct size class for md avatars", () => {
+    const { container } = render(
+      <AvatarGroup avatars={avatars} size="md" maxVisible={2} />
+    );
+
+    const avatar = container.querySelector(".h-10");
+    expect(avatar).toBeTruthy();
+  });
+
+  it("applies correct size class for xl avatars", () => {
+    const { container } = render(
+      <AvatarGroup avatars={avatars} size="xl" maxVisible={2} />
+    );
+
+    const avatar = container.querySelector(".h-20");
+    expect(avatar).toBeTruthy();
+  });
 
 });
