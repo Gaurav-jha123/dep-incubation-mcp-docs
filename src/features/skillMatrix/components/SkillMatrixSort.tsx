@@ -1,5 +1,6 @@
 import React from "react";
-import type { sortOrder } from "./SkillMatrixTable";
+
+type sortOrder = "ascending" | "descending";
 
 interface SkillMatrixFiltersProps {
   sortColumn: string;

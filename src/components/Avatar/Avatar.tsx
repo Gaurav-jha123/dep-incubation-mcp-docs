@@ -28,10 +28,10 @@ const sizeMap = {
 };
 
 const statusMap = {
-  online: "bg-green-500",
-  offline: "bg-gray-400",
-  busy: "bg-red-500",
-  away: "bg-yellow-500",
+  online: "bg-success-500",
+  offline: "bg-secondary-500",
+  busy: "bg-danger-500",
+  away: "bg-warning-500",
 };
 
 export const Avatar: React.FC<AvatarProps> = ({
@@ -46,11 +46,10 @@ export const Avatar: React.FC<AvatarProps> = ({
 
   return (
     <div className="relative inline-block">
-      {/* Avatar Circle */}
       <div
         className={`
-          rounded-full bg-gray-200 overflow-hidden flex items-center justify-center
-          text-gray-700 font-semibold select-none
+          overflow-hidden rounded-full bg-secondary-100 text-secondary-700
+          flex items-center justify-center font-semibold select-none
           ${sizeClass} ${className}
         `}
       >
@@ -61,15 +60,14 @@ export const Avatar: React.FC<AvatarProps> = ({
         )}
       </div>
 
-      {/* Status Indicator */}
       {status && (
         <span
           className={`
-            absolute bottom-0 right-0 
-            h-3 w-3 rounded-full border-2 border-white
+            absolute bottom-0 right-0
+            h-3 w-3 rounded-full border-2 border-background
             ${statusMap[status]}
           `}
-        ></span>
+        />
       )}
     </div>
   );

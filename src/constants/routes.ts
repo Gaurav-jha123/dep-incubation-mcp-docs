@@ -3,8 +3,13 @@ import { lazy } from "react";
 export const APP_ROUTES = [
   { 
     path: "dashboard", 
-    element: lazy(() => import("../features/dashboard/dashboard").then(mod => ({ default: mod.Dashboard }))), 
+    element: lazy(() => import("../features/dashboard/dashboard")), 
     title: "Dashboard" 
+  },
+  { 
+    path: "skillMatrix", 
+    element: lazy(() => import("../features/skillMatrix/SkillMatrix")), 
+    title: "Skill Matrix" 
   },
   { 
     path: "userform", 
@@ -13,7 +18,7 @@ export const APP_ROUTES = [
   },
   { 
     path: "reports", 
-    element: lazy(() => import("../features/reports/Reports").then(mod => ({ default: mod.Reports }))), 
+    element: lazy(() => import("../features/reports/Reports")), 
     title: "Reports" 
   },
 ];

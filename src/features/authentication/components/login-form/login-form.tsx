@@ -1,24 +1,14 @@
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  FieldSet,
-} from "@/components/ui/field";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { EyeOffIcon, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Alert } from "@/components/Alert/Alert";
+import { Input } from "@/components/Input/Input";
+
 import useAuth from "@/lib/hooks/use-auth/use-auth";
 import { loginFormSchema } from "@/lib/schema/login-form.zod";
-import { Alert } from "@/components/Alert/Alert";
 
 function LoginForm() {
   const {
@@ -28,7 +18,7 @@ function LoginForm() {
   } = useForm({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      emailId: "",
+      email: "",
       password: "",
     },
     mode: "all",
@@ -47,131 +37,75 @@ function LoginForm() {
 
   return (
     <form
-      className="w-[90%] lg:w-1/2 flex justify-center items-center"
+      className="w-full max-w-sm sm:max-w-md md:max-w-[410px] mx-auto px-4"
       onSubmit={handleSubmit(handleOnSubmit)}
       aria-labelledby="login-form-title"
       noValidate
     >
-      <FieldSet
-        className="w-full max-w-lg bg-white rounded-xl !p-8 gap-0"
-        role="group"
-      >
+      <div className="w-full bg-white rounded-xl p-8 shadow-sm">
         <h1
           id="login-form-title"
-          className="text-2xl font-bold mb-1 text-center"
+          className="text-3xl font-bold text-center mb-8"
         >
-          DEP Dashboard Login
+          Login
         </h1>
 
-        <FieldGroup className="mt-6">
-          {/* EMAIL FIELD */}
+        <div className="space-y-5">
+          {/* EMAIL */}
           <Controller
-            name="emailId"
+            name="email"
             control={control}
-            render={({ field, fieldState }) => {
-              const errorId = "login-email-error";
-
-              return (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="login-form-email-id">
-                    Email Id
-                  </FieldLabel>
-
-                  <InputGroup>
-                    <InputGroupInput
-                      {...field}
-                      id="login-form-email-id"
-                      type="email"
-                      placeholder="Input your email id"
-                      aria-invalid={fieldState.invalid}
-                      aria-describedby={
-                        fieldState.invalid ? errorId : undefined
-                      }
-                    />
-
-                    <InputGroupAddon
-                      align="inline-start"
-                      className="mx-2"
-                      aria-hidden="true"
-                    >
-                      <User aria-hidden="true" focusable="false" />
-                    </InputGroupAddon>
-                  </InputGroup>
-
-                  {fieldState.invalid && (
-                    <FieldError
-                      id={errorId}
-                      role="alert"
-                      aria-live="assertive"
-                      errors={[fieldState.error]}
-                    />
-                  )}
-                </Field>
-              );
-            }}
+            render={({ field, fieldState }) => (
+              <Input
+                {...field}
+                id="login-form-email"
+                type="email"
+                label="Email"
+                placeholder="Enter email"
+                fullWidth
+                error={fieldState.error?.message}
+                inputSize="lg"
+              />
+            )}
           />
 
-          {/* PASSWORD FIELD */}
+          {/* PASSWORD */}
           <Controller
             name="password"
             control={control}
-            render={({ field, fieldState }) => {
-              const errorId = "login-password-error";
-
-              return (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="login-form-password">
-                    Password
-                  </FieldLabel>
-
-                  <InputGroup>
-                    <InputGroupInput
-                      {...field}
-                      id="login-form-password"
-                      type="password"
-                      placeholder="Input your password"
-                      aria-invalid={fieldState.invalid}
-                      aria-describedby={
-                        fieldState.invalid ? errorId : undefined
-                      }
-                    />
-
-                    <InputGroupAddon
-                      align="inline-start"
-                      className="mx-2"
-                      aria-hidden="true"
-                    >
-                      <EyeOffIcon aria-hidden="true" focusable="false" />
-                    </InputGroupAddon>
-                  </InputGroup>
-
-                  {fieldState.invalid && (
-                    <FieldError
-                      id={errorId}
-                      role="alert"
-                      aria-live="assertive"
-                      errors={[fieldState.error]}
-                    />
-                  )}
-                </Field>
-              );
-            }}
+            render={({ field, fieldState }) => (
+              <Input
+                {...field}
+                id="login-form-password"
+                type="password"
+                label="Password"
+                placeholder="Enter password"
+                fullWidth
+                error={fieldState.error?.message}
+                inputSize="lg"
+              />
+            )}
           />
 
-          <Alert message="Note: You can use any valid email and password until APIs are integrated." type="info" />
-          
+          <div className="pt-1">
+            <Alert
+              message="Note: You can use any valid email and password until APIs are integrated."
+              type="info"
+            />
+          </div>
+
           <Button
             disabled={!isValid}
             data-testid="login-submit-btn"
             type="submit"
             variant="default"
             aria-disabled={!isValid}
-            className="cursor-pointer"
+            className="w-full cursor-pointer h-12 mt-2"
           >
             Login
           </Button>
-        </FieldGroup>
-      </FieldSet>
+        </div>
+      </div>
     </form>
   );
 }

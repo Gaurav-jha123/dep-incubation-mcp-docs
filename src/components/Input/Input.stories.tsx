@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Input } from "./Input";
+import { Mail, Lock, Eye } from "lucide-react";
 
 const meta = {
   title: "Components/Input",
@@ -16,11 +17,12 @@ const meta = {
     disabled: false,
     required: false,
     fullWidth: false,
+    showCharCount: false,
   },
   argTypes: {
     variant: {
       control: { type: "select" },
-      options: ["default", "error", "success"],
+      options: ["default", "error", "success", "outlined"],
     },
     inputSize: {
       control: { type: "select" },
@@ -38,12 +40,17 @@ const meta = {
     placeholder: {
       control: "text",
     },
+    maxLength: {
+      control: { type: "number", min: 10, max: 500 },
+    },
     disabled: { control: "boolean" },
     required: { control: "boolean" },
     fullWidth: { control: "boolean" },
+    showCharCount: { control: "boolean" },
     leftIcon: { control: false },
     rightIcon: { control: false },
     className: { control: false },
+    onClear: { control: false },
   },
 } satisfies Meta<typeof Input>;
 
@@ -58,6 +65,45 @@ export const WithHelper: Story = {
     label: "Email Address",
     helperText: "We will never share your email with anyone",
     required: true,
+  },
+};
+
+export const WithLeftIcon: Story = {
+  args: {
+    placeholder: "example@email.com",
+    label: "Email Address",
+    leftIcon: <Mail size={18} />,
+    required: true,
+  },
+};
+
+export const WithRightIcon: Story = {
+  args: {
+    placeholder: "Enter password",
+    label: "Password",
+    type: "password",
+    rightIcon: <Eye size={18} />,
+    required: true,
+  },
+};
+
+export const WithCharCount: Story = {
+  args: {
+    placeholder: "Write your bio",
+    label: "Bio",
+    maxLength: 150,
+    showCharCount: true,
+    helperText: "Tell us about yourself",
+  },
+};
+
+export const CharCountExceeded: Story = {
+  args: {
+    placeholder: "Write your bio",
+    label: "Bio",
+    maxLength: 50,
+    showCharCount: true,
+    defaultValue: "This is a very long text that exceeds the character limit",
   },
 };
 
@@ -120,5 +166,22 @@ export const Required: Story = {
     label: "Required Field",
     required: true,
     helperText: "This field is mandatory",
+  },
+};
+
+export const Outlined: Story = {
+  args: {
+    placeholder: "",
+    label: "Outlined",
+    variant: "outlined",
+  },
+};
+
+export const OutlinedWithIcon: Story = {
+  args: {
+    placeholder: "",
+    label: "Outlined with Icon",
+    variant: "outlined",
+    leftIcon: <Lock size={18} />,
   },
 };

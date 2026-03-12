@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Listbox } from "@headlessui/react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface TableProps<T> {
   headers: string[];
@@ -7,7 +8,12 @@ export interface TableProps<T> {
   keys: (keyof T)[];
   rowsPerPageOptions?: number[];
   className?: string;
-  showSearch?: boolean; // <-- Added this
+  showSearch?: boolean;
+  stickyHeader?: boolean;
+  stickyFirstColumn?: boolean;
+
+  // Optional custom cell renderer
+  cellRenderer?: (value: unknown, key: keyof T, row: T) => React.ReactNode;
 }
 
 export const Table = <T extends Record<string, unknown>>({
@@ -16,7 +22,10 @@ export const Table = <T extends Record<string, unknown>>({
   keys,
   rowsPerPageOptions = [5, 10, 20],
   className = "",
-  showSearch = true, // <-- Defaults to true so it doesn't break other teams' tables
+  showSearch = true,
+  stickyHeader = false,
+  stickyFirstColumn = false,
+  cellRenderer,
 }: TableProps<T>) => {
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
   const [page, setPage] = useState(0);
@@ -38,7 +47,6 @@ export const Table = <T extends Record<string, unknown>>({
 
   /* Filtering */
   const filteredData = useMemo(() => {
-    // If search is hidden or empty, skip filtering to save performance
     if (!showSearch || !search) return data;
 
     return data.filter((row) =>
@@ -89,10 +97,8 @@ export const Table = <T extends Record<string, unknown>>({
 
   return (
     <div className={`w-full space-y-4 ${className}`}>
-      {/* Search Filter and Row Options - Only render top bar if one of them is active */}
       {(showSearch || rowsPerPageOptions.length > 1) && (
         <div className="flex justify-between items-center">
-          {/* Conditionally render the search input */}
           {showSearch ? (
             <input
               type="text"
@@ -105,25 +111,23 @@ export const Table = <T extends Record<string, unknown>>({
               className="border px-3 py-1 rounded w-60"
             />
           ) : (
-            <div /> // Empty div to keep flex-between spacing intact if search is hidden but listbox is shown
+            <div />
           )}
 
-          {/* Conditionally render rows per page */}
           {rowsPerPageOptions.length > 1 && (
             <Listbox value={rowsPerPage} onChange={setRowsPerPage}>
               <div className="relative">
-                <Listbox.Button className="px-3 py-1 border rounded bg-white">
+                <Listbox.Button className="px-3 py-1 border rounded bg-secondary-50">
                   Rows: {rowsPerPage}
                 </Listbox.Button>
 
-                <Listbox.Options className="absolute right-0 mt-1 bg-white border rounded shadow z-10">
+                <Listbox.Options className="absolute right-0 mt-1 bg-secondary-50 border rounded shadow z-10">
                   {rowsPerPageOptions.map((opt) => (
                     <Listbox.Option
                       key={opt}
                       value={opt}
                       className={({ active }) =>
-                        `px-3 py-1 cursor-pointer ${
-                          active ? "bg-gray-100" : ""
+                        `px-3 py-1 cursor-pointer ${active ? "bg-secondary-200" : ""
                         }`
                       }
                     >
@@ -138,10 +142,9 @@ export const Table = <T extends Record<string, unknown>>({
       )}
 
       {/* Table */}
-      <div className="overflow-x-auto border border-gray-200 rounded-lg">
+      <div className="overflow-auto border border-secondary-200 rounded-lg max-h-full">
         <table className="table-fixed min-w-full text-left text-sm">
-          {/* Header */}
-          <thead className="bg-gray-100 text-gray-700">
+          <thead className={`bg-secondary-200 text-secondary-700 ${stickyHeader ? "sticky top-0 z-20" : ""}`}>
             <tr>
               {headers.map((header, idx) => {
                 const key = keys[idx];
@@ -150,10 +153,15 @@ export const Table = <T extends Record<string, unknown>>({
                   <th
                     key={idx}
                     onClick={() => handleSort(key)}
-                    className="w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none"
+                    className={`w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none align-top bg-secondary-50 ${
+                      stickyFirstColumn && idx === 0 ? "sticky left-0 z-30" : ""
+                    }`}
                   >
                     <div className="flex items-start gap-1">
-                      <span className="line-clamp-2 leading-tight">
+                      <span
+                        className="line-clamp-2 leading-tight"
+                        title={header}
+                      >
                         {header}
                       </span>
 
@@ -172,15 +180,27 @@ export const Table = <T extends Record<string, unknown>>({
           {/* Body */}
           <tbody>
             {currentRows.map((row, idx) => (
-              <tr key={idx} className="border-b hover:bg-gray-50 transition">
-                {keys.map((key) => (
-                  <td
-                    key={String(key)}
-                    className="px-4 py-3 text-gray-800 whitespace-nowrap"
-                  >
-                    {row[key] !== undefined ? String(row[key]) : ""}
-                  </td>
-                ))}
+              <tr key={idx} className="border-b hover:bg-secondary-50 transition">
+                {keys.map((key, colIdx) => {
+                  const value = row[key];
+
+                  return (
+                    <td
+                      key={String(key)}
+                      className={`text-secondary-900 whitespace-nowrap ${
+                        stickyFirstColumn && colIdx === 0
+                          ? "sticky left-0 z-10 bg-primary-50"
+                          : ""
+                      }`}
+                    >
+                      {cellRenderer
+                        ? cellRenderer(value, key, row)
+                        : value !== undefined
+                          ? String(value)
+                          : ""}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
 
@@ -188,7 +208,7 @@ export const Table = <T extends Record<string, unknown>>({
               <tr>
                 <td
                   colSpan={headers.length}
-                  className="text-center py-6 text-gray-500"
+                  className="text-center py-6 text-secondary-500"
                 >
                   No data found
                 </td>
@@ -199,26 +219,27 @@ export const Table = <T extends Record<string, unknown>>({
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-between items-center text-sm">
-        <button
-          disabled={page === 0}
-          onClick={() => setPage(page - 1)}
-          className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
-        >
-          Previous
-        </button>
-
+      <div className="flex justify-between items-center gap-5 text-sm">
         <span>
           Page {page + 1} of {totalPages}
         </span>
+        <div className="flex gap-2">
+          <button
+            disabled={page === 0}
+            onClick={() => setPage(page - 1)}
+            className="w-10 h-10 flex items-center justify-center border border-grey-300 rounded-md cursor-pointer hover:bg-grey-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            disabled={page === totalPages - 1 || totalPages === 0}
+            onClick={() => setPage(page + 1)}
+            className="w-10 h-10 flex items-center justify-center border border-grey-300 rounded-md cursor-pointer hover:bg-grey-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
 
-        <button
-          disabled={page === totalPages - 1 || totalPages === 0}
-          onClick={() => setPage(page + 1)}
-          className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
-        >
-          Next
-        </button>
       </div>
     </div>
   );

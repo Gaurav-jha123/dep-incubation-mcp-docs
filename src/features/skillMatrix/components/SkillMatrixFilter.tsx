@@ -20,7 +20,7 @@ const SkillMatrixFilter = ({
   onTopicsChange,
 }: Props) => {
   return (
-    <div className="flex gap-6">
+    <div className="flex flex-col gap-4 w-full">
       <MultiSelectSearch
         label="Users"
         options={users.map((u) => ({
