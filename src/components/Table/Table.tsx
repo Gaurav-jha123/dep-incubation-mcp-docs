@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Listbox } from "@headlessui/react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface TableProps<T> {
   headers: string[];
@@ -126,8 +127,7 @@ export const Table = <T extends Record<string, unknown>>({
                       key={opt}
                       value={opt}
                       className={({ active }) =>
-                        `px-3 py-1 cursor-pointer ${
-                          active ? "bg-secondary-200" : ""
+                        `px-3 py-1 cursor-pointer ${active ? "bg-secondary-200" : ""
                         }`
                       }
                     >
@@ -219,26 +219,27 @@ export const Table = <T extends Record<string, unknown>>({
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center items-center gap-5 text-sm">
-        <button
-          disabled={page === 0}
-          onClick={() => setPage(page - 1)}
-          className="px-3 py-1 rounded bg-secondary-200 disabled:opacity-50"
-        >
-          Previous
-        </button>
-
+      <div className="flex justify-between items-center gap-5 text-sm">
         <span>
           Page {page + 1} of {totalPages}
         </span>
+        <div className="flex gap-2">
+          <button
+            disabled={page === 0}
+            onClick={() => setPage(page - 1)}
+            className="w-10 h-10 flex items-center justify-center border border-grey-300 rounded-md cursor-pointer hover:bg-grey-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            disabled={page === totalPages - 1 || totalPages === 0}
+            onClick={() => setPage(page + 1)}
+            className="w-10 h-10 flex items-center justify-center border border-grey-300 rounded-md cursor-pointer hover:bg-grey-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
 
-        <button
-          disabled={page === totalPages - 1 || totalPages === 0}
-          onClick={() => setPage(page + 1)}
-          className="px-3 py-1 rounded bg-secondary-200 disabled:opacity-50"
-        >
-          Next
-        </button>
       </div>
     </div>
   );
