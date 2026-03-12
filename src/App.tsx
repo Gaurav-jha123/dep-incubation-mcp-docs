@@ -29,7 +29,7 @@ function App() {
             <Route
               path="/"
               element={
-                <Navigate to={isLoggedIn ? "/dashboard" : "/login"} replace />
+                <Navigate to={isLoggedIn ? "/skillMatrix" : "/login"} replace />
               }
             />
             <Route path="/login" element={<Login />} />

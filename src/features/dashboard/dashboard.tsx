@@ -1,111 +1,119 @@
-import {  useMemo, useState } from "react";
-import SkillMatrixTable from "./components/SkillMatrixTable";
-import SkillMatrixFilter from "./components/SkillMatrixFilter";
 import skillMatrix from "@/mocks/skillMatrix";
-import type { Topic } from "./components/types";
-import SkillMatrixColumnRearrange from "./components/SkillMatrixColumnRearrange";
+import {
+  PieChart,
+  Pie,
+  Tooltip,
+  ResponsiveContainer,
+  Legend
+} from "recharts";
 
 const Dashboard = () => {
-  const allUserIds = skillMatrix.users.map((u) => u.id);
-  const allTopicIds = skillMatrix.topics.map((t) => t.id);
 
-  const [selectedUsers, setSelectedUsers] = useState<string[]>(allUserIds);
-  const [selectedTopics, setSelectedTopics] = useState<string[]>(allTopicIds);
+  /* totals */
+  const totalUsers = skillMatrix.users.length;
+  const totalTopics = skillMatrix.topics.length;
+  const totalSkills = skillMatrix.skills.length;
+  const avgSkillsPerUser = (totalSkills / totalUsers).toFixed(1);
 
-  /**
-   * USER FILTER HANDLER
-   */
-  const handleUsersChange = (values: string[]) => {
-    if (values.length === 0) {
-      setSelectedUsers([]);
-      return;
-    }
+  /* skill range groups */
+  const ranges = [
+    { name: "Beginner (0-40)", min: 0, max: 40 },
+    { name: "Intermediate (41-60)", min: 41, max: 60 },
+    { name: "Advanced (61-80)", min: 61, max: 80 },
+    { name: "Expert (81-100)", min: 81, max: 100 }
+  ];
 
-    setSelectedUsers(values);
-  };
+  /* chart colors */
+  const colors = [
+    "#4f46e5",
+    "#16a34a",
+    "#ca8a04",
+    "#dc2626"
+  ];
 
-  /**
-   * TOPIC FILTER HANDLER
-   */
-  const handleTopicsChange = (values: string[]) => {
-    if (values.length === 0) {
-      setSelectedTopics([]);
-      return;
-    }
-    setSelectedTopics(values);
-  };
+  /* prepare pie chart data */
+  const chartData = ranges.map((range, index) => {
 
-  /**
-   * EFFECTIVE FILTER VALUES
-   * remove "All" before filtering
-   */
-
-  const filteredData = useMemo(() => {
-    const users = skillMatrix.users.filter(
-      (u) => selectedUsers.length === 0 || selectedUsers.includes(u.id),
-    );
-
-    const topics = skillMatrix.topics.filter(
-      (t) => selectedTopics.length === 0 || selectedTopics.includes(t.id),
-    );
-
-    const skills = skillMatrix.skills.filter((skill) => {
-      const userMatch =
-        selectedUsers.length === 0 || selectedUsers.includes(skill.userId);
-
-      const topicMatch =
-        selectedTopics.length === 0 || selectedTopics.includes(skill.topicId);
-
-      return userMatch && topicMatch;
-    });
+    const count = skillMatrix.skills.filter(
+      (skill) =>
+        skill.value >= range.min &&
+        skill.value <= range.max
+    ).length;
 
     return {
-      users,
-      topics,
-      skills,
+      name: range.name,
+      value: count,
+      fill: colors[index]
     };
-  }, [selectedUsers, selectedTopics]);
 
-  const [orderedTopics, setOrderedTopics] = useState<Topic[]>(() => filteredData.topics);
-
-
-  const handleColumnOrderChange = (orderedTopicIds: string[]) => {
-    const topicById = new Map(
-      filteredData.topics.map((topic) => [topic.id, topic]),
-    );
-    const nextTopics = orderedTopicIds
-      .map((topicId) => topicById.get(topicId))
-      .filter((topic): topic is Topic => Boolean(topic));
-
-    setOrderedTopics(nextTopics);
-  };
-
-  const orderedFilteredData = useMemo(
-    () => ({
-      ...filteredData,
-      topics: orderedTopics,
-    }),
-    [filteredData, orderedTopics],
-  );
+  });
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-end items-center">
-        <SkillMatrixFilter
-          users={skillMatrix.users}
-          topics={skillMatrix.topics}
-          selectedUsers={selectedUsers}
-          selectedTopics={selectedTopics}
-          onUsersChange={handleUsersChange}
-          onTopicsChange={handleTopicsChange}
-        />
-        <SkillMatrixColumnRearrange
-          topics={orderedTopics}
-          onOrderChange={handleColumnOrderChange}
-        />
+    <div className="p-6 space-y-8 bg-gray-100 min-h-screen">
+
+      {/* Title */}
+      <h1 className="text-3xl font-bold text-gray-800">
+        Skill Matrix Dashboard
+      </h1>
+
+      {/* KPI cards */}
+      <div className="grid grid-cols-5 gap-6">
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <p className="text-gray-500 text-sm">Total Users</p>
+          <h2 className="text-3xl font-bold">{totalUsers}</h2>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <p className="text-gray-500 text-sm">Total Topics</p>
+          <h2 className="text-3xl font-bold">{totalTopics}</h2>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <p className="text-gray-500 text-sm">Total Skills</p>
+          <h2 className="text-3xl font-bold">{totalSkills}</h2>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <p className="text-gray-500 text-sm">Avg Skills / User</p>
+          <h2 className="text-3xl font-bold">{avgSkillsPerUser}</h2>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <p className="text-gray-500 text-sm">Topics Covered</p>
+          <h2 className="text-3xl font-bold">{totalTopics}</h2>
+        </div>
+
       </div>
 
-      <SkillMatrixTable data={orderedFilteredData} />
+      {/* Pie Chart */}
+      <div className="bg-white rounded-lg shadow p-8 h-[420px]">
+
+        <h2 className="text-lg font-semibold text-gray-700 mb-4">
+          Skill Level Distribution
+        </h2>
+
+        <ResponsiveContainer width="100%" height="100%">
+
+          <PieChart>
+
+            <Pie
+              data={chartData}
+              dataKey="value"
+              nameKey="name"
+              outerRadius={140}
+              label
+            />
+
+            <Tooltip />
+            <Legend />
+
+          </PieChart>
+
+        </ResponsiveContainer>
+
+      </div>
+
     </div>
   );
 };

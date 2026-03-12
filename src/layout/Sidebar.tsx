@@ -4,25 +4,28 @@ import {
   LayoutDashboard,
   Users,
   BarChart3,
-  CirclePower,
   X,
+  DatabaseBackupIcon,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import useAuth from "@/lib/hooks/use-auth/use-auth";
 
 interface SidebarProps {
   onClose?: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
-  const { logout } = useAuth();
 
   const menuItems = [
+     {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: <DatabaseBackupIcon size={18} />,
+    },
     {
       name: "SkillMatrix",
-      path: "/dashboard",
+      path: "/skillMatrix",
       icon: <LayoutDashboard size={18} />,
     },
+   
     { name: "Users", path: "/userform", icon: <Users size={18} /> },
     { name: "Reports", path: "/reports", icon: <BarChart3 size={18} /> },
   ];
@@ -59,17 +62,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
           ))}
         </ul>
       </nav>
-
-      <div className="p-4 border-t">
-        <Button
-          variant="destructive"
-          className="w-full flex items-center justify-center gap-2 cursor-pointer"
-          onClick={logout}
-        >
-          Logout
-          <CirclePower className="w-4 h-4" />
-        </Button>
-      </div>
     </aside>
   );
 };

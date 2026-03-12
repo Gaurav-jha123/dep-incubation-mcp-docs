@@ -117,7 +117,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             role="tooltip"
             style={{ top: coords.top, left: coords.left }}
             className={[
-              "fixed z-50 max-w-xs px-2 py-1 text-sm bg-gray-900 text-white rounded shadow transition-opacity duration-150",
+              "fixed z-50 max-w-xs px-2 py-1 text-sm bg-secondary-900 text-secondary-50 rounded shadow transition-opacity duration-150",
               "opacity-100 animate-fadeIn",
               className,
             ]
@@ -127,7 +127,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           >
             {content}
           </div>,
-          document.body
+          document.body,
         )}
     </>
   );

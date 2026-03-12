@@ -20,6 +20,24 @@ const meta: Meta<typeof Select> = {
     layout: "centered",
   },
   tags: ["autodocs"],
+  args: {
+    options,
+    value: "",
+    placeholder: "Select an option",
+    searchable: true,
+    disabled: false,
+    multiple: false,
+  },
+  argTypes: {
+    multiple: { control: "boolean" },
+    searchable: { control: "boolean" },
+    disabled: { control: "boolean" },
+    placeholder: { control: "text" },
+    options: { control: false },
+    value: { control: false },
+    onChange: { control: false },
+    className: { control: false },
+  },
 };
 
 /* Stateful wrapper so Storybook updates selection */
@@ -39,8 +57,6 @@ const StatefulTemplate = (args: React.ComponentProps<typeof Select>) => {
 export const Default: Story = {
   render: (args) => <StatefulTemplate {...args} />,
   args: {
-    options,
-    value: "",
     placeholder: "Select",
   },
 };
@@ -49,20 +65,17 @@ export const Default: Story = {
 export const MultiSelect: Story = {
   render: (args) => <StatefulTemplate {...args} />,
   args: {
-    options,
-    value: "",
     multiple: true,
     placeholder: "Select",
   },
 };
-
-/* Preselected Multi */
-export const WithPreselectedValues: Story = {
+/* Disabled State */
+export const Disabled: Story = {
   render: (args) => <StatefulTemplate {...args} />,
   args: {
-    options,
-    value: ["apple", "banana"],
-    multiple: true,
+    disabled: true,
+    value: "apple",
+    placeholder: "Disabled select",
   },
 };
 export default meta;
