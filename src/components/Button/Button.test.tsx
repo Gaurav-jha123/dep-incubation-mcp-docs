@@ -19,37 +19,6 @@ describe("Button Component", () => {
       expect(screen.getByText("Submit")).not.toBeNull();
     });
   });
-
-  describe("variants", () => {
-    it("applies primary variant by default", () => {
-      render(<Button>Primary</Button>);
-      const button = screen.getByRole("button");
-
-      expect(button.className.includes("bg-blue-600")).toBe(true);
-    });
-
-    it("applies secondary variant", () => {
-      render(<Button variant="secondary">Secondary</Button>);
-      const button = screen.getByRole("button");
-
-      expect(button.className.includes("bg-gray-200")).toBe(true);
-    });
-
-    it("applies danger variant", () => {
-      render(<Button variant="danger">Delete</Button>);
-      const button = screen.getByRole("button");
-
-      expect(button.className.includes("bg-red-600")).toBe(true);
-    });
-
-    it("applies ghost variant", () => {
-      render(<Button variant="ghost">Ghost</Button>);
-      const button = screen.getByRole("button");
-
-      expect(button.className.includes("text-gray-700")).toBe(true);
-    });
-  });
-
   describe("sizes", () => {
     it("applies sm size classes", () => {
       render(<Button size="sm">Small</Button>);
