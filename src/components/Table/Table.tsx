@@ -127,7 +127,8 @@ export const Table = <T extends Record<string, unknown>>({
                       key={opt}
                       value={opt}
                       className={({ active }) =>
-                        `px-3 py-1 cursor-pointer ${active ? "bg-secondary-200" : ""
+                        `px-3 py-1 cursor-pointer ${
+                          active ? "bg-secondary-200" : ""
                         }`
                       }
                     >
@@ -144,7 +145,9 @@ export const Table = <T extends Record<string, unknown>>({
       {/* Table */}
       <div className="overflow-auto border border-secondary-200 rounded-lg max-h-full">
         <table className="table-fixed min-w-full text-left text-sm">
-          <thead className={`bg-secondary-200 text-secondary-700 ${stickyHeader ? "sticky top-0 z-20" : ""}`}>
+          <thead
+            className={`bg-secondary-200 text-secondary-700 ${stickyHeader ? "sticky top-0 z-20" : ""}`}
+          >
             <tr>
               {headers.map((header, idx) => {
                 const key = keys[idx];
@@ -180,7 +183,10 @@ export const Table = <T extends Record<string, unknown>>({
           {/* Body */}
           <tbody>
             {currentRows.map((row, idx) => (
-              <tr key={idx} className="border-b hover:bg-secondary-50 transition">
+              <tr
+                key={idx}
+                className="border-b hover:bg-secondary-50 transition"
+              >
                 {keys.map((key, colIdx) => {
                   const value = row[key];
 
@@ -225,6 +231,7 @@ export const Table = <T extends Record<string, unknown>>({
         </span>
         <div className="flex gap-2">
           <button
+            aria-label="Previous"
             disabled={page === 0}
             onClick={() => setPage(page - 1)}
             className="w-10 h-10 flex items-center justify-center border border-grey-300 rounded-md cursor-pointer hover:bg-grey-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -232,6 +239,7 @@ export const Table = <T extends Record<string, unknown>>({
             <ChevronLeft size={16} />
           </button>
           <button
+            aria-label="Next"
             disabled={page === totalPages - 1 || totalPages === 0}
             onClick={() => setPage(page + 1)}
             className="w-10 h-10 flex items-center justify-center border border-grey-300 rounded-md cursor-pointer hover:bg-grey-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -239,7 +247,6 @@ export const Table = <T extends Record<string, unknown>>({
             <ChevronRight size={16} />
           </button>
         </div>
-
       </div>
     </div>
   );
