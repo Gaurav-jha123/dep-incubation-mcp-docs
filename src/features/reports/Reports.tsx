@@ -53,33 +53,32 @@ export default function Reports() {
 
   return (
     <div className="p-8 space-y-8">
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-xl font-semibold text-gray-900">Reports</h1>
-        {selectedUser ? (
+      <div className="flex items-start justify-between">
+
+        <UserSelector
+          users={skillMatrix.users}
+          selectedUser={selectedUser}
+          onChange={setSelectedUser}
+        />
+
+        {selectedUser && (
           <ExportButtons skills={sortedSkills} />
-        ) : null}
+        )}
+
       </div>
 
-      <UserSelector
-        users={skillMatrix.users}
-        selectedUser={selectedUser}
-        onChange={setSelectedUser}
-      />
-
       {selectedUser && (
-        <>
-          <div id="report-section" className="space-y-6">
+        <div id="report-section" className="space-y-6">
 
-            <SummaryCards skills={sortedSkills} user={selectedUserObj} />
+          <SummaryCards skills={sortedSkills} user={selectedUserObj} />
 
-            <SkillsPieChart data={chartData} />
+          <SkillsPieChart data={chartData} />
 
-            <TopSkillsChart data={topSkills} />
+          <TopSkillsChart data={topSkills} />
 
-            <SkillsTable skills={sortedSkills} />
+          <SkillsTable skills={sortedSkills} />
 
-          </div>
-        </>
+        </div>
       )}
 
     </div>

@@ -70,7 +70,7 @@ export default function UserSelector({
               No user found.
             </CommandEmpty>
 
-            <CommandGroup>
+            <CommandGroup className="max-h-50 overflow-y-auto">
 
               {users.map((user) => (
                 <CommandItem
@@ -87,7 +87,7 @@ export default function UserSelector({
                       selectedUser === user.id
                         ? "opacity-100"
                         : "opacity-0"
-                    }`}
+                      }`}
                   />
 
                   {user.name}
