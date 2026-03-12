@@ -16,10 +16,10 @@ const sizeStyles = {
 };
 
 const variantStyles = {
-  primary: "bg-primary-500 hover:bg-primary-700 text-secondary-50",
+  primary: "bg-primary-500 hover:bg-primary-700 text-secondary-900",
   secondary:
     "bg-secondary-50 border border-secondary-200 text-secondary-700 data-hover:bg-gray-300",
-  danger: " bg-danger-500 hover:bg-danger-700 text-secondary-50",
+  danger: " bg-danger-500 hover:bg-danger-700 text-secondary-900",
   ghost:
     "text-secondary-700 data-hover:bg-secondary-200 data-active:bg-secondary-200",
 };
@@ -38,7 +38,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const base =
-      "inline-flex items-center justify-center font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+      "inline-flex items-center justify-center font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
 
     const classes = [
       base,
