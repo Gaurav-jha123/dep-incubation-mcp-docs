@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useLayoutEffect, useRef } from "react";
 import { Table } from "../../../components/Table/Table";
 import { type SkillMatrixData } from "./types";
-import HeatmapLegend from "./SkillMatrixTableLegend";
 
 interface SkillMatrixTableProps {
   data: SkillMatrixData;
@@ -92,14 +91,8 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
   return (
     <div
       ref={containerRef}
-      className="w-full h-full min-w-0 overflow-hidden flex"
+      className="w-full h-full min-w-0 overflow-hidden flex flex-col"
     >
-      {/* legend */}
-      <HeatmapLegend />
-
-      {/* spacing */}
-      <div className="w-4" />
-
       {/* table */}
       <div className="flex-1 min-h-0 overflow-auto">
         <Table

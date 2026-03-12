@@ -33,9 +33,10 @@ function Sortable({id, label, index}: {id: ItemId; label: string; index: number}
 interface SkillMatrixColumnRearrangeProps {
   topics: Topic[];
   onOrderChange: (orderedTopicIds: string[]) => void;
+  className?: string;
 }
 
-export default function SkillMatrixColumnRearrange({topics, onOrderChange}: SkillMatrixColumnRearrangeProps) {
+export default function SkillMatrixColumnRearrange({topics, onOrderChange, className}: SkillMatrixColumnRearrangeProps) {
   const [items, setItems] = useState<ItemId[]>(() => createItemsFromTopics(topics));
   const topicLabelById = useMemo(
     () => Object.fromEntries(topics.map((topic) => [topic.id, topic.label])),
@@ -47,36 +48,38 @@ export default function SkillMatrixColumnRearrange({topics, onOrderChange}: Skil
   }, [topics]);
 
   return (
-    <div>
+    <div className={`flex flex-col ${className ?? ''}`}>
       <h4 className="text-sm font-medium text-foreground mb-2">Rearrange Columns</h4>
       <p className="text-xs text-muted-foreground mb-3">Drag and drop topics to reorder the column list.</p>
-      <DragDropProvider
-        onDragEnd={(event) => {
-          setItems((prevItems) => {
-            if (!hasValidDropTarget(event)) {
-              return prevItems;
-            }
+      <div className="flex-1 min-h-0 overflow-y-auto rounded-md border border-border p-3">
+        <DragDropProvider
+          onDragEnd={(event) => {
+            setItems((prevItems) => {
+              if (!hasValidDropTarget(event)) {
+                return prevItems;
+              }
 
-            const nextItems = safelyMoveItems(prevItems, event);
+              const nextItems = safelyMoveItems(prevItems, event);
 
-            if (!nextItems || !isValidReorder(prevItems, nextItems)) {
-              return prevItems;
-            }
+              if (!nextItems || !isValidReorder(prevItems, nextItems)) {
+                return prevItems;
+              }
 
-            if (!areSameOrder(prevItems, nextItems)) {
-              onOrderChange(nextItems);
-            }
+              if (!areSameOrder(prevItems, nextItems)) {
+                onOrderChange(nextItems);
+              }
 
-            return nextItems;
-          });
-        }}
-      >
-        <ul className="space-y-2 rounded-md border border-border p-3 h-96 overflow-y-auto overflow-x-hidden">
-          {items.map((id, index) => (
-            <Sortable key={id} id={id} label={topicLabelById[id] ?? id} index={index} />
-          ))}
-        </ul>
-      </DragDropProvider>
+              return nextItems;
+            });
+          }}
+        >
+          <ul className="space-y-2">
+            {items.map((id, index) => (
+              <Sortable key={id} id={id} label={topicLabelById[id] ?? id} index={index} />
+            ))}
+          </ul>
+        </DragDropProvider>
+      </div>
     </div>
   );
 }

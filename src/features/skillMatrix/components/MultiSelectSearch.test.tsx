@@ -29,7 +29,7 @@ describe("MultiSelectSearch", () => {
       expect(screen.getByRole("button", { name: "Select Frameworks" })).not.toBeNull();
     });
 
-    it("renders the label with the selected count when items are selected", () => {
+    it("renders the label with count badge when items are selected", () => {
       render(
         <MultiSelectSearch
           label="Frameworks"
@@ -39,7 +39,10 @@ describe("MultiSelectSearch", () => {
         />
       );
       
-      expect(screen.getByRole("button", { name: "Frameworks ( 2 )" })).not.toBeNull();
+      const button = screen.getByRole("button");
+      expect(button).toBeDefined();
+      expect(screen.getByText("Frameworks")).toBeDefined();
+      expect(screen.getByText("2")).toBeDefined(); // Count badge
     });
   });
 
@@ -58,9 +61,13 @@ describe("MultiSelectSearch", () => {
       const button = screen.getByRole("button", { name: "Select Frameworks" });
       await user.click(button);
 
-      expect(screen.getByText("React")).not.toBeNull();
-      expect(screen.getByText("Vue")).not.toBeNull();
-      expect(screen.getByText("Angular")).not.toBeNull();
+      expect(screen.getByText("React")).toBeDefined();
+      expect(screen.getByText("Vue")).toBeDefined();
+      expect(screen.getByText("Angular")).toBeDefined();
+      
+      // Verify checkboxes are present
+      const checkboxes = screen.getAllByRole("checkbox");
+      expect(checkboxes).toHaveLength(3);
     });
 
     it("adds a value to selection when an unselected option is clicked", async () => {
@@ -76,8 +83,12 @@ describe("MultiSelectSearch", () => {
         />
       );
 
-      await user.click(screen.getByRole("button", { name: "Frameworks ( 1 )" }));
-      await user.click(screen.getByText("Vue"));
+      const button = screen.getByRole("button");
+      await user.click(button);
+      
+      // Click on the Vue option (the div containing the checkbox and label)
+      const vueOption = screen.getByText("Vue").closest('div');
+      await user.click(vueOption);
 
       expect(onChangeMock).toHaveBeenCalledWith(["react", "vue"]);
     });
@@ -95,8 +106,12 @@ describe("MultiSelectSearch", () => {
         />
       );
 
-      await user.click(screen.getByRole("button", { name: "Frameworks ( 2 )" }));
-      await user.click(screen.getByText("React"));
+      const button = screen.getByRole("button");
+      await user.click(button);
+      
+      // Click on the React option (the div containing the checkbox and label)
+      const reactOption = screen.getByText("React").closest('div');
+      await user.click(reactOption);
 
       expect(onChangeMock).toHaveBeenCalledWith(["vue"]);
     });
@@ -121,9 +136,29 @@ describe("MultiSelectSearch", () => {
       await user.type(searchInput, "re");
 
       // "React" matches, "Vue" and "Angular" do not
-      expect(screen.getByText("React")).not.toBeNull();
+      expect(screen.getByText("React")).toBeDefined();
       expect(screen.queryByText("Vue")).toBeNull();
       expect(screen.queryByText("Angular")).toBeNull();
+    });
+
+    it("shows 'No items found' message when no options match search", async () => {
+      const user = userEvent.setup();
+      
+      render(
+        <MultiSelectSearch
+          label="Frameworks"
+          options={mockOptions}
+          selected={[]}  
+          onChange={vi.fn()}
+        />
+      );
+
+      await user.click(screen.getByRole("button", { name: "Select Frameworks" }));
+      
+      const searchInput = screen.getByPlaceholderText("Search Frameworks");
+      await user.type(searchInput, "nonexistent");
+
+      expect(screen.getByText("No items found.")).toBeDefined();
     });
   });
 });
