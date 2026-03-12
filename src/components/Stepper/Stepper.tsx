@@ -1,4 +1,5 @@
 import { TabGroup, TabList, Tab } from "@headlessui/react";
+import { Check } from "lucide-react";
 
 export type Step = {
   title: string;
@@ -40,12 +41,18 @@ export default function Stepper({
                       isCompleted
                         ? "bg-primary-500 border-primary-500 text-primary-50"
                         : isActive
-                          ? "border-primary-500 text-primary-500"
-                          : "border-secondary-200 text-secondary-400"
+                          ? "border-primary-500"
+                          : "border-secondary-200"
                     }
                   `}
                   >
-                    {variant === "minimal" ? "" : isCompleted ? "✓" : index + 1}
+                    {variant === "minimal" ? (
+                      ""
+                    ) : isCompleted ? (
+                      <Check aria-hidden="true" className="h-4 w-4" />
+                    ) : (
+                      index + 1
+                    )}
                   </div>
 
                   <span
