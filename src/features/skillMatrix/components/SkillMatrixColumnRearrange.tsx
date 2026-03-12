@@ -71,7 +71,7 @@ export default function SkillMatrixColumnRearrange({topics, onOrderChange}: Skil
           });
         }}
       >
-        <ul className="space-y-2 rounded-md border border-border p-3">
+        <ul className="space-y-2 rounded-md border border-border p-3 h-96 overflow-y-auto overflow-x-hidden">
           {items.map((id, index) => (
             <Sortable key={id} id={id} label={topicLabelById[id] ?? id} index={index} />
           ))}

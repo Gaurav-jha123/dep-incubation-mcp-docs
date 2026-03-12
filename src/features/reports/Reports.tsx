@@ -66,16 +66,19 @@ export default function Reports() {
 
   return (
     <div className="p-8 space-y-8">
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-xl font-semibold text-gray-900">Reports</h1>
-        {selectedUser && <ExportButtons skills={sortedSkills} />}
-      </div>
+      <div className="flex items-start justify-between">
 
-      <UserSelector
-        users={skillMatrix.users}
-        selectedUser={selectedUser}
-        onChange={setSelectedUser}
-      />
+        <UserSelector
+          users={skillMatrix.users}
+          selectedUser={selectedUser}
+          onChange={setSelectedUser}
+        />
+
+        {selectedUser && (
+          <ExportButtons skills={sortedSkills} />
+        )}
+
+      </div>
 
       {selectedUser && (
         <div id="report-section" className="space-y-6">

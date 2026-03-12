@@ -16,11 +16,11 @@ describe("Badge Component", () => {
 
   it("applies correct variant classes", () => {
     const variants: Record<string, string> = {
-      default: "bg-gray-200 text-gray-800",
-      success: "bg-green-100 text-green-800",
-      warning: "bg-yellow-100 text-yellow-800",
-      error: "bg-red-100 text-red-800",
-      info: "bg-blue-100 text-blue-800",
+      default: "bg-primary-200 text-primary-900",
+      success: "bg-success-200 text-success-900",
+      warning: "bg-warning-200 text-warning-900",
+      error: "bg-danger-200 text-danger-900",
+      info: "bg-info-200 text-info-900",
     };
 
     Object.entries(variants).forEach(([variant, classes]) => {
@@ -37,6 +37,31 @@ describe("Badge Component", () => {
     expect(el.className).toContain("my-class");
   });
 
+  it("uses default variant classes when variant is not provided", () => {
+    render(<Badge text="Default variant" />);
+    const el = screen.getByText("Default variant");
+    expect(el.className).toContain("bg-primary-200");
+    expect(el.className).toContain("text-primary-900");
+  });
+
+  it("falls back to default variant classes for an unknown variant", () => {
+    render(
+      <Badge text="Fallback" variant={"unknown" as unknown as "default"} />,
+    );
+    const el = screen.getByText("Fallback");
+    expect(el.className).toContain("bg-primary-200");
+    expect(el.className).toContain("text-primary-900");
+  });
+
+  it("renders span without info and button with info", () => {
+    const { rerender } = render(<Badge text="Element" />);
+    expect(screen.getByText("Element").tagName).toBe("SPAN");
+
+    rerender(<Badge text="Element" info="More info" />);
+    expect(screen.getByText("Element").tagName).toBe("BUTTON");
+  });
+
+  // 4️⃣ Info popover shows when info prop is provided
   it("renders popover panel when info prop is provided", async () => {
     render(<Badge text="Info" info="Popover content" />);
     const button = screen.getByText("Info");
