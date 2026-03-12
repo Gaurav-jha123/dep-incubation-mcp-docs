@@ -23,7 +23,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
       path: "/dashboard",
       icon: <LayoutDashboard size={18} />,
     },
-    { name: "Users", path: "/userform", icon: <Users size={18} /> },
+    // { name: "Users", path: "/userform", icon: <Users size={18} /> },
     { name: "Reports", path: "/reports", icon: <BarChart3 size={18} /> },
   ];
 
