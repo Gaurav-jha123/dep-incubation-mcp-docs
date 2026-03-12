@@ -3,6 +3,7 @@ import SkillMatrixTable from "./components/SkillMatrixTable";
 import skillMatrix from "@/mocks/skillMatrix";
 import type { Topic } from "./components/types";
 import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
+import HeatmapLegend from "./components/SkillMatrixTableLegend";
 
 const SkillMatrix = () => {
   const allUserIds = skillMatrix.users.map((u) => u.id);
@@ -106,17 +107,20 @@ const SkillMatrix = () => {
 
   return (
     <div className="p-6 space-y-6 h-full flex flex-col">
-      <div className="flex justify-end items-center">
-        <SkillMatrixDrawer
-          users={skillMatrix.users}
-          topics={skillMatrix.topics}
-          selectedUsers={selectedUsers}
-          selectedTopics={selectedTopics}
-          onUsersChange={handleUsersChange}
-          onTopicsChange={handleTopicsChange}
-          orderedTopics={orderedTopics}
-          onColumnOrderChange={handleColumnOrderChange}
-        />
+      <div className="relative flex justify-center items-center">
+        <HeatmapLegend />
+        <div className="absolute right-0">
+          <SkillMatrixDrawer
+            users={skillMatrix.users}
+            topics={skillMatrix.topics}
+            selectedUsers={selectedUsers}
+            selectedTopics={selectedTopics}
+            onUsersChange={handleUsersChange}
+            onTopicsChange={handleTopicsChange}
+            orderedTopics={orderedTopics}
+            onColumnOrderChange={handleColumnOrderChange}
+          />
+        </div>
       </div>
 
       {/* table area */}
