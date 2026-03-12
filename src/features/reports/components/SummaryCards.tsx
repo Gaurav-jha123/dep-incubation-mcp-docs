@@ -1,16 +1,13 @@
+import type { User } from "@/types/user";
+
 type Skill = {
   topic: string;
   value: number;
 };
 
-type User = {
-  id: string;
-  name: string;
-};
-
 type SummaryCardsProps = {
   skills: Skill[];
-  user?: User;
+  user?: User | null;
 };
 
 export default function SummaryCards({ skills, user }: SummaryCardsProps) {
