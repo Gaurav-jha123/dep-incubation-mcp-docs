@@ -88,7 +88,8 @@ describe("MultiSelectSearch", () => {
       
       // Click on the Vue option (the div containing the checkbox and label)
       const vueOption = screen.getByText("Vue").closest('div');
-      await user.click(vueOption);
+      expect(vueOption).not.toBeNull();
+      await user.click(vueOption!);
 
       expect(onChangeMock).toHaveBeenCalledWith(["react", "vue"]);
     });
@@ -111,7 +112,8 @@ describe("MultiSelectSearch", () => {
       
       // Click on the React option (the div containing the checkbox and label)
       const reactOption = screen.getByText("React").closest('div');
-      await user.click(reactOption);
+      expect(reactOption).not.toBeNull();
+      await user.click(reactOption!);
 
       expect(onChangeMock).toHaveBeenCalledWith(["vue"]);
     });
