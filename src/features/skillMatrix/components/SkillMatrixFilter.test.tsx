@@ -12,6 +12,11 @@ const mockTopics = [
   { id: "t2", label: "Node.js" },
 ];
 
+// NEW mocks for score filter
+const mockScoreFilters: string[] = [];
+const mockOnScoreFilterChange = vi.fn();
+
+
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
@@ -27,6 +32,8 @@ describe("SkillMatrixFilter", () => {
         selectedTopics={[]}
         onUsersChange={vi.fn()}
         onTopicsChange={vi.fn()}
+        scoreFilters={mockScoreFilters}
+        onScoreFilterChange={mockOnScoreFilterChange}
       />
     );
 
@@ -48,6 +55,8 @@ describe("SkillMatrixFilter", () => {
         selectedTopics={[]}
         onUsersChange={vi.fn()}
         onTopicsChange={vi.fn()}
+        scoreFilters={mockScoreFilters}
+        onScoreFilterChange={mockOnScoreFilterChange}
       />
     );
 
@@ -72,6 +81,8 @@ describe("SkillMatrixFilter", () => {
         selectedTopics={["t1", "t2"]} // Simulating two selected topics
         onUsersChange={vi.fn()}
         onTopicsChange={vi.fn()}
+        scoreFilters={mockScoreFilters}
+        onScoreFilterChange={mockOnScoreFilterChange}
       />
     );
 
