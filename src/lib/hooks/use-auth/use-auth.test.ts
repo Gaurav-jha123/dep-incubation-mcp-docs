@@ -1,7 +1,15 @@
 // src/lib/hooks/use-auth/use-auth.test.ts
 import { renderHook, act } from "@testing-library/react";
 import useAuth from "./use-auth";
-import { describe, expect, test, vi, afterEach, beforeEach, type Mock } from "vitest";
+import {
+  describe,
+  expect,
+  test,
+  vi,
+  afterEach,
+  beforeEach,
+  type Mock,
+} from "vitest";
 import { jwtDecode } from "jwt-decode";
 // Mock jwtDecode
 vi.mock("jwt-decode");
@@ -16,7 +24,7 @@ vi.mock("@/store/use-auth-store/use-auth-store.ts", () => ({
 
 // Mock react-router navigation
 const mockNavigate = vi.fn();
-vi.mock("react-router", () => ({
+vi.mock("react-router-dom", () => ({
   useNavigate: () => mockNavigate,
 }));
 

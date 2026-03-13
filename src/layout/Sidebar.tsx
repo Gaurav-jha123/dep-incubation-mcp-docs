@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
-  // Users,
+  Users,
   BarChart3,
   X,
   DatabaseBackupIcon,
@@ -24,7 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const navIconSize = 20;
 
   const menuItems = [
-     {
+    {
       name: "Dashboard",
       path: "/dashboard",
       icon: <DatabaseBackupIcon size={navIconSize} />,
@@ -34,9 +34,9 @@ const Sidebar: React.FC<SidebarProps> = ({
       path: "/skillMatrix",
       icon: <LayoutDashboard size={navIconSize} />,
     },
-   
-    // { name: "Users", path: "/userform", icon: <Users size={navIconSize} /> },
-    { name: "Reports", path: "/reports", icon: <BarChart3 size={navIconSize} /> },
+
+    { name: "Users", path: "/userform", icon: <Users size={18} /> },
+    { name: "Reports", path: "/reports", icon: <BarChart3 size={18} /> },
   ];
 
   return (
@@ -46,7 +46,11 @@ const Sidebar: React.FC<SidebarProps> = ({
           isCollapsed ? "justify-center" : "justify-between"
         }`}
       >
-        {!isCollapsed && <h1 className="text-xl font-bold text-gray-900 whitespace-nowrap overflow-hidden">Skill Matrix</h1>}
+        {!isCollapsed && (
+          <h1 className="text-xl font-bold text-gray-900 whitespace-nowrap overflow-hidden">
+            Skill Matrix
+          </h1>
+        )}
         <div className="flex items-center gap-2">
           <button
             onClick={onToggleCollapse}
@@ -54,7 +58,11 @@ const Sidebar: React.FC<SidebarProps> = ({
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            {isCollapsed ? <PanelLeftOpen size={20} /> : <PanelLeftClose size={20} />}
+            {isCollapsed ? (
+              <PanelLeftOpen size={20} />
+            ) : (
+              <PanelLeftClose size={20} />
+            )}
           </button>
 
           {/* Close Button for Mobile */}
@@ -77,6 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 to={item.path}
                 onClick={onClose} // Close sidebar on mobile when link is clicked
                 title={isCollapsed ? item.name : undefined}
+                data-testid={`navlink-${item.path}`}
                 className={({ isActive }) =>
                   `flex items-center ${isCollapsed ? "justify-center px-2" : "px-4"} gap-3 py-2 rounded-lg text-sm font-medium transition-colors
                   ${isActive ? "bg-gray-900 text-white shadow" : "text-gray-700 hover:bg-gray-100"}`

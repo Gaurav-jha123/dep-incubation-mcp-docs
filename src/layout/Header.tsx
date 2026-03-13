@@ -1,7 +1,7 @@
 import React from "react";
 import { Menu } from "lucide-react";
 import UserProfileMenu from "@/components/user-profile-menu/user-profile-menu";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import APP_ROUTES from "@/route-config";
 
 interface HeaderProps {
@@ -18,6 +18,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
     <header className="w-full h-full bg-white text-gray-900 px-4 md:px-6 flex items-center justify-between border-b">
       <div className="flex items-center gap-4">
         <button
+          data-testid="menu-button"
           onClick={onMenuClick}
           className="p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-md lg:hidden"
         >
