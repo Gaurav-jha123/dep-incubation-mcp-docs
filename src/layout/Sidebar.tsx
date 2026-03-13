@@ -67,6 +67,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
           {/* Close Button for Mobile */}
           <button
+            data-testid="close-sidebar"
             onClick={onClose}
             className={`p-2 lg:hidden text-gray-500 hover:bg-gray-100 rounded-md ${
               isCollapsed ? "hidden" : ""

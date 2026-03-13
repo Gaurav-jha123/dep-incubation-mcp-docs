@@ -20,12 +20,12 @@ describe("Sidebar", () => {
 
   it("calls onClose when close button is clicked", () => {
     const onClose = vi.fn();
-    const { getByRole } = render(
+    const { getByTestId } = render(
       <MemoryRouter>
         <Sidebar onClose={onClose} />
       </MemoryRouter>,
     );
-    fireEvent.click(getByRole("button"));
+    fireEvent.click(getByTestId("close-sidebar"));
     expect(onClose).toHaveBeenCalled();
   });
 
