@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
-  Users,
+  // Users,
   BarChart3,
   X,
   DatabaseBackupIcon,
@@ -25,8 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
       path: "/skillMatrix",
       icon: <LayoutDashboard size={18} />,
     },
-   
-    { name: "Users", path: "/userform", icon: <Users size={18} /> },
+    // { name: "Users", path: "/userform", icon: <Users size={18} /> },
     { name: "Reports", path: "/reports", icon: <BarChart3 size={18} /> },
   ];
 
