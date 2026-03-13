@@ -33,7 +33,7 @@ function LoginForm() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     verifyUser(token || "");
-  }, [verifyUser]);
+  }, []);
 
   return (
     <form
