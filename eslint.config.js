@@ -10,6 +10,12 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([globalIgnores(['dist']), {
   files: ['**/*.{ts,tsx}'],
+   ignores: [
+      "storybook-static/**",
+      "dist/**",
+      "build/**",
+      "node_modules/**"
+    ],
   extends: [
     js.configs.recommended,
     tseslint.configs.recommended,
