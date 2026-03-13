@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useLayoutEffect, useRef } from "react";
-import { Table } from "../../../components/Table/Table";
+import { Table } from "@/components/organisms";
 import { type SkillMatrixData } from "./types";
 
 interface SkillMatrixTableProps {
