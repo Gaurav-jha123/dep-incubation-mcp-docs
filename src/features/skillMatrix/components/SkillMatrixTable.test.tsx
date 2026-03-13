@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import SkillMatrixTable from "./SkillMatrixTable";
-import { Table } from "../../../components/Table/Table";
+import { Table } from "@/components/organisms";
 
 // 1. Mock the UI Toolkit Table so we don't have to render a massive real table
-vi.mock("../../../components/Table/Table", () => ({
+vi.mock("@/components/organisms", () => ({
   Table: vi.fn(() => <div data-testid="mock-table" />),
 }));
 

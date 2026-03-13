@@ -2,7 +2,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { MoreVertical } from "lucide-react";
 
-import { Dropdown } from "@/components/Dropdown/Dropdown";
+import { Dropdown } from "@/components/organisms";
 
 export type Skill = {
   topic: string;

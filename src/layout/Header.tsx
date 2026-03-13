@@ -1,6 +1,6 @@
 import React from "react";
 import { Menu } from "lucide-react";
-import UserProfileMenu from "@/components/user-profile-menu/user-profile-menu";
+import { UserProfileMenu } from "@/components/organisms";
 import { useLocation } from "react-router-dom";
 import APP_ROUTES from "@/route-config";
 
