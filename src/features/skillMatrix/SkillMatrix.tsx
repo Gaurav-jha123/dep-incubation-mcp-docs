@@ -61,9 +61,9 @@ const SkillMatrix = () => {
       const scoreMatch =
         scoreFilters.length === 0 ||
         scoreFilters.some((filter) => {
-          if (filter === "above80") return skill.value >= 80;
-          if (filter === "above50") return skill.value >= 50;
-          if (filter === "below50") return skill.value < 50;
+          if(filter === "above80") return skill.value >= 80;
+          if(filter === "above50") return skill.value >= 50;
+          if(filter === "below50") return skill.value < 50;
           return true;
         });
 
