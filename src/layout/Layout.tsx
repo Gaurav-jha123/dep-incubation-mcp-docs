@@ -5,8 +5,11 @@ import { Outlet } from "react-router-dom";
 
 const Layout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const toggleSidebarCollapse = () =>
+    setIsSidebarCollapsed((prevCollapsed) => !prevCollapsed);
 
   return (
     <div className="min-h-screen w-full flex bg-gray-50">
@@ -21,17 +24,30 @@ const Layout: React.FC = () => {
       {/* Sidebar */}
       <div
         className={`
-        fixed top-0 left-0 h-screen w-[280px] bg-white border-r shadow-sm z-50 transition-transform duration-300 ease-in-out
+        fixed top-0 left-0 h-screen bg-white border-r shadow-sm z-50 transition-all duration-300 ease-in-out
+        ${isSidebarCollapsed ? "lg:w-20" : "lg:w-[280px]"}
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}
       >
-        <Sidebar onClose={() => setIsSidebarOpen(false)} />
+        <Sidebar
+          onClose={() => setIsSidebarOpen(false)}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={toggleSidebarCollapse}
+        />
       </div>
 
       {/* Main area */}
-      <div className="flex-1 flex flex-col lg:ml-[280px] min-h-screen min-w-0">
+      <div
+        className={`flex-1 flex flex-col min-h-screen min-w-0 transition-all duration-300 ease-in-out ${
+          isSidebarCollapsed ? "lg:ml-20" : "lg:ml-[280px]"
+        }`}
+      >
         {/* Header */}
-        <div className="fixed top-0 right-0 left-0 lg:left-[280px] h-16 bg-white border-b shadow-sm z-30">
+        <div
+          className={`fixed top-0 right-0 left-0 h-16 bg-white border-b shadow-sm z-30 transition-all duration-300 ease-in-out ${
+            isSidebarCollapsed ? "lg:left-20" : "lg:left-[280px]"
+          }`}
+        >
           <Header onMenuClick={toggleSidebar} />
         </div>
 
