@@ -3,9 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useEffect } from "react";
 
+import { Input } from "@/components/atoms";
+import { Alert } from "@/components/molecules";
 import { Button } from "@/components/ui/button";
-import { Alert } from "@/components/Alert/Alert";
-import { Input } from "@/components/Input/Input";
 
 import useAuth from "@/lib/hooks/use-auth/use-auth";
 import { loginFormSchema } from "@/lib/schema/login-form.zod";

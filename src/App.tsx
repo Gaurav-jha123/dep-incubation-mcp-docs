@@ -3,11 +3,11 @@ import { QueryProvider } from "./providers/query-provider";
 import Layout from "./layout/Layout";
 import Login from "./features/authentication/login";
 import { useAuthStore } from "./store/use-auth-store/use-auth-store";
-import NotFound from "./components/not-found/not-found";
+import NotFound from "./components/pages/not-found/not-found";
 import "./App.css";
 import APP_ROUTES from "./route-config";
 import { Suspense } from "react";
-import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import ErrorBoundary from "./components/infrastructure/ErrorBoundary/ErrorBoundary";
 
 function ProtectedRoute({ isAuthenticated }: { isAuthenticated: boolean }) {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
