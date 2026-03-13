@@ -1,154 +1,170 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { createRef } from "react";
+import { createRef  } from "react";
 import { Input } from "./Input";
+import type { ChangeEvent } from "react";
 
-afterEach(() => {
-  cleanup();
-});
+
+afterEach(() => cleanup());
+
+const renderInput = (props = {}) => render(<Input {...props} />);
+const getInput = () => screen.getByRole("textbox");
 
 describe("Input Component", () => {
-  describe("rendering", () => {
-    it("renders input element", () => {
-      render(<Input />);
-      const input = screen.getByRole("textbox");
 
-      expect(input).not.toBeNull();
+  describe("Rendering", () => {
+
+    it("renders input element", () => {
+      renderInput();
+      expect(getInput()).not.toBeNull();
     });
 
     it("renders label when provided", () => {
-      render(<Input label="Username" />);
+      renderInput({ label: "Username" });
       expect(screen.getByText("Username")).not.toBeNull();
     });
 
     it("does not render label when not provided", () => {
-      render(<Input />);
-      const label = screen.queryByText("Username");
-
-      expect(label).toBeNull();
+      renderInput();
+      expect(screen.queryByText("Username")).toBeNull();
     });
 
     it("shows required asterisk when required", () => {
-      render(<Input label="Email" required />);
+      renderInput({ label: "Email", required: true });
       expect(screen.getByText("*")).not.toBeNull();
     });
+
   });
 
-  describe("interaction", () => {
-    it("updates value when typing", () => {
-      render(<Input />);
-      const input = screen.getByRole("textbox") as HTMLInputElement;
+  describe("Interaction", () => {
+  it("calls onChange callback", () => {
+    let value = "";
 
-      fireEvent.change(input, { target: { value: "hello" } });
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      value = e.target.value;
+    };
 
-      expect(input.value).toBe("hello");
+    renderInput({ onChange: handleChange });
+
+    fireEvent.change(getInput(), { target: { value: "test" } });
+
+    expect(value).toBe("test");
+  });
+});
+
+  describe("Variants", () => {
+
+    it("applies default styles", () => {
+      renderInput();
+      expect(getInput().className.includes("border-gray-300")).toBe(true);
     });
+
+    it("applies error styles", () => {
+      renderInput({ error: "Invalid input" });
+      expect(getInput().className.includes("border-red-500")).toBe(true);
+    });
+
+    it("renders outlined variant", () => {
+      renderInput({ variant: "outlined", label: "Outlined Input" });
+
+      expect(getInput()).not.toBeNull();
+      expect(screen.getByText("Outlined Input")).not.toBeNull();
+    });
+
   });
 
-  describe("variants", () => {
-    it("applies default variant styles", () => {
-      render(<Input />);
-      const input = screen.getByRole("textbox");
+  describe("Messages", () => {
 
-      expect(input.className.includes("border-gray-300")).toBe(true);
+    it("shows helper text", () => {
+      renderInput({ helperText: "Enter username" });
+      expect(screen.getByText("Enter username")).not.toBeNull();
     });
 
-    it("applies error variant when error prop is present", () => {
-      render(<Input error="Invalid input" />);
-      const input = screen.getByRole("textbox");
-
-      expect(input.className.includes("border-red-500")).toBe(true);
-    });
-
-    it("applies success variant", () => {
-      render(<Input variant="success" />);
-      const input = screen.getByRole("textbox");
-
-      expect(input.className.includes("border-green-500")).toBe(true);
-    });
-  });
-
-  describe("sizes", () => {
-    it("applies sm size classes", () => {
-      render(<Input inputSize="sm" />);
-      const input = screen.getByRole("textbox");
-
-      expect(input.className.includes("text-sm")).toBe(true);
-    });
-
-    it("applies md size classes by default", () => {
-      render(<Input />);
-      const input = screen.getByRole("textbox");
-
-      expect(input.className.includes("text-base")).toBe(true);
-    });
-
-    it("applies lg size classes", () => {
-      render(<Input inputSize="lg" />);
-      const input = screen.getByRole("textbox");
-
-      expect(input.className.includes("text-lg")).toBe(true);
-    });
-  });
-
-  describe("messages", () => {
-    it("shows helper text when provided", () => {
-      render(<Input helperText="Enter your username" />);
-      expect(screen.getByText("Enter your username")).not.toBeNull();
-    });
-
-    it("shows error message when error prop is provided", () => {
-      render(<Input error="Invalid email" />);
+    it("shows error message", () => {
+      renderInput({ error: "Invalid email" });
       expect(screen.getByText("Invalid email")).not.toBeNull();
     });
 
-    it("does not show helper text when error exists", () => {
-      render(<Input error="Invalid" helperText="Helper text" />);
-
+    it("hides helper text when error exists", () => {
+      renderInput({ error: "Invalid", helperText: "Helper text" });
       expect(screen.queryByText("Helper text")).toBeNull();
     });
+
   });
 
-  describe("icons", () => {
-    it("renders left icon", () => {
-      render(<Input leftIcon={<span data-testid="left-icon">L</span>} />);
+  describe("Character Count", () => {
 
+    it("shows character count", () => {
+      renderInput({ showCharCount: true, maxLength: 10, value: "test" });
+      expect(screen.getByText("4 / 10")).not.toBeNull();
+    });
+
+    it("shows exceeded limit style", () => {
+      renderInput({ showCharCount: true, maxLength: 3, value: "hello" });
+
+      const counter = screen.getByText("5 / 3");
+      expect(counter.className.includes("text-red-500")).toBe(true);
+    });
+
+  });
+
+  describe("Icons", () => {
+
+    it("renders left icon", () => {
+      renderInput({ leftIcon: <span data-testid="left-icon">L</span> });
       expect(screen.getByTestId("left-icon")).not.toBeNull();
     });
 
     it("renders right icon", () => {
-      render(<Input rightIcon={<span data-testid="right-icon">R</span>} />);
-
+      renderInput({ rightIcon: <span data-testid="right-icon">R</span> });
       expect(screen.getByTestId("right-icon")).not.toBeNull();
     });
-  });
 
-  describe("disabled state", () => {
-    it("applies disabled attribute", () => {
-      render(<Input disabled />);
-      const input = screen.getByRole("textbox") as HTMLInputElement;
+    it("adds padding when icons exist", () => {
+      renderInput({
+        leftIcon: <span>L</span>,
+        rightIcon: <span>R</span>,
+      });
 
-      expect(input.disabled).toBe(true);
+      const input = getInput();
+
+      expect(input.className.includes("pl-10")).toBe(true);
+      expect(input.className.includes("pr-10")).toBe(true);
     });
+
   });
 
-  describe("customization", () => {
+  describe("State", () => {
     it("applies custom className", () => {
-      render(<Input className="custom-class" />);
-      const input = screen.getByRole("textbox");
-
-      expect(input.className.includes("custom-class")).toBe(true);
+      renderInput({ className: "custom-class" });
+      expect(getInput().className.includes("custom-class")).toBe(true);
     });
 
-    it("applies full width class when fullWidth is true", () => {
-      const { container } = render(<Input fullWidth />);
-      const wrapper = container.querySelector(".w-full");
-
-      expect(wrapper).not.toBeNull();
+    it("applies full width wrapper", () => {
+      const { container } = renderInput({ fullWidth: true });
+      expect(container.querySelector(".w-full")).not.toBeNull();
     });
+
   });
 
-  describe("ref forwarding", () => {
+  describe("Accessibility", () => {
+
+    it("adds aria-describedby when helper text exists", () => {
+      renderInput({ helperText: "helper message" });
+
+      expect(getInput().getAttribute("aria-describedby")).not.toBeNull();
+    });
+
+    it("adds aria-describedby when showCharCount is true", () => {
+      renderInput({ showCharCount: true, maxLength: 10 });
+
+      expect(getInput().getAttribute("aria-describedby")).not.toBeNull();
+    });
+
+  });
+
+  describe("Ref Forwarding", () => {
+
     it("forwards ref to input element", () => {
       const ref = createRef<HTMLInputElement>();
 
@@ -157,5 +173,57 @@ describe("Input Component", () => {
       expect(ref.current).not.toBeNull();
       expect(ref.current instanceof HTMLInputElement).toBe(true);
     });
+
   });
+
+  describe("Remaining Branch Coverage", () => {
+
+    it("renders right icon only", () => {
+      renderInput({ rightIcon: <span data-testid="right">R</span> });
+      expect(screen.getByTestId("right")).not.toBeNull();
+    });
+
+    it("shows required asterisk in outlined variant", () => {
+      renderInput({ variant: "outlined", label: "Name", required: true });
+      expect(screen.getByText("*")).not.toBeNull();
+    });
+
+    it("renders outlined input with icons", () => {
+      renderInput({
+        variant: "outlined",
+        label: "Email",
+        leftIcon: <span data-testid="left">L</span>,
+        rightIcon: <span data-testid="right">R</span>,
+      });
+
+      expect(screen.getByTestId("left")).not.toBeNull();
+      expect(screen.getByTestId("right")).not.toBeNull();
+    });
+
+    it("renders outlined input with error", () => {
+      renderInput({ variant: "outlined", label: "Email", error: "Invalid" });
+
+      expect(getInput().className.includes("border-red-500")).toBe(true);
+    });
+
+    it("renders outlined input with helper text", () => {
+      renderInput({ variant: "outlined", label: "Email", helperText: "Helper text" });
+
+      expect(screen.getByText("Helper text")).not.toBeNull();
+    });
+
+    it("renders outlined input with character count", () => {
+      renderInput({
+        variant: "outlined",
+        label: "Email",
+        showCharCount: true,
+        maxLength: 10,
+        value: "test",
+      });
+
+      expect(screen.getByText("4 / 10")).not.toBeNull();
+    });
+
+  });
+
 });

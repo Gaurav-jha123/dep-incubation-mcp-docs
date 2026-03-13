@@ -154,4 +154,93 @@ describe("Table", () => {
     expect(screen.getByText("Page 1 of 1")).not.toBeNull();
     expect(screen.getByText("Zoe")).not.toBeNull();
   });
+
+  it("hides search input when showSearch is false", () => {
+    render(
+      <Table headers={headers} data={data} keys={keys} showSearch={false} />,
+    );
+
+    expect(screen.queryByPlaceholderText("Search...")).toBeNull();
+  });
+
+  it("hides rows-per-page listbox when only one option is provided", () => {
+    render(
+      <Table
+        headers={headers}
+        data={data}
+        keys={keys}
+        rowsPerPageOptions={[5]}
+      />,
+    );
+
+    expect(screen.queryByRole("button", { name: /Rows:/ })).toBeNull();
+  });
+
+  it("applies sticky header and sticky first column classes", () => {
+    render(
+      <Table
+        headers={headers}
+        data={data}
+        keys={keys}
+        stickyHeader
+        stickyFirstColumn
+      />,
+    );
+
+    const nameHeaderCell = screen
+      .getByText("Name")
+      .closest("th") as HTMLElement;
+    const firstDataCell = screen.getByText("Zoe").closest("td") as HTMLElement;
+
+    expect(nameHeaderCell.className).toContain("sticky");
+    expect(nameHeaderCell.className).toContain("left-0");
+    expect(firstDataCell.className).toContain("sticky");
+    expect(firstDataCell.className).toContain("left-0");
+  });
+
+  it("renders cell content using cellRenderer when provided", () => {
+    render(
+      <Table
+        headers={headers}
+        data={data}
+        keys={keys}
+        cellRenderer={(value, key) =>
+          key === "role" ? (
+            <strong>{`ROLE:${String(value)}`}</strong>
+          ) : (
+            String(value)
+          )
+        }
+      />,
+    );
+
+    expect(screen.getByText("ROLE:QA")).not.toBeNull();
+  });
+
+  it("applies expected style classes to header and row elements", () => {
+    render(<Table headers={headers} data={data} keys={keys} />);
+
+    const thead = screen.getByText("Name").closest("thead") as HTMLElement;
+    const nameHeaderCell = screen
+      .getByText("Name")
+      .closest("th") as HTMLElement;
+    const firstRow = screen.getByText("Zoe").closest("tr") as HTMLElement;
+
+    expect(thead.className).toContain("bg-secondary-200");
+    expect(thead.className).toContain("text-secondary-700");
+    expect(nameHeaderCell.className).toContain("bg-secondary-50");
+    expect(nameHeaderCell.className).toContain("cursor-pointer");
+    expect(firstRow.className).toContain("hover:bg-secondary-50");
+  });
+
+  it("applies sticky first-column background style when enabled", () => {
+    render(
+      <Table headers={headers} data={data} keys={keys} stickyFirstColumn />,
+    );
+
+    const firstDataCell = screen.getByText("Zoe").closest("td") as HTMLElement;
+    expect(firstDataCell.className).toContain("sticky");
+    expect(firstDataCell.className).toContain("left-0");
+    expect(firstDataCell.className).toContain("bg-primary-50");
+  });
 });

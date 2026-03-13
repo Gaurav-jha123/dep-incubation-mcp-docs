@@ -36,7 +36,7 @@ const MultiSelectSearch = ({ label, options, selected, onChange }: Props) => {
 
   console.log(`selected ${label}...`, selected);
   return (
-    <div className="w-64">
+    <div className="w-full">
       <Popover className="relative">
         {({ open }) => {
           // eslint-disable-next-line react-hooks/rules-of-hooks

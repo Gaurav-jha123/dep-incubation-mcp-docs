@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
 import SkillMatrixColumnRearrange from "./SkillMatrixColumnRearrange";
 
 // 1. Mock the DnD libraries BEFORE the component imports them to prevent the crash
@@ -26,7 +26,7 @@ afterEach(() => {
 });
 
 describe("SkillMatrixColumnRearrange", () => {
-  it("renders the rearrange trigger button", () => {
+  it("renders the rearrange section with title and instructions", () => {
     render(
       <SkillMatrixColumnRearrange
         topics={mockTopics}
@@ -34,10 +34,11 @@ describe("SkillMatrixColumnRearrange", () => {
       />
     );
     
-    expect(screen.getByRole("button", { name: "Rearrange Columns" })).not.toBeNull();
+    expect(screen.getByText("Rearrange Columns")).toBeDefined();
+    expect(screen.getByText("Drag and drop topics to reorder the column list.")).toBeDefined();
   });
 
-  it("opens the modal and renders the list when clicked", () => {
+  it("renders the sortable topics list directly", () => {
     render(
       <SkillMatrixColumnRearrange
         topics={mockTopics}
@@ -45,13 +46,12 @@ describe("SkillMatrixColumnRearrange", () => {
       />
     );
 
-    // Using fireEvent for simplicity
-    const triggerButton = screen.getByRole("button", { name: "Rearrange Columns" });
-    fireEvent.click(triggerButton);
-
-    // Verify it opened safely
-    expect(screen.getByText("Rearrange Skill Matrix Columns")).not.toBeNull();
-    expect(screen.getByText("React")).not.toBeNull();
-    expect(screen.getByText("TypeScript")).not.toBeNull();
+    // Verify topics are rendered directly without needing to click anything
+    expect(screen.getByText("React")).toBeDefined();
+    expect(screen.getByText("TypeScript")).toBeDefined();
+    
+    // Verify drag handles are present for each topic
+    expect(screen.getByLabelText("Drag topic-1")).toBeDefined();
+    expect(screen.getByLabelText("Drag topic-2")).toBeDefined();
   });
 });
