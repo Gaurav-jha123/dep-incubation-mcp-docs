@@ -12,6 +12,8 @@ const SkillMatrix = () => {
   const [selectedUsers, setSelectedUsers] = useState<string[]>(allUserIds);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(allTopicIds);
 
+  const [scoreFilters, setScoreFilters] = useState<string[]>([]);
+
   /**
    * USER FILTER HANDLER
    */
@@ -56,7 +58,16 @@ const SkillMatrix = () => {
       const topicMatch =
         selectedTopics.length === 0 || selectedTopics.includes(skill.topicId);
 
-      return userMatch && topicMatch;
+      const scoreMatch =
+        scoreFilters.length === 0 ||
+        scoreFilters.some((filter) => {
+          if (filter === "above80") return skill.value >= 80;
+          if (filter === "above50") return skill.value >= 50;
+          if (filter === "below50") return skill.value < 50;
+          return true;
+        });
+
+      return userMatch && topicMatch && scoreMatch;
     });
 
     return {
@@ -64,7 +75,7 @@ const SkillMatrix = () => {
       topics,
       skills,
     };
-  }, [selectedUsers, selectedTopics]);
+  }, [selectedUsers, selectedTopics,scoreFilters]);
 
   // Store custom topic order as IDs only
   const [topicOrder, setTopicOrder] = useState<string[]>(() => allTopicIds);
@@ -72,7 +83,7 @@ const SkillMatrix = () => {
   // Compute ordered topics based on current filter and custom order
   const orderedTopics = useMemo(() => {
     const topicById = new Map(filteredData.topics.map((t) => [t.id, t]));
-    
+
     // Keep topics from custom order that are still in filtered set
     const ordered: Topic[] = [];
     for (const id of topicOrder) {
@@ -81,7 +92,7 @@ const SkillMatrix = () => {
         ordered.push(topic);
       }
     }
-    
+
     // Add any newly selected topics not in custom order
     const orderedIds = new Set(ordered.map((t) => t.id));
     for (const topic of filteredData.topics) {
@@ -89,7 +100,7 @@ const SkillMatrix = () => {
         ordered.push(topic);
       }
     }
-    
+
     return ordered;
   }, [filteredData.topics, topicOrder]);
 
@@ -119,6 +130,8 @@ const SkillMatrix = () => {
             onTopicsChange={handleTopicsChange}
             orderedTopics={orderedTopics}
             onColumnOrderChange={handleColumnOrderChange}
+            scoreFilters={scoreFilters}
+            onScoreFilterChange={setScoreFilters}
           />
         </div>
       </div>

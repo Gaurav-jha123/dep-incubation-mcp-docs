@@ -59,6 +59,16 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
     const skillLookup: Record<string, Record<string, number>> = {};
 
     data.skills.forEach(({ userId, topicId, value }) => {
+
+      data.skills.forEach(({ userId, topicId, value }) => {
+        if (!skillLookup[userId]) {
+          skillLookup[userId] = {};
+        }
+
+        skillLookup[userId][topicId] = value;
+      });
+
+
       if (!skillLookup[userId]) {
         skillLookup[userId] = {};
       }
