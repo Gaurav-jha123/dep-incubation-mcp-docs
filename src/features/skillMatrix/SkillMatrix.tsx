@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
-import skillMatrix from "@/mocks/skillMatrix";
+import skillMatrixMock from "@/mocks/skillMatrix";
 import type { Topic, User } from "./components/types";
 import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
 import HeatmapLegend from "./components/SkillMatrixTableLegend";
@@ -11,6 +11,10 @@ const ADDED_USERS_STORAGE_KEY = "skill-matrix-added-users";
 const ADDED_TOPICS_STORAGE_KEY = "skill-matrix-added-topics";
 
 const SkillMatrix = () => {
+
+  //  matrix stored in state to allow editing
+  const [skillMatrix, setSkillMatrix] = useState(skillMatrixMock);
+
   const [addedUsers, setAddedUsers] = useLocalStorage<User[]>(
     ADDED_USERS_STORAGE_KEY,
     [],
@@ -51,12 +55,27 @@ const SkillMatrix = () => {
       setSelectedTopics([]);
       return;
     }
+
     setSelectedTopics(values);
   };
 
   /**
+   * UPDATE SKILL VALUE
+   */
+  const updateSkill = (userId: string, topicId: string, value: number) => {
+    setSkillMatrix((prev) => ({
+      ...prev,
+      skills: prev.skills.map((skill) =>
+        skill.userId === userId && skill.topicId === topicId
+          ? { ...skill, value }
+          : skill
+      ),
+    }));
+  };
+
+  /**
    * EFFECTIVE FILTER VALUES
-   * remove "All" before filtering
+    * remove "All" before filtering
    */
 
   const filteredData = useMemo(() => {
@@ -92,7 +111,7 @@ const SkillMatrix = () => {
       topics: filteredTopics,
       skills,
     };
-  }, [scoreFilters, selectedTopics, selectedUsers, topics, users]);
+  }, [skillMatrix, scoreFilters, selectedTopics,  selectedUsers, topics, users]);
 
   // Store custom topic order as IDs only
   const [topicOrder, setTopicOrder] = useState<string[]>(() => allTopicIds);
@@ -139,7 +158,6 @@ const SkillMatrix = () => {
   const orderedTopics = useMemo(() => {
     const topicById = new Map(filteredData.topics.map((t) => [t.id, t]));
 
-    // Keep topics from custom order that are still in filtered set
     const ordered: Topic[] = [];
     for (const id of topicOrder) {
       const topic = topicById.get(id);
@@ -148,7 +166,7 @@ const SkillMatrix = () => {
       }
     }
 
-    // Add any newly selected topics not in custom order
+// Add any newly selected topics not in custom order
     const orderedIds = new Set(ordered.map((t) => t.id));
     for (const topic of filteredData.topics) {
       if (!orderedIds.has(topic.id)) {
@@ -195,7 +213,11 @@ const SkillMatrix = () => {
 
       {/* table area */}
       <div className="flex-1 min-h-0">
-        <SkillMatrixTable data={orderedFilteredData} />
+        <SkillMatrixTable
+          data={orderedFilteredData}
+          onUpdateSkill={updateSkill}
+          currentUserId={"alex"}
+        />
       </div>
     </div>
   );

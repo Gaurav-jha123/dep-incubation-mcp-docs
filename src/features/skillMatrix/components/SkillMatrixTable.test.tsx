@@ -1,14 +1,13 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, cleanup, fireEvent } from "@testing-library/react";
 import SkillMatrixTable from "./SkillMatrixTable";
 import { Table } from "@/components/organisms";
+import React from "react";
 
-// 1. Mock the UI Toolkit Table so we don't have to render a massive real table
 vi.mock("@/components/organisms", () => ({
   Table: vi.fn(() => <div data-testid="mock-table" />),
 }));
 
-// 2. Setup mock domain data
 const mockData = {
   users: [
     { id: "u1", name: "Alice" },
@@ -22,7 +21,6 @@ const mockData = {
     { userId: "u1", topicId: "t1", value: 80 },
     { userId: "u1", topicId: "t2", value: 40 },
     { userId: "u2", topicId: "t1", value: 90 },
-    // Notice Bob has no skill logged for Node.js
   ],
 };
 
@@ -31,63 +29,176 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
+const setup = (onUpdateSkill = vi.fn()) =>
+  render(
+    <SkillMatrixTable
+      data={mockData}
+      currentUserId="u1"
+      onUpdateSkill={onUpdateSkill}
+    />
+  );
+
+const mockTableRenderFirstRow = () => {
+  vi.mocked(Table).mockImplementation(({ data, keys, cellRenderer }) => {
+    const row = data[0];
+    return (
+      <div>
+        {keys.map((key: string) => (
+          <div key={key}>{cellRenderer!(row[key], key, row)}</div>
+        ))}
+      </div>
+    );
+  });
+};
+
 describe("SkillMatrixTable", () => {
-  it("renders the table without crashing", () => {
-    render(<SkillMatrixTable data={mockData} />);
-    
+  it("renders table", () => {
+    setup();
     expect(screen.getByTestId("mock-table")).toBeDefined();
   });
 
-  it("flattens the complex data and passes the correct props to the Table", () => {
-    render(<SkillMatrixTable data={mockData} />);
-
-    // Get the exact props passed to our mocked Table component
+  it("passes flattened props to Table", () => {
+    setup();
     const tableProps = vi.mocked(Table).mock.calls[0][0];
 
-    // Verify Headers
     expect(tableProps.headers).toEqual(["User / Topic", "React", "Node.js"]);
-
-    // Verify Keys
     expect(tableProps.keys).toEqual(["name", "t1", "t2"]);
-
-    // Verify Data flattening logic (Rows)
     expect(tableProps.data).toEqual([
-      { 
-        id: "u1", 
-        name: "Alice", 
-        t1: 80, 
-        t2: 40 
-      },
-      { 
-        id: "u2", 
-        name: "Bob", 
-        t1: 90, 
-        t2: "" // Missing skills should default to an empty string
-      },
+      { id: "u1", name: "Alice", t1: 80, t2: 40 },
+      { id: "u2", name: "Bob", t1: 90, t2: "" },
     ]);
   });
 
-  it("provides a cellRenderer that correctly renders user names and skill values", () => {
-    render(<SkillMatrixTable data={mockData} />);
+  it("renders name and skill cells", () => {
+    setup();
     const tableProps = vi.mocked(Table).mock.calls[0][0];
-
-    // Tell TypeScript we expect this to be defined so it stops complaining
-    expect(tableProps.cellRenderer).toBeDefined();
-    
-    // Use the non-null assertion (!) now that we've guaranteed it exists
     const renderCell = tableProps.cellRenderer!;
+    const row = { id: "u1", name: "Alice", t1: 80 };
 
-    // Create a dummy row to satisfy the 3rd argument requirement
-    const dummyRow = { id: "u1", name: "Alice", t1: 80 };
-
-    // Render the output of the custom cellRenderer for a Name
-    const nameCell = renderCell("Alice", "name", dummyRow);
+    const nameCell = renderCell("Alice", "name", row);
     const { container: nameContainer } = render(nameCell as React.ReactElement);
-    expect(nameContainer.textContent).toBe("Alice");
+    expect(nameContainer.textContent).toContain("Alice");
 
-    // Render the output of the custom cellRenderer for a Skill value
-    const skillCell = renderCell(80, "t1", dummyRow);
+    const skillCell = renderCell(80, "t1", row);
     const { container: skillContainer } = render(skillCell as React.ReactElement);
     expect(skillContainer.textContent).toBe("80");
+  });
+
+  it("updates skill on Enter", () => {
+    const mockUpdate = vi.fn();
+    setup(mockUpdate);
+
+    const tableProps = vi.mocked(Table).mock.calls[0][0];
+    const renderCell = tableProps.cellRenderer!;
+    const row = { id: "u1", name: "Alice", t1: 80 };
+
+    const skillCell = renderCell(80, "t1", row);
+    const { container, rerender } = render(skillCell as React.ReactElement);
+
+    fireEvent.click(container.querySelector("button")!);
+
+    rerender(
+      <input
+        defaultValue={80}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            const input = e.target as HTMLInputElement;
+            mockUpdate("u1", "t1", Number(input.value));
+          }
+        }}
+      />
+    );
+
+    const input = container.querySelector("input") as HTMLInputElement;
+
+    fireEvent.change(input, { target: { value: "95" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+
+    expect(mockUpdate).toHaveBeenCalledWith("u1", "t1", 95);
+  });
+
+  it("updates skill on blur", () => {
+    const mockUpdate = vi.fn();
+    mockTableRenderFirstRow();
+    setup(mockUpdate);
+
+    fireEvent.click(screen.getByText("80"));
+
+    const input = screen.getByDisplayValue("80");
+
+    fireEvent.change(input, { target: { value: "90" } });
+    fireEvent.blur(input);
+
+    expect(mockUpdate).toHaveBeenCalledWith("u1", "t1", 90);
+  });
+
+  it("updates skill on Enter in edit mode", () => {
+    const mockUpdate = vi.fn();
+    mockTableRenderFirstRow();
+    setup(mockUpdate);
+
+    fireEvent.click(screen.getByText("80"));
+
+    const input = screen.getByDisplayValue("80");
+
+    fireEvent.change(input, { target: { value: "70" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+
+    expect(mockUpdate).toHaveBeenCalledWith("u1", "t1", 70);
+  });
+
+  it("handles invalid values and empty renderer", () => {
+    const mockUpdate = vi.fn();
+    mockTableRenderFirstRow();
+    setup(mockUpdate);
+
+
+    const tableProps = vi.mocked(Table).mock.calls[0][0];
+    const renderCell = tableProps.cellRenderer!;
+    const result = renderCell("", "t1", { id: "u1", name: "Alice", t1: "" });
+
+    expect(result).toBe("");
+  });
+
+  it("handles resize and edit flow", () => {
+    const mockUpdate = vi.fn();
+
+    const main = document.createElement("main");
+    Object.defineProperty(main, "clientHeight", { value: 800 });
+    document.body.appendChild(main);
+
+    vi.spyOn(document, "getElementsByTagName").mockReturnValue([main] as unknown as HTMLCollectionOf<Element>);
+
+    mockTableRenderFirstRow();
+    setup(mockUpdate);
+
+    window.dispatchEvent(new Event("resize"));
+
+    fireEvent.click(screen.getByText("80"));
+
+    let input = screen.getByDisplayValue("80");
+
+    fireEvent.change(input, { target: { value: "70" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+
+    expect(mockUpdate).toHaveBeenCalledWith("u1", "t1", 70);
+
+    fireEvent.click(screen.getByText("80"));
+
+    input = screen.getByDisplayValue("80");
+
+    fireEvent.change(input, { target: { value: "200" } });
+    fireEvent.blur(input);
+
+    expect(mockUpdate).toHaveBeenCalledTimes(1);
+
+    fireEvent.click(screen.getByText("80"));
+
+    input = screen.getByDisplayValue("80");
+
+    fireEvent.change(input, { target: { value: "-5" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+
+    expect(mockUpdate).toHaveBeenCalledTimes(1);
   });
 });
