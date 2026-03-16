@@ -1,18 +1,6 @@
 import { useMemo } from "react";
 import skillMatrix from "@/mocks/skillMatrix";
-
-interface LearningRecommendation {
-  userId: string;
-  userName: string;
-  recommendations: Array<{
-    topic: string;
-    currentScore: number;
-    reason: string;
-    priority: 'high' | 'medium' | 'low';
-    category: string;
-  }>;
-  averageScore: number;
-}
+import type { LearningRecommendation } from "../types";
 
 const LearningRecommendations = () => {
   // Helper function to suggest related skills

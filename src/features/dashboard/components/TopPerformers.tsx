@@ -1,13 +1,6 @@
 import { useMemo } from "react";
 import skillMatrix from "@/mocks/skillMatrix";
-
-interface UserPerformance {
-  userId: string;
-  name: string;
-  averageScore: number;
-  totalSkills: number;
-  topSkills: Array<{ topic: string; score: number }>;
-}
+import type { UserPerformance } from "../types";
 
 const TopPerformers = () => {
   const topPerformers = useMemo(() => {

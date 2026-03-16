@@ -1,17 +1,6 @@
 import { useMemo } from "react";
 import skillMatrix from "@/mocks/skillMatrix";
-
-interface SkillCoverageData {
-  topic: string;
-  topicId: string;
-  experts: number; // 80+
-  advanced: number; // 60-79
-  intermediate: number; // 40-59
-  beginners: number; // 0-39
-  totalUsers: number;
-  averageScore: number;
-  riskLevel: 'high' | 'medium' | 'low';
-}
+import type { SkillCoverageData } from "../types";
 
 const SkillCoverage = () => {
   const skillCoverageData = useMemo(() => {

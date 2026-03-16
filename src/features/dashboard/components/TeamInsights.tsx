@@ -1,23 +1,6 @@
 import { useMemo } from "react";
 import skillMatrix from "@/mocks/skillMatrix";
-
-interface SkillGap {
-  topic: string;
-  averageScore: number;
-  expertCount: number;
-  totalAssessed: number;
-  urgency: 'critical' | 'high' | 'medium';
-  impact: string;
-}
-
-interface TeamInsight {
-  type: 'gap' | 'strength' | 'risk';
-  title: string;
-  description: string;
-  value: string;
-  icon: string;
-  color: string;
-}
+import type { SkillGap, TeamInsight } from "../types";
 
 const TeamInsights = () => {
   const getSkillImpact = (skillId: string): string => {
