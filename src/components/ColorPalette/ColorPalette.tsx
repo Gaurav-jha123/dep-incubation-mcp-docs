@@ -38,6 +38,18 @@ const paletteGroups: ColorGroup[] = [
         ],
     },
     {
+        name: 'Neutral',
+        description: 'Balanced grayscale tokens for text, dividers, and low-emphasis surfaces.',
+        shades: [
+            { scale: '50', cssVar: '--color-neutral-50', fallback: '#fafafc' },
+            { scale: '200', cssVar: '--color-neutral-200', fallback: '#ebedf5' },
+            { scale: '400', cssVar: '--color-neutral-400', fallback: '#ced0db' },
+            { scale: '500', cssVar: '--color-neutral-500', fallback: '#acafbf' },
+            { scale: '700', cssVar: '--color-neutral-700', fallback: '#303240' },
+            { scale: '900', cssVar: '--color-neutral-900', fallback: '#1d1e26' },
+        ],
+    },
+    {
         name: 'Success',
         description: 'Positive status, confirmation, and completion states.',
         shades: [
@@ -218,12 +230,12 @@ export function ColorPalette() {
                             key={group.name}
                             className="rounded-[1.5rem] border border-border/70 bg-card p-5 shadow-sm"
                         >
-                            <div className="mb-5 flex items-start justify-between gap-3">
+                            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                 <div className="space-y-1">
                                     <h2 className="text-xl font-semibold tracking-tight">{group.name}</h2>
                                     <p className="text-sm leading-6 text-muted-foreground">{group.description}</p>
                                 </div>
-                                <span className="rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-secondary-foreground">
+                                <span className="shrink-0 whitespace-nowrap rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-secondary-foreground">
                                     6 shades
                                 </span>
                             </div>
@@ -244,7 +256,7 @@ export function ColorPalette() {
                                                     color: getTextColor(value),
                                                 }}
                                             >
-                                                <span className="text-xs font-semibold uppercase tracking-[0.2em]">
+                                                <span className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] leading-none">
                                                     {group.name}
                                                 </span>
                                                 <span className="text-2xl font-semibold leading-none">{shade.scale}</span>

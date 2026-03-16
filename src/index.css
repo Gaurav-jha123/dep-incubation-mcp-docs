@@ -63,6 +63,13 @@
     --color-secondary-700: #474a59;
     --color-secondary-900: #303240;
 
+    --color-neutral-50: #fafafc;
+    --color-neutral-200: #ebedf5;
+    --color-neutral-400: #ced0db;
+    --color-neutral-500: #acafbf;
+    --color-neutral-700: #303240;
+    --color-neutral-900: #1d1e26;
+
     --color-success-50: #fcfff5;
     --color-success-200: #ebf3d8;
     --color-success-400: #c1e288;
