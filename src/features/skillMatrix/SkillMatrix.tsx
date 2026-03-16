@@ -24,8 +24,14 @@ const SkillMatrix = () => {
     [],
   );
 
-  const users = useMemo(() => [...skillMatrix.users, ...addedUsers], [addedUsers]);
-  const topics = useMemo(() => [...skillMatrix.topics, ...addedTopics], [addedTopics]);
+  const users = useMemo(
+  () => [...skillMatrix.users, ...addedUsers],
+  [skillMatrix.users, addedUsers],
+);
+  const topics = useMemo(
+  () => [...skillMatrix.topics, ...addedTopics],
+  [skillMatrix.topics, addedTopics],
+);
 
   const allUserIds = users.map((u) => u.id);
   const allTopicIds = topics.map((t) => t.id);
