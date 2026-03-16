@@ -1,4 +1,4 @@
-import { Card } from "@/components/Card/Card";
+import { Card } from "@/components/molecules";
 import { CHART_COLORS } from "@/lib/chart-colors";
 import { scoreTextClass } from "@/lib/score-styles";
 import type { User } from "@/types/user";

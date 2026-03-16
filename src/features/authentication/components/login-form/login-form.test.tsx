@@ -58,7 +58,7 @@ vi.mock("@/components/ui/button", () => ({
   ),
 }));
 
-vi.mock("@/components/Alert/Alert", () => ({
+vi.mock("@/components/molecules", () => ({
   Alert: ({ message, type }: { message: string; type: string }) => (
     <div role="note" data-type={type}>
       {message}

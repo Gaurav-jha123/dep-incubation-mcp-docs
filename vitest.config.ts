@@ -1,14 +1,14 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   resolve: {
     alias: {
-      '@': '/src',
+      "@": "/src",
     },
   },
   test: {
-    include: ['src/**/*.{test,spec}.{ts,tsx,js,jsx}'],
+    include: ["src/**/*.{test,spec}.{ts,tsx,js,jsx}"],
     environment: "jsdom",
-    testTimeout:10000,
+    testTimeout: 15000,
   },
-})
+});

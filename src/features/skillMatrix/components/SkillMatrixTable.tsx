@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useLayoutEffect, useRef } from "react";
-import { Table } from "../../../components/Table/Table";
+import { Table } from "@/components/organisms";
 import { type SkillMatrixData } from "./types";
 
 interface SkillMatrixTableProps {
@@ -59,6 +59,16 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({ data }) => {
     const skillLookup: Record<string, Record<string, number>> = {};
 
     data.skills.forEach(({ userId, topicId, value }) => {
+
+      data.skills.forEach(({ userId, topicId, value }) => {
+        if (!skillLookup[userId]) {
+          skillLookup[userId] = {};
+        }
+
+        skillLookup[userId][topicId] = value;
+      });
+
+
       if (!skillLookup[userId]) {
         skillLookup[userId] = {};
       }

@@ -33,7 +33,7 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="p-6 space-y-8 min-h-screen w-full max-w-[1920px] mx-auto xl:px-16 2xl:px-32 3xl:max-w-[3000px] 3xl:px-64">
+    <div className="p-6 space-y-8 w-full max-w-[1920px] mx-auto xl:px-16 2xl:px-32 3xl:max-w-[3000px] 3xl:px-64">
       {/* KPI cards */}
       <div
         className="grid gap-6
