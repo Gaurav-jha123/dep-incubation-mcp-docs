@@ -37,7 +37,7 @@ export const loginUser = async (email: string, password: string) => {
   }
 
   const accessToken  = signAccessToken(user.id, user.email, user.name);
-  const refreshToken = signRefreshToken(user.id, user.email);
+  const refreshToken = signRefreshToken(user.id, user.email, user.name);
 
   await saveRefreshToken(user.id, refreshToken);
 

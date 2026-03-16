@@ -5,18 +5,16 @@ import pool from '../config/db';
 const ACCESS_SECRET  = process.env.JWT_ACCESS_SECRET  || 'dev_access_secret';
 const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'dev_refresh_secret';
 
-export const signAccessToken = (id : string, email : string, name: string) => {
-  const [fName, ...rest] = name.split(' ');
-  const lName = rest.join(' ');
+export const signAccessToken = (id: string, email: string, name: string) => {
   return jwt.sign(
-    { id, emailId: email, fName, lName },
+    { id, emailId: email, name },
     ACCESS_SECRET,
     { expiresIn: '15m' }
   );
 };
 
-export const signRefreshToken = ( id : string , email : string) => {
-  return jwt.sign({ id , email}, REFRESH_SECRET, { expiresIn: '7d' });
+export const signRefreshToken = (id: string, email: string, name: string) => {
+  return jwt.sign({ id, email, name }, REFRESH_SECRET, { expiresIn: '7d' });
 };
 
 export const verifyAccessToken = (token: string) => {
