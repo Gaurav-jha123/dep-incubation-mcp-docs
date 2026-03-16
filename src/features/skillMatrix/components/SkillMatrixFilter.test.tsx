@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import SkillMatrixFilter from "./SkillMatrixFilter";
 
 const mockUsers = [
@@ -15,6 +16,8 @@ const mockTopics = [
 // NEW mocks for score filter
 const mockScoreFilters: string[] = [];
 const mockOnScoreFilterChange = vi.fn();
+const mockOnUserCreate = vi.fn();
+const mockOnTopicCreate = vi.fn();
 
 
 afterEach(() => {
@@ -32,6 +35,8 @@ describe("SkillMatrixFilter", () => {
         selectedTopics={[]}
         onUsersChange={vi.fn()}
         onTopicsChange={vi.fn()}
+        onUserCreate={mockOnUserCreate}
+        onTopicCreate={mockOnTopicCreate}
         scoreFilters={mockScoreFilters}
         onScoreFilterChange={mockOnScoreFilterChange}
       />
@@ -41,12 +46,14 @@ describe("SkillMatrixFilter", () => {
     expect(screen.getByText("Select Users")).toBeDefined();
     expect(screen.getByText("Select Topics")).toBeDefined();
     
-    // Verify we have two buttons
-    const buttons = screen.getAllByRole("button");
-    expect(buttons).toHaveLength(2);
+    expect(screen.getByRole("button", { name: "Select Users" })).toBeDefined();
+    expect(screen.getByRole("button", { name: "Select Topics" })).toBeDefined();
+    expect(screen.getAllByRole("button", { name: "Add" })).toHaveLength(2);
   });
 
-  it("maps user data correctly and passes them to the Users filter", () => {
+  it("maps user data correctly and passes them to the Users filter", async () => {
+    const user = userEvent.setup();
+
     render(
       <SkillMatrixFilter
         users={mockUsers}
@@ -55,6 +62,8 @@ describe("SkillMatrixFilter", () => {
         selectedTopics={[]}
         onUsersChange={vi.fn()}
         onTopicsChange={vi.fn()}
+        onUserCreate={mockOnUserCreate}
+        onTopicCreate={mockOnTopicCreate}
         scoreFilters={mockScoreFilters}
         onScoreFilterChange={mockOnScoreFilterChange}
       />
@@ -66,13 +75,14 @@ describe("SkillMatrixFilter", () => {
 
     // Open the dropdown to verify the options were mapped correctly 
     // from { id, name } to what the dropdown displays
-    const buttons = screen.getAllByRole("button");
-    fireEvent.click(buttons[0]); // First button is Users
+    await user.click(screen.getByRole("button", { name: /Users/ }));
     expect(screen.getByText("Alice")).toBeDefined();
     expect(screen.getByText("Bob")).toBeDefined();
   });
 
-  it("maps topic data correctly and passes them to the Topics filter", () => {
+  it("maps topic data correctly and passes them to the Topics filter", async () => {
+    const user = userEvent.setup();
+
     render(
       <SkillMatrixFilter
         users={mockUsers}
@@ -81,6 +91,8 @@ describe("SkillMatrixFilter", () => {
         selectedTopics={["t1", "t2"]} // Simulating two selected topics
         onUsersChange={vi.fn()}
         onTopicsChange={vi.fn()}
+        onUserCreate={mockOnUserCreate}
+        onTopicCreate={mockOnTopicCreate}
         scoreFilters={mockScoreFilters}
         onScoreFilterChange={mockOnScoreFilterChange}
       />
@@ -91,8 +103,7 @@ describe("SkillMatrixFilter", () => {
     expect(screen.getByText("2")).toBeDefined(); // Count badge
 
     // Open the dropdown to verify the options were mapped correctly
-    const buttons = screen.getAllByRole("button");
-    fireEvent.click(buttons[1]); // Second button is Topics
+    await user.click(screen.getByRole("button", { name: /Topics/ }));
     expect(screen.getByText("React")).toBeDefined();
     expect(screen.getByText("Node.js")).toBeDefined();
   });

@@ -9,6 +9,8 @@ interface Props {
 
   onUsersChange: (value: string[]) => void;
   onTopicsChange: (value: string[]) => void;
+  onUserCreate: (label: string) => void;
+  onTopicCreate: (label: string) => void;
 
   scoreFilters: string[];
   onScoreFilterChange: (value: string[]) => void;
@@ -21,6 +23,8 @@ const SkillMatrixFilter = ({
   selectedTopics,
   onUsersChange,
   onTopicsChange,
+  onUserCreate,
+  onTopicCreate,
   scoreFilters,
   onScoreFilterChange,
 
@@ -69,6 +73,7 @@ const SkillMatrixFilter = ({
         }))}
         selected={selectedUsers}
         onChange={onUsersChange}
+        onCreateOption={onUserCreate}
       />
 
       <MultiSelectSearch
@@ -79,6 +84,7 @@ const SkillMatrixFilter = ({
         }))}
         selected={selectedTopics}
         onChange={onTopicsChange}
+        onCreateOption={onTopicCreate}
       />
     </div>
   );
