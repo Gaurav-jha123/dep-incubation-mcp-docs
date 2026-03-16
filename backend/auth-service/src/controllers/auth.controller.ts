@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { registerUser, loginUser } from '../services/auth.service';
-import { verifyRefreshToken, findRefreshToken, deleteRefreshToken, signAccessToken } from '../services/token.service';
+import { verifyRefreshToken, findRefreshToken, deleteRefreshToken, signAccessToken, signRefreshToken, saveRefreshToken } from '../services/token.service';
 import { success, error } from '../utils/response';
 import { AuthenticatedRequest } from '../middleware/auth.middleware';
 /**
@@ -27,7 +27,6 @@ export const register = async (req: Request, res: Response) => {
     return error(res, 'VALIDATION_ERROR', 'Password must be at least 8 characters', 422);
   }
   try {
-    const { name, email, password } = req.body;
     const user = await registerUser(name, email, password);
     return success(res, { user }, 201);
   } catch (err: unknown) {
@@ -57,12 +56,17 @@ export const refresh = async (req: Request, res: Response) => {
     const token = req.cookies?.refreshToken;
     if (!token) return error(res, 'NO_REFRESH_TOKEN', 'No refresh token', 401);
 
-    const decoded = verifyRefreshToken(token) as { id: string; email: string; fName: string; lName: string };
+    const decoded = verifyRefreshToken(token) as { id: string; email: string; name: string };
     const stored  = await findRefreshToken(token);
     if (!stored) return error(res, 'TOKEN_INVALID', 'Token revoked or expired', 401);
 
     await deleteRefreshToken(token);
-    const accessToken = signAccessToken(decoded.id, decoded.email, `${decoded.fName} ${decoded.lName}`);
+
+    const accessToken     = signAccessToken(decoded.id, decoded.email, decoded.name);
+    const newRefreshToken = signRefreshToken(decoded.id, decoded.email, decoded.name);
+    await saveRefreshToken(decoded.id, newRefreshToken);
+
+    res.cookie('refreshToken', newRefreshToken, COOKIE_OPTIONS);
     return success(res, { accessToken });
   } catch {
     return error(res, 'TOKEN_INVALID', 'Invalid refresh token', 401);
