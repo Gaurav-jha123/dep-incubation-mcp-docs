@@ -1,13 +1,30 @@
 import { useMemo, useState } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
 import skillMatrix from "@/mocks/skillMatrix";
-import type { Topic } from "./components/types";
+import type { Topic, User } from "./components/types";
 import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
 import HeatmapLegend from "./components/SkillMatrixTableLegend";
+import useLocalStorage from "@/lib/hooks/use-local-storage/use-local-storage";
+import createUniqueId from "./utils/create-unique-id";
+
+const ADDED_USERS_STORAGE_KEY = "skill-matrix-added-users";
+const ADDED_TOPICS_STORAGE_KEY = "skill-matrix-added-topics";
 
 const SkillMatrix = () => {
-  const allUserIds = skillMatrix.users.map((u) => u.id);
-  const allTopicIds = skillMatrix.topics.map((t) => t.id);
+  const [addedUsers, setAddedUsers] = useLocalStorage<User[]>(
+    ADDED_USERS_STORAGE_KEY,
+    [],
+  );
+  const [addedTopics, setAddedTopics] = useLocalStorage<Topic[]>(
+    ADDED_TOPICS_STORAGE_KEY,
+    [],
+  );
+
+  const users = useMemo(() => [...skillMatrix.users, ...addedUsers], [addedUsers]);
+  const topics = useMemo(() => [...skillMatrix.topics, ...addedTopics], [addedTopics]);
+
+  const allUserIds = users.map((u) => u.id);
+  const allTopicIds = topics.map((t) => t.id);
 
   const [selectedUsers, setSelectedUsers] = useState<string[]>(allUserIds);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(allTopicIds);
@@ -43,11 +60,11 @@ const SkillMatrix = () => {
    */
 
   const filteredData = useMemo(() => {
-    const users = skillMatrix.users.filter(
+    const filteredUsers = users.filter(
       (u) => selectedUsers.length === 0 || selectedUsers.includes(u.id),
     );
 
-    const topics = skillMatrix.topics.filter(
+    const filteredTopics = topics.filter(
       (t) => selectedTopics.length === 0 || selectedTopics.includes(t.id),
     );
 
@@ -71,14 +88,52 @@ const SkillMatrix = () => {
     });
 
     return {
-      users,
-      topics,
+      users: filteredUsers,
+      topics: filteredTopics,
       skills,
     };
-  }, [selectedUsers, selectedTopics,scoreFilters]);
+  }, [scoreFilters, selectedTopics, selectedUsers, topics, users]);
 
   // Store custom topic order as IDs only
   const [topicOrder, setTopicOrder] = useState<string[]>(() => allTopicIds);
+
+  const handleUserCreate = (name: string) => {
+    const normalizedName = name.trim().toLowerCase();
+    const alreadyExists = users.some(
+      (user) => user.name.trim().toLowerCase() === normalizedName,
+    );
+
+    if (alreadyExists) {
+      return;
+    }
+
+    const nextUser: User = {
+      id: createUniqueId(name, users.map((user) => user.id)),
+      name: name.trim(),
+    };
+
+    setAddedUsers((currentUsers) => [...currentUsers, nextUser]);
+    setSelectedUsers((currentUsers) => [...new Set([...currentUsers, nextUser.id])]);
+  };
+
+  const handleTopicCreate = (label: string) => {
+    const normalizedLabel = label.trim().toLowerCase();
+    const alreadyExists = topics.some(
+      (topic) => topic.label.trim().toLowerCase() === normalizedLabel,
+    );
+
+    if (alreadyExists) {
+      return;
+    }
+
+    const nextTopic: Topic = {
+      id: createUniqueId(label, topics.map((topic) => topic.id)),
+      label: label.trim(),
+    };
+
+    setAddedTopics((currentTopics) => [...currentTopics, nextTopic]);
+    setSelectedTopics((currentTopics) => [...new Set([...currentTopics, nextTopic.id])]);
+  };
 
   // Compute ordered topics based on current filter and custom order
   const orderedTopics = useMemo(() => {
@@ -122,12 +177,14 @@ const SkillMatrix = () => {
         <HeatmapLegend />
         <div className="absolute right-0">
           <SkillMatrixDrawer
-            users={skillMatrix.users}
-            topics={skillMatrix.topics}
+            users={users}
+            topics={topics}
             selectedUsers={selectedUsers}
             selectedTopics={selectedTopics}
             onUsersChange={handleUsersChange}
             onTopicsChange={handleTopicsChange}
+            onUserCreate={handleUserCreate}
+            onTopicCreate={handleTopicCreate}
             orderedTopics={orderedTopics}
             onColumnOrderChange={handleColumnOrderChange}
             scoreFilters={scoreFilters}

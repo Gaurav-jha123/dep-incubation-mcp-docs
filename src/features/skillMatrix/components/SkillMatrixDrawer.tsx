@@ -19,6 +19,8 @@ interface SkillMatrixDrawerProps {
   selectedTopics: string[];
   onUsersChange: (values: string[]) => void;
   onTopicsChange: (values: string[]) => void;
+  onUserCreate: (label: string) => void;
+  onTopicCreate: (label: string) => void;
   orderedTopics: Topic[];
   onColumnOrderChange: (orderedTopicIds: string[]) => void;
   scoreFilters: string[];
@@ -32,6 +34,8 @@ export default function SkillMatrixDrawer({
   selectedTopics,
   onUsersChange,
   onTopicsChange,
+  onUserCreate,
+  onTopicCreate,
   orderedTopics,
   onColumnOrderChange,
   scoreFilters,
@@ -75,6 +79,8 @@ export default function SkillMatrixDrawer({
             selectedTopics={selectedTopics}
             onUsersChange={onUsersChange}
             onTopicsChange={onTopicsChange}
+            onUserCreate={onUserCreate}
+            onTopicCreate={onTopicCreate}
             scoreFilters={scoreFilters}
             onScoreFilterChange={onScoreFilterChange}
           />
