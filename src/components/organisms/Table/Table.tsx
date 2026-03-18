@@ -117,18 +117,18 @@ export const Table = <T extends Record<string, unknown>>({
           {rowsPerPageOptions.length > 1 && (
             <Listbox value={rowsPerPage} onChange={setRowsPerPage}>
               <div className="relative">
-                <Listbox.Button className="px-3 py-1 border rounded bg-secondary-50">
+                <Listbox.Button className="px-3 py-1 border rounded bg-neutral-50">
                   Rows: {rowsPerPage}
                 </Listbox.Button>
 
-                <Listbox.Options className="absolute right-0 mt-1 bg-secondary-50 border rounded shadow z-10">
+                <Listbox.Options className="absolute right-0 mt-1 bg-neutral-50 border rounded shadow z-10">
                   {rowsPerPageOptions.map((opt) => (
                     <Listbox.Option
                       key={opt}
                       value={opt}
                       className={({ active }) =>
                         `px-3 py-1 cursor-pointer ${
-                          active ? "bg-secondary-200" : ""
+                          active ? "bg-neutral-200" : ""
                         }`
                       }
                     >
@@ -143,10 +143,10 @@ export const Table = <T extends Record<string, unknown>>({
       )}
 
       {/* Table */}
-      <div className="overflow-auto border border-secondary-200 rounded-lg max-h-full">
+      <div className="overflow-auto border border-neutral-200 rounded-lg max-h-full">
         <table className="table-fixed min-w-full text-left text-sm">
           <thead
-            className={`bg-secondary-200 text-secondary-700 ${stickyHeader ? "sticky top-0 z-20" : ""}`}
+            className={`bg-neutral-200 text-neutral-700 ${stickyHeader ? "sticky top-0 z-20" : ""}`}
           >
             <tr>
               {headers.map((header, idx) => {
@@ -156,7 +156,7 @@ export const Table = <T extends Record<string, unknown>>({
                   <th
                     key={idx}
                     onClick={() => handleSort(key)}
-                    className={`w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none align-top bg-secondary-50 ${
+                    className={`w-[100px] max-w-[150px] h-[50px] px-3 py-2 font-semibold border-b cursor-pointer select-none align-top bg-neutral-50 ${
                       stickyFirstColumn && idx === 0 ? "sticky left-0 z-30" : ""
                     }`}
                   >
@@ -185,7 +185,7 @@ export const Table = <T extends Record<string, unknown>>({
             {currentRows.map((row, idx) => (
               <tr
                 key={idx}
-                className="border-b hover:bg-secondary-50 transition"
+                className="border-b hover:bg-neutral-50 transition"
               >
                 {keys.map((key, colIdx) => {
                   const value = row[key];
@@ -193,7 +193,7 @@ export const Table = <T extends Record<string, unknown>>({
                   return (
                     <td
                       key={String(key)}
-                      className={`text-secondary-900 whitespace-nowrap ${
+                      className={`text-neutral-900 whitespace-nowrap ${
                         stickyFirstColumn && colIdx === 0
                           ? "sticky left-0 z-10 bg-primary-50"
                           : ""
@@ -214,7 +214,7 @@ export const Table = <T extends Record<string, unknown>>({
               <tr>
                 <td
                   colSpan={headers.length}
-                  className="text-center py-6 text-secondary-500"
+                  className="text-center py-6 text-neutral-500"
                 >
                   No data found
                 </td>
