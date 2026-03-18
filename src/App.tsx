@@ -71,7 +71,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
     bootstrap();
     return () => controller.abort();
-  }, []);
+  }, [clearUserDetails, setAccessToken, setUserDetails]);
 
   if (isBootstrapping) {
     return (

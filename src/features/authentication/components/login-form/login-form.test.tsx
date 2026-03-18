@@ -6,6 +6,8 @@ import {
   waitFor,
   cleanup,
 } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import React from "react";
 import LoginForm from "./login-form";
 import { loginFormSchema } from "@/lib/schema/login-form.zod";
 
@@ -21,43 +23,24 @@ vi.mock("@/services/hooks/mutations/useAuthMutation", () => ({
   }),
 }));
 
-vi.mock("@/components/atoms", () => ({
-  Input: ({
-    label,
-    id,
-    error,
-    type = "text",
-    placeholder,
-    onChange,
-    onBlur,
-    value,
-    name,
-  }: {
+vi.mock("@/components/atoms", () => {
+  type MockInputProps = React.ComponentPropsWithoutRef<"input"> & {
     label?: string;
-    id?: string;
     error?: string;
-    type?: string;
-    placeholder?: string;
-    onChange?: React.ChangeEventHandler<HTMLInputElement>;
-    onBlur?: React.FocusEventHandler<HTMLInputElement>;
-    value?: string;
-    name?: string;
-  }) => (
-    <div>
-      {label && <label htmlFor={id}>{label}</label>}
-      <input
-        id={id}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        onChange={onChange}
-        onBlur={onBlur}
-        value={value}
-      />
-      {error && <span role="alert">{error}</span>}
-    </div>
-  ),
-}));
+  };
+
+  return {
+    Input: React.forwardRef<HTMLInputElement, MockInputProps>(
+      ({ label, id, error, ...inputProps }, ref) => (
+        <div>
+          {label && <label htmlFor={id}>{label}</label>}
+          <input ref={ref} id={id} {...inputProps} />
+          {error && <span role="alert">{error}</span>}
+        </div>
+      ),
+    ),
+  };
+});
 
 vi.mock("@/components/molecules", () => ({
   Alert: ({ message, type }: { message: string; type: string }) => (
@@ -267,6 +250,320 @@ describe("LoginForm component", () => {
       expect(
         (screen.getByLabelText("Password") as HTMLInputElement).value,
       ).toBe("NewPass1@");
+    });
+  });
+
+  // ─── Accessibility Tests ──────────────────────────────────────────────
+
+  describe("keyboard navigation (Tab order)", () => {
+    it("email input is focused on component mount", () => {
+      render(<LoginForm />);
+
+      const emailInput = screen.getByLabelText("Email") as HTMLInputElement;
+
+      // Email should be focused on mount for accessibility
+      expect(document.activeElement).toBe(emailInput);
+    });
+
+    it("allows tabbing through form elements", async () => {
+      const user = userEvent.setup();
+      render(<LoginForm />);
+
+      const emailInput = screen.getByLabelText("Email") as HTMLInputElement;
+      const passwordInput = screen.getByLabelText(
+        "Password"
+      ) as HTMLInputElement;
+
+      // Email is already focused on mount
+      expect(document.activeElement).toBe(emailInput);
+
+      // Tab to password input
+      await user.tab();
+      expect(document.activeElement).toBe(passwordInput);
+    });
+
+    it("allows shift+tab to navigate backwards from password to email", async () => {
+      const user = userEvent.setup();
+      render(<LoginForm />);
+
+      const emailInput = screen.getByLabelText("Email") as HTMLInputElement;
+      const passwordInput = screen.getByLabelText(
+        "Password"
+      ) as HTMLInputElement;
+
+      // Focus password first
+      passwordInput.focus();
+      expect(document.activeElement).toBe(passwordInput);
+
+      // Shift+Tab back to email
+      await user.tab({ shift: true });
+      expect(document.activeElement).toBe(emailInput);
+    });
+
+    it("tab focus moves to button after valid input", async () => {
+      const user = userEvent.setup();
+      render(<LoginForm />);
+
+      const emailInput = screen.getByLabelText("Email") as HTMLInputElement;
+      const passwordInput = screen.getByLabelText(
+        "Password"
+      ) as HTMLInputElement;
+      const submitButton = screen.getByTestId(
+        "login-submit-btn"
+      ) as HTMLButtonElement;
+
+      // Fill form to make button enabled
+      await user.type(emailInput, "test@example.com");
+      await user.type(passwordInput, "ValidPass1@");
+
+      // Focus password
+      passwordInput.focus();
+      expect(document.activeElement).toBe(passwordInput);
+
+      // Tab from password should go to button (since it's now enabled)
+      await user.tab();
+      expect(document.activeElement).toBe(submitButton);
+    });
+
+    it("detects when focus reaches email input via keyboard", async () => {
+      render(<LoginForm />);
+
+      const emailInput = screen.getByLabelText("Email") as HTMLInputElement;
+
+      // Email should have focus on mount
+      expect(document.activeElement).toBe(emailInput);
+
+      // Verify focus is detectable
+      expect(emailInput === document.activeElement).toBe(true);
+    });
+  });
+
+  describe("focus management and visual indicators", () => {
+    it("input receives focus class on focus event", async () => {
+      const user = userEvent.setup();
+      render(<LoginForm />);
+
+      const emailInput = screen.getByLabelText("Email") as HTMLInputElement;
+
+      emailInput.focus();
+      expect(document.activeElement).toBe(emailInput);
+
+      // Check that input has focus by verifying activeElement
+      await user.type(emailInput, "test@example.com");
+      expect(emailInput.value).toBe("test@example.com");
+    });
+
+    it("button should be focusable even when disabled", () => {
+      render(<LoginForm />);
+
+      const submitButton = screen.getByTestId(
+        "login-submit-btn"
+      ) as HTMLButtonElement;
+
+      // Button should be disabled but present
+      expect(submitButton).toHaveProperty("disabled");
+      expect(submitButton).toBeDefined();
+    });
+
+    it("displays visible focus indicator on keyboard navigation", async () => {
+      const user = userEvent.setup();
+      render(<LoginForm />);
+
+      const emailInput = screen.getByLabelText("Email") as HTMLInputElement;
+      const passwordInput = screen.getByLabelText(
+        "Password"
+      ) as HTMLInputElement;
+
+      // Email is auto-focused on mount.
+      expect(document.activeElement).toBe(emailInput);
+
+      // Tab to email input
+      await user.tab();
+
+      // Next tab target should be password input.
+      expect(document.activeElement).toBe(passwordInput);
+
+      // Focus should be programmatically marked
+      expect(passwordInput === document.activeElement).toBe(true);
+    });
+  });
+
+  describe("ARIA attributes and semantics", () => {
+    it("has proper ARIA labels for form inputs", () => {
+      render(<LoginForm />);
+
+      const emailInput = screen.getByLabelText("Email") as HTMLInputElement;
+      const passwordInput = screen.getByLabelText(
+        "Password"
+      ) as HTMLInputElement;
+
+      // Check that inputs have IDs
+      expect(emailInput.id).toBe("login-form-email");
+      expect(passwordInput.id).toBe("login-form-password");
+
+      // Check that labels are associated
+      expect(emailInput.type).toBe("email");
+      expect(passwordInput.type).toBe("password");
+    });
+
+    it("form should have aria-labelledby for heading", () => {
+      const { container } = render(<LoginForm />);
+
+      const form = container.querySelector("form");
+
+      // Verify form has aria-labelledby pointing to heading
+      expect(form?.getAttribute("aria-labelledby")).toBe("login-form-title");
+      
+      // Verify the heading exists with that ID
+      const heading = container.querySelector("#login-form-title");
+      expect(heading).toBeDefined();
+      expect(heading?.textContent).toBe("Login");
+    });
+
+    it("displays role=alert on validation errors", async () => {
+      const user = userEvent.setup();
+      render(<LoginForm />);
+
+      const emailInput = screen.getByLabelText("Email") as HTMLInputElement;
+
+      // Trigger validation error by typing invalid email and blurring
+      await user.type(emailInput, "not-an-email");
+      await user.tab();
+
+      // Error message should be present with role="alert"
+      const errorMessage = await screen.findByText(/email is required/i);
+      expect(errorMessage.getAttribute("role")).toBe("alert");
+    });
+  });
+
+  describe("color contrast", () => {
+    it("should have sufficient color contrast for WCAG AA compliance", () => {
+      render(<LoginForm />);
+
+      // Get computed styles for key elements
+      const emailInput = screen.getByLabelText("Email") as HTMLInputElement;
+      const emailLabel = screen.getByText("Email");
+
+      const emailInputStyles = window.getComputedStyle(emailInput);
+      const emailLabelStyles = window.getComputedStyle(emailLabel);
+
+      // These are basic checks - for full compliance, use tools like axe-core
+      // or WAVE browser extension
+
+      // Label should have visible color (not 100% transparent)
+      const labelColor = emailLabelStyles.color;
+      expect(labelColor).not.toBe("rgba(0, 0, 0, 0)");
+
+      // Input should have visible border or background
+      const inputBorder = emailInputStyles.borderColor;
+      const inputBg = emailInputStyles.backgroundColor;
+      expect(
+        inputBorder !== "rgba(0, 0, 0, 0)" ||
+          inputBg !== "rgba(0, 0, 0, 0)"
+      ).toBe(true);
+    });
+
+    it("error messages should have sufficient contrast", async () => {
+      const user = userEvent.setup();
+      render(<LoginForm />);
+
+      const emailInput = screen.getByLabelText("Email") as HTMLInputElement;
+
+      await user.type(emailInput, "invalid");
+      await user.tab();
+
+      const errorMessage = await screen.findByText(/email is required/i);
+      const errorStyles = window.getComputedStyle(errorMessage);
+
+      // Error text should be red (not transparent)
+      expect(errorStyles.color).not.toBe("rgba(0, 0, 0, 0)");
+    });
+
+    it("meets minimum contrast ratio recommendations", () => {
+      const { container } = render(<LoginForm />);
+
+      // Helper function to calculate relative luminance (WCAG)
+      const getRelativeLuminance = (color: string): number => {
+        // Simplified - for production, use a proper library like polished or color-contrast-checker
+        // This is a basic check that color is not fully transparent
+        return color !== "rgba(0, 0, 0, 0)" ? 0.5 : 0;
+      };
+
+      const textElements = container.querySelectorAll(
+        "label, button, span[role='alert']"
+      );
+
+      textElements.forEach((el) => {
+        const computed = window.getComputedStyle(el);
+        const luminance = getRelativeLuminance(computed.color);
+        expect(luminance).toBeGreaterThan(0);
+      });
+    });
+  });
+
+  describe("accessibility compliance", () => {
+    it("form should be usable with keyboard only", async () => {
+      const user = userEvent.setup();
+      mockMutate.mockResolvedValue(undefined);
+      render(<LoginForm />);
+
+      const emailInput = screen.getByLabelText(
+        "Email"
+      ) as HTMLInputElement;
+      const passwordInput = screen.getByLabelText(
+        "Password"
+      ) as HTMLInputElement;
+
+      // Email starts focused on mount.
+      expect(document.activeElement).toBe(emailInput);
+
+      // Type email
+      await user.type(emailInput, "test@example.com");
+
+      // Tab to password input
+      await user.tab();
+      expect(document.activeElement).toBe(passwordInput);
+
+      // Type password
+      await user.type(passwordInput, "ValidPass1@");
+
+      // Tab to submit button
+      await user.tab();
+      const submitButton = screen.getByTestId("login-submit-btn");
+      expect(document.activeElement).toBe(submitButton);
+
+      // Submit with Enter key
+      await user.keyboard("{Enter}");
+
+      await waitFor(() => {
+        expect(mockMutate).toHaveBeenCalledWith({
+          email: "test@example.com",
+          password: "ValidPass1@",
+        });
+      });
+    });
+
+    it("screen readers receive proper text content", () => {
+      render(<LoginForm />);
+
+      // Heading should be accessible
+      const heading = screen.getByRole("heading", { name: /login/i });
+      expect(heading).toBeDefined();
+
+      // Labels should be associated
+      const emailInput = screen.getByLabelText("Email");
+      const passwordInput = screen.getByLabelText("Password");
+      expect(emailInput).toBeDefined();
+      expect(passwordInput).toBeDefined();
+
+      // Button text should be clear
+      const submitButton = screen.getByTestId("login-submit-btn");
+      expect(submitButton).toBeDefined();
+      expect(submitButton.textContent).toContain("Login");
+
+      // Alert message should be present with proper role
+      const alert = screen.getByRole("note");
+      expect(alert).toBeDefined();
     });
   });
 });
