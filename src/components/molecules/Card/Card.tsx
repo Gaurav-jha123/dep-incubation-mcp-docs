@@ -41,11 +41,11 @@ export const Card: React.FC<CardProps> = ({
   className = "",
 }) => {
   const base =
-    "rounded-lg overflow-hidden bg-neutral-50 shadow-sm border border-neutral-200";
+    "rounded-lg overflow-hidden bg-card shadow-sm border border-border";
 
   const styledVariants = {
-    solid: "bg-neutral-50 border border-neutral-200 shadow-md",
-    outline: "border border-neutral-400 bg-transparent shadow-none",
+    solid: "bg-card border border-border shadow-md",
+    outline: "border border-border bg-transparent shadow-none",
     ghost: "bg-transparent border-none shadow-none",
   };
 
@@ -59,16 +59,16 @@ export const Card: React.FC<CardProps> = ({
 
       {/* Header Variant */}
       {variant === "header" || variant === "actions" ? (
-        <div className="p-4 border-b border-neutral-200">
-          <h3 className="text-lg font-semibold text-neutral-900">{title}</h3>
+        <div className="p-4 border-b border-border">
+          <h3 className="text-lg font-semibold text-foreground">{title}</h3>
           {subtitle && (
-            <p className="mt-1 text-sm text-neutral-700">{subtitle}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
           )}
         </div>
       ) : null}
 
       {/* Content */}
-      <div className="p-4 text-neutral-700">{children}</div>
+      <div className="p-4 text-foreground">{children}</div>
 
       {/* Actions Variant */}
       {variant === "actions" && actions && (

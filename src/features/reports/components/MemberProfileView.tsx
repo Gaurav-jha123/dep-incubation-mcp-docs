@@ -32,8 +32,8 @@ export default function MemberProfileView({userSkills, user}: MemberProfileViewP
       <div className="flex gap-5 flex-wrap">
         {/* Radar chart */}
         <Card variant="simple" className="flex-1 min-w-[280px]">
-          <p className="text-base font-bold text-gray-600 mb-0.5">{user?.name}</p>
-          <p className="text-xs text-gray-500 mb-4">
+          <p className="text-base font-bold text-foreground mb-0.5">{user?.name}</p>
+          <p className="text-xs text-muted-foreground mb-4">
             Average score:{" "}
             <span className={`font-bold ${scoreTextClass(avg)}`}>{avg}</span>
           </p>

@@ -112,7 +112,7 @@ const TeamInsights = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-100 overflow-x-hidden">
+    <div className="bg-card rounded-lg shadow-lg p-6 border border-border overflow-x-hidden">
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2 bg-gradient-to-r from-violet-500 to-purple-500 rounded-lg">
           <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -185,22 +185,22 @@ const TeamInsights = () => {
 
       {/* Critical Skills List */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+        <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
           <span>🔥</span> Priority Skills to Address
         </h3>
         <div className="space-y-2">
           {skillGaps.map((gap, index) => (
-            <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border border-gray-200">
+            <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-muted border border-border">
               <div className="flex items-center gap-3">
                 <div className={`w-2 h-8 rounded-full ${getUrgencyColor(gap.urgency)}`} />
                 <div>
-                  <h4 className="text-sm font-medium text-gray-800">{gap.topic}</h4>
-                  <p className="text-xs text-gray-500">{gap.impact}</p>
+                  <h4 className="text-sm font-medium text-foreground">{gap.topic}</h4>
+                  <p className="text-xs text-muted-foreground">{gap.impact}</p>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-sm font-bold text-gray-700">{gap.averageScore}<span className="text-gray-400">/100</span></div>
-                <div className="text-xs text-gray-500">{gap.expertCount} experts</div>
+                <div className="text-sm font-bold text-foreground">{gap.averageScore}<span className="text-muted-foreground">/100</span></div>
+                <div className="text-xs text-muted-foreground">{gap.expertCount} experts</div>
               </div>
             </div>
           ))}

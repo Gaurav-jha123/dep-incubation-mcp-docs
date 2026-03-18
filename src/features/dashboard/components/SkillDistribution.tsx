@@ -27,7 +27,7 @@ const SkillDistribution = () => {
   });
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-100 overflow-x-hidden">
+    <div className="bg-card rounded-lg shadow-lg p-6 border border-border overflow-x-hidden">
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg">
           <span className="text-white text-lg">📊</span>

@@ -57,7 +57,7 @@ const SkillCoverage = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-100 overflow-x-hidden">
+    <div className="bg-card rounded-lg shadow-lg p-6 border border-border overflow-x-hidden">
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg">
           <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -71,13 +71,13 @@ const SkillCoverage = () => {
 
       <div className="space-y-4">
         {skillCoverageData.slice(0, 8).map((skill) => (
-          <div key={skill.topicId} className="p-4 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200">
+          <div key={skill.topicId} className="p-4 rounded-xl border border-border hover:shadow-md transition-all duration-200">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 <span className="text-lg">{getRiskIcon(skill.riskLevel)}</span>
                 <div>
-                  <h3 className="font-semibold text-gray-800 text-sm">{skill.topic}</h3>
-                  <p className="text-xs text-gray-500">{skill.totalUsers} team members assessed</p>
+                  <h3 className="font-semibold text-foreground text-sm">{skill.topic}</h3>
+                  <p className="text-xs text-muted-foreground">{skill.totalUsers} team members assessed</p>
                 </div>
               </div>
               
@@ -86,21 +86,21 @@ const SkillCoverage = () => {
                   {skill.riskLevel.toUpperCase()}
                 </span>
                 <div className="text-right">
-                  <div className="text-sm font-bold text-gray-800">{skill.averageScore}/100</div>
-                  <div className="text-xs text-gray-500">avg</div>
+                  <div className="text-sm font-bold text-foreground">{skill.averageScore}/100</div>
+                  <div className="text-xs text-muted-foreground">avg</div>
                 </div>
               </div>
             </div>
 
             {/* Skill level distribution bar */}
             <div className="mb-2">
-              <div className="flex text-xs text-gray-600 justify-between mb-1">
+              <div className="flex text-xs text-muted-foreground justify-between mb-1">
                 <span>Experts</span>
                 <span>Advanced</span>
                 <span>Intermediate</span>
                 <span>Beginners</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+              <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
                 <div className="flex h-full">
                   {skill.totalUsers > 0 && (
                     <>
