@@ -18,7 +18,11 @@ export default function SummaryCards({ skills, user }: SummaryCardsProps) {
   const weakest = skills[skills.length - 1];
 
   return (
-    <div className="grid md:grid-cols-4 gap-4">
+    <div 
+      className="grid md:grid-cols-4 gap-4"
+      role="region"
+      aria-label="User skills summary statistics"
+    >
 
       <div className="p-4 bg-white shadow rounded">
         <div className="flex flex-col gap-2">

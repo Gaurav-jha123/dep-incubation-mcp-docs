@@ -55,6 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <button
             onClick={onToggleCollapse}
             className="hidden lg:inline-flex p-2 text-gray-500 hover:bg-gray-100 rounded-md"
+            aria-expanded={!isCollapsed}
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >

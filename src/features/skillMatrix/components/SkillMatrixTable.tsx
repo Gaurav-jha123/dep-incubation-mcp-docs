@@ -152,13 +152,16 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
               if (isEditing) {
                 return (
                   <input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     min={0}
                     max={100}
                     step={1}
                     defaultValue={value}
+                    // eslint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus
-                    className="w-full text-center border rounded outline-none"
+                    className="w-full h-full px-4 py-3 text-center bg-white border-none outline-none appearance-none"
                     onBlur={(e) => {
                       const val = Number(e.target.value);
 
@@ -221,4 +224,3 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
 };
 
 export default SkillMatrixTable;
- 

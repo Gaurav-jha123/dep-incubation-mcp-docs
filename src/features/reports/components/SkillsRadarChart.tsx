@@ -18,11 +18,15 @@ type SkillsRadarChartProps = {
 
 export default function SkillsRadarChart({ data }: SkillsRadarChartProps) {
   return (
-    <div className="p-4 bg-white shadow rounded">
+    <div 
+      className="p-4 bg-white shadow rounded"
+      role="figure"
+      aria-label="Skill Radar Chart"
+    >
 
       <h3 className="font-semibold mb-4">Skill Radar</h3>
 
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={300} aria-hidden="true">
         <RadarChart data={data}>
           <PolarGrid />
           <PolarAngleAxis dataKey="name" />
@@ -35,6 +39,24 @@ export default function SkillsRadarChart({ data }: SkillsRadarChartProps) {
           />
         </RadarChart>
       </ResponsiveContainer>
+
+      <table className="sr-only">
+        <caption>Skill Radar Chart Data</caption>
+        <thead>
+          <tr>
+            <th scope="col">Skill</th>
+            <th scope="col">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, idx) => (
+            <tr key={idx}>
+              <td>{item.name}</td>
+              <td>{item.score}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
     </div>
   );

@@ -61,7 +61,7 @@ describe("Loader Component", () => {
       const spinner = screen.getByTestId("loader-spinner");
       const cls = spinner.className;
 
-      expect(cls.includes("border-blue-500")).toBe(true);
+      expect(cls.includes("border-primary-500")).toBe(true);
     });
 
     it("always has spinner animation and rounded class", () => {
