@@ -14,38 +14,14 @@ type ColorGroup = {
 
 const paletteGroups: ColorGroup[] = [
     {
-        name: 'Primary',
-        description: 'Brand and key action surfaces.',
-        shades: [
-            { scale: '50', cssVar: '--color-primary-50', fallback: '#f5fdff' },
-            { scale: '200', cssVar: '--color-primary-200', fallback: '#e1f4fa' },
-            { scale: '400', cssVar: '--color-primary-400', fallback: '#a0ddee' },
-            { scale: '500', cssVar: '--color-primary-500', fallback: '#009ecc' },
-            { scale: '700', cssVar: '--color-primary-700', fallback: '#0086ad' },
-            { scale: '900', cssVar: '--color-primary-900', fallback: '#006b8a' },
-        ],
-    },
-    {
-        name: 'Secondary',
-        description: 'Neutral UI, layout, and support surfaces.',
-        shades: [
-            { scale: '50', cssVar: '--color-secondary-50', fallback: '#f5f6fa' },
-            { scale: '200', cssVar: '--color-secondary-200', fallback: '#ebedf5' },
-            { scale: '400', cssVar: '--color-secondary-400', fallback: '#e1e3eb' },
-            { scale: '500', cssVar: '--color-secondary-500', fallback: '#6c6f80' },
-            { scale: '700', cssVar: '--color-secondary-700', fallback: '#474a59' },
-            { scale: '900', cssVar: '--color-secondary-900', fallback: '#303240' },
-        ],
-    },
-    {
         name: 'Neutral',
-        description: 'Balanced grayscale tokens for text, dividers, and low-emphasis surfaces.',
+        description: 'Neutral UI, layout, and support surfaces.',
         shades: [
             { scale: '50', cssVar: '--color-neutral-50', fallback: '#fafafc' },
             { scale: '200', cssVar: '--color-neutral-200', fallback: '#ebedf5' },
             { scale: '400', cssVar: '--color-neutral-400', fallback: '#ced0db' },
             { scale: '500', cssVar: '--color-neutral-500', fallback: '#acafbf' },
-            { scale: '700', cssVar: '--color-neutral-700', fallback: '#303240' },
+            { scale: '700', cssVar: '--color-neutral-700', fallback: '#474a59' },
             { scale: '900', cssVar: '--color-neutral-900', fallback: '#1d1e26' },
         ],
     },
@@ -83,6 +59,18 @@ const paletteGroups: ColorGroup[] = [
             { scale: '500', cssVar: '--color-danger-500', fallback: '#ff4242' },
             { scale: '700', cssVar: '--color-danger-700', fallback: '#e22a2a' },
             { scale: '900', cssVar: '--color-danger-900', fallback: '#ad0000' },
+        ],
+    },
+    {
+        name: 'Primary',
+        description: 'Brand and key action surfaces.',
+        shades: [
+            { scale: '50', cssVar: '--color-primary-50', fallback: '#f5fdff' },
+            { scale: '200', cssVar: '--color-primary-200', fallback: '#e1f4fa' },
+            { scale: '400', cssVar: '--color-primary-400', fallback: '#a0ddee' },
+            { scale: '500', cssVar: '--color-primary-500', fallback: '#009ecc' },
+            { scale: '700', cssVar: '--color-primary-700', fallback: '#0086ad' },
+            { scale: '900', cssVar: '--color-primary-900', fallback: '#006b8a' },
         ],
     },
 ];
@@ -209,7 +197,7 @@ export function ColorPalette() {
     );
 
     return (
-        <section className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(47,130,255,0.12),_transparent_28%),linear-gradient(180deg,_var(--color-background),_color-mix(in_srgb,_var(--color-background)_92%,_var(--color-secondary-50)))] px-6 py-10 text-foreground sm:px-10">
+        <section className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(0,158,204,0.14),_transparent_28%),linear-gradient(180deg,_var(--color-background),_color-mix(in_srgb,_var(--color-background)_90%,_var(--color-neutral-50)))] px-6 py-10 text-foreground sm:px-10">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 rounded-[2rem] border border-border/70 bg-background p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
                 <header className="max-w-3xl space-y-3">
                     <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--color-primary-900)]">
