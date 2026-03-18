@@ -1,73 +1,153 @@
-# React + TypeScript + Vite
+# DEP Incubation Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack monorepo powered by **Turborepo**, containing a React frontend and a NestJS backend.
 
-Currently, two official plugins are available:
+## Monorepo Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+├── apps/
+│   ├── web/            → React + Vite + TypeScript frontend
+│   └── api/            → NestJS + Prisma + PostgreSQL backend
+├── packages/           → Shared libraries (future use)
+├── turbo.json          → Turborepo pipeline configuration
+├── pnpm-workspace.yaml → pnpm workspace definition
+└── package.json        → Root scripts & shared devDependencies
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Tech Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Layer      | Technology                                  |
+| ---------- | ------------------------------------------- |
+| Frontend   | React 19, Vite, TypeScript, Tailwind CSS    |
+| Backend    | NestJS, Prisma ORM, PostgreSQL              |
+| Monorepo   | Turborepo, pnpm workspaces                  |
+| Testing    | Vitest, Playwright (web) · Jest (api)       |
+| Storybook  | Storybook 10 (web)                          |
+| Linting    | ESLint, Prettier, Commitlint, Husky         |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Prerequisites
+
+- **Node.js** ≥ 22
+- **pnpm** ≥ 10
+- **PostgreSQL** running locally or remotely
+
+## Getting Started
+
+### 1. Install dependencies
+
+```bash
+pnpm install
 ```
+
+### 2. Configure environment variables
+
+**Frontend** — `apps/web/.env`
+
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+**Backend** — `apps/api/.env` (copy from `.env.example`)
+
+```bash
+cp apps/api/.env.example apps/api/.env
+```
+
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/dashboard_app?schema=public"
+PORT=3000
+NODE_ENV=development
+```
+
+### 3. Set up the database
+
+```bash
+cd apps/api
+pnpm prisma:migrate   # Run migrations
+pnpm prisma:generate  # Generate Prisma Client
+```
+
+### 4. Start development
+
+```bash
+# Run both frontend & backend in parallel
+pnpm dev
+
+# Or run individually
+pnpm turbo run dev --filter=@dep-incubation-dashboard/web
+pnpm turbo run dev --filter=@dep-incubation-dashboard/api
+```
+
+- **Frontend**: http://localhost:5173
+- **Backend**: http://localhost:3000
+- **Prisma Studio**: `cd apps/api && pnpm prisma:studio`
+
+## Scripts
+
+All root-level scripts are orchestrated by Turborepo:
+
+| Command                | Description                              |
+| ---------------------- | ---------------------------------------- |
+| `pnpm dev`             | Start all apps in development mode       |
+| `pnpm build`           | Build all apps                           |
+| `pnpm lint`            | Lint all apps                            |
+| `pnpm test`            | Run tests across all apps                |
+| `pnpm format`          | Format all files with Prettier           |
+
+### App-specific scripts
+
+Filter to a specific workspace using `--filter`:
+
+```bash
+pnpm turbo run <script> --filter=@dep-incubation-dashboard/web
+pnpm turbo run <script> --filter=@dep-incubation-dashboard/api
+```
+
+## Database Schema
+
+The backend uses Prisma with PostgreSQL. Three core tables:
+
+### `users`
+
+| Column     | Type      | Constraints              |
+| ---------- | --------- | ------------------------ |
+| id         | INT       | Primary Key, Auto-inc    |
+| name       | STRING    | Not Null                 |
+| email      | STRING    | Not Null, Unique         |
+| password   | STRING    | Not Null (hashed)        |
+| created_at | TIMESTAMP | Default: now()           |
+| updated_at | TIMESTAMP | Auto-updated on mutation |
+
+### `topics`
+
+| Column      | Type      | Constraints              |
+| ----------- | --------- | ------------------------ |
+| id          | INT       | Primary Key, Auto-inc    |
+| name        | STRING    | Not Null                 |
+| description | TEXT      | Nullable                 |
+| created_at  | TIMESTAMP | Default: now()           |
+| updated_at  | TIMESTAMP | Auto-updated on mutation |
+
+### `skill_matrix`
+
+| Column      | Type      | Constraints                           |
+| ----------- | --------- | ------------------------------------- |
+| id          | INT       | Primary Key, Auto-inc                 |
+| user_id     | INT       | Foreign Key → users.id, Not Null      |
+| topic_id    | INT       | Foreign Key → topics.id, Not Null     |
+| skill_level | INTEGER   | Not Null (1–5 proficiency scale)      |
+| created_at  | TIMESTAMP | Default: now()                        |
+| updated_at  | TIMESTAMP | Auto-updated on mutation              |
+
+### Relationships
+
+- **users ↔ skill_matrix** — One-to-Many (a user can have multiple skill entries)
+- **topics ↔ skill_matrix** — One-to-Many (a topic can appear in multiple skill entries)
+- **users ↔ topics** — Many-to-Many (linked through `skill_matrix` as a junction table)
+
+## Project Conventions
+
+- **Commits**: Follow [Conventional Commits](https://www.conventionalcommits.org/) — enforced by Commitlint + Husky
+- **Branching**: Feature branches off `dev`
+- **Linting**: Runs automatically on pre-commit via lint-staged
+- **Build check**: Runs on pre-push
