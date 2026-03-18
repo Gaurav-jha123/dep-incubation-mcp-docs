@@ -14,7 +14,7 @@ const variantClasses: Record<string, string> = {
   success: "bg-success-200 text-success-900",
   warning: "bg-warning-200 text-warning-900",
   error: "bg-danger-200 text-danger-900",
-  info: "bg-info-200 text-info-900",
+  info: "bg-neutral-200 text-neutral-900",
 };
 
 export const Badge: React.FC<BadgeProps> = ({

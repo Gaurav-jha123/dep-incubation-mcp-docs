@@ -22,7 +22,7 @@ export const Switch: React.FC<SwitchProps> = ({
       onChange={onChange}
       disabled={disabled}
       aria-label={label}
-      className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+      className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
         checked ? "bg-primary-500" : "bg-neutral-500"
       } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"} ${className}`}
     >

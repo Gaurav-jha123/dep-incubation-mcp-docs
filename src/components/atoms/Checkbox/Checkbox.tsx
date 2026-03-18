@@ -41,10 +41,10 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         disabled={disabled}
         aria-disabled={disabled}
         onChange={handleChange}
-        className="w-4 h-4 accent-blue-600"
+        className="w-4 h-4 accent-primary-500"
       />
 
-      {label && <span className="text-sm text-gray-800">{label}</span>}
+      {label && <span className="text-sm text-neutral-900">{label}</span>}
     </label>
   );
 };
