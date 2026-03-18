@@ -6,9 +6,10 @@ import APP_ROUTES from "@/route-config";
 
 interface HeaderProps {
   onMenuClick: () => void;
+  isSidebarOpen: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
+const Header: React.FC<HeaderProps> = ({ onMenuClick, isSidebarOpen }) => {
   const location = useLocation();
 
   const currentPath = location.pathname.substring(1);
@@ -20,6 +21,9 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         <button
           data-testid="menu-button"
           onClick={onMenuClick}
+          aria-haspopup="menu"
+          aria-expanded={isSidebarOpen}
+          aria-controls="mobile-sidebar"
           className="p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-md lg:hidden"
         >
           <Menu size={24} />

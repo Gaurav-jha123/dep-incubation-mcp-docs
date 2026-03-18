@@ -14,11 +14,11 @@ export default function SkillsTable({ skills }: SkillsTableProps) {
       <h3 className="font-semibold mb-4">All Skills</h3>
 
       <table className="w-full">
-
+        <caption className="sr-only">Comprehensive List of All Skills and Scores</caption>
         <thead>
           <tr className="text-left border-b">
-            <th className="p-2">Skill</th>
-            <th className="p-2">Score</th>
+            <th scope="col" className="p-2">Skill</th>
+            <th scope="col" className="p-2">Score</th>
           </tr>
         </thead>
 

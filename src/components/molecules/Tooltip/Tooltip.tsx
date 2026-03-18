@@ -103,7 +103,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
         onFocus={show}
         onBlur={hide}
         className="inline-block"
-        tabIndex={0}
         aria-describedby={visible ? "tooltip-panel" : undefined}
       >
         {children}

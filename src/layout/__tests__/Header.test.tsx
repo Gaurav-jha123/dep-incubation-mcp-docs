@@ -7,7 +7,7 @@ describe("Header", () => {
   it("shows the correct dynamic title based on route", () => {
     const { getByText } = render(
       <MemoryRouter initialEntries={["/dashboard"]}>
-        <Header onMenuClick={() => {}} />
+        <Header onMenuClick={() => {}} isSidebarOpen={false} />
       </MemoryRouter>,
     );
     expect(getByText(/dashboard/i)).toBeTruthy();
@@ -17,7 +17,7 @@ describe("Header", () => {
     const onMenuClick = vi.fn();
     const { container } = render(
       <MemoryRouter initialEntries={["/dashboard"]}>
-        <Header onMenuClick={onMenuClick} />
+        <Header onMenuClick={onMenuClick} isSidebarOpen={false} />
       </MemoryRouter>,
     );
     const header = container.querySelector("header");
@@ -34,7 +34,7 @@ describe("Header", () => {
   it("renders the user profile menu", () => {
     const { container } = render(
       <MemoryRouter initialEntries={["/dashboard"]}>
-        <Header onMenuClick={() => {}} />
+        <Header onMenuClick={() => {}} isSidebarOpen={false} />
       </MemoryRouter>,
     );
     const header = container.querySelector("header");
@@ -47,7 +47,7 @@ describe("Header", () => {
   it("applies correct layout classes to header", () => {
     const { container } = render(
       <MemoryRouter initialEntries={["/dashboard"]}>
-        <Header onMenuClick={() => {}} />
+        <Header onMenuClick={() => {}} isSidebarOpen={false} />
       </MemoryRouter>,
     );
     const header = container.firstChild as HTMLElement;
@@ -60,7 +60,7 @@ describe("Header", () => {
   it("shows empty title if route is not found", () => {
     const { container } = render(
       <MemoryRouter initialEntries={["/not-a-route"]}>
-        <Header onMenuClick={() => {}} />
+        <Header onMenuClick={() => {}} isSidebarOpen={false} />
       </MemoryRouter>,
     );
     // Should render an empty h2

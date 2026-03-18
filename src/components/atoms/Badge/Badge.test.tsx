@@ -20,7 +20,7 @@ describe("Badge Component", () => {
       success: "bg-success-200 text-success-900",
       warning: "bg-warning-200 text-warning-900",
       error: "bg-danger-200 text-danger-900",
-      info: "bg-info-200 text-info-900",
+      info: "bg-neutral-200 text-neutral-900",
     };
 
     Object.entries(variants).forEach(([variant, classes]) => {

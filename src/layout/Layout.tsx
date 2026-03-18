@@ -13,16 +13,33 @@ const Layout: React.FC = () => {
 
   return (
     <div className="min-h-screen w-full flex bg-gray-50">
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-4 focus:bg-white focus:text-blue-600 focus:font-bold focus:shadow-md"
+      >
+        Skip to main content
+      </a>
       {/* Sidebar Overlay for Mobile */}
       {isSidebarOpen && (
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Close sidebar"
+          aria-controls="mobile-sidebar"
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              setIsSidebarOpen(false);
+            }
+          }}
         />
       )}
 
       {/* Sidebar */}
       <div
+        id="mobile-sidebar"
+        aria-hidden={!isSidebarOpen}
         className={`
         fixed top-0 left-0 h-screen bg-white border-r shadow-sm z-50 transition-all duration-300 ease-in-out
         ${isSidebarCollapsed ? "lg:w-20" : "lg:w-[280px]"}
@@ -48,11 +65,11 @@ const Layout: React.FC = () => {
             isSidebarCollapsed ? "lg:left-20" : "lg:left-[280px]"
           }`}
         >
-          <Header onMenuClick={toggleSidebar} />
+          <Header onMenuClick={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         </div>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 md:p-6 mt-16 overflow-x-auto min-w-0">
+        <main id="main-content" className="flex-1 p-4 md:p-6 mt-16 overflow-x-auto min-w-0">
           <Outlet />
         </main>
       </div>

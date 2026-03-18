@@ -23,7 +23,7 @@ const variantMap = {
   h5: "text-lg font-semibold",
   h6: "text-base font-semibold",
   body: "text-base",
-  caption: "text-sm text-gray-600",
+  caption: "text-sm text-neutral-700",
 };
 
 export const Typography: React.FC<TypographyProps> = ({
@@ -40,14 +40,14 @@ export const Typography: React.FC<TypographyProps> = ({
         {({ open }) => (
           <>
             <Disclosure.Button
-              className={`${baseClass} ${className} flex items-center gap-2 hover:text-blue-600 transition-colors`}
+              className={`${baseClass} ${className} flex items-center gap-2 hover:text-primary-500 transition-colors`}
             >
               {children}
               <ChevronUpIcon
                 className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
               />
             </Disclosure.Button>
-            <Disclosure.Panel className="px-4 py-2 text-gray-700 bg-gray-50 rounded mt-2">
+            <Disclosure.Panel className="px-4 py-2 text-neutral-700 bg-neutral-50 rounded mt-2">
               Additional content goes here
             </Disclosure.Panel>
           </>
