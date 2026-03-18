@@ -18,6 +18,16 @@ describe("Checkbox Component", () => {
     expect(checkbox).toBeTruthy();
   });
 
+  it("applies updated checkbox and label color classes", () => {
+    render(<Checkbox label="Accept Terms" />);
+
+    const label = screen.getByText("Accept Terms");
+    const checkbox = screen.getByRole("checkbox");
+
+    expect(label.className.includes("text-neutral-900")).toBe(true);
+    expect(checkbox.className.includes("accent-primary-500")).toBe(true);
+  });
+
   it("checkbox should be checked when checked prop is true", () => {
   render(<Checkbox label="Accept Terms" checked />);
 

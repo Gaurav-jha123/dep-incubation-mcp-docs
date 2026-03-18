@@ -69,6 +69,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const isCharLimitExceeded =
       maxLength && charCount > maxLength;
+    const helperTextClass =
+      variant === "success" ? "text-sm text-success-700" : "text-sm text-neutral-500";
 
     return (
       <Field className={fullWidth ? "w-full" : "w-72"}>
@@ -85,9 +87,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               }
               aria-invalid={!!error}
               aria-required={required}
-              className={`peer w-full border rounded-md bg-white px-3 pt-4 pb-2 outline-none transition-all
+              className={`peer w-full border rounded-md bg-white px-3 pt-4 pb-2 text-neutral-900 outline-none transition-all disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-500 disabled:placeholder:text-neutral-400
               ${sizeStyles[inputSize]}
-              ${error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-600"}
+              ${error ? "border-danger-500 focus:border-danger-500" : "border-neutral-200 focus:border-primary-500"}
               ${leftIcon ? "pl-10" : ""}
               ${rightIcon ? "pr-10" : ""}
               ${className}`}
@@ -97,13 +99,17 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             />
 
             {leftIcon && (
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-gray-400">
+              <span className={`absolute left-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none ${
+                disabled ? "text-neutral-400" : "text-neutral-700"
+              }`}>
                 {leftIcon}
               </span>
             )}
 
             {rightIcon && (
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-gray-400">
+              <span className={`absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none ${
+                disabled ? "text-neutral-400" : "text-neutral-700"
+              }`}>
                 {rightIcon}
               </span>
             )}
@@ -111,17 +117,19 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {label && (
               <label
                 htmlFor={inputId}
-                className="absolute left-3 bg-white px-1 text-gray-500 transition-all
+                className={`absolute left-3 bg-white px-1 transition-all ${
+                  disabled ? "text-neutral-400" : "text-neutral-500"
+                }
                 peer-placeholder-shown:top-3
                 peer-placeholder-shown:text-base
                 peer-focus:-top-2
                 peer-focus:text-xs
-                peer-focus:text-blue-600
+                peer-focus:text-primary-700
                 peer-not-placeholder-shown:-top-2
-                peer-not-placeholder-shown:text-xs"
+                peer-not-placeholder-shown:text-xs`}
               >
                 {label}
-                {required && <span className="text-red-500 ml-1">*</span>}
+                {required && <span className="text-danger-500 ml-1">*</span>}
               </label>
             )}
           </div>
@@ -130,10 +138,12 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {label && (
               <label
                 htmlFor={inputId}
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className={`block text-sm font-medium mb-1 ${
+                  disabled ? "text-neutral-500" : "text-neutral-700"
+                }`}
               >
                 {label}
-                {required && <span className="text-red-500 ml-1">*</span>}
+                {required && <span className="text-danger-500 ml-1">*</span>}
               </label>
             )}
 
@@ -150,8 +160,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 }
                 aria-invalid={!!error}
                 aria-required={required}
-                className={`w-full border rounded-md px-3 py-2 outline-none transition-colors
-                ${error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-600"}
+                className={`w-full border rounded-md bg-white px-3 py-2 text-neutral-900 outline-none transition-colors disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-500 disabled:placeholder:text-neutral-400
+                ${error ? "border-danger-500 focus:border-danger-500" : "border-neutral-500 focus:border-primary-500"}
                 ${leftIcon ? "pl-10" : ""}
                 ${rightIcon ? "pr-10" : ""}
                 ${className}`}
@@ -161,13 +171,17 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               />
 
               {leftIcon && (
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-gray-400">
+                <span className={`absolute left-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none ${
+                  disabled ? "text-neutral-400" : "text-neutral-500"
+                }`}>
                   {leftIcon}
                 </span>
               )}
 
               {rightIcon && (
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-gray-400">
+                <span className={`absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none ${
+                  disabled ? "text-neutral-400" : "text-neutral-500"
+                }`}>
                   {rightIcon}
                 </span>
               )}
@@ -178,17 +192,17 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {(error || helperText || showCharCount) && (
           <Description as="div" id={descriptionId} className="mt-1 space-y-1">
             {error && (
-              <p className="text-sm text-red-500 font-medium">{error}</p>
+              <p className="text-sm text-danger-500 font-medium">{error}</p>
             )}
 
             {!error && helperText && (
-              <p className="text-sm text-gray-500">{helperText}</p>
+              <p className={helperTextClass}>{helperText}</p>
             )}
 
             {showCharCount && maxLength && (
               <p
                 className={`text-xs ${
-                  isCharLimitExceeded ? "text-red-500" : "text-gray-400"
+                  isCharLimitExceeded ? "text-danger-500" : "text-neutral-500"
                 }`}
               >
                 {charCount} / {maxLength}

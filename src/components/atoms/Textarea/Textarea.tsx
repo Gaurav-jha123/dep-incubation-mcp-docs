@@ -45,11 +45,11 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     const variantStyles = {
       default:
-        "border border-gray-300 bg-white text-gray-900 focus:ring-blue-500",
+        "border border-neutral-700 bg-white text-neutral-900 focus:ring-primary-500",
       error:
-        "border border-red-500 bg-red-50 text-gray-900 focus:ring-red-500",
+        "border border-danger-500 bg-danger-50 text-neutral-900 focus:ring-danger-500",
       success:
-        "border border-green-500 bg-green-50 text-gray-900 focus:ring-green-500",
+        "border border-success-500 bg-success-50 text-neutral-900 focus:ring-success-500",
     };
 
     const textareaClass = [
@@ -61,13 +61,15 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     ]
       .filter(Boolean)
       .join(" ");
+    const helperTextClass =
+      variant === "success" ? "text-sm text-success-700 mt-1" : "text-sm text-neutral-700 mt-1";
 
     return (
       <Field className={fullWidth ? "w-full" : ""}>
         {label && (
-          <Label data-testid="textarea-label" className="block text-sm font-medium text-gray-700 mb-1">
+          <Label data-testid="textarea-label" className="block text-sm font-medium text-neutral-700 mb-1">
             {label}
-            {required && <span className="text-red-500 ml-1">*</span>}
+            {required && <span className="text-danger-500 ml-1">*</span>}
           </Label>
         )}
 
@@ -81,12 +83,12 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         />
 
         {error ? (
-          <Description data-testid="textarea-error" className="text-sm text-red-500 mt-1">
+          <Description data-testid="textarea-error" className="text-sm text-danger-500 mt-1">
             {error}
           </Description>
         ) : (
           helperText && (
-            <Description data-testid="textarea-helper" className="text-sm text-gray-500 mt-1">
+            <Description data-testid="textarea-helper" className={helperTextClass}>
               {helperText}
             </Description>
           )

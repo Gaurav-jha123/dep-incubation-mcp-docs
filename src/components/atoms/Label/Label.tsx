@@ -34,21 +34,21 @@ export const Label: React.FC<LabelProps> = ({
 
   const labelClass = [
     "text-sm font-medium",
-    error ? "text-red-600" : "text-gray-700",
+    error ? "text-danger-700" : "text-neutral-700",
     "mb-1.5",
     className,
   ]
     .filter(Boolean)
     .join(" ");
 
-  const helperClass = "text-xs text-gray-500 mt-1";
-  const errorClass = "text-xs text-red-500 font-medium mt-1";
+  const helperClass = "text-xs text-neutral-500 mt-1";
+  const errorClass = "text-xs text-danger-500 font-medium mt-1";
 
   return (
     <Field>
       <HeadlessLabel htmlFor={htmlFor} className={labelClass}>
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="text-danger-500 ml-1">*</span>}
       </HeadlessLabel>
 
       {error ? (
