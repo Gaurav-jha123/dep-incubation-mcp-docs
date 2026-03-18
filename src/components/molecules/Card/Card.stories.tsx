@@ -40,8 +40,12 @@ export const Actions: Story = {
     children: "Are you sure?",
     actions: (
       <>
-        <button className="px-3 py-1 bg-gray-200 rounded">Cancel</button>
-        <button className="px-3 py-1 bg-blue-600 text-white rounded">OK</button>
+        <button className="rounded border border-neutral-200 bg-neutral-50 px-3 py-1 text-neutral-700">
+          Cancel
+        </button>
+        <button className="rounded bg-neutral-900 px-3 py-1 text-neutral-50">
+          OK
+        </button>
       </>
     )
   }

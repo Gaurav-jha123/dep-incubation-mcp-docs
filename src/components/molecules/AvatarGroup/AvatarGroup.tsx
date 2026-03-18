@@ -18,14 +18,19 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
   return (
     <div className="flex -space-x-3 items-center">
       {visible.map((a, i) => (
-        <Avatar key={i} {...a} size={size} className="border-2 border-white" />
+        <Avatar
+          key={i}
+          {...a}
+          size={size}
+          className="border-2 border-background"
+        />
       ))}
 
       {remaining > 0 && (
         <div
           className={`
             flex items-center justify-center rounded-full 
-            bg-gray-300 text-gray-700 font-medium border-2 border-white
+            border-2 border-background bg-neutral-400 font-medium text-neutral-900
             ${size === "sm" ? "h-8 w-8" : ""}
             ${size === "md" ? "h-10 w-10" : ""}
             ${size === "lg" ? "h-14 w-14" : ""}
