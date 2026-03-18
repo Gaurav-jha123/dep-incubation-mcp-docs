@@ -24,14 +24,29 @@ export default function UserProfileMenu() {
     <div className="relative inline-block z-999" ref={menuRef} data-testid="profile-menu-root">
       <div
         data-testid="profile-trigger"
+        role="button"
+        tabIndex={0}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        aria-controls="profile-menu-dropdown"
         className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-300 transition"
         onClick={() => setIsOpen((prev) => !prev)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            setIsOpen((prev) => !prev);
+          }
+        }}
       >
         <User className="w-5 h-5 text-gray-700" />
       </div>
 
       {isOpen && (
-        <div data-testid="profile-dropdown" className="absolute right-0 top-12 max-w-xs bg-white rounded-2xl shadow-xl py-4 px-2">
+        <div 
+          id="profile-menu-dropdown"
+          role="menu"
+          data-testid="profile-dropdown" 
+          className="absolute right-0 top-12 max-w-xs bg-white rounded-2xl shadow-xl py-4 px-2"
+        >
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
               <User className="w-5 h-5 text-gray-700" />
@@ -94,8 +109,15 @@ function MenuItem({
   return (
     <div
       data-testid={testId}
+      role="menuitem"
+      tabIndex={0}
       className="flex items-center gap-3 px-2 py-2 rounded-lg cursor-pointer transition text-gray-700 hover:bg-gray-100"
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          onClick();
+        }
+      }}
     >
       {icon}
       <span className="text-sm font-medium">{label}</span>

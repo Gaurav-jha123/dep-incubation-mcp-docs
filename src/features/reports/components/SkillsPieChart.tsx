@@ -33,7 +33,11 @@ export default function SkillsPieChart({ data }: Props) {
   const sorted = [...data].sort((a, b) => b.score - a.score)
 
   return (
-    <div className="bg-white border rounded-xl p-6 shadow-sm">
+    <div 
+      className="bg-white border rounded-xl p-6 shadow-sm"
+      role="figure"
+      aria-label="Skill Distribution Pie Chart"
+    >
 
       <h2 className="text-lg font-semibold mb-6">
         Skill Distribution
@@ -45,7 +49,7 @@ export default function SkillsPieChart({ data }: Props) {
 
         <div className="h-[350px]">
 
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" aria-hidden="true">
 
             <PieChart>
 
@@ -76,11 +80,11 @@ export default function SkillsPieChart({ data }: Props) {
 
         {/* Skill list */}
 
-        <div className="space-y-3 overflow-y-auto max-h-[350px] pr-2">
+        <ul className="space-y-3 overflow-y-auto max-h-[350px] pr-2">
 
           {sorted.map((skill, i) => (
 
-            <div
+            <li
               key={i}
               className="flex justify-between items-center border-b pb-2 text-sm"
             >
@@ -91,6 +95,7 @@ export default function SkillsPieChart({ data }: Props) {
                   style={{
                     backgroundColor: SHADES[i % SHADES.length]
                   }}
+                  aria-hidden="true"
                 />
 
                 <span className="text-gray-700">
@@ -103,11 +108,11 @@ export default function SkillsPieChart({ data }: Props) {
                 {skill.score}%
               </span>
 
-            </div>
+            </li>
 
           ))}
 
-        </div>
+        </ul>
 
       </div>
 

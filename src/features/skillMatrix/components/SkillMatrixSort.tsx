@@ -21,8 +21,9 @@ const SkillMatrixSort: React.FC<SkillMatrixFiltersProps> = ({
     <div className="flex gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
       {/* Filter 1: Column Selection */}
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-gray-700">Sort By</label>
+        <label htmlFor="sort-column" className="text-sm font-medium text-gray-700">Sort By</label>
         <select
+          id="sort-column"
           value={sortColumn}
           onChange={(e) => onSortColumnChange(e.target.value)}
           className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
@@ -37,8 +38,9 @@ const SkillMatrixSort: React.FC<SkillMatrixFiltersProps> = ({
 
       {/* Filter 2: Sort Order */}
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-gray-700">Order</label>
+        <label htmlFor="sort-order" className="text-sm font-medium text-gray-700">Order</label>
         <select
+          id="sort-order"
           value={sortOrder}
           onChange={(e) => onSortOrderChange(e.target.value as sortOrder)}
           className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
