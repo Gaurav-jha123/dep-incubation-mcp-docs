@@ -27,7 +27,7 @@ vi.mock("recharts", () => ({
   Legend: () => <div data-testid="legend" />,
 }));
 
-/* ---------------- MOCK skillMatrix ---------------- */
+/* ---------------- MOCK skillMatrix  ---------------- */
 vi.mock("@/mocks/skillMatrix", () => ({
   default: {
     skills: [
