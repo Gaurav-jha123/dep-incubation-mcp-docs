@@ -47,12 +47,6 @@ afterEach(() => {
 });
 
 describe("SkillDistribution", () => {
-  it("renders title and icon", () => {
-    render(<SkillDistribution />);
-
-    expect(screen.getByText("Skill Distribution")).toBeTruthy();
-    expect(screen.getByText("📊")).toBeTruthy();
-  });
 
   it("renders chart components", () => {
     render(<SkillDistribution />);

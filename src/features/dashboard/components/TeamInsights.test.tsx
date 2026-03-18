@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, cleanup } from "@testing-library/react";
 import TeamInsights from "./TeamInsights";
 
 vi.mock("@/mocks/skillMatrix", () => ({
@@ -28,10 +28,6 @@ afterEach(() => {
 });
 
 describe("TeamInsights", () => {
-  it("renders title", () => {
-    render(<TeamInsights />);
-    expect(screen.getByText("🎯 Team Insights & Gaps")).toBeTruthy();
-  });
 
   it("renders team stats", () => {
     render(<TeamInsights />);

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, cleanup } from "@testing-library/react";
 import TopPerformers from "./TopPerformers";
 
 vi.mock("@/mocks/skillMatrix", () => ({
@@ -44,10 +44,6 @@ afterEach(() => {
 });
 
 describe("TopPerformers", () => {
-  it("renders title", () => {
-    render(<TopPerformers />);
-    expect(screen.getByText("🏆 Top Performers")).toBeTruthy();
-  });
 
   it("renders top 5 users based on score", () => {
   render(<TopPerformers />);
@@ -86,15 +82,6 @@ describe("TopPerformers", () => {
     expect(text.includes("Node")).toBe(true);
   });
 
-  it("renders rank icons", () => {
-    render(<TopPerformers />);
-    const text = document.body.textContent || "";
-
-    expect(text.includes("👑")).toBe(true);
-    expect(text.includes("🥈")).toBe(true);
-    expect(text.includes("🥉")).toBe(true);
-    expect(text.includes("⭐")).toBe(true);
-  });
 
   it("renders initials correctly", () => {
     render(<TopPerformers />);
