@@ -5,24 +5,18 @@ describe("useAuthStore", () => {
   beforeEach(() => {
     // reset store before each test
     useAuthStore.setState({
-      fName: null,
-      lName: null,
-      emailId: null,
+      accessToken: null,
+      user: null,
       isLoggedIn: false,
-      iat: null,
-      exp: null,
     });
   });
 
   it("should have initial state", () => {
     const state = useAuthStore.getState();
 
-    expect(state.fName).toBeNull();
-    expect(state.lName).toBeNull();
-    expect(state.emailId).toBeNull();
+    expect(state.accessToken).toBeNull();
+    expect(state.user).toBeNull();
     expect(state.isLoggedIn).toBe(false);
-    expect(state.iat).toBeNull();
-    expect(state.exp).toBeNull();
   });
 
   it("should set user details", () => {
@@ -34,24 +28,26 @@ describe("useAuthStore", () => {
     );
 
     const userDetails = {
-      fName: "John",
-      lName: "Doe",
-      emailId: "john@example.com",
-      isLoggedIn: true,
-      iat: 123,
-      exp: 456,
+      id: "1",
+      name: "John Doe",
+      email: "john@example.com",
+      role: "admin",
+      token: "mock-token",
     };
 
     authStoreState.setUserDetails(userDetails);
 
     const state = useAuthStore.getState();
 
-    expect(state.fName).toBe("John");
-    expect(state.lName).toBe("Doe");
-    expect(state.emailId).toBe("john@example.com");
+    expect(state.accessToken).toBe("mock-token");
     expect(state.isLoggedIn).toBe(true);
-    expect(state.iat).toBe(123);
-    expect(state.exp).toBe(456);
+    expect(state.user).toEqual({
+      id: "1",
+      name: "John Doe",
+      email: "john@example.com",
+      role: "admin",
+    });
+
     expect(setUserDetailsSpy).toHaveBeenCalledWith(userDetails);
   });
 
@@ -60,16 +56,15 @@ describe("useAuthStore", () => {
 
     const clearUserDetailsSpy = vi.spyOn(
       authStoreState,
-      "clearUserDetails",
+      "clearUserDetails"
     );
 
     const userDetails = {
-      fName: "John",
-      lName: "Doe",
-      emailId: "john@example.com",
-      isLoggedIn: true,
-      iat: 123,
-      exp: 456,
+      id: "1",
+      name: "John Doe",
+      email: "john@example.com",
+      role: "admin",
+      token: "mock-token",
     };
 
     authStoreState.setUserDetails(userDetails);
@@ -78,13 +73,21 @@ describe("useAuthStore", () => {
 
     const state = useAuthStore.getState();
 
-    expect(state.fName).toBeNull();
-    expect(state.lName).toBeNull();
-    expect(state.emailId).toBeNull();
+    expect(state.accessToken).toBeNull();
+    expect(state.user).toBeNull();
     expect(state.isLoggedIn).toBe(false);
-    expect(state.iat).toBeNull();
-    expect(state.exp).toBeNull();
 
-    expect(clearUserDetailsSpy).toHaveBeenCalled()
+    expect(clearUserDetailsSpy).toHaveBeenCalled();
+  });
+
+  it("should set access token only", () => {
+    const state = useAuthStore.getState();
+
+    state.setAccessToken("new-token");
+
+    const updatedState = useAuthStore.getState();
+
+    expect(updatedState.accessToken).toBe("new-token");
+    expect(updatedState.isLoggedIn).toBe(true);
   });
 });

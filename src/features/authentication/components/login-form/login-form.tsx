@@ -1,14 +1,13 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useEffect } from "react";
 
 import { Input } from "@/components/atoms";
 import { Alert } from "@/components/molecules";
 import { Button } from "@/components/ui/button";
 
-import useAuth from "@/lib/hooks/use-auth/use-auth";
 import { loginFormSchema } from "@/lib/schema/login-form.zod";
+import { useAuthMutation } from "@/services/hooks/mutations/useAuthMutation";
 
 function LoginForm() {
   const {
@@ -24,16 +23,11 @@ function LoginForm() {
     mode: "all",
   });
 
-  const { login, verifyUser } = useAuth();
+  const { loginMutation } = useAuthMutation();
 
-  const handleOnSubmit = (_data: z.infer<typeof loginFormSchema>) => {
-    login(_data);
+  const handleOnSubmit = (data: z.infer<typeof loginFormSchema>) => {
+    loginMutation.mutate(data);
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    verifyUser(token || "");
-  }, []);
 
   return (
     <form
