@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { User, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store/use-auth-store";
-import useAuth from "@/lib/hooks/use-auth/use-auth";
+import { useAuthMutation } from "@/services/hooks/mutations/useAuthMutation";
 
 export default function UserProfileMenu() {
-  const { logout } = useAuth();
+  const { logoutMutation } = useAuthMutation();
 
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const { fName, lName, emailId } = useAuthStore();
+  const { user } = useAuthStore();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -54,9 +54,9 @@ export default function UserProfileMenu() {
 
             <div className="flex flex-col items-start">
               <h3 data-testid="profile-full-name" className="font-semibold text-md text-gray-900">
-                {`${fName} ${lName}`}
+                {`${user?.name}`}
               </h3>
-              <p data-testid="profile-email" className="text-gray-500 text-sm">{emailId}</p>
+              <p data-testid="profile-email" className="text-gray-500 text-sm">{user?.email}</p>
             </div>
           </div>
 
@@ -85,7 +85,7 @@ export default function UserProfileMenu() {
               label="Log out"
               onClick={() => {
                 setIsOpen(false);
-                logout();
+                logoutMutation.mutate();
               }}
             />
           </div>
