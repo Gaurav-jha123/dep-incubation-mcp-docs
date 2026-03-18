@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import type { ReactNode, HTMLAttributes } from "react";
 import { createPortal } from "react-dom";
 
-export interface TooltipProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "content"> {
+export interface TooltipProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "content"
+> {
   /** The content to display inside the tooltip */
   content: ReactNode;
   children: ReactNode;
@@ -52,29 +54,21 @@ export const Tooltip: React.FC<TooltipProps> = ({
         case "top":
           top = triggerRect.top - tooltipRect.height - offset;
           left =
-            triggerRect.left +
-            triggerRect.width / 2 -
-            tooltipRect.width / 2;
+            triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2;
           break;
         case "bottom":
           top = triggerRect.bottom + offset;
           left =
-            triggerRect.left +
-            triggerRect.width / 2 -
-            tooltipRect.width / 2;
+            triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2;
           break;
         case "left":
           top =
-            triggerRect.top +
-            triggerRect.height / 2 -
-            tooltipRect.height / 2;
+            triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2;
           left = triggerRect.left - tooltipRect.width - offset;
           break;
         case "right":
           top =
-            triggerRect.top +
-            triggerRect.height / 2 -
-            tooltipRect.height / 2;
+            triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2;
           left = triggerRect.right + offset;
           break;
       }
@@ -117,7 +111,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             role="tooltip"
             style={{ top: coords.top, left: coords.left }}
             className={[
-              "fixed z-50 max-w-xs px-2 py-1 text-sm bg-secondary-900 text-secondary-50 rounded shadow transition-opacity duration-150",
+              "fixed z-50 max-w-xs rounded bg-neutral-900 px-2 py-1 text-sm text-neutral-50 shadow transition-opacity duration-150",
               "opacity-100 animate-fadeIn",
               className,
             ]

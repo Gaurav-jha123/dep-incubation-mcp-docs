@@ -40,11 +40,12 @@ export const Card: React.FC<CardProps> = ({
   children,
   className = "",
 }) => {
-  const base = "rounded-lg overflow-hidden bg-white shadow-sm border border-gray-200";
+  const base =
+    "rounded-lg overflow-hidden bg-neutral-50 shadow-sm border border-neutral-200";
 
   const styledVariants = {
-    solid: "bg-white border border-gray-200 shadow-md",
-    outline: "border border-gray-300 bg-transparent shadow-none",
+    solid: "bg-neutral-50 border border-neutral-200 shadow-md",
+    outline: "border border-neutral-400 bg-transparent shadow-none",
     ghost: "bg-transparent border-none shadow-none",
   };
 
@@ -58,18 +59,20 @@ export const Card: React.FC<CardProps> = ({
 
       {/* Header Variant */}
       {variant === "header" || variant === "actions" ? (
-        <div className="p-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-          {subtitle && <p className="text-sm text-gray-500 mt-1">{subtitle}</p>}
+        <div className="p-4 border-b border-neutral-200">
+          <h3 className="text-lg font-semibold text-neutral-900">{title}</h3>
+          {subtitle && (
+            <p className="mt-1 text-sm text-neutral-700">{subtitle}</p>
+          )}
         </div>
       ) : null}
 
       {/* Content */}
-      <div className="p-4 text-gray-700">{children}</div>
+      <div className="p-4 text-neutral-700">{children}</div>
 
       {/* Actions Variant */}
       {variant === "actions" && actions && (
-        <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
+        <div className="p-4 border-t border-border flex justify-end gap-2">
           {actions}
         </div>
       )}
