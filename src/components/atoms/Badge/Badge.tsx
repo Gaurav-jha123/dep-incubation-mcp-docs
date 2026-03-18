@@ -43,7 +43,7 @@ export const Badge: React.FC<BadgeProps> = ({
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
         >
-          <Popover.Panel className="absolute z-10 mt-2 w-40 p-2 rounded border border-secondary-200 bg-secondary-50 text-sm text-secondary-900 shadow-lg">
+          <Popover.Panel className="absolute z-10 mt-2 w-40 p-2 rounded border border-neutral-200 bg-neutral-50 text-sm text-neutral-900 shadow-lg">
             {info}
           </Popover.Panel>
         </Transition>

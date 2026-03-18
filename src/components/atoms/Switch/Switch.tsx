@@ -23,11 +23,11 @@ export const Switch: React.FC<SwitchProps> = ({
       disabled={disabled}
       aria-label={label}
       className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-        checked ? "bg-primary-500" : "bg-secondary-500"
+        checked ? "bg-primary-500" : "bg-neutral-500"
       } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"} ${className}`}
     >
       <span
-        className={`inline-block w-4 h-4 transform bg-secondary-50 rounded-full shadow transition-transform ${
+        className={`inline-block w-4 h-4 transform bg-neutral-50 rounded-full shadow transition-transform ${
           checked ? "translate-x-5" : "translate-x-1"
         }`}
       />
