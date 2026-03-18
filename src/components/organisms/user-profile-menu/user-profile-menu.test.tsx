@@ -4,25 +4,24 @@ import UserProfileMenu from "./user-profile-menu";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-const mockLogout = vi.fn();
+const mockMutate = vi.fn();
 
-vi.mock("@/lib/hooks/use-auth/use-auth", () => ({
-  default: () => ({ logout: mockLogout }),
+vi.mock("@/services/hooks/mutations/useAuthMutation", () => ({
+  useAuthMutation: () => ({
+    logoutMutation: {
+      mutate: mockMutate,
+    },
+  }),
 }));
 
 vi.mock("@/store/use-auth-store/use-auth-store", () => ({
   useAuthStore: () => ({
-    fName: "John",
-    lName: "Doe",
-    emailId: "john.doe@example.com",
+    user: {
+      name: "John Doe",
+      email: "john.doe@example.com",
+    },
   }),
 }));
-
-// vi.mock("@/components/ui/switch", () => ({
-//   Switch: (props: ButtonProps) => (
-//     <button role="switch" aria-label="toggle" {...props} />
-//   ),
-// }));
 
 vi.mock("lucide-react", () => ({
   User: ({ className }: Record<string, string>) => (
@@ -49,7 +48,7 @@ const openMenu = () => click(screen.getByTestId("profile-trigger"));
 
 describe("UserProfileMenu", () => {
   beforeEach(() => {
-    mockLogout.mockClear();
+    mockMutate.mockClear();
   });
 
   afterEach(() => {
@@ -76,11 +75,6 @@ describe("UserProfileMenu", () => {
       render(<UserProfileMenu />);
       expect(screen.queryByTestId("profile-email")).toBeNull();
     });
-
-    // it("does not show Settings item by default", () => {
-    //   render(<UserProfileMenu />);
-    //   expect(screen.queryByTestId("menu-item-settings")).toBeNull();
-    // });
 
     it("does not show Log out item by default", () => {
       render(<UserProfileMenu />);
@@ -111,41 +105,11 @@ describe("UserProfileMenu", () => {
       );
     });
 
-    // it("renders Dark Mode label", () => {
-    //   render(<UserProfileMenu />);
-    //   openMenu();
-    //   expect(screen.getByText("Dark Mode")).not.toBeNull();
-    // });
-
-    // it("renders the dark mode Switch", () => {
-    //   render(<UserProfileMenu />);
-    //   openMenu();
-    //   expect(screen.getByRole("switch")).not.toBeNull();
-    // });
-
-    // it("renders Settings menu item", () => {
-    //   render(<UserProfileMenu />);
-    //   openMenu();
-    //   expect(screen.getByTestId("menu-item-settings")).not.toBeNull();
-    // });
-
     it("renders Log out menu item", () => {
       render(<UserProfileMenu />);
       openMenu();
       expect(screen.getByTestId("menu-item-logout")).not.toBeNull();
     });
-
-    // it("renders moon icon", () => {
-    //   render(<UserProfileMenu />);
-    //   openMenu();
-    //   expect(screen.getByTestId("moon-icon")).not.toBeNull();
-    // });
-
-    // it("renders settings icon", () => {
-    //   render(<UserProfileMenu />);
-    //   openMenu();
-    //   expect(screen.getByTestId("settings-icon")).not.toBeNull();
-    // });
 
     it("renders logout icon", () => {
       render(<UserProfileMenu />);
@@ -173,13 +137,6 @@ describe("UserProfileMenu", () => {
   });
 
   describe("menu item actions", () => {
-    // it("closes menu when Settings is clicked", () => {
-    //   render(<UserProfileMenu />);
-    //   openMenu();
-    //   click(screen.getByTestId("menu-item-settings"));
-    //   expect(screen.queryByTestId("profile-dropdown")).toBeNull();
-    // });
-
     it("closes menu when Log out is clicked", () => {
       render(<UserProfileMenu />);
       openMenu();
@@ -187,19 +144,12 @@ describe("UserProfileMenu", () => {
       expect(screen.queryByTestId("profile-dropdown")).toBeNull();
     });
 
-    it("calls logout when Log out is clicked", () => {
+    it("calls logoutMutation.mutate when Log out is clicked", () => {
       render(<UserProfileMenu />);
       openMenu();
       click(screen.getByTestId("menu-item-logout"));
-      expect(mockLogout).toHaveBeenCalledTimes(1);
+      expect(mockMutate).toHaveBeenCalledTimes(1);
     });
-
-    // it("does NOT call logout when Settings is clicked", () => {
-    //   render(<UserProfileMenu />);
-    //   openMenu();
-    //   click(screen.getByTestId("menu-item-settings"));
-    //   expect(mockLogout).not.toHaveBeenCalled();
-    // });
   });
 
   describe("click outside", () => {

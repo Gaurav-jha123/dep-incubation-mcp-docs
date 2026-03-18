@@ -7,54 +7,55 @@ import {
   cleanup,
 } from "@testing-library/react";
 import LoginForm from "./login-form";
-import type { Label } from "@/components/ui/label";
 import { loginFormSchema } from "@/lib/schema/login-form.zod";
 
-const mockLogin = vi.fn();
-const mockVerifyUser = vi.fn();
+// ─── Mocks ────────────────────────────────────────────────────────────────────
 
-vi.mock("@/lib/hooks/use-auth/use-auth", () => ({
-  default: () => ({
-    login: mockLogin,
-    verifyUser: mockVerifyUser,
+const mockMutate = vi.fn();
+
+vi.mock("@/services/hooks/mutations/useAuthMutation", () => ({
+  useAuthMutation: () => ({
+    loginMutation: {
+      mutate: mockMutate,
+    },
   }),
 }));
 
-vi.mock("@/components/ui/field", () => ({
-  Field: ({ children, ...props }: React.ComponentProps<"div">) => (
-    <div {...props}>{children}</div>
-  ),
-  FieldError: ({
-    errors,
-  }: React.ComponentProps<"div"> & {
-    errors?: Array<{ message?: string } | undefined>;
-  }) => <span role="alert">{errors?.[0]?.message}</span>,
-  FieldGroup: ({ children, ...props }: React.ComponentProps<"div">) => (
-    <div {...props}>{children}</div>
-  ),
-  FieldLabel: ({ children, htmlFor }: React.ComponentProps<typeof Label>) => (
-    <label htmlFor={htmlFor}>{children}</label>
-  ),
-  FieldSet: ({ children, ...props }: React.ComponentProps<"fieldset">) => (
-    <fieldset {...props}>{children}</fieldset>
-  ),
-}));
-
-vi.mock("@/components/ui/input-group", () => ({
-  InputGroup: ({ children }: React.ComponentProps<"div">) => (
-    <div>{children}</div>
-  ),
-  InputGroupAddon: ({ children }: React.ComponentProps<"div">) => (
-    <span>{children}</span>
-  ),
-  InputGroupInput: ({ ...props }: React.ComponentProps<"input">) => (
-    <input {...props} />
-  ),
-}));
-
-vi.mock("@/components/ui/button", () => ({
-  Button: ({ children, ...props }: React.ComponentProps<"button">) => (
-    <button {...props}>{children}</button>
+vi.mock("@/components/atoms", () => ({
+  Input: ({
+    label,
+    id,
+    error,
+    type = "text",
+    placeholder,
+    onChange,
+    onBlur,
+    value,
+    name,
+  }: {
+    label?: string;
+    id?: string;
+    error?: string;
+    type?: string;
+    placeholder?: string;
+    onChange?: React.ChangeEventHandler<HTMLInputElement>;
+    onBlur?: React.FocusEventHandler<HTMLInputElement>;
+    value?: string;
+    name?: string;
+  }) => (
+    <div>
+      {label && <label htmlFor={id}>{label}</label>}
+      <input
+        id={id}
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        onChange={onChange}
+        onBlur={onBlur}
+        value={value}
+      />
+      {error && <span role="alert">{error}</span>}
+    </div>
   ),
 }));
 
@@ -66,11 +67,19 @@ vi.mock("@/components/molecules", () => ({
   ),
 }));
 
-// ─── Schema tests ─────────────────────────────────────────────────────────────
+vi.mock("@/components/ui/button", () => ({
+  Button: ({ children, ...props }: React.ComponentProps<"button">) => (
+    <button {...props}>{children}</button>
+  ),
+}));
+
+// ─── Cleanup ──────────────────────────────────────────────────────────────────
 
 afterEach(() => {
   cleanup();
 });
+
+// ─── Schema tests ─────────────────────────────────────────────────────────────
 
 describe("loginFormSchema", () => {
   describe("email", () => {
@@ -121,9 +130,7 @@ describe("loginFormSchema", () => {
 
 describe("LoginForm component", () => {
   beforeEach(() => {
-    vi.spyOn(Storage.prototype, "getItem").mockReturnValue(null);
-    mockLogin.mockClear();
-    mockVerifyUser.mockClear();
+    mockMutate.mockClear();
   });
 
   afterEach(() => {
@@ -164,31 +171,9 @@ describe("LoginForm component", () => {
     });
   });
 
-  describe("on mount", () => {
-    it("reads token from localStorage", () => {
-      const getSpy = vi
-        .spyOn(Storage.prototype, "getItem")
-        .mockReturnValue("abc123");
-      render(<LoginForm />);
-      expect(getSpy).toHaveBeenCalledWith("token");
-    });
-
-    it("calls verifyUser with the stored token", () => {
-      vi.spyOn(Storage.prototype, "getItem").mockReturnValue("my-token");
-      render(<LoginForm />);
-      expect(mockVerifyUser).toHaveBeenCalledWith("my-token");
-    });
-
-    it("calls verifyUser with empty string when no token stored", () => {
-      vi.spyOn(Storage.prototype, "getItem").mockReturnValue(null);
-      render(<LoginForm />);
-      expect(mockVerifyUser).toHaveBeenCalledWith("");
-    });
-  });
-
   describe("form submission", () => {
-    it("calls login with valid credentials on submit", async () => {
-      mockLogin.mockResolvedValue(undefined);
+    it("calls loginMutation.mutate with valid credentials on submit", async () => {
+      mockMutate.mockResolvedValue(undefined);
       render(<LoginForm />);
 
       fireEvent.change(screen.getByPlaceholderText("Enter email"), {
@@ -210,14 +195,14 @@ describe("LoginForm component", () => {
       fireEvent.click(screen.getByTestId("login-submit-btn"));
 
       await waitFor(() => {
-        expect(mockLogin).toHaveBeenCalledWith({
+        expect(mockMutate).toHaveBeenCalledWith({
           email: "test@example.com",
           password: "123456",
         });
       });
     });
 
-    it("does NOT call login when email is invalid", async () => {
+    it("does NOT call loginMutation.mutate when email is invalid", async () => {
       render(<LoginForm />);
 
       fireEvent.change(screen.getByLabelText("Email"), {
@@ -226,11 +211,11 @@ describe("LoginForm component", () => {
       fireEvent.click(screen.getByTestId("login-submit-btn"));
 
       await waitFor(() => {
-        expect(mockLogin).not.toHaveBeenCalled();
+        expect(mockMutate).not.toHaveBeenCalled();
       });
     });
 
-    it("does NOT call login when password is empty", async () => {
+    it("does NOT call loginMutation.mutate when password is empty", async () => {
       render(<LoginForm />);
 
       fireEvent.change(screen.getByLabelText("Password"), {
@@ -239,7 +224,7 @@ describe("LoginForm component", () => {
       fireEvent.click(screen.getByTestId("login-submit-btn"));
 
       await waitFor(() => {
-        expect(mockLogin).not.toHaveBeenCalled();
+        expect(mockMutate).not.toHaveBeenCalled();
       });
     });
   });
