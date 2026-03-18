@@ -5,9 +5,9 @@ import Layout from "../Layout";
 vi.mock("../Sidebar", () => ({
   __esModule: true,
   default: ({ onClose }: { onClose?: () => void }) => (
-    <div data-testid="sidebar" onClick={onClose}>
+    <button type="button" data-testid="sidebar" onClick={onClose}>
       Sidebar
-    </div>
+    </button>
   ),
 }));
 vi.mock("../Header", () => ({

@@ -157,6 +157,7 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
                     max={100}
                     step={1}
                     defaultValue={value}
+                    // eslint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus
                     className="w-full text-center border rounded outline-none"
                     onBlur={(e) => {

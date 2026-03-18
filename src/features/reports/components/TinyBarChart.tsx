@@ -50,14 +50,39 @@ const data = [
 // #endregion
 const TinyBarChart = () => {
   return (
-    <BarChart
-      style={{ width: '100%', maxWidth: '300px', maxHeight: '100px', aspectRatio: 1.618 }}
-      responsive
-      data={data}
-    >
-      <Bar dataKey="uv" fill="#8884d8" />
-      <RechartsDevtools />
-    </BarChart>
+    <div role="figure" aria-label="Sample Page Activity Chart">
+      <BarChart
+        style={{ width: '100%', maxWidth: '300px', maxHeight: '100px', aspectRatio: 1.618 }}
+        responsive
+        data={data}
+        aria-hidden="true"
+      >
+        <Bar dataKey="uv" fill="#8884d8" />
+        <RechartsDevtools />
+      </BarChart>
+
+      <table className="sr-only">
+        <caption>Page Activity Data</caption>
+        <thead>
+          <tr>
+            <th scope="col">Page</th>
+            <th scope="col">UV</th>
+            <th scope="col">PV</th>
+            <th scope="col">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, idx) => (
+            <tr key={idx}>
+              <td>{item.name}</td>
+              <td>{item.uv}</td>
+              <td>{item.pv}</td>
+              <td>{item.amt}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
