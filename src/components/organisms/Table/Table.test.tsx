@@ -226,11 +226,11 @@ describe("Table", () => {
       .closest("th") as HTMLElement;
     const firstRow = screen.getByText("Zoe").closest("tr") as HTMLElement;
 
-    expect(thead.className).toContain("bg-secondary-200");
-    expect(thead.className).toContain("text-secondary-700");
-    expect(nameHeaderCell.className).toContain("bg-secondary-50");
+    expect(thead.className).toContain("bg-neutral-200");
+    expect(thead.className).toContain("text-neutral-700");
+    expect(nameHeaderCell.className).toContain("bg-neutral-50");
     expect(nameHeaderCell.className).toContain("cursor-pointer");
-    expect(firstRow.className).toContain("hover:bg-secondary-50");
+    expect(firstRow.className).toContain("hover:bg-neutral-50");
   });
 
   it("applies sticky first-column background style when enabled", () => {

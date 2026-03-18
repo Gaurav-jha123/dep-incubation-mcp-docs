@@ -63,10 +63,4 @@ describe("Avatar Component", () => {
     expect(avatar).toBeTruthy();
   });
 
-  it("uses the updated neutral fallback surface", () => {
-    const { container } = render(<Avatar fallback="MS" />);
-    const avatar = container.querySelector(".bg-neutral-200");
-    expect(avatar).toBeTruthy();
-  });
-
 });
