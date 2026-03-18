@@ -1,38 +1,50 @@
+// src/store/use-auth-store/use-auth-store.ts
+import type { IUser } from "@/services/api/auth.api";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-export interface IUserDetails {
-  fName: string | null;
-  lName: string | null;
-  emailId: string | null;
+interface IAuthStore {
+  // accessToken is NEVER persisted — it's short-lived and memory-only
+  accessToken: string | null;
+  user: IUser | null;
   isLoggedIn: boolean;
-  iat: number | null;
-  exp: number | null;
-  setUserDetails: (userDetails: Omit<IUserDetails, 'setUserDetails' | 'clearUserDetails' | 'getUserName'>) => void;
+  setAccessToken: (token: string) => void;
+  setUserDetails: (user: IUser & { token: string }) => void;
   clearUserDetails: () => void;
-  getUserName: () => string;
 }
 
-export const useAuthStore = create<IUserDetails>((set, get) => ({
-  fName: null,
-  lName: null,
-  emailId: null,
-  isLoggedIn: false,
-  iat: null,
-  exp: null,
-
-  // setters
-  setUserDetails: (userDetails) => set(userDetails),
-  clearUserDetails: () =>
-    set({
-      fName: null,
-      lName: null,
-      emailId: null,
+export const useAuthStore = create<IAuthStore>()(
+  persist(
+    (set) => ({
+      accessToken: null,
+      user: null,
       isLoggedIn: false,
-      iat: null,
-      exp: null,
+
+      setAccessToken: (token) =>
+        set({ accessToken: token, isLoggedIn: true }),
+
+      setUserDetails: (data) =>
+        set({
+          accessToken: data.token,
+          isLoggedIn: true,
+          user: {
+            id: data.id,
+            name: data.name,
+            email: data.email,
+            role: data.role,
+          },
+        }),
+
+      clearUserDetails: () =>
+        set({ accessToken: null, user: null, isLoggedIn: false }),
     }),
-    getUserName: () => {
-      const { fName, lName } = get()
-      return `${fName} ${lName}`
-    },
-}));
+    {
+      name: "auth-storage",
+      // Only persist user + isLoggedIn — NOT the access token
+      partialize: (state) => ({
+        user: state.user,
+        isLoggedIn: state.isLoggedIn,
+      }),
+    }
+  )
+);
