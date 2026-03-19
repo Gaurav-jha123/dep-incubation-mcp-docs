@@ -234,7 +234,7 @@ export const Table = <T extends Record<string, unknown>>({
             aria-label="Previous"
             disabled={page === 0}
             onClick={() => setPage(page - 1)}
-            className="w-10 h-10 flex items-center justify-center border border-grey-300 rounded-md cursor-pointer hover:bg-grey-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-10 h-10 flex items-center justify-center border border-neutral-400 rounded-md cursor-pointer hover:bg-neutral-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronLeft size={16} />
           </button>
@@ -242,7 +242,7 @@ export const Table = <T extends Record<string, unknown>>({
             aria-label="Next"
             disabled={page === totalPages - 1 || totalPages === 0}
             onClick={() => setPage(page + 1)}
-            className="w-10 h-10 flex items-center justify-center border border-grey-300 rounded-md cursor-pointer hover:bg-grey-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-10 h-10 flex items-center justify-center border border-neutral-400 rounded-md cursor-pointer hover:bg-neutral-50 hover:border-primary-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronRight size={16} />
           </button>
