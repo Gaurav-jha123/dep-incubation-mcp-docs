@@ -4,9 +4,15 @@ import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { PrismaModule } from './prisma/index.js';
 import { AuthModule } from './modules/auth/auth.module.js';
+import { SkillMatrixModule } from './modules/skill-matrix/skill-matrix.module.js';
 
 @Module({
-  imports: [ConfigModule.forRoot(), PrismaModule, AuthModule],
+  imports: [
+    ConfigModule.forRoot(),
+    PrismaModule,
+    AuthModule,
+    SkillMatrixModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -11,58 +11,107 @@ const prisma = new PrismaClient({ adapter });
 const SALT_ROUNDS = 10;
 
 const users = [
-  { name: 'Admin User', email: 'admin@example.com', password: 'admin123' },
-  { name: 'John Doe', email: 'john@example.com', password: 'password123' },
-  { name: 'Jane Smith', email: 'jane@example.com', password: 'password123' },
   {
-    name: 'Alice Johnson',
-    email: 'alice@example.com',
+    name: 'Alex Johnson',
+    email: 'alex.johnson@example.com',
     password: 'password123',
   },
-  { name: 'Bob Williams', email: 'bob@example.com', password: 'password123' },
+  {
+    name: 'Sarah Wilson',
+    email: 'sarah.wilson@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'Michael Chen',
+    email: 'michael.chen@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'Emily Rodriguez',
+    email: 'emily.rodriguez@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'David Thompson',
+    email: 'david.thompson@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'Lisa Anderson',
+    email: 'lisa.anderson@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'James Martinez',
+    email: 'james.martinez@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'Rachel Kim',
+    email: 'rachel.kim@example.com',
+    password: 'password123',
+  },
+  {
+    name: "Kevin O'Connor",
+    email: 'kevin.oconnor@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'Maya Patel',
+    email: 'maya.patel@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'John Davis',
+    email: 'john.davis@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'Sophia Williams',
+    email: 'sophia.williams@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'Daniel Brown',
+    email: 'daniel.brown@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'Olivia Miller',
+    email: 'olivia.miller@example.com',
+    password: 'password123',
+  },
+  {
+    name: 'Ryan Taylor',
+    email: 'ryan.taylor@example.com',
+    password: 'password123',
+  },
 ];
 
 const topics = [
+  { label: 'Problem solving' },
+  { label: 'Error handling' },
+  { label: 'Concurrency' },
+  { label: 'Test Coverage' },
+  { label: 'Programming paradigms' },
+  { label: 'Design patterns' },
+  { label: 'SWD Principles' },
+  { label: 'Design System' },
+  { label: 'Programming styles' },
+  { label: 'Web browser' },
+  { label: 'IDE' },
+  { label: 'VCS-Git' },
+  { label: 'React' },
+  { label: 'Next.js' },
+  { label: 'Typescript' },
+  { label: 'Build tools-webpack, vite' },
   {
-    name: 'JavaScript',
-    description: 'Core JavaScript fundamentals and ES6+ features',
+    label:
+      'State management-Zustand, Redux, RTK, RTK query/React query/SWR, NgRx',
   },
-  {
-    name: 'TypeScript',
-    description: 'TypeScript type system, generics, and advanced patterns',
-  },
-  {
-    name: 'React',
-    description: 'React hooks, state management, and component patterns',
-  },
-  {
-    name: 'Node.js',
-    description: 'Server-side JavaScript with Node.js and Express/NestJS',
-  },
-  {
-    name: 'SQL',
-    description: 'Relational databases, query optimization, and schema design',
-  },
-  {
-    name: 'Docker',
-    description: 'Containerization, Docker Compose, and deployment',
-  },
-  {
-    name: 'Git',
-    description: 'Version control, branching strategies, and collaboration',
-  },
-  {
-    name: 'Testing',
-    description: 'Unit testing, integration testing, and E2E testing',
-  },
-  {
-    name: 'CSS',
-    description: 'Modern CSS, Flexbox, Grid, and responsive design',
-  },
-  {
-    name: 'System Design',
-    description: 'Architecture patterns, scalability, and distributed systems',
-  },
+  { label: 'Form management-React hook form/Formik, ZOD' },
+  { label: 'UI toolkit-Headless UI toolkit, storybook' },
+  { label: 'Styling-CSS, SCSS, Style components, Tailwind' },
 ];
 
 async function main() {
@@ -88,40 +137,34 @@ async function main() {
   // Upsert topics
   const createdTopics = [];
   for (const topicData of topics) {
-    // Find existing or create
     let topic = await prisma.topic.findFirst({
-      where: { name: topicData.name },
+      where: { label: topicData.label },
     });
     if (!topic) {
-      topic = await prisma.topic.create({ data: topicData });
+      topic = await prisma.topic.create({ data: { label: topicData.label } });
     }
     createdTopics.push(topic);
-    console.log(`  ✓ Topic: ${topic.name}`);
+    console.log(`  ✓ Topic: ${topic.label}`);
   }
 
-  // Seed skill matrix entries
+  // Seed skill matrix with random skillLevel (0-100) for every user × topic
   console.log('\n  Seeding skill matrix...');
   for (const user of createdUsers) {
-    // Each user gets skills for a random subset of topics
-    const topicCount = Math.floor(Math.random() * 5) + 4; // 4-8 topics per user
-    const shuffled = [...createdTopics].sort(() => 0.5 - Math.random());
-    const selectedTopics = shuffled.slice(0, topicCount);
-
-    for (const topic of selectedTopics) {
-      const skillLevel = Math.floor(Math.random() * 5) + 1; // 1-5 skill level
+    for (const topic of createdTopics) {
+      const value = Math.floor(Math.random() * 100);
       await prisma.skillMatrix.upsert({
         where: {
           userId_topicId: { userId: user.id, topicId: topic.id },
         },
-        update: { skillLevel },
+        update: { value },
         create: {
           userId: user.id,
           topicId: topic.id,
-          skillLevel,
+          value,
         },
       });
     }
-    console.log(`  ✓ Skills for ${user.name}: ${selectedTopics.length} topics`);
+    console.log(`  ✓ Skills for ${user.name}: ${createdTopics.length} topics`);
   }
 
   console.log('\n✅ Seeding completed!');

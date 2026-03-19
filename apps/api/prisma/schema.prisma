@@ -25,7 +25,7 @@ model User {
 
 model Topic {
   id          Int      @id @default(autoincrement())
-  name        String
+  label        String
   description String?
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
@@ -39,7 +39,7 @@ model SkillMatrix {
   id         Int      @id @default(autoincrement())
   userId     Int      @map("user_id")
   topicId    Int      @map("topic_id")
-  skillLevel Int      @map("skill_level")
+  value      Int      @map("skill_level")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
