@@ -25,7 +25,7 @@ interface AlertProps extends Omit<
 const alertVariantClasses: Record<AlertType, string> = {
   success: "border-success-500 bg-success-50 text-success-900",
   error: "border-danger-500 bg-danger-50 text-danger-900",
-  warning: "border-warning-500 bg-warning-100 text-warning-900",
+  warning: "border-warning-500 bg-warning-50 text-warning-900",
   info: "border-primary-500 bg-primary-50 text-primary-900",
 };
 const icons: Record<IconKey, React.ReactNode> = {
@@ -49,7 +49,7 @@ export const Alert: React.FC<AlertProps> = ({
   const baseClasses =
     "my-2 flex items-start gap-3 rounded-md border px-4 py-3 text-sm font-medium";
   const closeButtonClasses =
-    "ml-1 -mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded text-current transition-colors hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-current focus:ring-offset-2";
+    "ml-1 -mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded text-current transition-colors hover:bg-neutral-900/10 focus:outline-none focus:ring-2 focus:ring-current focus:ring-offset-2";
   const [isVisible, setIsVisible] = useState(isOpen);
 
   useEffect(() => {

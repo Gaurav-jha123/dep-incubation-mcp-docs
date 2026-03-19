@@ -42,7 +42,7 @@ export default function Stepper({
                         ? "bg-primary-500 border-primary-500 text-primary-50"
                         : isActive
                           ? "border-primary-500"
-                          : "border-secondary-200"
+                          : "border-neutral-200"
                     }
                   `}
                   >
@@ -59,7 +59,7 @@ export default function Stepper({
                     className={`mt-2 text-sm ${
                       isActive
                         ? "text-primary-700 font-medium"
-                        : "text-secondary-500"
+                        : "text-neutral-500"
                     }`}
                   >
                     {step.title}
@@ -74,7 +74,7 @@ export default function Stepper({
                     ${
                     variant === "minimal" ? "mt-[14px]" : "mt-[20px]"
                     }
-                    ${index < currentStep ? "bg-primary-500" : "bg-secondary-200"}
+                    ${index < currentStep ? "bg-primary-500" : "bg-neutral-200"}
                   `}
                   />
                 )}
