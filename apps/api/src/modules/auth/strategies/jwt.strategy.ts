@@ -5,7 +5,9 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../../../prisma/prisma.service.js';
 
 interface JwtPayload {
+  id: number;
   email: string;
+  type: string;
 }
 
 @Injectable()
@@ -22,6 +24,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
+    if (payload.type !== 'access') {
+      throw new UnauthorizedException();
+    }
+
     const user = await this.prisma.user.findUnique({
       where: { email: payload.email },
       select: { id: true, name: true, email: true },

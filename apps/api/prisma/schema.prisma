@@ -47,5 +47,7 @@ model SkillMatrix {
   topic Topic @relation(fields: [topicId], references: [id], onDelete: Cascade)
 
   @@unique([userId, topicId])
+  @@index([userId])
+  @@index([topicId])
   @@map("skill_matrix")
 }

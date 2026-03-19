@@ -35,7 +35,7 @@ export class AuthService {
       },
     });
 
-    const tokens = await this.generateTokens(user.email);
+    const tokens = await this.generateTokens(user.id, user.email);
 
     return {
       user: { id: user.id, name: user.name, email: user.email },
@@ -58,7 +58,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const tokens = await this.generateTokens(user.email);
+    const tokens = await this.generateTokens(user.id, user.email);
 
     return {
       user: { id: user.id, name: user.name, email: user.email },
@@ -79,28 +79,36 @@ export class AuthService {
     return user;
   }
 
-  private async generateTokens(email: string) {
-    const payload = { email };
-
-    const accessToken = await this.jwtService.signAsync(payload, {
-      expiresIn: '15m',
-    });
-
-    const refreshToken = await this.jwtService.signAsync(payload, {
-      expiresIn: '7d',
-    });
+  private async generateTokens(userId: number, email: string) {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(
+        { id: userId, email, type: 'access' },
+        { expiresIn: '15m' },
+      ),
+      this.jwtService.signAsync(
+        { id: userId, email, type: 'refresh' },
+        { expiresIn: '7d' },
+      ),
+    ]);
 
     return { accessToken, refreshToken };
   }
 
   async refreshToken(token: string) {
     try {
-      const payload = await this.jwtService.verifyAsync<{ email: string }>(
-        token,
-      );
-      const tokens = await this.generateTokens(payload.email);
-      return tokens;
-    } catch {
+      const payload = await this.jwtService.verifyAsync<{
+        id: number;
+        email: string;
+        type: string;
+      }>(token);
+
+      if (payload.type !== 'refresh') {
+        throw new UnauthorizedException('Invalid refresh token');
+      }
+
+      return this.generateTokens(payload.id, payload.email);
+    } catch (error) {
+      if (error instanceof UnauthorizedException) throw error;
       throw new UnauthorizedException('Invalid refresh token');
     }
   }
