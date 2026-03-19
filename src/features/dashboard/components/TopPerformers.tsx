@@ -44,10 +44,10 @@ const TopPerformers = () => {
   };
 
   const getScoreBg = (score: number) => {
-    if (score >= 80) return "bg-gradient-to-r from-emerald-50 to-emerald-100 border-emerald-200";
-    if (score >= 60) return "bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200";
-    if (score >= 40) return "bg-gradient-to-r from-amber-50 to-amber-100 border-amber-200";
-    return "bg-gradient-to-r from-rose-50 to-rose-100 border-rose-200";
+    if (score >= 80) return "bg-gradient-to-r from-emerald-500/20 to-emerald-600/20 border-emerald-500/50";
+    if (score >= 60) return "bg-gradient-to-r from-blue-500/20 to-blue-600/20 border-blue-500/50";
+    if (score >= 40) return "bg-gradient-to-r from-amber-500/20 to-amber-600/20 border-amber-500/50";
+    return "bg-gradient-to-r from-rose-500/20 to-rose-600/20 border-rose-500/50";
   };
 
   const getRankColor = (index: number) => {
@@ -69,7 +69,7 @@ const TopPerformers = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-100 overflow-x-hidden">
+    <div className="bg-card rounded-lg shadow-lg p-6 border border-border overflow-x-hidden">
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
           <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -100,8 +100,8 @@ const TopPerformers = () => {
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-3">
                   <div>
-                    <h3 className="font-bold text-base text-gray-800">{performer.name}</h3>
-                    <p className="text-sm text-gray-600">{performer.totalSkills} skills assessed</p>
+                    <h3 className="font-bold text-base text-foreground">{performer.name}</h3>
+                    <p className="text-sm text-muted-foreground">{performer.totalSkills} skills assessed</p>
                   </div>
                   
                   <div className="text-right">
@@ -113,7 +113,7 @@ const TopPerformers = () => {
 
                 {/* Top Skills */}
                 <div className="space-y-2">
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Top Skills</p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Top Skills</p>
                   <div className="flex flex-wrap gap-1">
                     {performer.topSkills.map((skill, skillIndex) => {
                       const isTopSkill = skillIndex === 0;
@@ -123,7 +123,7 @@ const TopPerformers = () => {
                           className={`flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-medium transition-all ${
                             isTopSkill 
                               ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md' 
-                              : 'bg-white/70 text-gray-700 border border-gray-200'
+                              : 'bg-card/70 text-foreground border border-border'
                           }`}
                         >
                           <span className="truncate max-w-[80px]">{skill.topic}</span>

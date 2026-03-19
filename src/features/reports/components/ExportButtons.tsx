@@ -95,7 +95,7 @@ export default function ExportButtons({ skills }: ExportButtonsProps) {
   return (
     <Dropdown className="inline-flex">
       <Dropdown.Trigger
-        className="px-2 py-2 rounded-md hover:bg-gray-100 border border-gray-200"
+        className="px-2 py-2 rounded-md hover:bg-accent border border-border"
         aria-label="Open export menu"
       >
         <MoreVertical className="h-5 w-5" />

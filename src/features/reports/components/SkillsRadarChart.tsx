@@ -19,7 +19,7 @@ type SkillsRadarChartProps = {
 export default function SkillsRadarChart({ data }: SkillsRadarChartProps) {
   return (
     <div 
-      className="p-4 bg-white shadow rounded"
+      className="p-4 bg-card shadow rounded"
       role="figure"
       aria-label="Skill Radar Chart"
     >
