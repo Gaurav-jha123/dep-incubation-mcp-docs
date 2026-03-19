@@ -3,40 +3,67 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module.js';
+import type { IncomingMessage, ServerResponse } from 'http';
+import type { NestExpressApplication } from '@nestjs/platform-express';
+
+let app: NestExpressApplication;
+
+async function createApp() {
+  if (!app) {
+    app = await NestFactory.create<NestExpressApplication>(AppModule);
+    const configService = app.get(ConfigService);
+
+    // Global validation pipe
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+      }),
+    );
+
+    // Swagger setup
+    const config = new DocumentBuilder()
+      .setTitle('Dashboard App API')
+      .setDescription('The Dashboard App backend API documentation')
+      .setVersion('1.0')
+      .addBearerAuth()
+      .build();
+
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api/docs', app, document);
+
+    // Enable CORS
+    app.enableCors({
+      origin: configService.get<string>('CORS_ORIGIN', 'http://localhost:5173'),
+      credentials: true,
+    });
+
+    await app.init();
+  }
+  return app;
+}
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await createApp();
   const configService = app.get(ConfigService);
-
-  // Global validation pipe
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
-
-  // Swagger setup
-  const config = new DocumentBuilder()
-    .setTitle('Dashboard App API')
-    .setDescription('The Dashboard App backend API documentation')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
-
-  // Enable CORS
-  app.enableCors({
-    origin: configService.get<string>('CORS_ORIGIN', 'http://localhost:5173'),
-    credentials: true,
-  });
-
   const port = configService.get<number>('PORT', 3000);
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
   console.log(`Swagger docs available at: http://localhost:${port}/api/docs`);
 }
-void bootstrap();
+
+// For Vercel serverless
+export default async function handler(
+  req: IncomingMessage,
+  res: ServerResponse,
+) {
+  const app = await createApp();
+  const instance = app.getHttpAdapter().getInstance();
+  return instance(req, res);
+}
+
+// For local development
+if (process.env.VERCEL !== '1') {
+  void bootstrap();
+}
