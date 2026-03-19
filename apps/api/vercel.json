@@ -10,19 +10,19 @@
     {
       "src": "/(.*)",
       "methods": ["OPTIONS"],
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,PATCH,DELETE,OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" },
-        { "key": "Access-Control-Max-Age", "value": "86400" }
-      ],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Max-Age": "86400"
+      },
       "dest": "src/main.ts"
     },
     {
       "src": "/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" }
-      ],
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      },
       "dest": "src/main.ts"
     }
   ]
