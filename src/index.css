@@ -38,6 +38,41 @@
   --sidebar-ring: 222.2 84% 4.9%;
 }
 
+@theme inline {
+ 
+    /* Project palette */
+    --color-neutral-50: #fafafc;
+    --color-neutral-200: #ebedf5;
+    --color-neutral-400: #ced0db;
+    --color-neutral-500: #acafbf;
+    --color-neutral-700: #474a59;
+    --color-neutral-900: #1d1e26;
+     --color-success-50: #fcfff5;
+    --color-success-200: #ebf3d8;
+    --color-success-400: #c1e288;
+    --color-success-500: #67a300;
+    --color-success-700: #528500;
+    --color-success-900: #396f1f;
+     --color-warning-50: #fffcf5;
+    --color-warning-200: #ffedc9;
+    --color-warning-400: #ffd785;
+    --color-warning-500: #fcaa00;
+    --color-warning-700: #ff9000;
+    --color-warning-900: #bd5800;
+     --color-danger-50: #fef6f6;
+    --color-danger-200: #fde1e1;
+    --color-danger-400: #fbb6b6;
+    --color-danger-500: #ff4242;
+    --color-danger-700: #e22a2a;
+    --color-danger-900: #ad0000;
+     --color-primary-50: #f5fdff;
+    --color-primary-200: #e1f4fa;
+    --color-primary-400: #a0ddee;
+    --color-primary-500: #009ecc;
+    --color-primary-700: #0086ad;
+    --color-primary-900: #006b8a;
+}
+
 /* Dark Theme */
 .dark {
   --background: 222.2 84% 4.9%;
@@ -145,3 +180,4 @@ code, pre {
   fill: #000 !important;
   stroke: #000 !important;
 }
+
