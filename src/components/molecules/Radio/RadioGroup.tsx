@@ -63,17 +63,17 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
               className={({ checked, disabled }) =>
                 [
                   sizeStyles[size],
-                  "border border-secondary-400 rounded-full",
+                  "rounded-full border border-neutral-400",
                   checked
-                    ? "bg-primary-500 border-secondary-200"
-                    : "bg-secondary-50",
+                    ? "border-primary-200 bg-primary-700"
+                    : "bg-neutral-50",
                   disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
                 ]
                   .filter(Boolean)
                   .join(" ")
               }
             />
-            <Label className="text-secondary-700 select-none">
+            <Label className="select-none text-neutral-700">
               {option.label}
             </Label>
           </Field>

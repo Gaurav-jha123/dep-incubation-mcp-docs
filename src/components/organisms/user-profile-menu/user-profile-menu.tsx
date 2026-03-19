@@ -29,7 +29,7 @@ export default function UserProfileMenu() {
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-controls="profile-menu-dropdown"
-        className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-300 transition"
+        className="w-10 h-10 rounded-full bg-muted flex items-center justify-center cursor-pointer hover:bg-accent transition"
         onClick={() => setIsOpen((prev) => !prev)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -37,7 +37,7 @@ export default function UserProfileMenu() {
           }
         }}
       >
-        <User className="w-5 h-5 text-gray-700" />
+        <User className="w-5 h-5 text-foreground" />
       </div>
 
       {isOpen && (
@@ -45,18 +45,18 @@ export default function UserProfileMenu() {
           id="profile-menu-dropdown"
           role="menu"
           data-testid="profile-dropdown" 
-          className="absolute right-0 top-12 max-w-xs bg-white rounded-2xl shadow-xl py-4 px-2"
+          className="absolute right-0 top-12 max-w-xs bg-card rounded-2xl shadow-xl py-4 px-2 border border-border"
         >
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-              <User className="w-5 h-5 text-gray-700" />
+            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+              <User className="w-5 h-5 text-foreground" />
             </div>
 
             <div className="flex flex-col items-start">
-              <h3 data-testid="profile-full-name" className="font-semibold text-md text-gray-900">
+              <h3 data-testid="profile-full-name" className="font-semibold text-md text-foreground">
                 {`${user?.name}`}
               </h3>
-              <p data-testid="profile-email" className="text-gray-500 text-sm">{user?.email}</p>
+              <p data-testid="profile-email" className="text-muted-foreground text-sm">{user?.email}</p>
             </div>
           </div>
 
@@ -70,7 +70,7 @@ export default function UserProfileMenu() {
             <Switch data-testid="dark-mode-switch" />
           </div> */}
 
-          <div className="my-3 border-t border-gray-200" />
+          <div className="my-3 border-t border-border" />
 
           <div className="space-y-1">
             {/* <MenuItem
@@ -111,7 +111,7 @@ function MenuItem({
       data-testid={testId}
       role="menuitem"
       tabIndex={0}
-      className="flex items-center gap-3 px-2 py-2 rounded-lg cursor-pointer transition text-gray-700 hover:bg-gray-100"
+      className="flex items-center gap-3 px-2 py-2 rounded-lg cursor-pointer transition text-foreground hover:bg-accent"
       onClick={onClick}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {

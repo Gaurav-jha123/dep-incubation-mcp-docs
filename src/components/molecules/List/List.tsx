@@ -1,5 +1,6 @@
 import React from "react";
 import { Listbox } from "@headlessui/react";
+import { Check } from "lucide-react";
 
 export interface ListItem {
   icon?: React.ReactNode;
@@ -13,6 +14,7 @@ export interface ListProps {
   onChange?: (item: ListItem) => void;
   variant?: "default" | "bordered" | "card";
   className?: string;
+  ariaLabel?: string;
 }
 
 export const List: React.FC<ListProps> = ({
@@ -21,48 +23,59 @@ export const List: React.FC<ListProps> = ({
   onChange,
   variant = "default",
   className = "",
+  ariaLabel = "Selectable items",
 }) => {
   const listVariants = {
     default: "space-y-2",
-    bordered: "border border-gray-200 rounded-lg divide-y",
+    bordered: "divide-y rounded-lg border border-border",
     card: "space-y-3",
   };
 
   return (
     <Listbox value={value} onChange={onChange}>
-      <ul className={`${listVariants[variant]} ${className}`}>
+      <Listbox.Options
+        as="ul"
+        static
+        aria-label={ariaLabel}
+        className={`${listVariants[variant]} ${className}`}
+      >
         {items.map((item, idx) => (
           <Listbox.Option key={idx} value={item} as="li">
             {({ active, selected }) => (
               <div
                 className={`flex items-start gap-3 p-3 rounded-lg border transition cursor-pointer
-                ${active ? "bg-gray-50 border-gray-300" : "border-gray-200"}
-                ${selected ? "bg-blue-50 border-blue-300" : ""}`}
+                ${active ? "bg-neutral-50 border-neutral-400" : "border-neutral-200"}
+                ${selected ? "bg-primary-50 border-primary-400" : ""}`}
               >
                 {item.icon && (
-                  <span className="text-gray-500 text-lg mt-0.5">
+                  <span className="mt-0.5 text-lg text-neutral-500">
                     {item.icon}
                   </span>
                 )}
 
                 <div className="flex-1">
-                  <p className="text-gray-900 font-medium">{item.label}</p>
+                  <p className="font-medium text-neutral-900">{item.label}</p>
 
                   {item.description && (
-                    <p className="text-gray-600 text-sm mt-0.5">
+                    <p className="mt-0.5 text-sm text-neutral-700">
                       {item.description}
                     </p>
                   )}
                 </div>
 
                 {selected && (
-                  <span className="text-blue-600 text-sm font-medium">✓</span>
+                  <span
+                    className="text-sm font-medium text-primary-700"
+                    aria-hidden="true"
+                  >
+                    <Check className="h-4 w-4" data-testid="selected-icon" />
+                  </span>
                 )}
               </div>
             )}
           </Listbox.Option>
         ))}
-      </ul>
+      </Listbox.Options>
     </Listbox>
   );
 };

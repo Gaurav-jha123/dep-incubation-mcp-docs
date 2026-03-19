@@ -67,7 +67,7 @@ it("passes correct item to onChange", () => {
   it("shows checkmark when item is selected", () => {
     render(<List items={mockItems} value={mockItems[0]} />);
 
-    const checkmark = screen.getAllByText("✓")[0];
+    const checkmark = screen.getAllByTestId("selected-icon")[0];
 
     expect(checkmark).toBeTruthy();
   });

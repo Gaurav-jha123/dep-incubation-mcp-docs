@@ -9,9 +9,9 @@ type SkillsTableProps = {
 
 export default function SkillsTable({ skills }: SkillsTableProps) {
   return (
-    <div className="bg-white shadow rounded p-4">
+    <div className="bg-card shadow rounded p-4">
 
-      <h3 className="font-semibold mb-4">All Skills</h3>
+      <h3 className="font-semibold mb-4 text-foreground">All Skills</h3>
 
       <table className="w-full">
         <caption className="sr-only">Comprehensive List of All Skills and Scores</caption>

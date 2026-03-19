@@ -7,11 +7,11 @@ import {
   Navigate,
 } from "react-router";
 import { QueryProvider } from "./providers/query-provider";
+import { ThemeProvider } from "./providers/theme-provider";
 import Layout from "./layout/Layout";
 import Login from "./features/authentication/login";
 import { useAuthStore } from "./store/use-auth-store/use-auth-store";
 import NotFound from "./components/pages/not-found/not-found";
-import "./App.css";
 import APP_ROUTES from "./route-config";
 import { Suspense, useEffect, useState, createContext, useContext } from "react";
 import ErrorBoundary from "./components/infrastructure/ErrorBoundary/ErrorBoundary";
@@ -71,7 +71,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
     bootstrap();
     return () => controller.abort();
-  }, []);
+  }, [clearUserDetails, setAccessToken, setUserDetails]);
 
   if (isBootstrapping) {
     return (
@@ -103,54 +103,56 @@ function App() {
     <BrowserRouter>
       <QueryProvider>
         <AuthProvider>
-        <ErrorBoundary>
-          <Suspense
-              fallback={
-                <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100vh",
-                }}
+          <ThemeProvider>
+            <ErrorBoundary>
+              <Suspense
+                fallback={
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "100vh",
+                    }}
+                  >
+                    Loading...
+                  </div>
+                }
               >
-                  Loading...
-                </div>
-              }
-            >
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <Navigate to={isLoggedIn ? "/dashboard" : "/login"} replace />
-                  }
-                />
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <Navigate to={isLoggedIn ? "/dashboard" : "/login"} replace />
+                    }
+                  />
   
-              {/* Public-only routes (redirect to dashboard if already logged in) */}
-              <Route element={<PublicRoute />}>
-                <Route path="/login" element={<Login />} />
-              </Route>
-
-                {/* Protected routes */}
-              <Route element={<ProtectedRoute />}>
-                  <Route element={<Layout />}>
-                      {APP_ROUTES.map((route) => {
-                      const Component = route.element;
-                      return (
-                        <Route
-                          key={route.path}
-                          path={route.path}
-                          element={<Component />}
-                        />
-                      );
-                    })}
+                  {/* Public-only routes (redirect to dashboard if already logged in) */}
+                  <Route element={<PublicRoute />}>
+                    <Route path="/login" element={<Login />} />
                   </Route>
-                </Route>
 
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-        </ErrorBoundary>
+                  {/* Protected routes */}
+                  <Route element={<ProtectedRoute />}>
+                    <Route element={<Layout />}>
+                      {APP_ROUTES.map((route) => {
+                        const Component = route.element;
+                        return (
+                          <Route
+                            key={route.path}
+                            path={route.path}
+                            element={<Component />}
+                          />
+                        );
+                      })}
+                    </Route>
+                  </Route>
+
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </ErrorBoundary>
+          </ThemeProvider>
         </AuthProvider>
       </QueryProvider>
     </BrowserRouter>

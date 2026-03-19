@@ -1,6 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useEffect, useRef } from "react";
 
 import { Input } from "@/components/atoms";
 import { Alert } from "@/components/molecules";
@@ -10,6 +11,8 @@ import { loginFormSchema } from "@/lib/schema/login-form.zod";
 import { useAuthMutation } from "@/services/hooks/mutations/useAuthMutation";
 
 function LoginForm() {
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
   const {
     control,
     handleSubmit,
@@ -28,6 +31,11 @@ function LoginForm() {
   const handleOnSubmit = (data: z.infer<typeof loginFormSchema>) => {
     loginMutation.mutate(data);
   };
+
+  // Focus email input on mount for accessibility
+  useEffect(() => {
+    emailInputRef.current?.focus();
+  }, []);
 
   return (
     <form
@@ -52,6 +60,7 @@ function LoginForm() {
             render={({ field, fieldState }) => (
               <Input
                 {...field}
+                ref={emailInputRef}
                 id="login-form-email"
                 type="email"
                 label="Email"
@@ -59,6 +68,7 @@ function LoginForm() {
                 fullWidth
                 error={fieldState.error?.message}
                 inputSize="lg"
+                required
               />
             )}
           />
@@ -77,6 +87,7 @@ function LoginForm() {
                 fullWidth
                 error={fieldState.error?.message}
                 inputSize="lg"
+                required
               />
             )}
           />
@@ -94,7 +105,7 @@ function LoginForm() {
             type="submit"
             variant="default"
             aria-disabled={!isValid}
-            className="w-full cursor-pointer h-12 mt-2"
+            className="w-full cursor-pointer h-12 mt-2 focus-visible:ring-2 focus-visible:ring-offset-2"
           >
             Login
           </Button>
