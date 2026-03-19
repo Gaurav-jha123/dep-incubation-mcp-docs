@@ -13,6 +13,11 @@ async function createApp() {
     app = await NestFactory.create<NestExpressApplication>(AppModule);
     const configService = app.get(ConfigService);
 
+    // Global prefix for all routes
+    app.setGlobalPrefix('api/v1', {
+      exclude: ['api/docs', 'api/docs-json', 'api/docs-yaml'],
+    });
+
     // Global validation pipe
     app.useGlobalPipes(
       new ValidationPipe({
@@ -23,26 +28,31 @@ async function createApp() {
     );
 
     // Swagger setup
+    const port = configService.get<number>('PORT', 3000);
     const config = new DocumentBuilder()
       .setTitle('Dashboard App API')
       .setDescription('The Dashboard App backend API documentation')
       .setVersion('1.0')
+      .addServer('https://dep-incubation-backend.vercel.app', 'Production')
+      .addServer(`http://localhost:${port}`, 'Local')
       .addBearerAuth()
       .build();
 
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api/docs', app, document, {
+      useGlobalPrefix: false,
       customCssUrl:
-        'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.11.0/swagger-ui.css',
+        'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui.min.css',
       customJs: [
-        'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.11.0/swagger-ui-bundle.js',
-        'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.11.0/swagger-ui-standalone-preset.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-bundle.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-standalone-preset.min.js',
       ],
+      customSiteTitle: 'Dashboard API Docs',
     });
 
-    // Enable CORS
+    // Enable CORS - allow all origins
     app.enableCors({
-      origin: configService.get<string>('CORS_ORIGIN', 'http://localhost:5173'),
+      origin: true,
       credentials: true,
     });
 
@@ -57,6 +67,7 @@ async function bootstrap() {
   const port = configService.get<number>('PORT', 3000);
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
+  console.log(`API base path: http://localhost:${port}/api/v1`);
   console.log(`Swagger docs available at: http://localhost:${port}/api/docs`);
 }
 
