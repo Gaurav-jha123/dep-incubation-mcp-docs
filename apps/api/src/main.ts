@@ -28,11 +28,13 @@ async function createApp() {
     );
 
     // Swagger setup
+    const port = configService.get<number>('PORT', 3000);
     const config = new DocumentBuilder()
       .setTitle('Dashboard App API')
       .setDescription('The Dashboard App backend API documentation')
       .setVersion('1.0')
-      .addServer('https://dep-incubation-backend.vercel.app')
+      .addServer('https://dep-incubation-backend.vercel.app', 'Production')
+      .addServer(`http://localhost:${port}`, 'Local')
       .addBearerAuth()
       .build();
 
