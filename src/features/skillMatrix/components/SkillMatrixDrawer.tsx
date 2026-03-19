@@ -84,7 +84,7 @@ export default function SkillMatrixDrawer({
             onFiltersChange={onQueryFiltersChange}
           />
           
-          <div className="border-t border-gray-200" />
+          <div className="border-t border-border" />
           
           <SkillMatrixFilter
             users={users}
@@ -99,7 +99,7 @@ export default function SkillMatrixDrawer({
             onScoreFilterChange={onScoreFilterChange}
           />
           
-          <div className="border-t border-gray-200" />
+          <div className="border-t border-border" />
           
           <SkillMatrixColumnRearrange
             topics={orderedTopics}

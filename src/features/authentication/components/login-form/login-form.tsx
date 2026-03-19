@@ -44,10 +44,10 @@ function LoginForm() {
       aria-labelledby="login-form-title"
       noValidate
     >
-      <div className="w-full bg-white rounded-xl p-8 shadow-sm">
+      <div className="w-full rounded-xl border border-border bg-card p-8 text-card-foreground shadow-sm">
         <h1
           id="login-form-title"
-          className="text-3xl font-bold text-center mb-8"
+          className="mb-8 text-center text-3xl font-bold text-card-foreground"
         >
           Login
         </h1>

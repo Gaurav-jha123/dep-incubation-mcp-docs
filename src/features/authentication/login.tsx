@@ -5,7 +5,7 @@ const LoginForm = lazy(() => import("./components/login-form/login-form"));
 
 const Login = () => {
   return (
-    <main className="bg-gray-200 flex items-center justify-center h-screen">
+    <main className="bg-background text-foreground flex items-center justify-center min-h-screen">
       <LoginForm />
     </main>
   );
