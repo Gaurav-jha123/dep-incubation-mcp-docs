@@ -51,7 +51,7 @@ export default function SkillMatrixColumnRearrange({topics, onOrderChange, class
     <div className={`flex flex-col ${className ?? ''}`}>
       <h4 className="text-sm font-medium text-foreground mb-2">Rearrange Columns</h4>
       <p className="text-xs text-muted-foreground mb-3">Drag and drop topics to reorder the column list.</p>
-      <div className="flex-1 min-h-0 overflow-y-auto rounded-md border border-border p-3">
+      <div className="h-96 overflow-y-auto rounded-md border border-border p-3">
         <DragDropProvider
           onDragEnd={(event) => {
             setItems((prevItems) => {
