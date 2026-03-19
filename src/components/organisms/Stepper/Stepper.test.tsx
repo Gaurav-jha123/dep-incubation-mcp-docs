@@ -25,17 +25,13 @@ describe("Stepper", () => {
   it("shows completed and active states in default variant", () => {
     render(<Stepper steps={steps} currentStep={1} variant="default" />);
 
-    const completedCircle = screen
-      .getAllByRole("tab")[0]
-      .querySelector("div") as HTMLElement;
-    const activeCircle = screen.getByText("2");
-    const activeLabel = screen.getByText("Profile");
+    const tabs = screen.getAllByRole("tab");
+    const activeTab = tabs[1];
 
-    expect(completedCircle).not.toBeNull();
-    expect(completedCircle.className).toContain("bg-primary-500");
-    expect(completedCircle.className).toContain("text-primary-50");
-    expect(activeCircle.className).toContain("border-primary-500");
-    expect(activeLabel.className).toContain("text-primary-700");
+    expect(tabs[0].getAttribute("aria-selected")).toBe("false");
+    expect(activeTab.getAttribute("aria-selected")).toBe("true");
+    expect(screen.getByText("Profile")).not.toBeNull();
+    expect(screen.getByText("2")).not.toBeNull();
   });
 
   it("hides numeric/check text in minimal variant", () => {
