@@ -6,6 +6,8 @@ import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
 import HeatmapLegend from "./components/SkillMatrixTableLegend";
 import useLocalStorage from "@/lib/hooks/use-local-storage/use-local-storage";
 import createUniqueId from "./utils/create-unique-id";
+import type { QueryFilter } from "./components/SkillMatrixQueryBuilder";
+import { applySkillMatrixFilters } from "./utils/skillMatrixFilters";
 
 const ADDED_USERS_STORAGE_KEY = "skill-matrix-added-users";
 const ADDED_TOPICS_STORAGE_KEY = "skill-matrix-added-topics";
@@ -40,6 +42,7 @@ const SkillMatrix = () => {
   const [selectedTopics, setSelectedTopics] = useState<string[]>(allTopicIds);
 
   const [scoreFilters, setScoreFilters] = useState<string[]>([]);
+  const [queryFilters, setQueryFilters] = useState<QueryFilter[]>([]);
 
   /**
    * USER FILTER HANDLER
@@ -81,43 +84,19 @@ const SkillMatrix = () => {
 
   /**
    * EFFECTIVE FILTER VALUES
-    * remove "All" before filtering
+   * remove "All" before filtering
    */
-
   const filteredData = useMemo(() => {
-    const filteredUsers = users.filter(
-      (u) => selectedUsers.length === 0 || selectedUsers.includes(u.id),
+    return applySkillMatrixFilters(
+      skillMatrix,
+      users,
+      topics,
+      selectedUsers,
+      selectedTopics,
+      scoreFilters,
+      queryFilters
     );
-
-    const filteredTopics = topics.filter(
-      (t) => selectedTopics.length === 0 || selectedTopics.includes(t.id),
-    );
-
-    const skills = skillMatrix.skills.filter((skill) => {
-      const userMatch =
-        selectedUsers.length === 0 || selectedUsers.includes(skill.userId);
-
-      const topicMatch =
-        selectedTopics.length === 0 || selectedTopics.includes(skill.topicId);
-
-      const scoreMatch =
-        scoreFilters.length === 0 ||
-        scoreFilters.some((filter) => {
-          if(filter === "above80") return skill.value >= 80;
-          if(filter === "above50") return skill.value >= 50;
-          if(filter === "below50") return skill.value < 50;
-          return true;
-        });
-
-      return userMatch && topicMatch && scoreMatch;
-    });
-
-    return {
-      users: filteredUsers,
-      topics: filteredTopics,
-      skills,
-    };
-  }, [skillMatrix, scoreFilters, selectedTopics,  selectedUsers, topics, users]);
+  }, [skillMatrix, scoreFilters, queryFilters, selectedTopics, selectedUsers, topics, users]);
 
   // Store custom topic order as IDs only
   const [topicOrder, setTopicOrder] = useState<string[]>(() => allTopicIds);
@@ -213,6 +192,8 @@ const SkillMatrix = () => {
             onColumnOrderChange={handleColumnOrderChange}
             scoreFilters={scoreFilters}
             onScoreFilterChange={setScoreFilters}
+            queryFilters={queryFilters}
+            onQueryFiltersChange={setQueryFilters}
           />
         </div>
       </div>
