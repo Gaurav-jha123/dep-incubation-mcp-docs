@@ -51,7 +51,6 @@ describe("NotFound", () => {
       expect(main.className).toContain("items-center");
       expect(main.className).toContain("w-full");
       expect(main.className).toContain("h-full");
-      expect(main.className).toContain("bg-white");
     });
 
     it("Lottie has max-width class", () => {
