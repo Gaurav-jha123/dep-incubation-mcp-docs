@@ -23,7 +23,11 @@ export default function MemberProfileView({userSkills, user}: MemberProfileViewP
   const weak = sorted.slice(-3).reverse();
 
   return (
-    <div className="flex flex-col gap-5">
+    <div 
+      className="flex flex-col gap-5"
+      role="region"
+      aria-label="Member Profile Detail View"
+    >
 
       <div className="flex gap-5 flex-wrap">
         {/* Radar chart */}
@@ -33,13 +37,31 @@ export default function MemberProfileView({userSkills, user}: MemberProfileViewP
             Average score:{" "}
             <span className={`font-bold ${scoreTextClass(avg)}`}>{avg}</span>
           </p>
-          <ResponsiveContainer width="100%" height={280}>
+          <ResponsiveContainer width="100%" height={280} aria-hidden="true">
             <RadarChart data={userSkills}>
               <PolarGrid stroke={CHART_COLORS.grid} />
               <PolarAngleAxis dataKey="subject" tick={{ fill: CHART_COLORS.axisText, fontSize: 9 }} />
               <Radar dataKey="A" stroke={CHART_COLORS.strong} fill={CHART_COLORS.strong} fillOpacity={0.2} strokeWidth={2} />
             </RadarChart>
           </ResponsiveContainer>
+
+          <table className="sr-only">
+            <caption>Member Profile Radar Chart Breakdown</caption>
+            <thead>
+              <tr>
+                <th scope="col">Subject</th>
+                <th scope="col">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {userSkills.map((s) => (
+                <tr key={s.subject}>
+                  <td>{s.subject}</td>
+                  <td>{s.A}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </Card>
 
         {/* Strengths, focus areas, all skills */}

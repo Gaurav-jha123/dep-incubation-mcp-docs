@@ -113,7 +113,15 @@ const MultiSelectSearch = ({ label, options, selected, onChange, onCreateOption 
                       filteredOptions.map((option) => (
                         <div
                           key={option.value}
+                          role="button"
+                          tabIndex={0}
                           onClick={() => toggleValue(option.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              toggleValue(option.value);
+                            }
+                          }}
                           className="flex items-start gap-3 px-2 py-1 cursor-pointer hover:bg-gray-100 rounded"
                         >
                           <Checkbox

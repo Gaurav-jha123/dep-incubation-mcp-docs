@@ -42,7 +42,7 @@ export default function UserSelector({
   return (
     <div className="flex flex-col gap-2 w-[300px]">
 
-      <label className="font-semibold">
+      <label htmlFor="user-selector-btn" className="font-semibold">
         Select User
       </label>
 
@@ -50,6 +50,7 @@ export default function UserSelector({
 
         <PopoverTrigger asChild>
           <Button
+            id="user-selector-btn"
             variant="outline"
             role="combobox"
             aria-expanded={open}

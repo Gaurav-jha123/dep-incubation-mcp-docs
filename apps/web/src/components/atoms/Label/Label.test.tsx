@@ -80,7 +80,7 @@ describe("Label Component", () => {
 
       const label = screen.getByText("Name");
 
-      expect(label.className.includes("text-gray-700")).toBe(true);
+      expect(label.className.includes("text-neutral-700")).toBe(true);
     });
 
     it("applies error style when error is present", () => {
@@ -91,7 +91,7 @@ describe("Label Component", () => {
 
       const label = screen.getByText("Email");
 
-      expect(label.className.includes("text-red-600")).toBe(true);
+      expect(label.className.includes("text-danger-700")).toBe(true);
     });
 
     it("applies custom className", () => {

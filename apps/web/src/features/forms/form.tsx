@@ -229,9 +229,9 @@ export default function UserForm() {
 
         {/* Role - Listbox */}
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-gray-700">
+          <span className="block text-sm font-medium text-gray-700">
             Role
-          </label>
+          </span>
           <Controller
             name="role"
             control={control}

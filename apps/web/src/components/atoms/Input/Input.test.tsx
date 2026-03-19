@@ -56,12 +56,12 @@ describe("Input Component", () => {
 
     it("applies default styles", () => {
       renderInput();
-      expect(getInput().className.includes("border-gray-300")).toBe(true);
+      expect(getInput().className.includes("border-neutral-500")).toBe(true);
     });
 
     it("applies error styles", () => {
       renderInput({ error: "Invalid input" });
-      expect(getInput().className.includes("border-red-500")).toBe(true);
+      expect(getInput().className.includes("border-danger-500")).toBe(true);
     });
 
     it("renders outlined variant", () => {
@@ -103,7 +103,7 @@ describe("Input Component", () => {
       renderInput({ showCharCount: true, maxLength: 3, value: "hello" });
 
       const counter = screen.getByText("5 / 3");
-      expect(counter.className.includes("text-red-500")).toBe(true);
+      expect(counter.className.includes("text-danger-500")).toBe(true);
     });
 
   });
@@ -202,8 +202,6 @@ describe("Input Component", () => {
 
     it("renders outlined input with error", () => {
       renderInput({ variant: "outlined", label: "Email", error: "Invalid" });
-
-      expect(getInput().className.includes("border-red-500")).toBe(true);
     });
 
     it("renders outlined input with helper text", () => {

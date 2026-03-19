@@ -19,6 +19,25 @@ describe("Button Component", () => {
       expect(screen.getByText("Submit")).not.toBeNull();
     });
   });
+
+  describe("variants", () => {
+    it.each([
+      ["primary", ["bg-primary-500", "text-neutral-900", "hover:bg-primary-700", "active:bg-primary-900", "data-[pseudo-state=hover]:shadow-lg", "data-[pseudo-state=hover]:scale-[1.02]"]],
+      ["secondary", ["border-neutral-200", "bg-neutral-50", "text-neutral-700"]],
+      ["danger", ["bg-danger-500", "hover:bg-danger-700", "active:bg-danger-900"]],
+      ["ghost", ["text-neutral-700", "hover:bg-neutral-200"]],
+      ["outline", ["border-primary-500", "text-primary-900"]],
+      ["link", ["text-primary-900", "hover:underline", "data-[pseudo-state=active]:opacity-80"]],
+    ] as const)("applies %s variant classes", (variant, expectedClasses) => {
+      render(<Button variant={variant}>Variant</Button>);
+      const button = screen.getByRole("button");
+
+      expectedClasses.forEach((expectedClass) => {
+        expect(button.className.includes(expectedClass)).toBe(true);
+      });
+    });
+  });
+
   describe("sizes", () => {
     it("applies sm size classes", () => {
       render(<Button size="sm">Small</Button>);
@@ -73,6 +92,7 @@ describe("Button Component", () => {
       const button = screen.getByRole("button") as HTMLButtonElement;
 
       expect(button.disabled).toBe(true);
+      expect(button.getAttribute("aria-busy")).toBe("true");
     });
     it("shows spinner and disables button when loading", () => {
       render(<Button isLoading>Submit</Button>);
@@ -82,6 +102,44 @@ describe("Button Component", () => {
       expect(button.disabled).toBe(true);
       expect(screen.getByText("Submit")).not.toBeNull();
       expect(screen.getByTestId("spinner")).not.toBeNull();
+    });
+  });
+
+  describe("pseudo states", () => {
+    it("applies a data attribute for pseudo state previews", () => {
+      render(<Button pseudoState="hover">Preview</Button>);
+      const button = screen.getByRole("button");
+
+      expect(button.getAttribute("data-pseudo-state")).toBe("hover");
+    });
+
+    it("applies focus pseudo state previews", () => {
+      render(<Button pseudoState="focus">Preview</Button>);
+      const button = screen.getByRole("button");
+
+      expect(button.getAttribute("data-pseudo-state")).toBe("focus");
+    });
+
+    it("applies focus-visible pseudo state previews", () => {
+      render(<Button pseudoState="focus-visible">Preview</Button>);
+      const button = screen.getByRole("button");
+
+      expect(button.getAttribute("data-pseudo-state")).toBe("focus-visible");
+    });
+
+    it("disables the button for disabled pseudo state previews", () => {
+      render(<Button pseudoState="disabled">Preview</Button>);
+      const button = screen.getByRole("button") as HTMLButtonElement;
+
+      expect(button.disabled).toBe(true);
+      expect(button.getAttribute("data-pseudo-state")).toBe("disabled");
+    });
+
+    it("omits pseudo state data attribute by default", () => {
+      render(<Button>Default</Button>);
+      const button = screen.getByRole("button");
+
+      expect(button.hasAttribute("data-pseudo-state")).toBe(false);
     });
   });
 

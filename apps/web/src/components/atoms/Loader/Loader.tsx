@@ -14,7 +14,7 @@ export default function Loader({ open, size = 'medium', color = 'blue' }: Loader
   };
 
   const colorClasses = {
-    blue: 'border-blue-500',
+    blue: 'border-primary-500',
   };
 
   return (

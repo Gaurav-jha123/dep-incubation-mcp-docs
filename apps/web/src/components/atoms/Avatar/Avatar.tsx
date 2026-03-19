@@ -29,7 +29,7 @@ const sizeMap = {
 
 const statusMap = {
   online: "bg-success-500",
-  offline: "bg-secondary-500",
+  offline: "bg-neutral-500",
   busy: "bg-danger-500",
   away: "bg-warning-500",
 };
@@ -48,7 +48,7 @@ export const Avatar: React.FC<AvatarProps> = ({
     <div className="relative inline-block">
       <div
         className={`
-          overflow-hidden rounded-full bg-secondary-100 text-secondary-700
+          overflow-hidden rounded-full bg-neutral-200 text-neutral-700
           flex items-center justify-center font-semibold select-none
           ${sizeClass} ${className}
         `}

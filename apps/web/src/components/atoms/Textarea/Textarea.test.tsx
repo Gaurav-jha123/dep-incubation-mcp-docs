@@ -15,6 +15,7 @@ describe("Textarea Component", () => {
     const textarea = screen.getByTestId("textarea")
 
     expect(textarea).toBeTruthy()
+    expect(textarea.className.includes("border-neutral-700")).toBe(true)
   })
 
   it("renders label", () => {
@@ -31,9 +32,9 @@ describe("Textarea Component", () => {
       />
     )
 
-    expect(
-      screen.getByText("Maximum 500 characters")
-    ).toBeTruthy()
+    const helperText = screen.getByText("Maximum 500 characters")
+
+    expect(helperText).toBeTruthy()
   })
 
   it("renders error message", () => {
@@ -44,9 +45,9 @@ describe("Textarea Component", () => {
       />
     )
 
-    expect(
-      screen.getByText("Description is required")
-    ).toBeTruthy()
+    const errorText = screen.getByText("Description is required")
+
+    expect(errorText).toBeTruthy()
   })
 
   it("allows typing", async () => {
