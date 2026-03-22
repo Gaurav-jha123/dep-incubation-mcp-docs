@@ -35,7 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       icon: <LayoutDashboard size={navIconSize} />,
     },
 
-    { name: "Users", path: "/userform", icon: <Users size={18} /> },
+    // { name: "Users", path: "/userform", icon: <Users size={18} /> },
     { name: "Reports", path: "/reports", icon: <BarChart3 size={18} /> },
   ];
 
