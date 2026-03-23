@@ -3,9 +3,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/use-auth-store/use-auth-store";
 import { useNavigate } from "react-router";
 import { loginPost, logoutPost, refreshTokenPost, type ILoginResponse, type IRefreshTokenResponse } from "@/services/api/auth.api";
+import { ApiError } from "@/services/api/client";
 
-
-export const useAuthMutation = () => {
+export const useAuthMutation = (callbacks?: { onLoginError?: (message: string) => void }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { setUserDetails, clearUserDetails, setAccessToken } = useAuthStore();
@@ -13,10 +13,15 @@ export const useAuthMutation = () => {
   const loginMutation = useMutation({
     mutationFn: loginPost,
     onSuccess: (data: ILoginResponse) => {
-      const { accessToken, user } = data.data;
-      setUserDetails({ ...user, token: accessToken });
+      const { accessToken, refreshToken, user } = data;
+      setUserDetails({ ...user, accessToken, refreshToken });
       queryClient.invalidateQueries({ queryKey: ["me"] });
       navigate("/dashboard");
+    },
+    onError: (error: unknown) => {
+      const message =
+        error instanceof ApiError ? error.message : "Login failed. Please try again.";
+      callbacks?.onLoginError?.(message);
     },
   });
 
@@ -36,9 +41,13 @@ export const useAuthMutation = () => {
   });
 
   const refreshMutation = useMutation({
-    mutationFn: refreshTokenPost,
+    mutationFn: () => {
+      const storedRefreshToken = useAuthStore.getState().refreshToken;
+      if (!storedRefreshToken) return Promise.reject(new Error("No refresh token"));
+      return refreshTokenPost(storedRefreshToken);
+    },
     onSuccess: (data: IRefreshTokenResponse) => {
-      setAccessToken(data.data.accessToken);
+      setAccessToken(data.accessToken, data.refreshToken);
     },
     onError: () => {
       clearUserDetails();

@@ -49,15 +49,23 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const bootstrap = async () => {
       try {
-        // 1. Try to get a fresh access token via the httpOnly refresh cookie
-        const refreshRes = await refreshTokenPost();
-        setAccessToken(refreshRes.data.accessToken);
+        // 1. Check for a stored refresh token (persisted across page reloads)
+        const storedRefreshToken = useAuthStore.getState().refreshToken;
+        if (!storedRefreshToken) {
+          clearUserDetails();
+          return;
+        }
 
-        // 2. Fetch user profile (the refresh endpoint doesn't return user data)
+        // 2. Exchange stored refresh token for a fresh access token
+        const refreshRes = await refreshTokenPost(storedRefreshToken);
+        setAccessToken(refreshRes.accessToken, refreshRes.refreshToken);
+
+        // 3. Fetch user profile (now that the access token is in the store)
         const meRes = await getMe();
         setUserDetails({
-          ...meRes.data.user,
-          token: refreshRes.data.accessToken,
+          ...meRes,
+          accessToken: refreshRes.accessToken,
+          refreshToken: refreshRes.refreshToken,
         });
       } catch {
         // Refresh failed = no valid session → clear everything
