@@ -7,6 +7,8 @@ stages:
 cache:
   paths:
     - node_modules/
+    - apps/web/node_modules/
+    - apps/api/node_modules/
 
 install:
   stage: build
@@ -14,11 +16,32 @@ install:
     - npm install -g pnpm
     - pnpm install
 
-deploy_dev:
+deploy_web:
   stage: deploy
+  variables:
+    VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID_WEB
   script:
     - npm install -g pnpm
     - npm install -g vercel
+    - pnpm install
+    - pnpm turbo run build --filter=@dep-incubation-dashboard/web
+    - cd apps/web
+    - vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+    - vercel build --prod --token=$VERCEL_TOKEN
+    - vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+  only:
+    - dev
+
+deploy_api:
+  stage: deploy
+  variables:
+    VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID_API
+  script:
+    - npm install -g pnpm
+    - npm install -g vercel
+    - pnpm install
+    - pnpm turbo run build --filter=@dep-incubation-dashboard/api
+    - cd apps/api
     - vercel pull --yes --environment=production --token=$VERCEL_TOKEN
     - vercel build --prod --token=$VERCEL_TOKEN
     - vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
