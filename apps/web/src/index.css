@@ -115,9 +115,9 @@ header {
 }
 
 /* Headless UI specific components */
-[data-headlessui-state] {
+/* [data-headlessui-state] {
   background-color: var(--card) !important;
-}
+} */
 
 /* Force all elements with bg-card class to use solid colors */
 .bg-card {
