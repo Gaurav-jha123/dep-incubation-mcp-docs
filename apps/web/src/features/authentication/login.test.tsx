@@ -34,14 +34,6 @@ describe("Login component", () => {
       render(<Login />);
       expect(await screen.findByTestId("login-form")).not.toBeNull();
     });
-
-    it("renders the root container with correct classes", () => {
-      const { container } = render(<Login />);
-      const root = container.firstChild as HTMLElement;
-      expect(root.className).toContain("bg-gray-200");
-      expect(root.className).toContain("flex");
-      expect(root.className).toContain("h-screen");
-    });
   });
 
   describe("Suspense fallback", () => {

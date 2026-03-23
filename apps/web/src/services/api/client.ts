@@ -63,18 +63,23 @@ export async function apiClient<TResponse, TBody = unknown>({
     isRefreshing = true;
 
     try {
+      const storedRefreshToken = useAuthStore.getState().refreshToken;
+
+      if (!storedRefreshToken) throw new Error("No refresh token available");
+
       const refreshRes = await fetch(`${base}/auth/refresh`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refreshToken: storedRefreshToken }),
       });
 
       if (!refreshRes.ok) throw new Error("Refresh failed");
 
       const refreshData = await refreshRes.json();
-      const newToken: string = refreshData.data.accessToken;
+      const newToken: string = refreshData.accessToken;
 
-      useAuthStore.getState().setAccessToken(newToken);
+      useAuthStore.getState().setAccessToken(newToken, refreshData.refreshToken);
       processQueue(newToken);
 
       // Retry original request with new token

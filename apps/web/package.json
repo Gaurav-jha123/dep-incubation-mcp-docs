@@ -81,6 +81,7 @@
     "eslint-plugin-storybook": "^10.2.14",
     "globals": "^16.5.0",
     "husky": "^9.1.7",
+    "jsdom": "^29.0.1",
     "lint-staged": "^16.3.3",
     "playwright": "^1.58.2",
     "shadcn": "^3.8.5",
