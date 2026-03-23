@@ -34,7 +34,7 @@ export default function SkillsPieChart({ data }: Props) {
 
   return (
     <div 
-      className="bg-white border rounded-xl p-6 shadow-sm"
+      className="p-4 bg-card border rounded-xl shadow-sm"
       role="figure"
       aria-label="Skill Distribution Pie Chart"
     >
@@ -98,13 +98,13 @@ export default function SkillsPieChart({ data }: Props) {
                   aria-hidden="true"
                 />
 
-                <span className="text-gray-700">
+                <span className="text-foreground">
                   {skill.name}
                 </span>
 
               </div>
 
-              <span className="font-semibold text-gray-900">
+              <span className="font-semibold text-foreground">
                 {skill.score}%
               </span>
 

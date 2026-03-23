@@ -24,21 +24,21 @@ export default function SummaryCards({ skills, user }: SummaryCardsProps) {
       aria-label="User skills summary statistics"
     >
 
-      <div className="p-4 bg-white shadow rounded">
+      <div className="p-4 bg-card shadow rounded">
         <div className="flex flex-col gap-2">
           <h4>User</h4>
-          <p className="font-bold">{user?.name}</p>
+          <p className="font-bold text-foreground">{user?.name}</p>
         </div>
       </div>
 
-      <div className="p-4 bg-white shadow rounded">
+      <div className="p-4 bg-card shadow rounded">
         <div className="flex flex-col gap-2">
           <h4>Average Skill</h4>
-          <p className="font-bold">{avg.toFixed(1)}</p>
+          <p className="font-bold text-foreground">{avg.toFixed(1)}</p>
         </div>
       </div>
 
-      <div className="p-4 bg-white shadow rounded">
+      <div className="p-4 bg-card shadow rounded">
         <div className="flex flex-col gap-2">
           <h4>Strongest</h4>
           <p className="font-bold">
@@ -47,7 +47,7 @@ export default function SummaryCards({ skills, user }: SummaryCardsProps) {
         </div>
       </div>
 
-      <div className="p-4 bg-white shadow rounded">
+      <div className="p-4 bg-card shadow rounded">
         <div className="flex flex-col gap-2">
           <h4>Weakest</h4>
           <p className="font-bold">

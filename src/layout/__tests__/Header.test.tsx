@@ -3,6 +3,10 @@ import { render, fireEvent } from "@testing-library/react";
 import Header from "../Header";
 import { MemoryRouter } from "react-router-dom";
 
+vi.mock("@/components/organisms", () => ({
+  UserProfileMenu: () => <div data-testid="profile-menu-root" />,
+}));
+
 describe("Header", () => {
   it("shows the correct dynamic title based on route", () => {
     const { getByText } = render(

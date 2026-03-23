@@ -15,15 +15,15 @@ interface IAuthStore {
 
 export const useAuthStore = create<IAuthStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       accessToken: null,
-      user: null,
-      isLoggedIn: false,
+      user: get()?.user || null,
+      isLoggedIn: get()?.isLoggedIn || false,
 
-      setAccessToken: (token) =>
+      setAccessToken: (token: string) =>
         set({ accessToken: token, isLoggedIn: true }),
 
-      setUserDetails: (data) =>
+      setUserDetails: (data: IUser & { token: string }) =>
         set({
           accessToken: data.token,
           isLoggedIn: true,
@@ -36,7 +36,7 @@ export const useAuthStore = create<IAuthStore>()(
         }),
 
       clearUserDetails: () =>
-        set({ accessToken: null, user: null, isLoggedIn: false }),
+        set({ user: null, isLoggedIn: false }),
     }),
     {
       name: "auth-storage",

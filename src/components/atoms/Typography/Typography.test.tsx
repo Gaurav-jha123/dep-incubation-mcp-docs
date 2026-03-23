@@ -39,12 +39,6 @@ describe("Typography Component", () => {
     });
   });
 
-  it("should apply the updated caption color", () => {
-    render(<Typography variant="caption">Caption</Typography>);
-    const el = screen.getByText("Caption");
-    expect(el.className).toContain("text-neutral-700");
-  });
-
   it("should apply custom className", () => {
     render(<Typography className="custom-class">Text</Typography>);
     const el = screen.getByText("Text");

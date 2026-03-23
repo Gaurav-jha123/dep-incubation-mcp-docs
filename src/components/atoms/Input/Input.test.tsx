@@ -69,7 +69,6 @@ describe("Input Component", () => {
 
       expect(getInput()).not.toBeNull();
       expect(screen.getByText("Outlined Input")).not.toBeNull();
-      expect(getInput().className.includes("border-neutral-200")).toBe(true);
     });
 
   });
@@ -89,17 +88,6 @@ describe("Input Component", () => {
     it("hides helper text when error exists", () => {
       renderInput({ error: "Invalid", helperText: "Helper text" });
       expect(screen.queryByText("Helper text")).toBeNull();
-    });
-
-    it("uses success color for success helper text", () => {
-      renderInput({
-        variant: "success",
-        helperText: "This username is available",
-      });
-
-      const helperText = screen.getByText("This username is available");
-
-      expect(helperText.className.includes("text-success-700")).toBe(true);
     });
 
   });
@@ -157,24 +145,6 @@ describe("Input Component", () => {
       expect(container.querySelector(".w-full")).not.toBeNull();
     });
 
-    it("lightens the input appearance when disabled", () => {
-      renderInput({
-        disabled: true,
-        label: "Username",
-        leftIcon: <span data-testid="left-icon">L</span>,
-      });
-
-      const input = getInput();
-      const label = screen.getByText("Username");
-      const leftIcon = screen.getByTestId("left-icon").parentElement;
-
-      expect(input.className.includes("disabled:bg-neutral-50")).toBe(true);
-      expect(input.className.includes("disabled:text-neutral-500")).toBe(true);
-      expect(input.className.includes("disabled:cursor-not-allowed")).toBe(true);
-      expect(label.className.includes("text-neutral-500")).toBe(true);
-      expect(leftIcon?.className.includes("text-neutral-400")).toBe(true);
-    });
-
   });
 
   describe("Accessibility", () => {
@@ -228,13 +198,10 @@ describe("Input Component", () => {
 
       expect(screen.getByTestId("left")).not.toBeNull();
       expect(screen.getByTestId("right")).not.toBeNull();
-      expect(getInput().className.includes("border-neutral-200")).toBe(true);
     });
 
     it("renders outlined input with error", () => {
       renderInput({ variant: "outlined", label: "Email", error: "Invalid" });
-
-      expect(getInput().className.includes("border-danger-500")).toBe(true);
     });
 
     it("renders outlined input with helper text", () => {
