@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+// import { ThemeToggle } from "../components/ui/theme-toggle";
 import { Outlet } from "react-router-dom";
 
 const Layout: React.FC = () => {
@@ -12,10 +13,10 @@ const Layout: React.FC = () => {
     setIsSidebarCollapsed((prevCollapsed) => !prevCollapsed);
 
   return (
-    <div className="min-h-screen w-full flex bg-gray-50">
+    <div className="min-h-screen w-full flex bg-background">
       <a 
         href="#main-content" 
-        className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-4 focus:bg-white focus:text-blue-600 focus:font-bold focus:shadow-md"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-4 focus:bg-card focus:text-primary focus:font-bold focus:shadow-md"
       >
         Skip to main content
       </a>
@@ -41,7 +42,7 @@ const Layout: React.FC = () => {
         id="mobile-sidebar"
         aria-hidden={!isSidebarOpen}
         className={`
-        fixed top-0 left-0 h-screen bg-white border-r shadow-sm z-50 transition-all duration-300 ease-in-out
+        fixed top-0 left-0 h-screen bg-card border-r shadow-sm z-50 transition-all duration-300 ease-in-out
         ${isSidebarCollapsed ? "lg:w-20" : "lg:w-[280px]"}
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}
@@ -54,18 +55,20 @@ const Layout: React.FC = () => {
       </div>
 
       {/* Main area */}
-      <div
-        className={`flex-1 flex flex-col min-h-screen min-w-0 transition-all duration-300 ease-in-out ${
+      <div className={`flex-1 flex flex-col min-h-screen min-w-0 transition-all duration-300 ease-in-out ${
           isSidebarCollapsed ? "lg:ml-20" : "lg:ml-[280px]"
         }`}
       >
         {/* Header */}
         <div
-          className={`fixed top-0 right-0 left-0 h-16 bg-white border-b shadow-sm z-30 transition-all duration-300 ease-in-out ${
+          className={`fixed top-0 right-0 left-0 h-16 bg-card border-b shadow-sm z-30 transition-all duration-300 ease-in-out ${
             isSidebarCollapsed ? "lg:left-20" : "lg:left-[280px]"
           }`}
         >
-          <Header onMenuClick={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+          <div className="flex items-center justify-between px-4">
+            <Header onMenuClick={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+            {/* <ThemeToggle /> */}
+          </div>
         </div>
 
         {/* Main Content */}

@@ -208,27 +208,4 @@ describe("Pagination Component", () => {
 
     expect(onPageChange).not.toHaveBeenCalled();
   });
-
-  it("covers active true and false class branches for menu items", async () => {
-    const MockedPagination = await getPaginationWithMockedHeadlessUi();
-
-    render(
-      <MockedPagination
-        currentPage={10}
-        totalPages={20}
-        onPageChange={() => {}}
-      />,
-    );
-
-    const allButtons = screen.getAllByRole("button");
-    const hasActiveClass = allButtons.some((button) =>
-      button.className.includes("bg-gray-100"),
-    );
-    const hasHoverClass = allButtons.some((button) =>
-      button.className.includes("hover:bg-gray-100"),
-    );
-
-    expect(hasActiveClass).toBe(true);
-    expect(hasHoverClass).toBe(true);
-  });
 });

@@ -7,7 +7,7 @@ export default function BeautifulModal() {
   return (
     <>
       <button
-        className="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+        className="px-6 py-2 bg-primary-500 text-neutral-50 rounded-lg shadow hover:bg-primary-700 transition"
         onClick={() => setIsOpen(true)}
       >
         Open Modal
@@ -24,7 +24,7 @@ export default function BeautifulModal() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-30" />
+            <div className="fixed inset-0 bg-neutral-900/30" />
           </TransitionChild>
 
           <div className="fixed inset-0 flex items-center justify-center p-4">
@@ -37,15 +37,15 @@ export default function BeautifulModal() {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
+              <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-neutral-50 p-8 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-bold leading-6 text-gray-900"
+                  className="text-lg font-bold leading-6 text-neutral-900"
                 >
                   Beautiful Modal
                 </Dialog.Title>
                 <div className="mt-2">
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-neutral-500">
                     This is a beautiful modal dialog built with Headless UI and styled with Tailwind CSS.
                   </p>
                 </div>
@@ -53,7 +53,7 @@ export default function BeautifulModal() {
                 <div className="mt-4 flex justify-end">
                   <button
                     type="button"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    className="inline-flex justify-center rounded-md border border-transparent bg-primary-500 px-4 py-2 text-sm font-medium text-neutral-50 hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                     onClick={() => setIsOpen(false)}
                   >
                     Close

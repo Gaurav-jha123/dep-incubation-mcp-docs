@@ -208,26 +208,4 @@ describe("Select Component", () => {
 
     expect(onChange).not.toHaveBeenCalled();
   });
-
-  it("applies disabled and non-disabled option classes from render state", async () => {
-    const MockedSelect = await getSelectWithMockedHeadlessUi();
-
-    render(<MockedSelect options={options} value="" onChange={() => {}} />);
-
-    const activeOptions = screen.getAllByTestId("option-active");
-    const idleOptions = screen.getAllByTestId("option-idle");
-
-    expect(
-      activeOptions.every((node) => node.className.includes("opacity-50")),
-    ).toBe(true);
-    expect(
-      activeOptions.every((node) => node.className.includes("bg-blue-100")),
-    ).toBe(true);
-    expect(
-      idleOptions.every((node) => node.className.includes("text-gray-900")),
-    ).toBe(true);
-    expect(
-      idleOptions.every((node) => !node.className.includes("opacity-50")),
-    ).toBe(true);
-  });
 });

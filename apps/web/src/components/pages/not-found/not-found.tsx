@@ -3,7 +3,7 @@ import NotFoundLottie from '@/assets/lottie/not-found.json'
 
 const NotFound = () => {
   return (
-    <main className="flex justify-center items-center w-full h-full bg-white">
+    <main className="flex justify-center items-center w-full h-full bg-neutral-50">
       <Lottie className="max-w-lg" animationData={NotFoundLottie}/>
   </main>
   )

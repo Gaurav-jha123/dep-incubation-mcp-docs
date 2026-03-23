@@ -58,7 +58,7 @@ const Content: React.FC<ContentProps> = ({
     <MenuItems
       data-testid="dropdown-content"
       className={cn(
-        "absolute z-50 min-w-[180px] rounded-md border bg-white shadow-lg p-1",
+        "absolute z-50 min-w-[180px] rounded-md border bg-neutral-50 shadow-lg p-1",
         placementStyles[placement],
         className
       )}
@@ -89,7 +89,7 @@ const Item: React.FC<ItemProps> = ({
         disabled={disabled}
         className={cn(
           "w-full text-left px-3 py-2 text-sm rounded-md",
-          "data-[focus]:bg-gray-100",
+          "data-[focus]:bg-neutral-400 cursor-pointer",
           disabled && "opacity-50 cursor-not-allowed",
           className
         )}
@@ -105,7 +105,7 @@ interface DividerProps {
 }
 
 const Divider: React.FC<DividerProps> = ({ className }) => {
-  return <div data-testid="dropdown-separator" className={cn("my-1 h-px bg-gray-100", className)} />
+  return <div data-testid="dropdown-separator" className={cn("my-1 h-px bg-neutral-500", className)} />
 }
 
 export const Dropdown = Object.assign(Root, {
@@ -115,3 +115,4 @@ export const Dropdown = Object.assign(Root, {
   Divider,
 })
 
+ 

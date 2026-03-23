@@ -1,0 +1,41 @@
+{
+  "hooks": [
+    {
+      "name": "lint-on-save",
+      "event": "onFileSave",
+      "description": "Run ESLint fix on saved TypeScript files",
+      "steps": [
+        {
+          "command": "eslint --fix ${file}",
+          "condition": "fileExtension in ['.ts', '.tsx']"
+        }
+      ]
+    },
+    {
+      "name": "prisma-generate-on-schema-change",
+      "event": "onFileSave",
+      "description": "Regenerate Prisma client when schema changes",
+      "steps": [
+        {
+          "command": "cd apps/api && pnpm prisma:generate",
+          "condition": "filePath matches '**/prisma/schema.prisma'"
+        }
+      ]
+    },
+    {
+      "name": "test-on-spec-change",
+      "event": "onFileSave",
+      "description": "Run the related test file when a spec or source file is saved",
+      "steps": [
+        {
+          "command": "cd apps/api && pnpm test -- --testPathPattern=${file}",
+          "condition": "filePath matches 'apps/api/**/*.spec.ts'"
+        },
+        {
+          "command": "cd apps/web && pnpm test -- --run ${file}",
+          "condition": "filePath matches 'apps/web/**/*.test.{ts,tsx}'"
+        }
+      ]
+    }
+  ]
+}

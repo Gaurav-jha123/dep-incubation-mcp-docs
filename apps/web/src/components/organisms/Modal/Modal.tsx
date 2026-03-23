@@ -74,17 +74,17 @@ export const Modal: React.FC<ModalProps> = ({
                 max-h-[calc(100vh-2rem)]
                 flex flex-col
                 rounded-lg
-                bg-white
+                bg-card
                 shadow-xl
                 overflow-hidden
                 ${className}
               `}
             >
               {(title || description || showCancelButton) && (
-                <div className="px-6 py-4 border-b border-gray-200">
+                <div className="px-6 py-4 border-b border-border">
                   <div className="flex items-start justify-between gap-3">
                     {title ? (
-                      <Dialog.Title className="text-lg font-semibold text-gray-900">
+                      <Dialog.Title className="text-lg font-semibold text-foreground">
                         {title}
                       </Dialog.Title>
                     ) : (
@@ -103,19 +103,19 @@ export const Modal: React.FC<ModalProps> = ({
                   </div>
 
                   {description && (
-                    <Dialog.Description className="text-sm text-gray-600 mt-1">
+                    <Dialog.Description className="text-sm text-muted-foreground mt-1">
                       {description}
                     </Dialog.Description>
                   )}
                 </div>
               )}
 
-              <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5 text-gray-800">
+              <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5 text-foreground">
                 {children}
               </div>
 
               {footer && (
-                <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
+                <div className="px-6 py-4 border-t border-border flex justify-end gap-3">
                   {footer}
                 </div>
               )}

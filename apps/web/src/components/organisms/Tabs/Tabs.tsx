@@ -28,19 +28,19 @@ const variantClasses: Record<
 > = {
   underline: {
     active:
-      "text-blue-600 border-b-2 border-blue-600",
+      "text-primary-500 border-b-2 border-primary-700",
     inactive:
-      "text-gray-600 hover:text-gray-800",
+      "text-neutral-500 hover:text-neutral-700",
   },
   solid: {
-    active: "bg-blue-600 text-white",
+    active: "bg-primary-500 text-neutral-50",
     inactive:
-      "bg-gray-100 text-gray-700 hover:bg-gray-200",
+      "bg-neutral-200 text-neutral-700 hover:bg-neutral-400",
   },
   pill: {
-    active: "bg-blue-600 text-white rounded-full",
+    active: "bg-primary-500 text-neutral-50 rounded-full",
     inactive:
-      "text-gray-700 hover:bg-gray-100 rounded-full",
+      "text-neutral-700 hover:bg-neutral-200 rounded-full",
   },
 };
 
@@ -53,7 +53,7 @@ export const Tabs: React.FC<TabsProps> = ({
   return (
     <Tab.Group>
       <div className={className}>
-        <Tab.List className="flex gap-2 border-b border-gray-200">
+        <Tab.List className="flex gap-2 border-b border-neutral-200">
           {tabs.map((tab, index) => (
             <Tab
               key={index}
