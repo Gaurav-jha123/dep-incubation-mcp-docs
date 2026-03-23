@@ -19,9 +19,9 @@ type SkillsBarChartProps = {
 
 export default function SkillsBarChart({ data }: SkillsBarChartProps) {
   return (
-    <div className="p-4 bg-white shadow rounded">
+    <div className="p-4 bg-card shadow rounded">
 
-      <h3 className="font-semibold mb-4">Skill Distribution</h3>
+      <h3 className="font-semibold mb-4 text-foreground">Skill Distribution</h3>
 
       <ResponsiveContainer width="100%" height={300} aria-hidden="true">
         <BarChart data={data}>

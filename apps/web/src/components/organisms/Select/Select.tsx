@@ -68,7 +68,7 @@ export function Select({
           {/* Input */}
           {searchable ? (
             <ComboboxInput
-              className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-md border border-neutral-200 bg-neutral-50 py-2 pl-3 pr-10 text-sm shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
               displayValue={(option: Option) =>
                 multiple ? "" : (option?.label ?? "")
               }
@@ -76,7 +76,7 @@ export function Select({
               placeholder={placeholder}
             />
           ) : (
-            <div className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm">
+            <div className="w-full rounded-md border border-neutral-200 bg-neutral-50 py-2 pl-3 pr-10 text-sm">
               {selectedOptions[0]?.label ?? placeholder}
             </div>
           )}
@@ -84,15 +84,15 @@ export function Select({
           {/* Dropdown Button */}
           <ComboboxButton
             aria-label="Toggle options"
-            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500"
           >
             <ChevronDown className="h-5 w-5" />
           </ComboboxButton>
 
           {/* Dropdown */}
-          <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black/5">
+          <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-neutral-50 shadow-lg ring-1 ring-neutral-900/5">
             {filteredOptions.length === 0 && (
-              <div className="px-3 py-2 text-sm text-gray-400">
+              <div className="px-3 py-2 text-sm text-neutral-500">
                 No results found
               </div>
             )}
@@ -103,7 +103,9 @@ export function Select({
                 value={option}
                 className={({ focus, disabled }) =>
                   `cursor-pointer select-none px-3 py-2 flex items-center gap-2 ${
-                    focus ? "bg-blue-100 text-blue-900" : "text-gray-900"
+                    focus
+                      ? "bg-primary-200 text-primary-900"
+                      : "text-neutral-900"
                   } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`
                 }
               >

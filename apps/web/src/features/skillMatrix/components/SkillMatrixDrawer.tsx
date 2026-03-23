@@ -10,6 +10,7 @@ import {
 import {SlidersHorizontal, X} from 'lucide-react';
 import SkillMatrixFilter from './SkillMatrixFilter';
 import SkillMatrixColumnRearrange from './SkillMatrixColumnRearrange';
+import SkillMatrixQueryBuilder, { type QueryFilter } from './SkillMatrixQueryBuilder';
 import type {Topic} from './types';
 
 interface SkillMatrixDrawerProps {
@@ -25,6 +26,8 @@ interface SkillMatrixDrawerProps {
   onColumnOrderChange: (orderedTopicIds: string[]) => void;
   scoreFilters: string[];
   onScoreFilterChange: (values: string[]) => void;
+  queryFilters: QueryFilter[];
+  onQueryFiltersChange: (filters: QueryFilter[]) => void;
 }
 
 export default function SkillMatrixDrawer({
@@ -40,6 +43,8 @@ export default function SkillMatrixDrawer({
   onColumnOrderChange,
   scoreFilters,
   onScoreFilterChange,
+  queryFilters,
+  onQueryFiltersChange,
 }: SkillMatrixDrawerProps) {
   return (
     <Drawer direction="right">
@@ -53,12 +58,12 @@ export default function SkillMatrixDrawer({
           <SlidersHorizontal className="size-5" />
         </button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="sm:max-w-3xl md:max-w-4xl lg:max-w-5xl">
         <DrawerHeader className="flex flex-row items-start justify-between">
           <div>
-            <DrawerTitle>Filters & Settings</DrawerTitle>
+            <DrawerTitle>Query Builder & Filters</DrawerTitle>
             <DrawerDescription>
-              Filter the skill matrix data and rearrange columns.
+              Build complex queries, filter skill matrix data, and rearrange columns.
             </DrawerDescription>
           </div>
           <DrawerClose asChild>
@@ -71,7 +76,16 @@ export default function SkillMatrixDrawer({
             </button>
           </DrawerClose>
         </DrawerHeader>
-        <div className="flex flex-1 flex-col gap-6 overflow-hidden p-4">
+        <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-4">
+          <SkillMatrixQueryBuilder
+            users={users}
+            topics={topics}
+            filters={queryFilters}
+            onFiltersChange={onQueryFiltersChange}
+          />
+          
+          <div className="border-t border-border" />
+          
           <SkillMatrixFilter
             users={users}
             topics={topics}
@@ -84,10 +98,12 @@ export default function SkillMatrixDrawer({
             scoreFilters={scoreFilters}
             onScoreFilterChange={onScoreFilterChange}
           />
+          
+          <div className="border-t border-border" />
+          
           <SkillMatrixColumnRearrange
             topics={orderedTopics}
             onOrderChange={onColumnOrderChange}
-            className="flex-1 min-h-0"
           />
         </div>
       </DrawerContent>

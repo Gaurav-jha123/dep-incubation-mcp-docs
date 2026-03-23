@@ -60,4 +60,15 @@ export class AuthController {
   async getProfile(@Request() req: { user: { email: string } }) {
     return this.authService.getProfile(req.user.email);
   }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Logout current user' })
+  @ApiResponse({ status: 200, description: 'Logged out successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async logout() {
+    return { message: 'Logged out successfully' };
+  }
 }

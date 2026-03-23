@@ -95,7 +95,7 @@ const MultiSelectSearch = ({ label, options, selected, onChange, onCreateOption 
                   <ChevronDown className="size-4 shrink-0 opacity-50" />
                 </Popover.Button>
 
-                <Popover.Panel className="absolute z-50 mt-1 w-full rounded-md bg-white border shadow-lg p-2">
+                <Popover.Panel className="absolute z-50 mt-1 w-full rounded-md bg-card border border-border shadow-lg p-2">
                   <input
                     type="text"
                     placeholder={`Search ${label}`}
@@ -122,14 +122,14 @@ const MultiSelectSearch = ({ label, options, selected, onChange, onCreateOption 
                               toggleValue(option.value);
                             }
                           }}
-                          className="flex items-start gap-3 px-2 py-1 cursor-pointer hover:bg-gray-100 rounded"
+                          className="flex items-start gap-3 px-2 py-1 cursor-pointer hover:bg-accent rounded"
                         >
                           <Checkbox
                             checked={selected.includes(option.value)}
-                            className="group shrink-0 flex size-4 items-center justify-center rounded border bg-white data-[checked]:bg-black data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50"
+                            className="group shrink-0 flex size-4 items-center justify-center rounded border bg-background data-[checked]:bg-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50"
                           >
                             <svg
-                              className="stroke-white opacity-0 group-data-checked:opacity-100"
+                              className="stroke-foreground opacity-0 group-data-checked:opacity-100"
                               viewBox="0 0 14 14"
                               fill="none"
                             >

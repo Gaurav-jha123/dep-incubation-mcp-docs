@@ -77,11 +77,11 @@ export default function UserForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-3xl mx-auto space-y-6 p-8 bg-white shadow-xl rounded-xl border border-gray-100"
+      className="max-w-3xl mx-auto space-y-6 p-8 bg-card shadow-xl rounded-xl border border-border"
     >
-      <div className="space-y-1 border-b border-gray-100 pb-4 mb-4">
-        <h2 className="text-2xl font-semibold text-gray-900">User Form</h2>
-        <p className="text-sm text-gray-500">
+      <div className="space-y-1 border-b border-border pb-4 mb-4">
+        <h2 className="text-2xl font-semibold text-foreground">User Form</h2>
+        <p className="text-sm text-muted-foreground">
           Fill out the information below to create or update a user.
         </p>
       </div>
@@ -89,13 +89,13 @@ export default function UserForm() {
       {/* BASIC INFO */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Field className="space-y-1">
-          <Label className="block text-sm font-medium text-gray-700">
+          <Label className="block text-sm font-medium text-foreground">
             First name
           </Label>
           <Input
             {...register("firstName")}
             placeholder="John"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.firstName && (
             <p className="text-xs text-red-500">{errors.firstName.message}</p>
@@ -103,13 +103,13 @@ export default function UserForm() {
         </Field>
 
         <Field className="space-y-1">
-          <Label className="block text-sm font-medium text-gray-700">
+          <Label className="block text-sm font-medium text-foreground">
             Last name
           </Label>
           <Input
             {...register("lastName")}
             placeholder="Doe"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.lastName && (
             <p className="text-xs text-red-500">{errors.lastName.message}</p>
@@ -119,14 +119,14 @@ export default function UserForm() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Field className="space-y-1">
-          <Label className="block text-sm font-medium text-gray-700">
+          <Label className="block text-sm font-medium text-foreground">
             Email
           </Label>
           <Input
             type="email"
             {...register("email")}
             placeholder="john.doe@example.com"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.email && (
             <p className="text-xs text-red-500">{errors.email.message}</p>
@@ -134,14 +134,14 @@ export default function UserForm() {
         </Field>
 
         <Field className="space-y-1">
-          <Label className="block text-sm font-medium text-gray-700">
+          <Label className="block text-sm font-medium text-foreground">
             Password
           </Label>
           <Input
             type="password"
             {...register("password")}
             placeholder="********"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.password && (
             <p className="text-xs text-red-500">{errors.password.message}</p>
@@ -152,13 +152,13 @@ export default function UserForm() {
       {/* CONTACT & PROFILE */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Field className="space-y-1">
-          <Label className="block text-sm font-medium text-gray-700">
+          <Label className="block text-sm font-medium text-foreground">
             Phone
           </Label>
           <Input
             {...register("phone")}
             placeholder="9876543210"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.phone && (
             <p className="text-xs text-red-500">{errors.phone.message}</p>
@@ -166,13 +166,13 @@ export default function UserForm() {
         </Field>
 
         <Field className="space-y-1">
-          <Label className="block text-sm font-medium text-gray-700">
+          <Label className="block text-sm font-medium text-foreground">
             Website
           </Label>
           <Input
             {...register("website")}
             placeholder="https://example.com"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.website && (
             <p className="text-xs text-red-500">{errors.website.message}</p>
@@ -181,11 +181,11 @@ export default function UserForm() {
       </div>
 
       <Field className="space-y-1">
-        <Label className="block text-sm font-medium text-gray-700">Bio</Label>
+        <Label className="block text-sm font-medium text-foreground">Bio</Label>
         <Textarea
           {...register("bio")}
           placeholder="Short description about the user"
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm min-h-[80px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full rounded-md border border-input px-3 py-2 text-sm min-h-[80px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
       </Field>
 
@@ -193,7 +193,7 @@ export default function UserForm() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Gender - RadioGroup */}
         <div className="space-y-1">
-          <span className="block text-sm font-medium text-gray-700">
+          <span className="block text-sm font-medium text-foreground">
             Gender
           </span>
           <Controller
@@ -211,7 +211,7 @@ export default function UserForm() {
                       <span
                         className={`cursor-pointer rounded-full border px-3 py-1 text-sm capitalize ${checked
                           ? "border-blue-500 bg-blue-50 text-blue-700"
-                          : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                          : "border-gray-300 text-foreground hover:bg-gray-50"
                           }`}
                       >
                         {value}
@@ -229,7 +229,7 @@ export default function UserForm() {
 
         {/* Role - Listbox */}
         <div className="space-y-1">
-          <span className="block text-sm font-medium text-gray-700">
+          <span className="block text-sm font-medium text-foreground">
             Role
           </span>
           <Controller
@@ -238,12 +238,12 @@ export default function UserForm() {
             render={({ field }) => (
               <Listbox value={field.value} onChange={field.onChange}>
                 <div className="relative mt-1">
-                  <Listbox.Button className="relative w-full cursor-pointer rounded-md border border-gray-300 bg-white py-2 pl-3 pr-8 text-left text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                  <Listbox.Button className="relative w-full cursor-pointer rounded-md border border-input bg-card py-2 pl-3 pr-8 text-left text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <span className="block truncate capitalize">
                       {field.value || "Select role"}
                     </span>
                   </Listbox.Button>
-                  <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-card py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     {["admin", "user", "manager"].map((role) => (
                       <Listbox.Option
                         key={role}
@@ -265,13 +265,13 @@ export default function UserForm() {
 
         {/* Date of birth */}
         <Field className="space-y-1">
-          <Label className="block text-sm font-medium text-gray-700">
+          <Label className="block text-sm font-medium text-foreground">
             Date of birth
           </Label>
           <Input
             type="date"
             {...register("dateOfBirth")}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </Field>
       </div>
@@ -280,7 +280,7 @@ export default function UserForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Hobbies - multi-select Listbox */}
         <div className="space-y-1">
-          <span className="block text-sm font-medium text-gray-700">
+          <span className="block text-sm font-medium text-foreground">
             Hobbies
           </span>
           <Controller
@@ -293,14 +293,14 @@ export default function UserForm() {
                 multiple
               >
                 <div className="relative mt-1">
-                  <Listbox.Button className="relative w-full cursor-pointer rounded-md border border-gray-300 bg-white py-2 pl-3 pr-8 text-left text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                  <Listbox.Button className="relative w-full cursor-pointer rounded-md border border-input bg-card py-2 pl-3 pr-8 text-left text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <span className="block truncate">
                       {field.value && field.value.length > 0
                         ? field.value.join(", ")
                         : "Select hobbies"}
                     </span>
                   </Listbox.Button>
-                  <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-card py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     {["reading", "sports", "music"].map((hobby) => (
                       <Listbox.Option
                         key={hobby}
@@ -325,7 +325,7 @@ export default function UserForm() {
 
         {/* Active user - Switch */}
         <div className="space-y-1">
-          <span className="block text-sm font-medium text-gray-700">
+          <span className="block text-sm font-medium text-foreground">
             Status
           </span>
           <Controller
@@ -340,7 +340,7 @@ export default function UserForm() {
               >
                 <span
                   className={`${field.value ? "translate-x-5" : "translate-x-1"
-                    } inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform`}
+                    } inline-block h-4 w-4 transform rounded-full bg-card shadow transition-transform`}
                 />
               </Switch>
             )}
@@ -356,36 +356,36 @@ export default function UserForm() {
       {/* ADDRESS */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Field className="space-y-1">
-          <Label className="block text-sm font-medium text-gray-700">
+          <Label className="block text-sm font-medium text-foreground">
             City
           </Label>
           <Input
             {...register("address.city")}
             placeholder="City"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </Field>
         <Field className="space-y-1">
-          <Label className="block text-sm font-medium text-gray-700">
+          <Label className="block text-sm font-medium text-foreground">
             Zip code
           </Label>
           <Input
             {...register("address.zip")}
             placeholder="Zip code"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </Field>
       </div>
 
       {/* PROFILE IMAGE */}
       <Field className="space-y-1">
-        <Label className="block text-sm font-medium text-gray-700">
+        <Label className="block text-sm font-medium text-foreground">
           Profile image
         </Label>
         <Input
           type="file"
           {...register("profileImage")}
-          className="block w-full text-sm text-gray-700 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-blue-700 hover:file:bg-blue-100"
+          className="block w-full text-sm text-foreground file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-blue-700 hover:file:bg-blue-100"
         />
         {errors.profileImage && (
           <p className="text-xs text-red-500">
@@ -413,17 +413,17 @@ export default function UserForm() {
               className="grid grid-cols-12 gap-2 items-center"
             >
               <Field className="col-span-6 space-y-1">
-                <Label className="block text-xs font-medium text-gray-600">
+                <Label className="block text-xs font-medium text-muted-foreground">
                   Skill name
                 </Label>
                 <Input
                   placeholder="React, Node, Design..."
                   {...register(`skills.${index}.name`)}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </Field>
               <Field className="col-span-4 space-y-1">
-                <Label className="block text-xs font-medium text-gray-600">
+                <Label className="block text-xs font-medium text-muted-foreground">
                   Experience (years)
                 </Label>
                 <Input
@@ -432,7 +432,7 @@ export default function UserForm() {
                     valueAsNumber: true,
                   })}
                   placeholder="1"
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full rounded-md border border-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </Field>
               <div className="col-span-2 flex items-end">

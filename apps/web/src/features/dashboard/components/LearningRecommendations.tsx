@@ -127,7 +127,7 @@ const LearningRecommendations = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-100 overflow-x-hidden">
+    <div className="bg-card rounded-lg shadow-lg p-6 border border-border overflow-x-hidden">
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg">
           <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -141,41 +141,41 @@ const LearningRecommendations = () => {
 
       <div className="space-y-4">
         {learningData.map((user) => (
-          <div key={user.userId} className="p-4 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200">
+          <div key={user.userId} className="p-4 rounded-xl border border-border hover:shadow-md transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
                   {user.userName.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-800">{user.userName}</h3>
-                  <p className="text-xs text-gray-500">Avg Score: {user.averageScore}/100</p>
+                  <h3 className="font-semibold text-foreground">{user.userName}</h3>
+                  <p className="text-xs text-muted-foreground">Avg Score: {user.averageScore}/100</p>
                 </div>
               </div>
             </div>
 
             <div className="space-y-3">
               {user.recommendations.map((rec, index) => (
-                <div key={index} className="bg-gray-50 rounded-lg p-3 border-l-4 border-indigo-400">
+                <div key={index} className="bg-muted rounded-lg p-3 border-l-4 border-indigo-400">
                   <div className="flex items-start gap-3">
                     <span className="text-lg">{getCategoryIcon(rec.category)}</span>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
-                        <h4 className="font-medium text-gray-800 text-sm">{rec.topic}</h4>
+                        <h4 className="font-medium text-foreground text-sm">{rec.topic}</h4>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getPriorityColor(rec.priority)}`}>
                           {rec.priority.toUpperCase()}
                         </span>
                       </div>
-                      <p className="text-xs text-gray-600 mt-1">{rec.reason}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{rec.reason}</p>
                       <div className="flex items-center gap-2 mt-2">
-                        <span className="text-xs text-gray-500">Current:</span>
-                        <div className="flex-1 bg-gray-200 rounded-full h-1.5">
+                        <span className="text-xs text-muted-foreground">Current:</span>
+                        <div className="flex-1 bg-muted rounded-full h-1.5">
                           <div 
                             className="bg-gradient-to-r from-indigo-400 to-purple-400 h-1.5 rounded-full"
                             style={{ width: `${rec.currentScore}%` }}
                           />
                         </div>
-                        <span className="text-xs font-medium text-gray-700">{rec.currentScore}/100</span>
+                        <span className="text-xs font-medium text-foreground">{rec.currentScore}/100</span>
                       </div>
                     </div>
                   </div>
