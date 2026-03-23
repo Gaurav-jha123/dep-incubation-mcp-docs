@@ -75,7 +75,7 @@ describe("Layout", () => {
     });
 
     // Test with Enter key
-    let overlay = container.querySelector(".fixed.bg-black\\/50") as HTMLElement;
+    let overlay: HTMLElement | null = container.querySelector(".fixed.bg-black\\/50") as HTMLElement;
     if (overlay) {
       fireEvent.keyDown(overlay, { key: "Enter" });
     }
@@ -93,7 +93,7 @@ describe("Layout", () => {
       expect(overlay).toBeTruthy();
     });
 
-    overlay = container.querySelector(".fixed.bg-black\\/50") as HTMLElement;
+    overlay = container.querySelector(".fixed.bg-black\\/50");
     if (overlay) {
       fireEvent.keyDown(overlay, { key: " " });
     }

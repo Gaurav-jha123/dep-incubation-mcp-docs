@@ -685,8 +685,9 @@ describe("LoginForm component", () => {
       // Simulate an error by directly calling the error callback
       // This tests the error state handling and useEffect logic
       if (mockOnLoginError) {
+        const callback = mockOnLoginError;
         await act(async () => {
-          mockOnLoginError("Authentication failed");
+          callback("Authentication failed");
         });
         
         // After the error callback is called, the component should have:
