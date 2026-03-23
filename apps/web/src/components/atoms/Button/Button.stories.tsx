@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Plus } from "lucide-react";
 import { fn } from "storybook/test";
-import { Button } from "./Button";
+import { Button, type ButtonProps } from "./Button";
 
 const variantOptions = [
   "primary",
@@ -196,7 +196,7 @@ export const AllVariants: Story = {
   args: {
     pseudoState: "none",
   },
-  render: (args) => (
+  render: (args: ButtonProps) => (
     <div className="flex flex-wrap items-center gap-3">
       {variantOptions.map((variant) => (
         <Button
@@ -217,7 +217,7 @@ export const InteractiveHover: Story = {
   parameters: {
     layout: "padded",
   },
-  render: (args) => (
+  render: (args: ButtonProps) => (
     <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
       <p className="text-sm text-neutral-700">
         Move the mouse over these buttons to test the real hover behavior. This
@@ -237,25 +237,71 @@ export const InteractiveHover: Story = {
   ),
 };
 
-export const PseudoStates: Story = {
+const sizeOptions = ["lg", "md", "sm"] as const;
+
+const sizeLabels: Record<(typeof sizeOptions)[number], string> = {
+  lg: "Large",
+  md: "Medium",
+  sm: "Small",
+};
+
+const variantLabels: Record<(typeof variantOptions)[number], string> = {
+  primary: "Primary",
+  secondary: "Secondary",
+  danger: "Error",
+  ghost: "Ghost",
+  outline: "Outline",
+  link: "Text",
+};
+
+export const VariantsAndStates: Story = {
   parameters: {
-    layout: "padded",
+    layout: "fullscreen",
   },
-  render: (args) => (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      {stateMatrix.map(({ label, buttonText, props }) => (
-        <div
-          key={label}
-          className="rounded-lg border border-neutral-200 bg-neutral-50 p-4"
-        >
-          <p className="mb-3 text-sm font-medium capitalize text-neutral-700">
-            {label}
-          </p>
-          <Button
-            {...args}
-            {...props}
-            children={buttonText}
-          />
+  render: () => (
+    <div className="space-y-10 p-8">
+      {sizeOptions.map((size) => (
+        <div key={size}>
+          <table className="w-full border-collapse">
+            <thead>
+              <tr>
+                <th className="sticky left-0 z-10 bg-white p-3 text-left text-sm font-semibold text-neutral-900">
+                  {sizeLabels[size]}
+                </th>
+                {variantOptions.map((variant) => (
+                  <th
+                    key={variant}
+                    className="p-3 text-center text-xs font-semibold uppercase tracking-wider text-neutral-500"
+                  >
+                    {variantLabels[variant]}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {stateMatrix.map(({ label, props }) => (
+                <tr
+                  key={label}
+                  className="border-t border-dashed border-neutral-200"
+                >
+                  <td className="sticky left-0 z-10 bg-white p-3 text-sm font-medium text-neutral-500">
+                    {label}
+                  </td>
+                  {variantOptions.map((variant) => (
+                    <td key={variant} className="p-3 text-center">
+                      <Button
+                        variant={variant}
+                        size={size}
+                        {...props}
+                      >
+                        LABEL
+                      </Button>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ))}
     </div>
