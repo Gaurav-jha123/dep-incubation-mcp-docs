@@ -56,7 +56,7 @@ describe("Header", () => {
     );
     const header = container.firstChild as HTMLElement;
     expect(header.className).toContain("w-full");
-    expect(header.className).toContain("bg-white");
+    expect(header.className).toContain("bg-card");
     expect(header.className).toContain("flex");
     expect(header.className).toContain("border-b");
   });

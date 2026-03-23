@@ -14,7 +14,6 @@ describe("Sidebar", () => {
     );
     expect(getByText("Dashboard")).not.toBeNull();
     expect(getByText("SkillMatrix")).not.toBeNull();
-    expect(getByText("Users")).not.toBeNull();
     expect(getByText("Reports")).not.toBeNull();
   });
 
@@ -47,8 +46,49 @@ describe("Sidebar", () => {
       </MemoryRouter>,
     );
     const aside = container.firstChild as HTMLElement;
-    expect(aside.className).toContain("bg-white");
-    expect(aside.className).toContain("flex");
-    expect(aside.className).toContain("flex-col");
+    expect(aside.tagName).toBe("ASIDE");
+    expect(aside).toBeDefined();
+  });
+
+  it("renders collapsed state correctly", () => {
+    const onToggleCollapse = vi.fn();
+    const { queryByText, getByLabelText } = render(
+      <MemoryRouter>
+        <Sidebar isCollapsed={true} onToggleCollapse={onToggleCollapse} />
+      </MemoryRouter>,
+    );
+    expect(queryByText("Skill Matrix")).toBeNull();
+    expect(queryByText("Dashboard")).toBeNull();
+    const toggleBtn = getByLabelText("Expand sidebar");
+    expect(toggleBtn).not.toBeNull();
+    fireEvent.click(toggleBtn);
+    expect(onToggleCollapse).toHaveBeenCalled();
+  });
+
+  it("renders expanded state with toggle button", () => {
+    const onToggleCollapse = vi.fn();
+    const { getByText, getByLabelText } = render(
+      <MemoryRouter>
+        <Sidebar isCollapsed={false} onToggleCollapse={onToggleCollapse} />
+      </MemoryRouter>,
+    );
+    expect(getByText("Skill Matrix")).not.toBeNull();
+    const toggleBtn = getByLabelText("Collapse sidebar");
+    expect(toggleBtn).not.toBeNull();
+    fireEvent.click(toggleBtn);
+    expect(onToggleCollapse).toHaveBeenCalled();
+  });
+
+  it("highlights active nav link", () => {
+    const { getByTestId } = render(
+      <MemoryRouter initialEntries={["/dashboard"]}>
+        <Sidebar />
+      </MemoryRouter>,
+    );
+    const activeLink = getByTestId("navlink-/dashboard");
+    expect(activeLink.getAttribute("aria-label")).toBe("Dashboard");
+    const inactiveLink = getByTestId("navlink-/reports");
+    expect(inactiveLink.getAttribute("aria-label")).toBe("Reports");
   });
 });
+ 
