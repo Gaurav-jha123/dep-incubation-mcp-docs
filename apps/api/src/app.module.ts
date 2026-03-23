@@ -5,6 +5,7 @@ import { AppService } from './app.service.js';
 import { PrismaModule } from './prisma/index.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { SkillMatrixModule } from './modules/skill-matrix/skill-matrix.module.js';
+import { TopicModule } from './modules/topics/topic.module.js';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { SkillMatrixModule } from './modules/skill-matrix/skill-matrix.module.js
     PrismaModule,
     AuthModule,
     SkillMatrixModule,
+    TopicModule,
   ],
   controllers: [AppController],
   providers: [AppService],
