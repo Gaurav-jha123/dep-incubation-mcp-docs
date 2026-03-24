@@ -1,5 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Tooltip } from "./Tooltip";
+import { Button } from "@/components/atoms";
+
+import { Tooltip, type TooltipProps } from "./Tooltip";
+
+const variantOptions = ["default", "subtle"] as const;
+const sizeOptions = ["sm", "md", "lg"] as const;
+const pseudoStateOptions = [
+  "none",
+  "hover",
+  "active",
+  "focus",
+  "focus-visible",
+  "disabled",
+] as const;
 
 const meta: Meta<typeof Tooltip> = {
   title: "Molecules/Tooltip",
@@ -7,7 +20,16 @@ const meta: Meta<typeof Tooltip> = {
   parameters: {
     layout: "centered",
   },
+  tags: ["autodocs"],
   argTypes: {
+    variant: {
+      control: "select",
+      options: variantOptions,
+    },
+    size: {
+      control: "select",
+      options: sizeOptions,
+    },
     placement: {
       control: "select",
       options: ["top", "bottom", "left", "right"],
@@ -21,11 +43,19 @@ const meta: Meta<typeof Tooltip> = {
       control: "boolean",
       description: "Disable tooltip behavior",
     },
+    pseudoState: {
+      control: "select",
+      options: pseudoStateOptions,
+      description: "Preview interaction states without hovering",
+    },
   },
   args: {
     content: "Tooltip message",
     placement: "top",
     disabled: false,
+    variant: "default",
+    size: "md",
+    pseudoState: "none",
   },
 };
 
@@ -34,32 +64,30 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: (args) => (
+  render: (args: TooltipProps) => (
     <Tooltip {...args}>
-      <button className="px-4 py-2 bg-primary-900 text-primary-50 rounded">
-        Hover me
-      </button>
+      <Button variant="primary">Hover me</Button>
     </Tooltip>
   ),
 };
 
 export const Placements: Story = {
   render: () => (
-    <div className="flex gap-6 flex-wrap">
+    <div className="flex flex-wrap gap-6">
       <Tooltip content="Top tooltip" placement="top">
-        <button className="px-3 py-2 bg-primary-200 rounded">Top</button>
+        <Button variant="secondary">Top</Button>
       </Tooltip>
 
       <Tooltip content="Bottom tooltip" placement="bottom">
-        <button className="px-3 py-2 bg-primary-200 rounded">Bottom</button>
+        <Button variant="secondary">Bottom</Button>
       </Tooltip>
 
       <Tooltip content="Left tooltip" placement="left">
-        <button className="px-3 py-2 bg-primary-200 rounded">Left</button>
+        <Button variant="secondary">Left</Button>
       </Tooltip>
 
       <Tooltip content="Right tooltip" placement="right">
-        <button className="px-3 py-2 bg-primary-200 rounded">Right</button>
+        <Button variant="secondary">Right</Button>
       </Tooltip>
     </div>
   ),
@@ -68,9 +96,9 @@ export const Placements: Story = {
 export const Disabled: Story = {
   render: () => (
     <Tooltip content="You should not see this" disabled>
-      <button className="px-4 py-2 bg-primary-200 text-primary-900 rounded cursor-not-allowed">
+      <Button variant="secondary" disabled>
         Disabled tooltip
-      </button>
+      </Button>
     </Tooltip>
   ),
 };
@@ -91,5 +119,32 @@ export const LongContent: Story = {
         Hover me for a long tooltip
       </span>
     </Tooltip>
+  ),
+};
+
+export const States: Story = {
+  parameters: {
+    layout: "fullscreen",
+  },
+  render: (args: TooltipProps) => (
+    <div className="grid gap-4 bg-neutral-50 p-8 md:grid-cols-2">
+      {pseudoStateOptions.map((pseudoState) => (
+        <div
+          key={pseudoState}
+          className="space-y-3 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm"
+        >
+          <p className="text-sm font-medium capitalize text-neutral-700">
+            {pseudoState}
+          </p>
+          <Tooltip
+            {...args}
+            pseudoState={pseudoState}
+            content={`Tooltip in ${pseudoState} state`}
+          >
+            <Button variant="outline">Preview tooltip</Button>
+          </Tooltip>
+        </div>
+      ))}
+    </div>
   ),
 };
