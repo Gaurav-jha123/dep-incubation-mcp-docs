@@ -1,48 +1,45 @@
 import { useMemo, useState } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
-import type { Topic, User } from "./components/types";
+import type { Topic } from "./components/types";
 import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
 import HeatmapLegend from "./components/SkillMatrixTableLegend";
-import useLocalStorage from "@/lib/hooks/use-local-storage/use-local-storage";
-import createUniqueId from "./utils/create-unique-id";
 import type { QueryFilter } from "./components/SkillMatrixQueryBuilder";
 import { applySkillMatrixFilters } from "./utils/skillMatrixFilters";
 import { useSkillMatrix } from "@/services/hooks/query/useSkillMatrix";
 import { useSkillMatrixMutation } from "@/services/hooks/mutations/useSkillMatrixMutation";
+import { useUserMutation } from "@/services/hooks/mutations/useUserMutation";
+import { useTopicMutation } from "@/services/hooks/mutations/useTopicMutation";
 import { useAuthStore } from "@/store/use-auth-store/use-auth-store";
-
-const ADDED_USERS_STORAGE_KEY = "skill-matrix-added-users";
-const ADDED_TOPICS_STORAGE_KEY = "skill-matrix-added-topics";
 
 const SkillMatrix = () => {
 
   const { skillMatrixData: skillMatrix, entryIdMap, isLoading, isError } = useSkillMatrix();
   const { updateMutation } = useSkillMatrixMutation();
+  const { createMutation: createUserMutation } = useUserMutation();
+  const { createMutation: createTopicMutation } = useTopicMutation();
   const currentUser = useAuthStore((s) => s.user);
 
-  const [addedUsers, setAddedUsers] = useLocalStorage<User[]>(
-    ADDED_USERS_STORAGE_KEY,
-    [],
-  );
-  const [addedTopics, setAddedTopics] = useLocalStorage<Topic[]>(
-    ADDED_TOPICS_STORAGE_KEY,
-    [],
-  );
-
-  const users = useMemo(
-  () => [...skillMatrix.users, ...addedUsers],
-  [skillMatrix.users, addedUsers],
-);
-  const topics = useMemo(
-  () => [...skillMatrix.topics, ...addedTopics],
-  [skillMatrix.topics, addedTopics],
-);
+  const users = skillMatrix.users;
+  const topics = skillMatrix.topics;
 
   const allUserIds = users.map((u) => u.id);
   const allTopicIds = topics.map((t) => t.id);
 
   const [selectedUsers, setSelectedUsers] = useState<string[]>(allUserIds);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(allTopicIds);
+
+  // Adjust selections during render when data changes (React-recommended pattern)
+  const [prevUserCount, setPrevUserCount] = useState(allUserIds.length);
+  if (allUserIds.length !== prevUserCount) {
+    setPrevUserCount(allUserIds.length);
+    setSelectedUsers(allUserIds);
+  }
+
+  const [prevTopicCount, setPrevTopicCount] = useState(allTopicIds.length);
+  if (allTopicIds.length !== prevTopicCount) {
+    setPrevTopicCount(allTopicIds.length);
+    setSelectedTopics(allTopicIds);
+  }
 
   const [scoreFilters, setScoreFilters] = useState<string[]>([]);
   const [queryFilters, setQueryFilters] = useState<QueryFilter[]>([]);
@@ -110,13 +107,7 @@ const SkillMatrix = () => {
       return;
     }
 
-    const nextUser: User = {
-      id: createUniqueId(name, users.map((user) => user.id)),
-      name: name.trim(),
-    };
-
-    setAddedUsers((currentUsers) => [...currentUsers, nextUser]);
-    setSelectedUsers((currentUsers) => [...new Set([...currentUsers, nextUser.id])]);
+    createUserMutation.mutate(name.trim());
   };
 
   const handleTopicCreate = (label: string) => {
@@ -129,13 +120,7 @@ const SkillMatrix = () => {
       return;
     }
 
-    const nextTopic: Topic = {
-      id: createUniqueId(label, topics.map((topic) => topic.id)),
-      label: label.trim(),
-    };
-
-    setAddedTopics((currentTopics) => [...currentTopics, nextTopic]);
-    setSelectedTopics((currentTopics) => [...new Set([...currentTopics, nextTopic.id])]);
+    createTopicMutation.mutate(label.trim());
   };
 
   // Compute ordered topics based on current filter and custom order

@@ -1,35 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { fetchAllSkillMatrix, type ISkillMatrixEntry } from "@/services/api/skill-matrix.api";
+import { fetchAllUsers, type IUserResponse } from "@/services/api/users.api";
+import { fetchAllTopics, type ITopicResponse } from "@/services/api/topics.api";
 import type { SkillMatrixData } from "@/features/skillMatrix/components/types";
 
 /**
- * Transforms the flat API response into the SkillMatrixData shape
- * that the existing components expect: { topics[], users[], skills[] }
+ * Transforms API responses into the SkillMatrixData shape
+ * that the existing components expect: { topics[], users[], skills[] }.
+ * Uses the full users/topics lists so newly created ones appear
+ * even before they have any skill-matrix entries.
  */
-function transformToSkillMatrixData(entries: ISkillMatrixEntry[]): SkillMatrixData {
-  const usersMap = new Map<number, { id: string; name: string }>();
-  const topicsMap = new Map<number, { id: string; label: string }>();
-  const skills: { userId: string; topicId: string; value: number }[] = [];
+function transformToSkillMatrixData(
+  entries: ISkillMatrixEntry[],
+  allUsers: IUserResponse[],
+  allTopics: ITopicResponse[],
+): SkillMatrixData {
+  const users = allUsers.map((u) => ({ id: String(u.id), name: u.name }));
+  const topics = allTopics.map((t) => ({ id: String(t.id), label: t.label }));
+  const skills = entries.map((e) => ({
+    userId: String(e.userId),
+    topicId: String(e.topicId),
+    value: e.value,
+  }));
 
-  for (const entry of entries) {
-    if (!usersMap.has(entry.user.id)) {
-      usersMap.set(entry.user.id, { id: String(entry.user.id), name: entry.user.name });
-    }
-    if (!topicsMap.has(entry.topic.id)) {
-      topicsMap.set(entry.topic.id, { id: String(entry.topic.id), label: entry.topic.label });
-    }
-    skills.push({
-      userId: String(entry.userId),
-      topicId: String(entry.topicId),
-      value: entry.value,
-    });
-  }
-
-  return {
-    users: [...usersMap.values()],
-    topics: [...topicsMap.values()],
-    skills,
-  };
+  return { users, topics, skills };
 }
 
 /**
@@ -45,18 +40,35 @@ function buildEntryIdMap(entries: ISkillMatrixEntry[]): Map<string, number> {
 }
 
 export const useSkillMatrix = () => {
-  const query = useQuery({
+  const entriesQuery = useQuery({
     queryKey: ["skill-matrix"],
     queryFn: fetchAllSkillMatrix,
-    select: (data) => ({
-      skillMatrixData: transformToSkillMatrixData(data),
-      entryIdMap: buildEntryIdMap(data),
-    }),
   });
 
-  return {
-    ...query,
-    skillMatrixData: query.data?.skillMatrixData ?? { topics: [], users: [], skills: [] },
-    entryIdMap: query.data?.entryIdMap ?? new Map<string, number>(),
-  };
+  const usersQuery = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchAllUsers,
+  });
+
+  const topicsQuery = useQuery({
+    queryKey: ["topics"],
+    queryFn: fetchAllTopics,
+  });
+
+  const isLoading = entriesQuery.isLoading || usersQuery.isLoading || topicsQuery.isLoading;
+  const isError = entriesQuery.isError || usersQuery.isError || topicsQuery.isError;
+
+  const skillMatrixData = useMemo<SkillMatrixData>(() => {
+    if (!entriesQuery.data || !usersQuery.data || !topicsQuery.data) {
+      return { topics: [], users: [], skills: [] };
+    }
+    return transformToSkillMatrixData(entriesQuery.data, usersQuery.data, topicsQuery.data);
+  }, [entriesQuery.data, usersQuery.data, topicsQuery.data]);
+
+  const entryIdMap = useMemo(() => {
+    if (!entriesQuery.data) return new Map<string, number>();
+    return buildEntryIdMap(entriesQuery.data);
+  }, [entriesQuery.data]);
+
+  return { skillMatrixData, entryIdMap, isLoading, isError };
 };
