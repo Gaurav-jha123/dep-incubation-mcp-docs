@@ -1,5 +1,5 @@
 {
-  "name": "dep-incubation-dashboard",
+  "name": "@dep-incubation-dashboard/web",
   "private": true,
   "version": "0.0.0",
   "type": "module",

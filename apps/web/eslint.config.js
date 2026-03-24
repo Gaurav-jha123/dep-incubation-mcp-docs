@@ -26,5 +26,8 @@ export default defineConfig([globalIgnores(['dist']), jsxA11y.flatConfigs.recomm
   languageOptions: {
     ecmaVersion: 2020,
     globals: globals.browser,
+    parserOptions: {
+      tsconfigRootDir: import.meta.dirname,
+    },
   },
 }, ...storybook.configs["flat/recommended"]])

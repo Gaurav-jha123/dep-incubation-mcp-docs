@@ -9,6 +9,7 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "storybook": "pnpm --filter @dep-incubation-dashboard/web run storybook",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -25,7 +26,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.3.3",
     "prettier": "^3.4.2",
-    "turbo": "^2.5.0"
+    "turbo": "^2.8.20"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
