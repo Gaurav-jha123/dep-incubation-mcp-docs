@@ -6,6 +6,7 @@ import { PrismaModule } from './prisma/index.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { SkillMatrixModule } from './modules/skill-matrix/skill-matrix.module.js';
 import { TopicModule } from './modules/topics/topic.module.js';
+import { UsersModule } from './modules/users/users.module.js';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TopicModule } from './modules/topics/topic.module.js';
     AuthModule,
     SkillMatrixModule,
     TopicModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
