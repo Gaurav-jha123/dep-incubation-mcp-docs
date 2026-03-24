@@ -1,8 +1,10 @@
 import { useMemo } from "react";
-import skillMatrix from "@/mocks/skillMatrix";
+import { useSkillMatrix } from "@/services/hooks/query/useSkillMatrix";
 import type { SkillGap, TeamInsight } from "../types";
 
 const TeamInsights = () => {
+  const { skillMatrixData: skillMatrix } = useSkillMatrix();
+
   const getSkillImpact = (skillId: string): string => {
     const impactMap: Record<string, string> = {
       'react': 'Core Frontend Technology',
@@ -100,7 +102,7 @@ const TeamInsights = () => {
       teamInsights: insights.slice(0, 6),
       teamStats,
     };
-  }, []);
+  }, [skillMatrix]);
 
 
   const getUrgencyColor = (urgency: string) => {

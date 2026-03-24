@@ -1,8 +1,10 @@
 import { useMemo } from "react";
-import skillMatrix from "@/mocks/skillMatrix";
+import { useSkillMatrix } from "@/services/hooks/query/useSkillMatrix";
 import type { SkillCoverageData } from "../types";
 
 const SkillCoverage = () => {
+  const { skillMatrixData: skillMatrix } = useSkillMatrix();
+
   const skillCoverageData = useMemo(() => {
     const data: SkillCoverageData[] = skillMatrix.topics.map((topic) => {
       const skillsForTopic = skillMatrix.skills.filter((skill) => skill.topicId === topic.id);
@@ -38,7 +40,7 @@ const SkillCoverage = () => {
     });
 
     return data.sort((a, b) => b.averageScore - a.averageScore);
-  }, []);
+  }, [skillMatrix]);
 
   const getRiskColor = (riskLevel: string) => {
     switch (riskLevel) {

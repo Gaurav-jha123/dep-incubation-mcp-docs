@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
-import skillMatrixMock from "@/mocks/skillMatrix";
 import type { Topic, User } from "./components/types";
 import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
 import HeatmapLegend from "./components/SkillMatrixTableLegend";
@@ -8,14 +7,18 @@ import useLocalStorage from "@/lib/hooks/use-local-storage/use-local-storage";
 import createUniqueId from "./utils/create-unique-id";
 import type { QueryFilter } from "./components/SkillMatrixQueryBuilder";
 import { applySkillMatrixFilters } from "./utils/skillMatrixFilters";
+import { useSkillMatrix } from "@/services/hooks/query/useSkillMatrix";
+import { useSkillMatrixMutation } from "@/services/hooks/mutations/useSkillMatrixMutation";
+import { useAuthStore } from "@/store/use-auth-store/use-auth-store";
 
 const ADDED_USERS_STORAGE_KEY = "skill-matrix-added-users";
 const ADDED_TOPICS_STORAGE_KEY = "skill-matrix-added-topics";
 
 const SkillMatrix = () => {
 
-  //  matrix stored in state to allow editing
-  const [skillMatrix, setSkillMatrix] = useState(skillMatrixMock);
+  const { skillMatrixData: skillMatrix, entryIdMap, isLoading, isError } = useSkillMatrix();
+  const { updateMutation } = useSkillMatrixMutation();
+  const currentUser = useAuthStore((s) => s.user);
 
   const [addedUsers, setAddedUsers] = useLocalStorage<User[]>(
     ADDED_USERS_STORAGE_KEY,
@@ -72,14 +75,10 @@ const SkillMatrix = () => {
    * UPDATE SKILL VALUE
    */
   const updateSkill = (userId: string, topicId: string, value: number) => {
-    setSkillMatrix((prev) => ({
-      ...prev,
-      skills: prev.skills.map((skill) =>
-        skill.userId === userId && skill.topicId === topicId
-          ? { ...skill, value }
-          : skill
-      ),
-    }));
+    const entryId = entryIdMap.get(`${userId}-${topicId}`);
+    if (entryId) {
+      updateMutation.mutate({ id: entryId, data: { value } });
+    }
   };
 
   /**
@@ -176,36 +175,52 @@ const SkillMatrix = () => {
 
   return (
     <div className="p-6 space-y-6 h-full flex flex-col">
-      <div className="relative flex justify-center items-center">
-        <HeatmapLegend />
-        <div className="absolute right-0">
-          <SkillMatrixDrawer
-            users={users}
-            topics={topics}
-            selectedUsers={selectedUsers}
-            selectedTopics={selectedTopics}
-            onUsersChange={handleUsersChange}
-            onTopicsChange={handleTopicsChange}
-            onUserCreate={handleUserCreate}
-            onTopicCreate={handleTopicCreate}
-            orderedTopics={orderedTopics}
-            onColumnOrderChange={handleColumnOrderChange}
-            scoreFilters={scoreFilters}
-            onScoreFilterChange={setScoreFilters}
-            queryFilters={queryFilters}
-            onQueryFiltersChange={setQueryFilters}
-          />
+      {isLoading && (
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-muted-foreground">Loading skill matrix…</p>
         </div>
-      </div>
+      )}
 
-      {/* table area */}
-      <div className="flex-1 min-h-0">
-        <SkillMatrixTable
-          data={orderedFilteredData}
-          onUpdateSkill={updateSkill}
-          currentUserId={"alex"}
-        />
-      </div>
+      {isError && (
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-destructive">Failed to load skill matrix data.</p>
+        </div>
+      )}
+
+      {!isLoading && !isError && (
+        <>
+          <div className="relative flex justify-center items-center">
+            <HeatmapLegend />
+            <div className="absolute right-0">
+              <SkillMatrixDrawer
+                users={users}
+                topics={topics}
+                selectedUsers={selectedUsers}
+                selectedTopics={selectedTopics}
+                onUsersChange={handleUsersChange}
+                onTopicsChange={handleTopicsChange}
+                onUserCreate={handleUserCreate}
+                onTopicCreate={handleTopicCreate}
+                orderedTopics={orderedTopics}
+                onColumnOrderChange={handleColumnOrderChange}
+                scoreFilters={scoreFilters}
+                onScoreFilterChange={setScoreFilters}
+                queryFilters={queryFilters}
+                onQueryFiltersChange={setQueryFilters}
+              />
+            </div>
+          </div>
+
+          {/* table area */}
+          <div className="flex-1 min-h-0">
+            <SkillMatrixTable
+              data={orderedFilteredData}
+              onUpdateSkill={updateSkill}
+              currentUserId={currentUser ? String(currentUser.id) : ""}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };
