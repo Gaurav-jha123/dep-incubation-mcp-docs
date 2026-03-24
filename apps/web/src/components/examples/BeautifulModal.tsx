@@ -14,7 +14,7 @@ export default function BeautifulModal() {
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog className="relative z-10" onClose={() => setIsOpen(false)}>
+        <Dialog as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
@@ -39,6 +39,7 @@ export default function BeautifulModal() {
             >
               <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-neutral-50 p-8 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
+                  as="h3"
                   className="text-lg font-bold leading-6 text-neutral-900"
                 >
                   Beautiful Modal

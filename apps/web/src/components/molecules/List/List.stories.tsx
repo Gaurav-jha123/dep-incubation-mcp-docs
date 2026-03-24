@@ -37,7 +37,7 @@ const items: ListItem[] = [
 ];
 
 export const Default: Story = {
-  render: (args: Parameters<typeof List>[0]) => {
+  render: (args) => {
     const [selected, setSelected] = useState<ListItem>(items[0]);
 
     return (

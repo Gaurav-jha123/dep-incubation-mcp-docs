@@ -34,13 +34,14 @@ export const List: React.FC<ListProps> = ({
   return (
     <Listbox value={value} onChange={onChange}>
       <Listbox.Options
+        as="ul"
         static
         aria-label={ariaLabel}
         className={`${listVariants[variant]} ${className}`}
       >
         {items.map((item, idx) => (
-          <Listbox.Option key={idx} value={item}>
-            {({ active, selected }: { active: boolean; selected: boolean }) => (
+          <Listbox.Option key={idx} value={item} as="li">
+            {({ active, selected }) => (
               <div
                 className={`flex items-start gap-3 p-3 rounded-lg border transition cursor-pointer
                 ${active ? "bg-neutral-50 border-neutral-400" : "border-neutral-200"}

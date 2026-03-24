@@ -11,10 +11,9 @@ export function Accordion({ items }: AccordionProps) {
   return (
     <div className="w-full max-w-md p-2 mx-auto rounded-2xl">
       {items.map((item, idx) => (
-        <div key={idx} className="mt-2">
-          <Disclosure>
-            {({ open }: { open: boolean }) => (
-              <>
+        <Disclosure key={idx} as="div" className="mt-2">
+          {({ open }) => (
+            <>
               <Disclosure.Button
                 className="flex justify-between w-full px-4 py-2 text-sm font-medium
                            text-left text-neutral-700 bg-primary-200 rounded-lg
@@ -31,10 +30,9 @@ export function Accordion({ items }: AccordionProps) {
               <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-neutral-700">
                 {item.content}
               </Disclosure.Panel>
-              </>
-            )}
-          </Disclosure>
-        </div>
+            </>
+          )}
+        </Disclosure>
       ))}
     </div>
   )
