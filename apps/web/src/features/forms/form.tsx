@@ -207,7 +207,7 @@ export default function UserForm() {
               >
                 {["male", "female", "other"].map((value) => (
                   <RadioGroup.Option key={value} value={value}>
-                    {({ checked }) => (
+                    {({ checked }: { checked: boolean }) => (
                       <span
                         className={`cursor-pointer rounded-full border px-3 py-1 text-sm capitalize ${checked
                           ? "border-blue-500 bg-blue-50 text-blue-700"
@@ -248,7 +248,7 @@ export default function UserForm() {
                       <Listbox.Option
                         key={role}
                         value={role}
-                        className={({ active }) =>
+                        className={({ active }: { active: boolean }) =>
                           `cursor-pointer select-none py-2 px-3 capitalize ${active ? "bg-blue-50 text-blue-700" : "text-gray-900"
                           }`
                         }

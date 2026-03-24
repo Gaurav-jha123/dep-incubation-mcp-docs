@@ -190,7 +190,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
 
         {(error || helperText || showCharCount) && (
-          <Description as="div" id={descriptionId} className="mt-1 space-y-1">
+          <Description id={descriptionId} className="mt-1 space-y-1">
             {error && (
               <p className="text-sm text-danger-500 font-medium">{error}</p>
             )}
