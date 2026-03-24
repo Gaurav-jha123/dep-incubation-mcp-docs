@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from "@headlessui/react";
 
 export default function BeautifulModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +14,7 @@ export default function BeautifulModal() {
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
+        <Dialog className="relative z-10" onClose={() => setIsOpen(false)}>
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
@@ -38,12 +38,11 @@ export default function BeautifulModal() {
               leaveTo="opacity-0 scale-95"
             >
               <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-neutral-50 p-8 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title
-                  as="h3"
+                <DialogTitle
                   className="text-lg font-bold leading-6 text-neutral-900"
                 >
                   Beautiful Modal
-                </Dialog.Title>
+                </DialogTitle>
                 <div className="mt-2">
                   <p className="text-sm text-neutral-500">
                     This is a beautiful modal dialog built with Headless UI and styled with Tailwind CSS.

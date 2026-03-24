@@ -1,13 +1,12 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { fireEvent, render, screen, cleanup } from "@testing-library/react";
 import { Avatar } from "./Avatar";
 
 afterEach(() => cleanup());
 
 describe("Avatar Component", () => {
-
-  it("renders fallback text when src is not provided", () => {
-    render(<Avatar fallback="MS" />);
+  it("renders alt text when src is not provided", () => {
+    render(<Avatar alt="MS" />);
     expect(screen.getByText("MS")).toBeTruthy();
   });
 
@@ -22,45 +21,51 @@ describe("Avatar Component", () => {
   });
 
   it("applies correct size class", () => {
-    const { container } = render(<Avatar fallback="MS" size="lg" />);
+    const { container } = render(<Avatar alt="MS" size="lg" />);
     const avatar = container.querySelector(".h-14");
     expect(avatar).toBeTruthy();
   });
 
   it("renders status indicator when status is provided", () => {
-    const { container } = render(<Avatar fallback="MS" status="online" />);
+    const { container } = render(<Avatar alt="MS" status="online" />);
     const status = container.querySelector(".bg-success-500");
     expect(status).toBeTruthy();
   });
 
   it("renders correct status colors", () => {
-    const { container } = render(<Avatar fallback="MS" status="busy" />);
+    const { container } = render(<Avatar alt="MS" status="busy" />);
     const status = container.querySelector(".bg-danger-500");
     expect(status).toBeTruthy();
   });
 
   it("does not render status indicator when status not provided", () => {
-    const { container } = render(<Avatar fallback="MS" />);
+    const { container } = render(<Avatar alt="MS" />);
     const status = container.querySelector(".bg-success-500");
     expect(status).toBeNull();
   });
 
-  it("renders empty span if fallback is undefined and no src", () => {
-    const { container } = render(<Avatar />);
-    const span = container.querySelector("span");
-    expect(span).toBeTruthy();
+  it("renders alt text when no src is provided", () => {
+    render(<Avatar alt="User avatar" />);
+    expect(screen.getByText("User avatar")).toBeTruthy();
+  });
+
+  it("renders alt text when the image fails to load", () => {
+    render(<Avatar src="missing-image.png" alt="User avatar" />);
+
+    fireEvent.error(screen.getByAltText("User avatar"));
+
+    expect(screen.getByText("User avatar")).toBeTruthy();
   });
 
   it("applies custom className", () => {
-    const { container } = render(<Avatar fallback="MS" className="custom" />);
+    const { container } = render(<Avatar alt="MS" className="custom" />);
     const avatar = container.querySelector(".custom");
     expect(avatar).toBeTruthy();
   });
 
   it("supports xl size", () => {
-    const { container } = render(<Avatar fallback="MS" size="xl" />);
+    const { container } = render(<Avatar alt="MS" size="xl" />);
     const avatar = container.querySelector(".h-20");
     expect(avatar).toBeTruthy();
   });
-
 });

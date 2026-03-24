@@ -16,9 +16,9 @@ export const Default: Story = {
   args: {
     avatars: [
       { src: "https://via.placeholder.com/150" },
-      { fallback: "KR" },
+      { alt: "KR" },
       { src: "https://via.placeholder.com/150", status: "busy" },
-      { fallback: "TS" },
+      { alt: "TS" },
     ],
   },
 };
@@ -27,11 +27,11 @@ export const LimitedVisible: Story = {
   args: {
     maxVisible: 3,
     avatars: [
-      { fallback: "AB" },
-      { fallback: "CD" },
-      { fallback: "EF" },
-      { fallback: "GH" },
-      { fallback: "IJ" },
+      { alt: "AB" },
+      { alt: "CD" },
+      { alt: "EF" },
+      { alt: "GH" },
+      { alt: "IJ" },
     ],
   },
 };

@@ -101,7 +101,7 @@ export const Typography: React.FC<TypographyProps> = ({
   if (collapsible) {
     return (
       <Disclosure>
-        {({ open }) => (
+        {({ open }: { open: boolean }) => (
           <>
             <Disclosure.Button
               disabled={pseudoState === "disabled"}
@@ -118,7 +118,7 @@ export const Typography: React.FC<TypographyProps> = ({
                 )}
               />
             </Disclosure.Button>
-            <Disclosure.Panel className="px-4 py-2 text-neutral-700 bg-neutral-50 rounded mt-2">
+            <Disclosure.Panel className="mt-2 rounded bg-neutral-50 px-4 py-2 text-neutral-700">
               Additional content goes here
             </Disclosure.Panel>
           </>
