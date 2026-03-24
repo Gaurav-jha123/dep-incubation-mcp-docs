@@ -52,7 +52,7 @@ export const Warning: Story = {
 };
 
 export const Closable: Story = {
-  render: (args: Parameters<typeof Alert>[0]) => {
+  render: (args) => {
     const [visible, setVisible] = useState(true);
     return (
       <div>

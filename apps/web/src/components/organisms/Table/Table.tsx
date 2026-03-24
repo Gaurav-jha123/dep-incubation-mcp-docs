@@ -126,7 +126,7 @@ export const Table = <T extends Record<string, unknown>>({
                     <Listbox.Option
                       key={opt}
                       value={opt}
-                      className={({ active }: { active: boolean }) =>
+                      className={({ active }) =>
                         `px-3 py-1 cursor-pointer ${
                           active ? "bg-neutral-200" : ""
                         }`

@@ -37,7 +37,7 @@ export const Typography: React.FC<TypographyProps> = ({
   if (collapsible) {
     return (
       <Disclosure>
-        {({ open }: { open: boolean }) => (
+        {({ open }) => (
           <>
             <Disclosure.Button
               className={`${baseClass} ${className} flex items-center gap-2 hover:text-primary-500 transition-colors`}

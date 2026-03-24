@@ -44,7 +44,7 @@ export const Basic: Story = {
       },
     ],
   },
-  render: (args: Parameters<typeof Tabs>[0]) => (
+  render: (args) => (
     <div className="w-[500px]">
       <Tabs {...args} />
     </div>
@@ -69,7 +69,7 @@ export const WithDisabledTab: Story = {
       },
     ],
   },
-  render: (args: Parameters<typeof Tabs>[0]) => (
+  render: (args) => (
     <div className="w-[500px]">
       <Tabs {...args} />
     </div>
@@ -94,7 +94,7 @@ export const PillVariant: Story = {
       },
     ],
   },
-  render: (args: Parameters<typeof Tabs>[0]) => (
+  render: (args) => (
     <div className="w-[500px]">
       <Tabs {...args} />
     </div>

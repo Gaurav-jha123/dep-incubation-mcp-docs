@@ -45,7 +45,7 @@ const SingleSelectTemplate = ({ options, label, placeholder }: {
                     <Listbox.Option
                       key={option}
                       value={option}
-                      className={({ active }: { active: boolean }) =>
+                      className={({ active }) =>
                         `cursor-pointer select-none py-2 px-3 capitalize ${active ? "bg-blue-50 text-blue-700" : "text-gray-900"
                         }`
                       }
@@ -158,7 +158,7 @@ export const RoleSelect: Story = {
 };
 
 export const MultiSelectHobbies: Story = {
-  render: (args: Parameters<typeof MultiSelectTemplate>[0]) => <MultiSelectTemplate {...args} />,
+  render: (args) => <MultiSelectTemplate {...args} />,
   args: {
     options: ["reading", "sports", "music", "travel", "cooking"],
     label: "Hobbies",
@@ -175,7 +175,7 @@ export const CountrySelect: Story = {
 };
 
 export const MultiSelectSkills: Story = {
-  render: (args: Parameters<typeof MultiSelectTemplate>[0]) => <MultiSelectTemplate {...args} />,
+  render: (args) => <MultiSelectTemplate {...args} />,
   args: {
     options: ["javascript", "typescript", "react", "vue", "angular", "nodejs"],
     label: "Skills",

@@ -69,7 +69,7 @@ const MultiSelectSearch = ({ label, options, selected, onChange, onCreateOption 
     <div className="w-full">
       <div className="flex items-start gap-2">
         <Popover className="relative flex-1">
-          {({ open }: { open: boolean }) => {
+          {({ open }) => {
           // eslint-disable-next-line react-hooks/rules-of-hooks
             useEffect(() => {
               if (!open) {

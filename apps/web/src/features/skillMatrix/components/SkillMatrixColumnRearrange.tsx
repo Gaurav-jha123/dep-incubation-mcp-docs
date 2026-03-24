@@ -1,15 +1,10 @@
-import {useEffect, useMemo, useRef, useState, type ComponentType, type ReactNode} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import {DragDropProvider} from '@dnd-kit/react';
 import {useSortable} from '@dnd-kit/react/sortable';
 import {move} from '@dnd-kit/helpers';
 import type {Topic} from './types';
 
 type ItemId = string;
-
-// DragDropProvider in @dnd-kit/react v0.3 doesn't declare children in its Props type.
-const DndProvider = DragDropProvider as ComponentType<
-  Parameters<typeof DragDropProvider>[0] & { children: ReactNode }
->;
 
 function Sortable({id, label, index}: {id: ItemId; label: string; index: number}) {
   const [element, setElement] = useState<Element | null>(null);
@@ -57,8 +52,8 @@ export default function SkillMatrixColumnRearrange({topics, onOrderChange, class
       <h4 className="text-sm font-medium text-foreground mb-2">Rearrange Columns</h4>
       <p className="text-xs text-muted-foreground mb-3">Drag and drop topics to reorder the column list.</p>
       <div className="h-96 overflow-y-auto rounded-md border border-border p-3">
-        <DndProvider
-          onDragEnd={(event: unknown) => {
+        <DragDropProvider
+          onDragEnd={(event) => {
             setItems((prevItems) => {
               if (!hasValidDropTarget(event)) {
                 return prevItems;
@@ -83,7 +78,7 @@ export default function SkillMatrixColumnRearrange({topics, onOrderChange, class
               <Sortable key={id} id={id} label={topicLabelById[id] ?? id} index={index} />
             ))}
           </ul>
-        </DndProvider>
+        </DragDropProvider>
       </div>
     </div>
   );
