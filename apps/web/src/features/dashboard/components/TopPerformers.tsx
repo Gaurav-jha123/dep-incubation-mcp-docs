@@ -1,8 +1,10 @@
 import { useMemo } from "react";
-import skillMatrix from "@/mocks/skillMatrix";
+import { useSkillMatrix } from "@/services/hooks/query/useSkillMatrix";
 import type { UserPerformance } from "../types";
 
 const TopPerformers = () => {
+  const { skillMatrixData: skillMatrix } = useSkillMatrix();
+
   const topPerformers = useMemo(() => {
     // Calculate performance metrics for each user
     const userPerformances: UserPerformance[] = skillMatrix.users.map((user) => {
@@ -34,7 +36,7 @@ const TopPerformers = () => {
     return userPerformances
       .sort((a, b) => b.averageScore - a.averageScore)
       .slice(0, 5);
-  }, []);
+  }, [skillMatrix]);
 
   const getScoreColor = (score: number) => {
     if (score >= 80) return "text-emerald-700";

@@ -1,8 +1,10 @@
 import { useMemo } from "react";
-import skillMatrix from "@/mocks/skillMatrix";
+import { useSkillMatrix } from "@/services/hooks/query/useSkillMatrix";
 import type { LearningRecommendation } from "../types";
 
 const LearningRecommendations = () => {
+  const { skillMatrixData: skillMatrix } = useSkillMatrix();
+
   // Helper function to suggest related skills
   const getRelatedSkills = (skillId: string, userSkillIds: string[]): string[] => {
     const relatedSkillsMap: Record<string, string[]> = {
@@ -107,7 +109,7 @@ const LearningRecommendations = () => {
       .filter(user => user.recommendations.length > 0)
       .sort((a, b) => a.averageScore - b.averageScore)
       .slice(0, 6);
-  }, []);
+  }, [skillMatrix]);
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
