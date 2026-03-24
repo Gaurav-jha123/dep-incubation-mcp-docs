@@ -1,6 +1,8 @@
-import { Checkbox, Popover } from "@headlessui/react";
-import { ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Dropdown } from "../../../components/organisms/Dropdown/Dropdown";
+import { Badge, Input } from "@/components/atoms";
+import { Checkbox } from "../../../components/atoms/Checkbox/Checkbox";
+import {Button} from "@/components/atoms/Button/Button";
 
 interface Option {
   value: string;
@@ -15,7 +17,13 @@ interface Props {
   onCreateOption?: (label: string) => void;
 }
 
-const MultiSelectSearch = ({ label, options, selected, onChange, onCreateOption }: Props) => {
+const MultiSelectSearch = ({
+  label,
+  options,
+  selected,
+  onChange,
+  onCreateOption,
+}: Props) => {
   const [query, setQuery] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const [newOptionLabel, setNewOptionLabel] = useState("");
@@ -25,7 +33,7 @@ const MultiSelectSearch = ({ label, options, selected, onChange, onCreateOption 
     query === ""
       ? options
       : options.filter((o) =>
-          o.label.toLowerCase().includes(query.toLowerCase()),
+          o.label.toLowerCase().includes(query.toLowerCase())
         );
 
   const toggleValue = (value: string) => {
@@ -38,14 +46,14 @@ const MultiSelectSearch = ({ label, options, selected, onChange, onCreateOption 
 
   const handleCreate = () => {
     const trimmedValue = newOptionLabel.trim();
-
     if (!trimmedValue) {
       setError(`${label.slice(0, -1)} name is required.`);
       return;
     }
 
     const alreadyExists = options.some(
-      (option) => option.label.trim().toLowerCase() === trimmedValue.toLowerCase(),
+      (option) =>
+        option.label.trim().toLowerCase() === trimmedValue.toLowerCase()
     );
 
     if (alreadyExists) {
@@ -68,149 +76,102 @@ const MultiSelectSearch = ({ label, options, selected, onChange, onCreateOption 
   return (
     <div className="w-full">
       <div className="flex items-start gap-2">
-        <Popover className="relative flex-1">
-          {({ open }) => {
-          // eslint-disable-next-line react-hooks/rules-of-hooks
-            useEffect(() => {
-              if (!open) {
-                setQuery("");
-              }
-            }, [open]);
+        <Dropdown className="w-full">
+          <Dropdown.Trigger className="w-full flex items-center justify-between rounded-md bg-neutral-50 border border-neutral-300 px-4 py-2">
+            <div className="flex items-center gap-2">
+              {selected.length > 0 ? (
+                <>
+                  {label}
+                  <Badge text={selected.length.toString()} variant="info" />
+                </>
+              ) : (
+                `Select ${label}`
+              )}
+            </div>
+          </Dropdown.Trigger>
 
-            return (
-              <>
-                <Popover.Button className="flex w-full items-center justify-between border rounded-md px-3 py-2 text-left">
-                  <span className="flex items-center gap-2">
-                    {selected.length > 0 ? (
-                      <>
-                        {label}
-                        <span className="inline-flex items-center justify-center rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
-                          {selected.length}
-                        </span>
-                      </>
-                    ) : (
-                      `Select ${label}`
-                    )}
-                  </span>
-                  <ChevronDown className="size-4 shrink-0 opacity-50" />
-                </Popover.Button>
-
-                <Popover.Panel className="absolute z-50 mt-1 w-full rounded-md bg-card border border-border shadow-lg p-2">
-                  <input
-                    type="text"
-                    placeholder={`Search ${label}`}
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    className="w-full border rounded-md px-2 py-1 mb-2"
-                  />
-
-                  <div className="max-h-60 overflow-auto">
-                    {filteredOptions.length === 0 ? (
-                      <div className="px-2 py-4 text-center text-sm text-muted-foreground">
-                        No items found.
-                      </div>
-                    ) : (
-                      filteredOptions.map((option) => (
-                        <div
-                          key={option.value}
-                          role="button"
-                          tabIndex={0}
-                          onClick={() => toggleValue(option.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              toggleValue(option.value);
-                            }
-                          }}
-                          className="flex items-start gap-3 px-2 py-1 cursor-pointer hover:bg-accent rounded"
-                        >
-                          <Checkbox
-                            checked={selected.includes(option.value)}
-                            className="group shrink-0 flex size-4 items-center justify-center rounded border bg-background data-[checked]:bg-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50"
-                          >
-                            <svg
-                              className="stroke-foreground opacity-0 group-data-checked:opacity-100"
-                              viewBox="0 0 14 14"
-                              fill="none"
-                            >
-                              <path
-                                d="M3 8L6 11L11 3.5"
-                                strokeWidth={2}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </Checkbox>
-
-                          <span className="whitespace-normal break-words">
-                            {option.label}
-                          </span>
-                        </div>
-                      ))
-                    )}
+          <Dropdown.Content className="w-full max-h-60 overflow-auto">
+            <Input
+              type="text"
+              placeholder={`Search ${label}`}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              inputSize="sm"
+            />
+            {filteredOptions.length === 0 ? (
+              <div className="px-2 py-4 text-center text-sm text-neutral-700">
+                No items found.
+              </div>
+            ) : (
+              <div className="space-y-1">
+                {filteredOptions.map((option) => (
+                  <div
+                    key={option.value}
+                    className="rounded-md px-2 py-1 hover:bg-neutral-100"
+                  >
+                    <Checkbox
+                      label={option.label}
+                      checked={selected.includes(option.value)}
+                      onChange={() => toggleValue(option.value)}
+                      className="w-full"
+                    />
                   </div>
-                </Popover.Panel>
-              </>
-            );
-          }}
-        </Popover>
-        {onCreateOption ? (
-          <button
-            type="button"
+                ))}
+              </div>
+            )}
+          </Dropdown.Content>
+        </Dropdown>
+
+        {onCreateOption && (
+          <Button
             onClick={() => {
               setError(null);
               setIsAdding((current) => !current);
             }}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm font-medium text-foreground hover:bg-accent"
+            variant="outline"
           >
             Add
-          </button>
-        ) : null}
+          </Button>
+        )}
       </div>
-      {isAdding ? (
+
+      {isAdding && (
         <div className="mt-2 rounded-md border border-border p-3">
           <div className="flex gap-2">
-            <input
-              type="text"
+            <Input
               value={newOptionLabel}
               onChange={(e) => {
                 setNewOptionLabel(e.target.value);
-                if (error) {
-                  setError(null);
-                }
+                if (error) setError(null);
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
                   handleCreate();
                 }
-
                 if (e.key === "Escape") {
                   e.preventDefault();
                   handleCancel();
                 }
               }}
               placeholder={`Add ${label.slice(0, -1)}`}
-              className="flex-1 rounded-md border px-3 py-2 text-sm"
+              inputSize="sm"
             />
-            <button
-              type="button"
-              onClick={handleCreate}
-              className="rounded-md bg-black px-3 py-2 text-sm font-medium text-white"
-            >
+            <Button onClick={handleCreate} variant="primary" size="sm">
               Save
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="secondary"
               onClick={handleCancel}
               className="rounded-md border border-input px-3 py-2 text-sm font-medium"
+              size="sm"
             >
               Cancel
-            </button>
+            </Button>
           </div>
-          {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
+          {error && <p className="mt-2 text-sm text-danger-600">{error}</p>}
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
