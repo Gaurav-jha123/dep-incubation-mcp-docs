@@ -1,5 +1,5 @@
 import React from "react";
-import { Listbox } from "@headlessui/react";
+import { Listbox, ListboxOption, ListboxOptions } from "@headlessui/react";
 import { Check } from "lucide-react";
 
 export interface ListItem {
@@ -33,19 +33,18 @@ export const List: React.FC<ListProps> = ({
 
   return (
     <Listbox value={value} onChange={onChange}>
-      <Listbox.Options
-        as="ul"
+      <ListboxOptions
         static
         aria-label={ariaLabel}
         className={`${listVariants[variant]} ${className}`}
       >
         {items.map((item, idx) => (
-          <Listbox.Option key={idx} value={item} as="li">
-            {({ active, selected }) => (
+          <ListboxOption key={idx} value={item}>
+            {({ active, selected }: { active: boolean; selected: boolean }) => (
               <div
-                className={`flex items-start gap-3 p-3 rounded-lg border transition cursor-pointer
-                ${active ? "bg-neutral-50 border-neutral-400" : "border-neutral-200"}
-                ${selected ? "bg-primary-50 border-primary-400" : ""}`}
+                className={`flex w-full items-start gap-3 rounded-lg border p-3 text-left transition cursor-pointer
+                  ${selected ? "bg-primary-50 border-primary-400" : "border-neutral-200"}
+                  ${active && !selected ? "bg-neutral-50 border-neutral-400" : ""}`}
               >
                 {item.icon && (
                   <span className="mt-0.5 text-lg text-neutral-500">
@@ -73,9 +72,9 @@ export const List: React.FC<ListProps> = ({
                 )}
               </div>
             )}
-          </Listbox.Option>
+          </ListboxOption>
         ))}
-      </Listbox.Options>
+      </ListboxOptions>
     </Listbox>
   );
 };

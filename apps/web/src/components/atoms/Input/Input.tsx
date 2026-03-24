@@ -54,7 +54,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const reactId = useId();
     const inputId = id || `input-${reactId}`;
-    const descriptionId = `${inputId}-description`;
     const [charCount, setCharCount] = React.useState(
       typeof value === "string" ? value.length : 0,
     );
@@ -82,9 +81,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               disabled={disabled}
               placeholder=" "
               maxLength={maxLength}
-              aria-describedby={
-                error || helperText || showCharCount ? descriptionId : undefined
-              }
               aria-invalid={!!error}
               aria-required={required}
               className={`peer w-full border rounded-md bg-white px-3 pt-4 pb-2 text-neutral-900 outline-none transition-all disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-500 disabled:placeholder:text-neutral-400
@@ -153,11 +149,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 id={inputId}
                 disabled={disabled}
                 maxLength={maxLength}
-                aria-describedby={
-                  error || helperText || showCharCount
-                    ? descriptionId
-                    : undefined
-                }
                 aria-invalid={!!error}
                 aria-required={required}
                 className={`w-full border rounded-md bg-white px-3 py-2 text-neutral-900 outline-none transition-colors disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-500 disabled:placeholder:text-neutral-400
@@ -190,7 +181,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
 
         {(error || helperText || showCharCount) && (
-          <Description as="div" id={descriptionId} className="mt-1 space-y-1">
+          <Description className="mt-1 space-y-1">
             {error && (
               <p className="text-sm text-danger-500 font-medium">{error}</p>
             )}
