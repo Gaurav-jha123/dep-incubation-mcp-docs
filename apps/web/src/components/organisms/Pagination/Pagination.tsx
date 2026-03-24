@@ -1,5 +1,4 @@
 import React from 'react';
-import { Menu } from '@headlessui/react';
 
 interface PaginationProps {
   currentPage: number;
@@ -38,38 +37,28 @@ export const Pagination: React.FC<PaginationProps> = ({
     }
 
     const addButton = (p: number) => (
-      <Menu.Item key={p}>
-        {({ active }) => (
-          <button
-            onClick={() => onPageChange(p)}
-            className={`px-3 py-1 text-sm border rounded ${
-              currentPage === p
-                ? "bg-primary-500 text-neutral-50 border-primary-500"
-                : active
-                  ? "bg-neutral-200"
-                  : "hover:bg-neutral-200"
-            }`}
-          >
-            {p}
-          </button>
-        )}
-      </Menu.Item>
+      <button
+        key={p}
+        onClick={() => onPageChange(p)}
+        className={`px-3 py-1 text-sm border rounded ${
+          currentPage === p
+            ? "bg-primary-500 text-neutral-50 border-primary-500"
+            : "hover:bg-neutral-200"
+        }`}
+      >
+        {p}
+      </button>
     );
 
     if (startPage > 1) {
       pages.push(
-        <Menu.Item key={1}>
-          {({ active }) => (
-            <button
-              onClick={() => onPageChange(1)}
-              className={`px-3 py-1 text-sm border rounded ${
-                active ? "bg-neutral-200" : "hover:bg-neutral-200"
-              }`}
-            >
-              1
-            </button>
-          )}
-                </Menu.Item>
+        <button
+          key={1}
+          onClick={() => onPageChange(1)}
+          className="px-3 py-1 text-sm border rounded hover:bg-neutral-200"
+        >
+          1
+        </button>
       );
       if (startPage > 2) {
         pages.push(
@@ -93,18 +82,13 @@ export const Pagination: React.FC<PaginationProps> = ({
         );
       }
       pages.push(
-        <Menu.Item key={totalPages}>
-          {({ active }) => (
-            <button
-              onClick={() => onPageChange(totalPages)}
-              className={`px-3 py-1 text-sm border rounded ${
-                active ? "bg-neutral-200" : "hover:bg-neutral-200"
-              }`}
-            >
-              {totalPages}
-            </button>
-          )}
-                </Menu.Item>
+        <button
+          key={totalPages}
+          onClick={() => onPageChange(totalPages)}
+          className="px-3 py-1 text-sm border rounded hover:bg-neutral-200"
+        >
+          {totalPages}
+        </button>
       );
     }
 
@@ -121,11 +105,9 @@ export const Pagination: React.FC<PaginationProps> = ({
         Previous
       </button>
 
-      <Menu as="nav" className="flex gap-1">
-        <Menu.Items static className="flex gap-1">
-          {renderPageButtons()}
-        </Menu.Items>
-      </Menu>
+      <nav className="flex gap-1" aria-label="Pagination">
+        {renderPageButtons()}
+      </nav>
 
       <button
         onClick={handleNext}

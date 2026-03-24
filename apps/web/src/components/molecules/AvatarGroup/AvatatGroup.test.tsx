@@ -7,12 +7,12 @@ afterEach(() => {
 });
 
 const avatars = [
-  { fallback: "A" },
-  { fallback: "B" },
-  { fallback: "C" },
-  { fallback: "D" },
-  { fallback: "E" },
-  { fallback: "F" },
+  { alt: "A" },
+  { alt: "B" },
+  { alt: "C" },
+  { alt: "D" },
+  { alt: "E" },
+  { alt: "F" },
 ];
 
 describe("AvatarGroup Component", () => {

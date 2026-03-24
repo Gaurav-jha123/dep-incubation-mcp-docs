@@ -7,7 +7,6 @@ afterEach(() => {
 });
 
 describe("Checkbox Component", () => {
-
   it("renders checkbox with label", () => {
     render(<Checkbox label="Accept Terms" />);
 
@@ -35,6 +34,23 @@ describe("Checkbox Component", () => {
     expect((checkbox as HTMLInputElement).disabled).toBe(true);
   });
 
+  it("applies pseudoState to the checkbox input", () => {
+    render(<Checkbox label="Accept Terms" pseudoState="hover" />);
+
+    const checkbox = screen.getByRole("checkbox");
+
+    expect(checkbox.getAttribute("data-pseudo-state")).toBe("hover");
+  });
+
+  it("treats pseudoState disabled as disabled input", () => {
+    render(<Checkbox label="Accept Terms" pseudoState="disabled" />);
+
+    const checkbox = screen.getByRole("checkbox");
+
+    expect((checkbox as HTMLInputElement).disabled).toBe(true);
+    expect(checkbox.getAttribute("aria-disabled")).toBe("true");
+  });
+
   it("calls onChange when checkbox is clicked", () => {
     const handleChange = vi.fn();
 
@@ -54,5 +70,4 @@ describe("Checkbox Component", () => {
 
     expect(checkbox).toBeTruthy();
   });
-
 });

@@ -53,13 +53,12 @@ const Root: React.FC<RootProps> = ({
 }) => {
   return (
     <DropdownContext.Provider value={{ size }}>
-      <Menu
-        as="div"
+      <div
         data-testid="dropdown-root"
         className={cn("relative inline-block", className)}
       >
-        {children}
-      </Menu>
+        <Menu>{children}</Menu>
+      </div>
     </DropdownContext.Provider>
   )
 }

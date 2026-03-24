@@ -1,5 +1,12 @@
 import React, { Fragment } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import {
+  Description,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
 import { X } from "lucide-react";
 
 export interface ModalProps {
@@ -38,13 +45,9 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-50"
-        onClose={onClose}
-      >
+      <Dialog className="relative z-50" onClose={onClose}>
         {/* Overlay */}
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="ease-out duration-200"
           enterFrom="opacity-0"
@@ -54,11 +57,11 @@ export const Modal: React.FC<ModalProps> = ({
           leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-black/40" />
-        </Transition.Child>
+        </TransitionChild>
 
         {/* Modal container */}
         <div className="fixed inset-0 flex items-center justify-center p-4 overflow-y-auto">
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="ease-out duration-200"
             enterFrom="opacity-0 scale-95"
@@ -67,7 +70,7 @@ export const Modal: React.FC<ModalProps> = ({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel
+            <DialogPanel
               className={`
                 w-full
                 ${sizeStyles[size]}
@@ -84,9 +87,9 @@ export const Modal: React.FC<ModalProps> = ({
                 <div className="px-6 py-4 border-b border-border">
                   <div className="flex items-start justify-between gap-3">
                     {title ? (
-                      <Dialog.Title className="text-lg font-semibold text-foreground">
+                      <DialogTitle className="text-lg font-semibold text-foreground">
                         {title}
-                      </Dialog.Title>
+                      </DialogTitle>
                     ) : (
                       <div />
                     )}
@@ -103,9 +106,9 @@ export const Modal: React.FC<ModalProps> = ({
                   </div>
 
                   {description && (
-                    <Dialog.Description className="text-sm text-muted-foreground mt-1">
+                    <Description className="text-sm text-muted-foreground mt-1">
                       {description}
-                    </Dialog.Description>
+                    </Description>
                   )}
                 </div>
               )}
@@ -119,8 +122,8 @@ export const Modal: React.FC<ModalProps> = ({
                   {footer}
                 </div>
               )}
-            </Dialog.Panel>
-          </Transition.Child>
+            </DialogPanel>
+          </TransitionChild>
         </div>
       </Dialog>
     </Transition>

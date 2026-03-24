@@ -14,6 +14,20 @@ describe("Badge Component", () => {
     expect(el).toBeDefined();
   });
 
+  it("applies the pseudoState data attribute to a plain badge", () => {
+    render(<Badge text="Hover badge" pseudoState="hover" />);
+
+    const el = screen.getByText("Hover badge");
+    expect(el.getAttribute("data-pseudo-state")).toBe("hover");
+  });
+
+  it("marks a plain badge as disabled when pseudoState is disabled", () => {
+    render(<Badge text="Disabled badge" pseudoState="disabled" />);
+
+    const el = screen.getByText("Disabled badge");
+    expect(el.getAttribute("aria-disabled")).toBe("true");
+  });
+
   it("applies correct variant classes", () => {
     const variants: Record<string, string> = {
       default: "bg-primary-200 text-primary-900",
@@ -61,7 +75,16 @@ describe("Badge Component", () => {
     expect(screen.getByText("Element").tagName).toBe("BUTTON");
   });
 
-  // 4️⃣ Info popover shows when info prop is provided
+  it("applies pseudoState and disabled state to the popover trigger", () => {
+    render(
+      <Badge text="Info badge" info="Popover content" pseudoState="disabled" />,
+    );
+
+    const button = screen.getByText("Info badge");
+    expect(button.getAttribute("data-pseudo-state")).toBe("disabled");
+    expect(button.getAttribute("disabled")).toBe("");
+  });
+
   it("renders popover panel when info prop is provided", async () => {
     render(<Badge text="Info" info="Popover content" />);
     const button = screen.getByText("Info");

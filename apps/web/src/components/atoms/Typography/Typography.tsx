@@ -1,5 +1,5 @@
 import React from "react";
-import { Disclosure } from "@headlessui/react";
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
 import { ChevronUpIcon } from "lucide-react";
 
 interface TypographyProps {
@@ -37,19 +37,19 @@ export const Typography: React.FC<TypographyProps> = ({
   if (collapsible) {
     return (
       <Disclosure>
-        {({ open }) => (
+        {({ open }: { open: boolean }) => (
           <>
-            <Disclosure.Button
-              className={`${baseClass} ${className} flex items-center gap-2 hover:text-primary-500 transition-colors`}
+            <DisclosureButton
+              className={`${baseClass} ${className} flex items-center gap-2 hover:text-primary-500 transition-colors cursor-pointer`}
             >
               {children}
               <ChevronUpIcon
                 className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
               />
-            </Disclosure.Button>
-            <Disclosure.Panel className="px-4 py-2 text-neutral-700 bg-neutral-50 rounded mt-2">
+            </DisclosureButton>
+            <DisclosurePanel className="mt-2 rounded bg-neutral-50 px-4 py-2 text-neutral-700">
               Additional content goes here
-            </Disclosure.Panel>
+            </DisclosurePanel>
           </>
         )}
       </Disclosure>
