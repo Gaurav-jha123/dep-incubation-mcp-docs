@@ -114,10 +114,12 @@ describe("Table", () => {
 
     expect(screen.getByText("Page 1 of 3")).not.toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Rows: 2" }));
+    const listboxButton = screen.getByRole("button", { name: "Rows: 2" });
+    fireEvent.click(listboxButton);
+
     const option10 = screen.getByRole("option", { name: "10" });
-    fireEvent.mouseEnter(option10);
-    fireEvent.mouseMove(option10);
+    fireEvent.pointerEnter(option10);
+    fireEvent.pointerMove(option10);
 
     fireEvent.click(option10);
 
@@ -243,4 +245,144 @@ describe("Table", () => {
     expect(firstDataCell.className).toContain("left-0");
     expect(firstDataCell.className).toContain("bg-primary-50");
   });
+
+  it("resets rowsPerPage and page when rowsPerPageOptions default changes", () => {
+    const { rerender } = render(
+      <Table
+        headers={headers}
+        data={data}
+        keys={keys}
+        rowsPerPageOptions={[2, 5, 10]}
+      />,
+    );
+
+    expect(screen.getByText("Page 1 of 3")).not.toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Next" }));
+    expect(screen.getByText("Page 2 of 3")).not.toBeNull();
+
+    rerender(
+      <Table
+        headers={headers}
+        data={data}
+        keys={keys}
+        rowsPerPageOptions={[3, 5, 10]}
+      />,
+    );
+
+    expect(screen.getByText("Page 1 of 2")).not.toBeNull();
+  });
+
+  it("sorts numeric values numerically rather than lexicographically", () => {
+    type NumRow = { label: string; count: number };
+    const numHeaders = ["Label", "Count"];
+    const numKeys: (keyof NumRow)[] = ["label", "count"];
+    const numData: NumRow[] = [
+      { label: "A", count: 20 },
+      { label: "B", count: 3 },
+      { label: "C", count: 100 },
+    ];
+
+    render(<Table headers={numHeaders} data={numData} keys={numKeys} />);
+
+    fireEvent.click(screen.getByText("Count"));
+
+    const rowsAsc = screen.getAllByRole("row");
+    expect(rowsAsc[1].textContent).toContain("3");
+    expect(rowsAsc[2].textContent).toContain("20");
+    expect(rowsAsc[3].textContent).toContain("100");
+
+    fireEvent.click(screen.getByText("Count"));
+
+    const rowsDesc = screen.getAllByRole("row");
+    expect(rowsDesc[1].textContent).toContain("100");
+    expect(rowsDesc[2].textContent).toContain("20");
+    expect(rowsDesc[3].textContent).toContain("3");
+  });
+
+  it("renders empty string for undefined cell values without cellRenderer", () => {
+    type Partial = { name: string; note: string | undefined };
+    const partialHeaders = ["Name", "Note"];
+    const partialKeys: (keyof Partial)[] = ["name", "note"];
+    const partialData: Partial[] = [
+      { name: "Alice", note: undefined },
+      { name: "Bob", note: "hello" },
+    ];
+
+    render(
+      <Table headers={partialHeaders} data={partialData} keys={partialKeys} />,
+    );
+
+    expect(screen.getByText("Alice")).not.toBeNull();
+    expect(screen.getByText("hello")).not.toBeNull();
+  });
+
+  it("switches sort to a new column resetting direction to asc", () => {
+    render(<Table headers={headers} data={data} keys={keys} />);
+
+    fireEvent.click(screen.getByText("Name"));
+    fireEvent.click(screen.getByText("Name"));
+    expect(screen.getByText("▼")).not.toBeNull();
+
+    fireEvent.click(screen.getByText("Role"));
+    expect(screen.getByText("▲")).not.toBeNull();
+
+    const rows = screen.getAllByRole("row");
+    expect(rows[1].textContent).toContain("Architect");
+  });
+
+  it("handles sorting with mixed numeric and non-numeric values", () => {
+    type MixedRow = { name: string; value: string | number };
+    const mixedHeaders = ["Name", "Value"];
+    const mixedKeys: (keyof MixedRow)[] = ["name", "value"];
+    const mixedData: MixedRow[] = [
+      { name: "A", value: "text" },
+      { name: "B", value: 5 },
+    ];
+
+    render(<Table headers={mixedHeaders} data={mixedData} keys={mixedKeys} />);
+
+    fireEvent.click(screen.getByText("Value"));
+
+    const rows = screen.getAllByRole("row");
+    expect(rows.length).toBeGreaterThan(1);
+  });
+
+  it("sorts correctly when data contains null, undefined, and empty string values", () => {
+    type NullableRow = Record<string, unknown>;
+    const nullHeaders = ["Name", "Score"];
+    const nullKeys: (keyof NullableRow)[] = ["name", "score"];
+    const nullData: NullableRow[] = [
+      { name: "A", score: null },
+      { name: "B", score: "" },
+      { name: "C", score: undefined },
+      { name: "D", score: 10 },
+    ];
+
+    render(
+      <Table headers={nullHeaders} data={nullData} keys={nullKeys} rowsPerPageOptions={[10]} />,
+    );
+
+    fireEvent.click(screen.getByText("Score"));
+
+    const rows = screen.getAllByRole("row");
+    expect(rows.length).toBe(5);
+  });
+
+  it("hides both search and rows-per-page controls when not needed", () => {
+    render(
+      <Table
+        headers={headers}
+        data={data}
+        keys={keys}
+        showSearch={false}
+        rowsPerPageOptions={[5]}
+      />,
+    );
+
+    expect(screen.queryByPlaceholderText("Search...")).toBeNull();
+    expect(screen.queryByRole("button", { name: /Rows:/ })).toBeNull();
+    expect(screen.getByText("Zoe")).not.toBeNull();
+  });
 });
+ 
