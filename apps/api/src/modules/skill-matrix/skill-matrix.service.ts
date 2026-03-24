@@ -1,5 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+  ConflictException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
+import { Prisma } from '../../generated/prisma/client.js';
 import { CreateSkillMatrixDto } from './dto/create-skill-matrix.dto.js';
 import { UpdateSkillMatrixDto } from './dto/update-skill-matrix.dto.js';
 import { PaginationQueryDto } from './dto/pagination-query.dto.js';
@@ -63,24 +69,40 @@ export class SkillMatrixService {
   }
 
   async create(userId: number, dto: CreateSkillMatrixDto) {
-    return this.prisma.skillMatrix.create({
-      data: {
-        userId,
-        topicId: dto.topicId,
-        value: dto.value,
-      },
-      include: {
-        user: { select: { id: true, name: true, email: true } },
-        topic: { select: { id: true, label: true } },
-      },
-    });
+    try {
+      return await this.prisma.skillMatrix.create({
+        data: {
+          userId,
+          topicId: dto.topicId,
+          value: dto.value,
+        },
+        include: {
+          user: { select: { id: true, name: true, email: true } },
+          topic: { select: { id: true, label: true } },
+        },
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException(
+          'Skill matrix entry already exists for this topic',
+        );
+      }
+      throw error;
+    }
   }
 
   async update(userId: number, id: number, dto: UpdateSkillMatrixDto) {
-    await this.findOne(id);
+    const record = await this.findOne(id);
+
+    if (record.userId !== userId) {
+      throw new ForbiddenException('You do not own this skill matrix entry');
+    }
 
     return this.prisma.skillMatrix.update({
-      where: { id, userId },
+      where: { id },
       data: dto,
       include: {
         user: { select: { id: true, name: true, email: true } },
@@ -89,8 +111,12 @@ export class SkillMatrixService {
     });
   }
 
-  async remove(id: number) {
-    await this.findOne(id);
+  async remove(userId: number, id: number) {
+    const record = await this.findOne(id);
+
+    if (record.userId !== userId) {
+      throw new ForbiddenException('You do not own this skill matrix entry');
+    }
 
     return this.prisma.skillMatrix.delete({
       where: { id },

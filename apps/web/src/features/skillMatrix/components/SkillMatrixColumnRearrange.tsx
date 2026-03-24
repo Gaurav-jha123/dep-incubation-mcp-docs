@@ -3,6 +3,7 @@ import {DragDropProvider} from '@dnd-kit/react';
 import {useSortable} from '@dnd-kit/react/sortable';
 import {move} from '@dnd-kit/helpers';
 import type {Topic} from './types';
+import {Button} from '@/components/atoms/Button/Button';
 
 type ItemId = string;
 
@@ -14,18 +15,18 @@ function Sortable({id, label, index}: {id: ItemId; label: string; index: number}
   return (
     <li
       ref={setElement}
-      className="flex items-center gap-3 rounded-md border border-border bg-background px-3 py-2 text-sm transition-shadow"
+      className="flex items-center gap-3 rounded-md border border-border bg-neutral-50 px-3 py-2 text-sm transition-shadow"
       data-shadow={isDragging || undefined}
     >
-      <button
+      <Button
         ref={handleRef}
-        type="button"
         aria-label={`Drag ${id}`}
-        className="inline-flex size-7 shrink-0 cursor-grab items-center justify-center rounded-md border border-input bg-muted/40 text-muted-foreground active:cursor-grabbing"
+        variant='ghost'
+        className="inline-flex size-7 shrink-0 cursor-grab items-center justify-center rounded-md border border-input bg-neutral-200 text-neutral-900 active:cursor-grabbing"
       >
         ⋮⋮
-      </button>
-      <span className="text-foreground">{label}</span>
+      </Button>
+      <span className="text-neutral-900">{label}</span>
     </li>
   );
 }
@@ -49,8 +50,8 @@ export default function SkillMatrixColumnRearrange({topics, onOrderChange, class
 
   return (
     <div className={`flex flex-col ${className ?? ''}`}>
-      <h4 className="text-sm font-medium text-foreground mb-2">Rearrange Columns</h4>
-      <p className="text-xs text-muted-foreground mb-3">Drag and drop topics to reorder the column list.</p>
+      <h4 className="text-sm font-medium text-neutral-900 mb-2">Rearrange Columns</h4>
+      <p className="text-xs text-neutral-700 mb-3">Drag and drop topics to reorder the column list.</p>
       <div className="h-96 overflow-y-auto rounded-md border border-border p-3">
         <DragDropProvider
           onDragEnd={(event) => {

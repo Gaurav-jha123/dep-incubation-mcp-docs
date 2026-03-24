@@ -1,7 +1,9 @@
 import { PieChart, Pie, Tooltip, ResponsiveContainer, Legend } from "recharts";
-import skillMatrix from "@/mocks/skillMatrix";
+import { useSkillMatrix } from "@/services/hooks/query/useSkillMatrix";
 
 const SkillDistribution = () => {
+  const { skillMatrixData: skillMatrix } = useSkillMatrix();
+
   /* skill range groups */
   const ranges = [
     { name: "Beginner (0-40)", min: 0, max: 40 },

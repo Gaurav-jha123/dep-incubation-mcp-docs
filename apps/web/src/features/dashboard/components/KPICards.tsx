@@ -1,6 +1,8 @@
-import skillMatrix from "@/mocks/skillMatrix";
+import { useSkillMatrix } from "@/services/hooks/query/useSkillMatrix";
 
 const KPICards = () => {
+  const { skillMatrixData: skillMatrix } = useSkillMatrix();
+
   /* totals */
   const totalUsers = skillMatrix.users.length;
   const totalTopics = skillMatrix.topics.length;

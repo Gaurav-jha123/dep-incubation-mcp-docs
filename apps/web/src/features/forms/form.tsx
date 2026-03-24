@@ -207,7 +207,7 @@ export default function UserForm() {
               >
                 {["male", "female", "other"].map((value) => (
                   <RadioGroup.Option key={value} value={value}>
-                    {({ checked }) => (
+                    {({ checked }: { checked: boolean }) => (
                       <span
                         className={`cursor-pointer rounded-full border px-3 py-1 text-sm capitalize ${checked
                           ? "border-blue-500 bg-blue-50 text-blue-700"
