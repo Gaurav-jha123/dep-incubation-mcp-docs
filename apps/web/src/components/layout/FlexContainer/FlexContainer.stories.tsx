@@ -1,6 +1,33 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FlexContainer } from "./FlexContainer";
 
+const variantOptions = [
+  "default",
+  "surface",
+  "muted",
+  "outline",
+  "elevated",
+] as const;
+
+const pseudoStateOptions = [
+  "none",
+  "hover",
+  "active",
+  "focus-visible",
+  "disabled",
+] as const;
+
+const stateMatrix = [
+  { label: "Default", props: { pseudoState: "none" as const } },
+  { label: "Hover", props: { pseudoState: "hover" as const } },
+  { label: "Active", props: { pseudoState: "active" as const } },
+  {
+    label: "Focus Visible",
+    props: { pseudoState: "focus-visible" as const },
+  },
+  { label: "Disabled", props: { pseudoState: "disabled" as const } },
+] as const;
+
 const meta: Meta<typeof FlexContainer> = {
   title: "Layout/FlexContainer",
   component: FlexContainer,
@@ -14,8 +41,20 @@ const meta: Meta<typeof FlexContainer> = {
     justify: "start",
     wrap: "nowrap",
     fullWidth: false,
+    variant: "default",
+    pseudoState: "none",
   },
   argTypes: {
+    variant: {
+      control: "select",
+      options: variantOptions,
+      description: "Decorative container styling variant",
+    },
+    pseudoState: {
+      control: "select",
+      options: pseudoStateOptions,
+      description: "Preview pseudo state for design review",
+    },
     direction: {
       control: "inline-radio",
       options: ["row", "col"],
@@ -54,7 +93,7 @@ export default meta;
 type Story = StoryObj<typeof FlexContainer>;
 
 const Item = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded bg-blue-100 text-blue-900 px-3 py-2 text-center">
+  <div className="rounded bg-primary-200 px-3 py-2 text-center text-primary-900">
     {children}
   </div>
 );
@@ -63,8 +102,12 @@ const Item = ({ children }: { children: React.ReactNode }) => (
  * Basic row layout with controls.
  */
 export const Playground: Story = {
+  args: {
+    gap: "",
+  },
+
   render: (args) => (
-    <FlexContainer {...args} className="p-4 bg-gray-50 rounded w-[640px]">
+    <FlexContainer {...args} className="w-[640px] rounded bg-neutral-50 p-4">
       <Item>Item 1</Item>
       <Item>Item 2</Item>
       <Item>Item 3</Item>
@@ -85,7 +128,7 @@ export const RowAlignment: Story = {
   render: (args) => (
     <FlexContainer
       {...args}
-      className="p-6 bg-gray-50 rounded w-[720px] h-[160px]"
+      className="h-[160px] w-[720px] rounded bg-neutral-50 p-6"
     >
       <Item>Left</Item>
       <Item>Center</Item>
@@ -107,7 +150,7 @@ export const ColumnCentered: Story = {
   render: (args) => (
     <FlexContainer
       {...args}
-      className="p-6 bg-gray-50 rounded w-[420px] h-[320px]"
+      className="h-[320px] w-[420px] rounded bg-neutral-50 p-6"
     >
       <Item>A</Item>
       <Item>B</Item>
@@ -130,10 +173,13 @@ export const WrapWithManyItems: Story = {
   render: (args) => (
     <FlexContainer
       {...args}
-      className="p-4 bg-gray-50 rounded w-[520px] border border-gray-200"
+      className="w-[520px] rounded border border-neutral-200 bg-neutral-50 p-4"
     >
       {Array.from({ length: 10 }).map((_, i) => (
-        <div key={i} className="px-3 py-2 bg-emerald-100 rounded">
+        <div
+          key={i}
+          className="rounded bg-success-200 px-3 py-2 text-success-900"
+        >
           #{i + 1}
         </div>
       ))}
@@ -150,7 +196,7 @@ export const CustomGapString: Story = {
     justify: "between",
   },
   render: (args) => (
-    <FlexContainer {...args} className="p-4 bg-gray-50 rounded w-[640px]">
+    <FlexContainer {...args} className="w-[640px] rounded bg-neutral-50 p-4">
       <Item>18px gap</Item>
       <Item>String gap</Item>
       <Item>Arbitrary CSS</Item>
@@ -167,10 +213,120 @@ export const TightSpacing: Story = {
     justify: "around",
   },
   render: (args) => (
-    <FlexContainer {...args} className="p-4 bg-gray-50 rounded w-[640px]">
+    <FlexContainer {...args} className="w-[640px] rounded bg-neutral-50 p-4">
       <Item>Compact</Item>
       <Item>Spacing</Item>
       <Item>Example</Item>
     </FlexContainer>
+  ),
+};
+
+export const DecorativeVariants: Story = {
+  parameters: {
+    layout: "fullscreen",
+  },
+  render: () => (
+    <div className="grid gap-4 p-8 md:grid-cols-2 xl:grid-cols-5">
+      {variantOptions.map((variant) => (
+        <FlexContainer
+          key={variant}
+          variant={variant}
+          direction="col"
+          gap={3}
+          className="min-h-40 p-5"
+        >
+          <div className="text-xs font-semibold uppercase tracking-wider text-neutral-900">
+            {variant}
+          </div>
+          <div className="text-lg font-semibold text-neutral-900">
+            Flex layout card
+          </div>
+          <div className="text-sm text-neutral-700">
+            Decorative variants are useful when the layout wrapper also owns a
+            surface treatment.
+          </div>
+        </FlexContainer>
+      ))}
+    </div>
+  ),
+};
+
+export const PseudoStatePreview: Story = {
+  render: (args) => (
+    <FlexContainer
+      {...args}
+      variant="outline"
+      gap={4}
+      className="w-[720px] p-6"
+    >
+      <Item>Filter</Item>
+      <Item>Sort</Item>
+      <Item>Export</Item>
+    </FlexContainer>
+  ),
+};
+
+export const VariantsAndStates: Story = {
+  args: {
+    direction: "col",
+  },
+
+  parameters: {
+    layout: "fullscreen",
+  },
+
+  render: () => (
+    <div className="space-y-8 p-8">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr>
+            <th className="sticky left-0 z-10 bg-neutral-50 p-3 text-left text-sm font-semibold text-neutral-900">
+              State
+            </th>
+            {variantOptions.map((variant) => (
+              <th
+                key={variant}
+                className="p-3 text-center text-xs font-semibold uppercase tracking-wider text-neutral-700"
+              >
+                {variant}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {stateMatrix.map(({ label, props }) => (
+            <tr
+              key={label}
+              className="border-t border-dashed border-neutral-200"
+            >
+              <td className="sticky left-0 z-10 bg-neutral-50 p-3 align-top text-sm font-medium text-neutral-700">
+                {label}
+              </td>
+              {variantOptions.map((variant) => (
+                <td key={`${label}-${variant}`} className="p-3 align-top">
+                  <FlexContainer
+                    variant={variant}
+                    pseudoState={props.pseudoState}
+                    direction="col"
+                    gap={3}
+                    className="min-h-36 p-4"
+                  >
+                    <div className="text-xs font-semibold uppercase tracking-wider text-neutral-900">
+                      {variant}
+                    </div>
+                    <div className="text-sm font-semibold text-neutral-900">
+                      {label} preview
+                    </div>
+                    <div className="text-sm text-neutral-900">
+                      Layout wrapper with decorative state treatment.
+                    </div>
+                  </FlexContainer>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   ),
 };

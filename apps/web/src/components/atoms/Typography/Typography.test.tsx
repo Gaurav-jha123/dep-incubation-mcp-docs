@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { Typography } from "./Typography";
+import { Typography, type TypographyVariant } from "./Typography";
 
 afterEach(() => {
   cleanup();
@@ -19,21 +19,22 @@ describe("Typography Component", () => {
     expect(el.className).toContain("text-base");
   });
 
-  const variants: Array<[string, string]> = [
+  const variants: Array<[TypographyVariant, string]> = [
     ["h1", "text-4xl"],
     ["h2", "text-3xl"],
     ["h3", "text-2xl"],
     ["h4", "text-xl"],
     ["h5", "text-lg"],
     ["h6", "text-base"],
+    ["lead", "text-lg"],
+    ["overline", "uppercase"],
     ["body", "text-base"],
     ["caption", "text-sm"],
   ];
 
   variants.forEach(([variant, expectedClass]) => {
     it(`should apply correct class for variant ${variant}`, () => {
-      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      render(<Typography variant={variant as any}>Heading</Typography>);
+      render(<Typography variant={variant}>Heading</Typography>);
       const el = screen.getByText("Heading");
       expect(el.className).toContain(expectedClass);
     });
@@ -59,5 +60,30 @@ describe("Typography Component", () => {
     fireEvent.click(button);
 
     expect(icon?.className.baseVal).toContain("rotate-180");
+  });
+
+  it("applies pseudo state data attributes for static typography", () => {
+    render(
+      <Typography variant="h4" pseudoState="focus-visible">
+        Preview
+      </Typography>,
+    );
+
+    const el = screen.getByText("Preview");
+
+    expect(el.getAttribute("data-pseudo-state")).toBe("focus-visible");
+  });
+
+  it("disables collapsible typography for disabled pseudo state previews", () => {
+    render(
+      <Typography collapsible pseudoState="disabled">
+        Preview
+      </Typography>,
+    );
+
+    const button = screen.getByRole("button") as HTMLButtonElement;
+
+    expect(button.disabled).toBe(true);
+    expect(button.getAttribute("data-pseudo-state")).toBe("disabled");
   });
 });

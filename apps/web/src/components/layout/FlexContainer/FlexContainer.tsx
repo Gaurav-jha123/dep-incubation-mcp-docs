@@ -1,6 +1,51 @@
 import React from "react";
 
-export interface FlexContainerProps {
+import { cva } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+export type FlexContainerVariant =
+  | "default"
+  | "surface"
+  | "muted"
+  | "outline"
+  | "elevated";
+
+export type FlexContainerPseudoState =
+  | "none"
+  | "hover"
+  | "active"
+  | "focus"
+  | "focus-visible"
+  | "disabled";
+
+const flexContainerVariants = cva(
+  [
+    "flex transition-[background-color,border-color,box-shadow,transform]",
+    "data-[pseudo-state=disabled]:pointer-events-none data-[pseudo-state=disabled]:opacity-50",
+  ].join(" "),
+  {
+    variants: {
+      variant: {
+        default:
+          "data-[pseudo-state=hover]:shadow-sm data-[pseudo-state=focus]:ring-2 data-[pseudo-state=focus]:ring-primary-500/20 data-[pseudo-state=focus]:ring-offset-2 data-[pseudo-state=focus-visible]:ring-2 data-[pseudo-state=focus-visible]:ring-primary-500/20 data-[pseudo-state=focus-visible]:ring-offset-2",
+        surface:
+          "rounded-lg bg-neutral-50 hover:bg-neutral-200 data-[pseudo-state=hover]:bg-neutral-200 data-[pseudo-state=active]:bg-neutral-200 data-[pseudo-state=focus]:ring-2 data-[pseudo-state=focus]:ring-primary-500/20 data-[pseudo-state=focus]:ring-offset-2 data-[pseudo-state=focus-visible]:ring-2 data-[pseudo-state=focus-visible]:ring-primary-500/20 data-[pseudo-state=focus-visible]:ring-offset-2",
+        muted:
+          "rounded-lg bg-neutral-200 hover:bg-neutral-400 data-[pseudo-state=hover]:bg-neutral-400 data-[pseudo-state=active]:bg-neutral-500 data-[pseudo-state=focus]:ring-2 data-[pseudo-state=focus]:ring-neutral-400/40 data-[pseudo-state=focus]:ring-offset-2 data-[pseudo-state=focus-visible]:ring-2 data-[pseudo-state=focus-visible]:ring-neutral-400/40 data-[pseudo-state=focus-visible]:ring-offset-2",
+        outline:
+          "rounded-lg border border-neutral-200 bg-neutral-50 hover:border-neutral-400 hover:shadow-sm data-[pseudo-state=hover]:border-neutral-400 data-[pseudo-state=hover]:shadow-sm data-[pseudo-state=active]:border-neutral-400 data-[pseudo-state=active]:shadow-none data-[pseudo-state=focus]:border-primary-500 data-[pseudo-state=focus]:ring-2 data-[pseudo-state=focus]:ring-primary-500/20 data-[pseudo-state=focus]:ring-offset-2 data-[pseudo-state=focus-visible]:border-primary-500 data-[pseudo-state=focus-visible]:ring-2 data-[pseudo-state=focus-visible]:ring-primary-500/20 data-[pseudo-state=focus-visible]:ring-offset-2",
+        elevated:
+          "rounded-xl bg-neutral-50 shadow-md hover:-translate-y-0.5 hover:shadow-lg data-[pseudo-state=hover]:-translate-y-0.5 data-[pseudo-state=hover]:shadow-lg data-[pseudo-state=active]:translate-y-px data-[pseudo-state=active]:shadow-sm data-[pseudo-state=focus]:ring-2 data-[pseudo-state=focus]:ring-primary-500/20 data-[pseudo-state=focus]:ring-offset-2 data-[pseudo-state=focus-visible]:ring-2 data-[pseudo-state=focus-visible]:ring-primary-500/20 data-[pseudo-state=focus-visible]:ring-offset-2",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  },
+);
+
+export interface FlexContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Horizontal or Vertical direction */
   direction?: "row" | "col";
 
@@ -18,6 +63,12 @@ export interface FlexContainerProps {
 
   /** Full width container */
   fullWidth?: boolean;
+
+  /** Decorative container variant */
+  variant?: FlexContainerVariant;
+
+  /** Preview pseudo state for stories/design review */
+  pseudoState?: FlexContainerPseudoState;
 
   /** Additional class names */
   className?: string;
@@ -38,8 +89,12 @@ export const FlexContainer: React.FC<FlexContainerProps> = ({
   justify = "start",
   wrap = "nowrap",
   fullWidth = false,
+  variant = "default",
+  pseudoState = "none",
   className = "",
   children,
+  style: styleProp,
+  ...props
 }) => {
   const directionClass = direction === "col" ? "flex-col" : "flex-row";
 
@@ -66,27 +121,32 @@ export const FlexContainer: React.FC<FlexContainerProps> = ({
     "wrap-reverse": "flex-wrap-reverse",
   } as const;
 
-  const containerClass = [
-    "flex",
+  const containerClass = cn(
+    flexContainerVariants({ variant }),
     directionClass,
     wrapMap[wrap],
     justifyMap[justify],
     alignMap[align],
-    fullWidth ? "w-full" : "",
+    fullWidth && "w-full",
     className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  );
 
   // Inline style for dynamic gap:
   // - If number, we follow Tailwind convention where 1 = 0.25rem
   // - If string, we use it as-is (e.g., '10px', '1rem', '2ch', etc.)
   const style: React.CSSProperties = {
+    ...styleProp,
     gap: typeof gap === "number" ? `${gap * 0.25}rem` : gap,
   };
 
   return (
-    <div className={containerClass} style={style}>
+    <div
+      className={containerClass}
+      style={style}
+      data-pseudo-state={pseudoState === "none" ? undefined : pseudoState}
+      aria-disabled={pseudoState === "disabled" ? true : undefined}
+      {...props}
+    >
       {children}
     </div>
   );
