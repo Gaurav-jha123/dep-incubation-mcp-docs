@@ -35,17 +35,27 @@ vi.mock("@/components/atoms", () => {
   type MockInputProps = React.ComponentPropsWithoutRef<"input"> & {
     label?: string;
     error?: string;
+    fullWidth?: boolean;
+    inputSize?: "sm" | "md" | "lg";
   };
 
   return {
+    Button: ({ children, ...props }: React.ComponentProps<"button">) => (
+      <button {...props}>{children}</button>
+    ),
     Input: React.forwardRef<HTMLInputElement, MockInputProps>(
-      ({ label, id, error, ...inputProps }, ref) => (
-        <div>
-          {label && <label htmlFor={id}>{label}</label>}
-          <input ref={ref} id={id} {...inputProps} />
-          {error && <span role="alert">{error}</span>}
-        </div>
-      ),
+      ({ label, id, error, fullWidth, inputSize, ...inputProps }, ref) => {
+        void fullWidth;
+        void inputSize;
+
+        return (
+          <div>
+            {label && <label htmlFor={id}>{label}</label>}
+            <input ref={ref} id={id} {...inputProps} />
+            {error && <span role="alert">{error}</span>}
+          </div>
+        );
+      },
     ),
   };
 });
@@ -57,12 +67,6 @@ vi.mock("@/components/molecules", () => ({
       <div>{description}</div>
       <button onClick={onClose}>Close</button>
     </div>
-  ),
-}));
-
-vi.mock("@/components/ui/button", () => ({
-  Button: ({ children, ...props }: React.ComponentProps<"button">) => (
-    <button {...props}>{children}</button>
   ),
 }));
 
