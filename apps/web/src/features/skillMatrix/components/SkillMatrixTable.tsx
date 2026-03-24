@@ -143,9 +143,10 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
               );
             }
 
-            if (typeof value === "number") {
+            // Handle skill cells - both numeric values and empty strings
+            if (typeof value === "number" || value === "") {
               const isOwner = row.id === currentUserId;
-
+              const isNumeric = typeof value === "number";
               const isEditing =
                 editingCell?.userId === row.id && editingCell?.topicId === key;
 
@@ -158,12 +159,20 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
                     min={0}
                     max={100}
                     step={1}
-                    defaultValue={value}
+                    defaultValue={isNumeric ? value : ""}
                     // eslint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus
                     className="w-full h-full px-4 py-3 text-center bg-white border-none outline-none appearance-none"
                     onBlur={(e) => {
-                      const val = Number(e.target.value);
+                      const inputValue = e.target.value.trim();
+
+                      // If empty, just close the editor without updating
+                      if (inputValue === "") {
+                        setEditingCell(null);
+                        return;
+                      }
+
+                      const val = Number(inputValue);
 
                       if (Number.isNaN(val) || val < 0 || val > 100) {
                         setEditingCell(null);
@@ -176,7 +185,15 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         const input = e.target as HTMLInputElement;
-                        const val = Number(input.value);
+                        const inputValue = input.value.trim();
+
+                        // If empty, just close the editor without updating
+                        if (inputValue === "") {
+                          setEditingCell(null);
+                          return;
+                        }
+
+                        const val = Number(inputValue);
 
                         if (Number.isNaN(val) || val < 0 || val > 100) {
                           setEditingCell(null);
@@ -191,6 +208,35 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
                 );
               }
 
+              // Render empty cells
+              if (!isNumeric) {
+                return (
+                  <button
+                    type="button"
+                    disabled={!isOwner}
+                    className={`px-4 py-3 w-full h-full flex items-center justify-center font-medium ${
+                      isOwner
+                        ? "cursor-pointer hover:bg-gray-200"
+                        : "bg-gray-100"
+                    }`}
+                    style={{
+                      backgroundColor: isOwner ? "#f3f4f6" : "#e5e7eb",
+                    }}
+                    onClick={() => {
+                      if (!isOwner) return;
+
+                      setEditingCell({
+                        userId: row.id,
+                        topicId: key,
+                      });
+                    }}
+                  >
+                    <span className="text-gray-400">—</span>
+                  </button>
+                );
+              }
+
+              // Render cells with numeric values
               return (
                 <button
                   type="button"
