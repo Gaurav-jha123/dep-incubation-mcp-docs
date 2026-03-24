@@ -112,20 +112,9 @@ export function applySkillMatrixFilters(
   });
 
   const filteredTopics = topics.filter((topic) => {
-    // Apply traditional topic filters
-    const traditionalMatch = selectedTopics.length === 0 || selectedTopics.includes(topic.id);
-    
-    // Apply query filters - check if topic matches any query filter
-    let queryMatch = true;
-    if (queryFilters.length > 0) {
-      // For topic filtering, we need to check if any user combination works
-      queryMatch = users.some(user => {
-        const skill = skillMatrix.skills.find(s => s.userId === user.id && s.topicId === topic.id);
-        return matchesQueryFilters(user, topic, skill, queryFilters);
-      });
-    }
-    
-    return traditionalMatch && queryMatch;
+    // Only apply traditional topic filters (column visibility controlled by checkboxes)
+    // Query filters should NOT hide columns, only filter row data
+    return selectedTopics.length === 0 || selectedTopics.includes(topic.id);
   });
 
   const skills = skillMatrix.skills.filter((skill) => {

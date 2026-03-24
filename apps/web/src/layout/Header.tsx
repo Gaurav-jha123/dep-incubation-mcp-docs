@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, isSidebarOpen }) => {
   const currentRoute = APP_ROUTES.find((route) => route.path === currentPath);
   const displayTitle = currentRoute?.title || "";
   return (
-    <header className="w-full h-full bg-card text-foreground px-4 md:px-6 flex items-center justify-between border-b">
+    <header className="w-full h-full bg-card text-foreground px-4 md:px-6 flex items-center justify-between ">
       <div className="flex items-center gap-4">
         <button
           data-testid="menu-button"
