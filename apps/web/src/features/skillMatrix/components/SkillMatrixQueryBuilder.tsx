@@ -53,12 +53,13 @@ export default function SkillMatrixQueryBuilder({
 }: SkillMatrixQueryBuilderProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [draftFilters, setDraftFilters] = useState<QueryFilter[]>(filters);
 
   const handleQuickSearch = useCallback((term: string) => {
     setSearchTerm(term);
 
     if (!term.trim()) {
-      onFiltersChange([]);
+      setDraftFilters([]);
       return;
     }
 
@@ -82,8 +83,8 @@ export default function SkillMatrixQueryBuilder({
       });
     }
 
-    onFiltersChange(quickFilters);
-  }, [topics, users, onFiltersChange]);
+    setDraftFilters(quickFilters);
+  }, [topics, users]);
 
   const addFilter = () => {
     const newFilter: QueryFilter = {
@@ -92,23 +93,31 @@ export default function SkillMatrixQueryBuilder({
       operator: 'contains',
       value: '',
     };
-    onFiltersChange([...filters, newFilter]);
+    setDraftFilters([...draftFilters, newFilter]);
   };
 
   const removeFilter = (filterId: string) => {
-    onFiltersChange(filters.filter(f => f.id !== filterId));
+    setDraftFilters(draftFilters.filter(f => f.id !== filterId));
   };
 
   const updateFilter = (filterId: string, updates: Partial<QueryFilter>) => {
-    onFiltersChange(
-      filters.map(f => f.id === filterId ? { ...f, ...updates } : f)
+    setDraftFilters(
+      draftFilters.map(f => f.id === filterId ? { ...f, ...updates } : f)
     );
+  };
+
+  const applyFilters = () => {
+    onFiltersChange(draftFilters);
   };
 
   const clearAll = () => {
     setSearchTerm('');
+    setDraftFilters([]);
     onFiltersChange([]);
   };
+
+  const hasChanges = JSON.stringify(draftFilters) !== JSON.stringify(filters);
+  const pendingCount = draftFilters.filter(f => f.value !== '' && f.value !== undefined).length;
 
   const getSuggestions = (type: 'topic' | 'user', value: string) => {
     if (!value) return [];
@@ -145,7 +154,17 @@ export default function SkillMatrixQueryBuilder({
             Advanced
           </Button>
 
-          {filters.some(f => f.value !== '' && f.value !== undefined) && (
+          {hasChanges && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={applyFilters}
+            >
+              Apply Filters {pendingCount > 0 && `(${pendingCount})`}
+            </Button>
+          )}
+
+          {(filters.some(f => f.value !== '' && f.value !== undefined) || draftFilters.some(f => f.value !== '' && f.value !== undefined)) && (
             <Button
               variant="outline"
               size="sm"
@@ -171,10 +190,12 @@ export default function SkillMatrixQueryBuilder({
 
       {/* Active Filters Display */}
       {filters.some(f => f.value !== '' && f.value !== undefined) && (
-        <div className="flex flex-wrap gap-2">
-          {filters
-            .filter(f => f.value !== '' && f.value !== undefined)
-            .map((filter) => (
+        <div className="flex flex-col gap-2">
+          <div className="text-sm font-medium text-neutral-700">Applied Filters:</div>
+          <div className="flex flex-wrap gap-2">
+            {filters
+              .filter(f => f.value !== '' && f.value !== undefined)
+              .map((filter) => (
               <div
                 key={filter.id}
                 role="button"
@@ -195,6 +216,29 @@ export default function SkillMatrixQueryBuilder({
                 <X className="w-3 h-3" />
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Draft Filters Preview */}
+      {hasChanges && draftFilters.some(f => f.value !== '' && f.value !== undefined) && (
+        <div className="flex flex-col gap-2 border rounded-lg p-3 bg-primary-100/50">
+          <div className="text-sm font-medium text-neutral-700">Preview (click Apply to use):</div>
+          <div className="flex flex-wrap gap-2">
+            {draftFilters
+              .filter(f => f.value !== '' && f.value !== undefined)
+              .map((filter) => (
+                <div
+                  key={filter.id}
+                  className="inline-flex items-center gap-1 px-2 py-1 bg-primary-300 text-neutral-900 text-sm rounded-md border border-primary-400"
+                >
+                  <span className="capitalize">{filter.type}</span>
+                  <span className="text-xs">{filter.operator.replace('_', ' ')}</span>
+                  <span>{filter.value}</span>
+                  {filter.value2 && <span>- {filter.value2}</span>}
+                </div>
+              ))}
+          </div>
         </div>
       )}
 
@@ -214,7 +258,7 @@ export default function SkillMatrixQueryBuilder({
           </div>
 
           <div className="space-y-3">
-            {filters.map((filter, index) => (
+            {draftFilters.map((filter, index) => (
               <AdvancedFilterRow
                 key={filter.id}
                 filter={filter}
@@ -234,6 +278,14 @@ export default function SkillMatrixQueryBuilder({
           <span className="font-medium">Active filters:</span>{' '}
           {filters.filter(f => f.value !== '' && f.value !== undefined).length} filter
           {filters.filter(f => f.value !== '' && f.value !== undefined).length !== 1 ? 's' : ''} applied
+        </div>
+      )}
+
+      {/* Pending Changes Indicator */}
+      {hasChanges && (
+        <div className="text-sm text-primary-700 bg-primary-100 p-2 rounded border border-primary-300">
+          <span className="font-medium">Pending changes:</span>{' '}
+          {pendingCount} filter{pendingCount !== 1 ? 's' : ''} ready to apply
         </div>
       )}
     </div>
