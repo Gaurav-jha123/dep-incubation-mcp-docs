@@ -34,6 +34,7 @@ export const List: React.FC<ListProps> = ({
   return (
     <Listbox value={value} onChange={onChange}>
       <Listbox.Options
+        as="ul"
         static
         aria-label={ariaLabel}
         className={`${listVariants[variant]} ${className}`}
