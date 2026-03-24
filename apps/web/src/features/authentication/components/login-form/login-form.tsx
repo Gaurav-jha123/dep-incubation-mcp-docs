@@ -3,9 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useEffect, useRef, useState } from "react";
 
-import { Input } from "@/components/atoms";
+import { Button, Input } from "@/components/atoms";
 import { Toast } from "@/components/molecules";
-import { Button } from "@/components/ui/button";
 
 import { loginFormSchema } from "@/lib/schema/login-form.zod";
 import { useAuthMutation } from "@/services/hooks/mutations/useAuthMutation";
@@ -110,7 +109,7 @@ function LoginForm() {
                 placeholder="Enter password"
                 fullWidth
                 error={fieldState.error?.message}
-                inputSize="lg"
+                inputSize="md"
                 required
               />
             )}
@@ -120,9 +119,10 @@ function LoginForm() {
             disabled={!isValid}
             data-testid="login-submit-btn"
             type="submit"
-            variant="outline"
+            variant="primary"
+            size="md"
             aria-disabled={!isValid}
-            className="w-full cursor-pointer h-12 mt-2 focus-visible:ring-2 focus-visible:ring-offset-2"
+            className="mt-2 h-12 w-full"
           >
             Login
           </Button>

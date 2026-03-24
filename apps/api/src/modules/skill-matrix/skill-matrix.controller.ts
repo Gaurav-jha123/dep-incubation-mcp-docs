@@ -73,8 +73,9 @@ export class SkillMatrixController {
     status: 200,
     description: 'Skill matrix entry updated successfully',
   })
-  @ApiResponse({ status: 404, description: 'Skill matrix entry not found' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden — not your entry' })
+  @ApiResponse({ status: 404, description: 'Skill matrix entry not found' })
   update(
     @Request() req: { user: { id: number } },
     @Param('id', ParseIntPipe) id: number,
@@ -90,8 +91,13 @@ export class SkillMatrixController {
     status: 200,
     description: 'Skill matrix entry deleted successfully',
   })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden — not your entry' })
   @ApiResponse({ status: 404, description: 'Skill matrix entry not found' })
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.skillMatrixService.remove(id);
+  remove(
+    @Request() req: { user: { id: number } },
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.skillMatrixService.remove(req.user.id, id);
   }
 }
