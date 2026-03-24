@@ -22,7 +22,7 @@ const SliderWrapper = (args: React.ComponentProps<typeof Slider>) => {
 };
 
 export const Default: Story = {
-    render: (args) => <SliderWrapper {...args} />,
+    render: (args: Parameters<typeof SliderWrapper>[0]) => <SliderWrapper {...args} />,
     args: {
         value: 50,
         min: 0,
@@ -32,7 +32,7 @@ export const Default: Story = {
 };
 
 export const CustomRange: Story = {
-    render: (args) => <SliderWrapper {...args} />,
+    render: (args: Parameters<typeof SliderWrapper>[0]) => <SliderWrapper {...args} />,
     args: {
         value: 20,
         min: 10,
@@ -42,7 +42,7 @@ export const CustomRange: Story = {
 };
 
 export const Disabled: Story = {
-    render: (args) => <SliderWrapper {...args} />,
+    render: (args: Parameters<typeof SliderWrapper>[0]) => <SliderWrapper {...args} />,
     args: {
         value: 40,
         disabled: true,

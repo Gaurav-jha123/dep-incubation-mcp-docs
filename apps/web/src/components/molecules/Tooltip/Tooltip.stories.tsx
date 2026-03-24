@@ -34,7 +34,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: (args) => (
+  render: (args: Parameters<typeof Tooltip>[0]) => (
     <Tooltip {...args}>
       <button className="px-4 py-2 bg-primary-900 text-primary-50 rounded">
         Hover me

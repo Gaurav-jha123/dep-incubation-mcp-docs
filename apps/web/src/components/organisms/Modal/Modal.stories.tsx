@@ -22,7 +22,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: (args) => {
+  render: (args: Parameters<typeof Modal>[0]) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -50,7 +50,7 @@ export const Default: Story = {
 };
 
 export const WithFooterActions: Story = {
-  render: (args) => {
+  render: (args: Parameters<typeof Modal>[0]) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -88,7 +88,7 @@ export const WithFooterActions: Story = {
 };
 
 export const LargeModal: Story = {
-  render: (args) => {
+  render: (args: Parameters<typeof Modal>[0]) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -117,7 +117,7 @@ export const LargeModal: Story = {
 };
 
 export const ScrollableContent: Story = {
-  render: (args) => {
+  render: (args: Parameters<typeof Modal>[0]) => {
     const [open, setOpen] = useState(false);
 
     return (

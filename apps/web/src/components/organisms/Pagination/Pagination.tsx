@@ -39,7 +39,7 @@ export const Pagination: React.FC<PaginationProps> = ({
 
     const addButton = (p: number) => (
       <Menu.Item key={p}>
-        {({ active }) => (
+          {({ active }: { active: boolean }) => (
           <button
             onClick={() => onPageChange(p)}
             className={`px-3 py-1 text-sm border rounded ${
@@ -59,7 +59,7 @@ export const Pagination: React.FC<PaginationProps> = ({
     if (startPage > 1) {
       pages.push(
         <Menu.Item key={1}>
-          {({ active }) => (
+          {({ active }: { active: boolean }) => (
             <button
               onClick={() => onPageChange(1)}
               className={`px-3 py-1 text-sm border rounded ${
@@ -94,7 +94,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       }
       pages.push(
         <Menu.Item key={totalPages}>
-          {({ active }) => (
+          {({ active }: { active: boolean }) => (
             <button
               onClick={() => onPageChange(totalPages)}
               className={`px-3 py-1 text-sm border rounded ${
@@ -121,11 +121,13 @@ export const Pagination: React.FC<PaginationProps> = ({
         Previous
       </button>
 
-      <Menu as="nav" className="flex gap-1">
-        <Menu.Items static className="flex gap-1">
-          {renderPageButtons()}
-        </Menu.Items>
-      </Menu>
+      <div className="flex gap-1">
+        <Menu>
+          <Menu.Items static className="flex gap-1">
+            {renderPageButtons()}
+          </Menu.Items>
+        </Menu>
+      </div>
 
       <button
         onClick={handleNext}

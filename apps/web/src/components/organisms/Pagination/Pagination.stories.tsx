@@ -20,7 +20,7 @@ const PaginationWrapper = (args: React.ComponentProps<typeof Pagination>) => {
 };
 
 export const Default: Story = {
-    render: (args) => <PaginationWrapper {...args} />,
+    render: (args: Parameters<typeof PaginationWrapper>[0]) => <PaginationWrapper {...args} />,
     args: {
         currentPage: 1,
         totalPages: 10,
@@ -28,7 +28,7 @@ export const Default: Story = {
 };
 
 export const MultiplePages: Story = {
-    render: (args) => <PaginationWrapper {...args} />,
+    render: (args: Parameters<typeof PaginationWrapper>[0]) => <PaginationWrapper {...args} />,
     args: {
         currentPage: 5,
         totalPages: 20,
@@ -36,7 +36,7 @@ export const MultiplePages: Story = {
 };
 
 export const TwoPages: Story = {
-    render: (args) => <PaginationWrapper {...args} />,
+    render: (args: Parameters<typeof PaginationWrapper>[0]) => <PaginationWrapper {...args} />,
     args: {
         currentPage: 1,
         totalPages: 2,
@@ -44,7 +44,7 @@ export const TwoPages: Story = {
 };
 
 export const LastPage: Story = {
-    render: (args) => <PaginationWrapper {...args} />,
+    render: (args: Parameters<typeof PaginationWrapper>[0]) => <PaginationWrapper {...args} />,
     args: {
         currentPage: 10,
         totalPages: 10,

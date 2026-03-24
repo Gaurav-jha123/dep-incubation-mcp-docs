@@ -87,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 onClick={onClose} // Close sidebar on mobile when link is clicked
                 title={isCollapsed ? item.name : undefined}
                 data-testid={`navlink-${item.path}`}
-                className={({ isActive }) =>
+                className={({ isActive }: { isActive: boolean }) =>
                   `flex items-center ${isCollapsed ? "justify-center px-2" : "px-4"} gap-3 py-2 rounded-lg text-sm font-medium transition-colors
                   ${isActive ? "bg-white text-gray-900 shadow" : "text-foreground hover:bg-accent"}`
                 }

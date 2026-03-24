@@ -21,21 +21,21 @@ const SwitchWrapper = (args: React.ComponentProps<typeof Switch>) => {
 };
 
 export const Default: Story = {
-    render: (args) => <SwitchWrapper {...args} />,
+    render: (args: Parameters<typeof SwitchWrapper>[0]) => <SwitchWrapper {...args} />,
     args: {
         checked: false,
     },
 };
 
 export const Checked: Story = {
-    render: (args) => <SwitchWrapper {...args} />,
+    render: (args: Parameters<typeof SwitchWrapper>[0]) => <SwitchWrapper {...args} />,
     args: {
         checked: true,
     },
 };
 
 export const Disabled: Story = {
-    render: (args) => <SwitchWrapper {...args} />,
+    render: (args: Parameters<typeof SwitchWrapper>[0]) => <SwitchWrapper {...args} />,
     args: {
         checked: false,
         disabled: true,
@@ -43,7 +43,7 @@ export const Disabled: Story = {
 };
 
 export const CheckedDisabled: Story = {
-    render: (args) => <SwitchWrapper {...args} />,
+    render: (args: Parameters<typeof SwitchWrapper>[0]) => <SwitchWrapper {...args} />,
     args: {
         checked: true,
         disabled: true,
