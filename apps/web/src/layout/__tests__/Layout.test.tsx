@@ -134,7 +134,7 @@ describe("Layout", () => {
     
     // Get sidebar element to check initial class
     let sidebar = container.querySelector("#mobile-sidebar");
-    expect(sidebar?.className).toContain("lg:w-[280px]");
+    expect(sidebar?.className).toContain("lg:w-70");
     
     // Click collapse toggle
     fireEvent.click(screen.getByTestId("collapse-toggle"));

@@ -27,18 +27,25 @@ vi.mock("recharts", () => ({
   Legend: () => <div data-testid="legend" />,
 }));
 
-/* ---------------- MOCK skillMatrix  ---------------- */
-vi.mock("@/mocks/skillMatrix", () => ({
-  default: {
-    skills: [
-      { value: 20 },
-      { value: 50 },
-      { value: 70 },
-      { value: 90 },
-      { value: 35 },
-      { value: 60 },
-    ],
-  },
+/* ---------------- MOCK useSkillMatrix ---------------- */
+vi.mock("@/services/hooks/query/useSkillMatrix", () => ({
+  useSkillMatrix: () => ({
+    skillMatrixData: {
+      users: [],
+      topics: [],
+      skills: [
+        { userId: "u1", topicId: "t1", value: 20 },
+        { userId: "u2", topicId: "t2", value: 50 },
+        { userId: "u3", topicId: "t3", value: 70 },
+        { userId: "u4", topicId: "t4", value: 90 },
+        { userId: "u5", topicId: "t5", value: 35 },
+        { userId: "u6", topicId: "t6", value: 60 },
+      ],
+    },
+    entryIdMap: new Map(),
+    isLoading: false,
+    isError: false,
+  }),
 }));
 
 afterEach(() => {
