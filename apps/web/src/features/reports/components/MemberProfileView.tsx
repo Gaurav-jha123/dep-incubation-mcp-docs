@@ -31,7 +31,7 @@ export default function MemberProfileView({userSkills, user}: MemberProfileViewP
 
       <div className="flex gap-5 flex-wrap">
         {/* Radar chart */}
-        <Card variant="simple" className="flex-1 min-w-[280px]">
+        <Card variant="simple" className="flex-1 min-w-70">
           <p className="text-base font-bold text-foreground mb-0.5">{user?.name}</p>
           <p className="text-xs text-muted-foreground mb-4">
             Average score:{" "}
@@ -65,7 +65,7 @@ export default function MemberProfileView({userSkills, user}: MemberProfileViewP
         </Card>
 
         {/* Strengths, focus areas, all skills */}
-        <div className="flex-1 min-w-[240px] flex flex-col gap-4">
+        <div className="flex-1 min-w-60 flex flex-col gap-4">
           <Card variant="simple">
             <p className="text-xs text-emerald-400 font-bold tracking-widest mb-3">▲ TOP STRENGTHS</p>
             {strong.map((s) => (
