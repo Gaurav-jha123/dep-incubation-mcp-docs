@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback, useRef } from "react";
+import { useMemo, useState, useCallback, useRef, useEffect } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
 import type { Topic } from "./components/types";
 import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
@@ -13,8 +13,12 @@ import { useTopicMutation } from "@/services/hooks/mutations/useTopicMutation";
 import { useAuthStore } from "@/store/use-auth-store/use-auth-store";
 
 const SkillMatrix = () => {
-
-  const { skillMatrixData: skillMatrix, entryIdMap, isLoading, isError } = useSkillMatrix();
+  const {
+    skillMatrixData: skillMatrix,
+    entryIdMap,
+    isLoading,
+    isError,
+  } = useSkillMatrix();
   const { updateMutation, createMutation } = useSkillMatrixMutation();
   const { createMutation: createUserMutation } = useUserMutation();
   const { createMutation: createTopicMutation } = useTopicMutation();
@@ -23,24 +27,19 @@ const SkillMatrix = () => {
   const users = skillMatrix.users;
   const topics = skillMatrix.topics;
 
-  const allUserIds = users.map((u) => u.id);
-  const allTopicIds = topics.map((t) => t.id);
+  const allUserIds = useMemo(() => users.map((u) => u.id), [users]);
+  const allTopicIds = useMemo(() => topics.map((t) => t.id), [topics]);
 
   const [selectedUsers, setSelectedUsers] = useState<string[]>(allUserIds);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(allTopicIds);
 
-  // Adjust selections during render when data changes (React-recommended pattern)
-  const [prevUserCount, setPrevUserCount] = useState(allUserIds.length);
-  if (allUserIds.length !== prevUserCount) {
-    setPrevUserCount(allUserIds.length);
+  useEffect(() => {
     setSelectedUsers(allUserIds);
-  }
+  }, [allUserIds]);
 
-  const [prevTopicCount, setPrevTopicCount] = useState(allTopicIds.length);
-  if (allTopicIds.length !== prevTopicCount) {
-    setPrevTopicCount(allTopicIds.length);
+  useEffect(() => {
     setSelectedTopics(allTopicIds);
-  }
+  }, [allTopicIds]);
 
   const [scoreFilters, setScoreFilters] = useState<string[]>([]);
   const [queryFilters, setQueryFilters] = useState<QueryFilter[]>([]);
@@ -53,6 +52,13 @@ const SkillMatrix = () => {
     setAlertMessage(message);
     setShowAlert(true);
     hideTimerRef.current = setTimeout(() => setShowAlert(false), 3000);
+  }, []);
+  useEffect(() => {
+    return () => {
+      if (hideTimerRef.current) {
+        clearTimeout(hideTimerRef.current);
+      }
+    };
   }, []);
 
   /**
@@ -85,7 +91,7 @@ const SkillMatrix = () => {
    */
   const updateSkill = (userId: string, topicId: string, value: number) => {
     const entryId = entryIdMap.get(`${userId}-${topicId}`);
-    
+
     if (entryId) {
       // Entry exists - update it
       updateMutation.mutate(
@@ -97,7 +103,7 @@ const SkillMatrix = () => {
       // Convert string IDs back to numbers for API
       const userIdNum = Number(userId);
       const topicIdNum = Number(topicId);
-      
+
       if (!Number.isNaN(userIdNum) && !Number.isNaN(topicIdNum)) {
         createMutation.mutate(
           { topicId: topicIdNum, value },
@@ -119,12 +125,25 @@ const SkillMatrix = () => {
       selectedUsers,
       selectedTopics,
       scoreFilters,
-      queryFilters
+      queryFilters,
     );
-  }, [skillMatrix, scoreFilters, queryFilters, selectedTopics, selectedUsers, topics, users]);
+  }, [
+    skillMatrix,
+    scoreFilters,
+    queryFilters,
+    selectedTopics,
+    selectedUsers,
+    topics,
+    users,
+  ]);
 
   // Store custom topic order as IDs only
-  const [topicOrder, setTopicOrder] = useState<string[]>(() => allTopicIds);
+  const [topicOrder, setTopicOrder] = useState<string[]>(allTopicIds);
+
+  // Keep topicOrder in sync when new topics arrive
+  useEffect(() => {
+    setTopicOrder(allTopicIds);
+  }, [allTopicIds]);
 
   const handleUserCreate = (name: string) => {
     const normalizedName = name.trim().toLowerCase();
@@ -164,7 +183,7 @@ const SkillMatrix = () => {
       }
     }
 
-// Add any newly selected topics not in custom order
+    // Add any newly selected topics not in custom order
     const orderedIds = new Set(ordered.map((t) => t.id));
     for (const topic of filteredData.topics) {
       if (!orderedIds.has(topic.id)) {
