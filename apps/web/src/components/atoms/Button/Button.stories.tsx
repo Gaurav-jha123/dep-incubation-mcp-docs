@@ -1,6 +1,6 @@
 import type { Meta, StoryContext, StoryObj } from "@storybook/react-vite";
 import { Plus } from "lucide-react";
-import { expect, fn, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent } from "storybook/test";
 import { Button, type ButtonProps } from "./Button";
 
 const variantOptions = [
@@ -108,13 +108,24 @@ export const Primary: Story = {
   args: {
     variant: "primary",
     children: "Primary Button",
+    onClick: fn(),
   },
-  play: async ({ canvasElement, args }: StoryContext<ButtonProps>) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getByRole("button", { name: /primary button/i });
+  play: async (context: StoryContext<ButtonProps>) => {
+    const { canvas, args } = context;
 
+    // 1. Find button (async → safe)
+    const button = await canvas.findByRole("button", {
+      name: /primary button/i,
+    });
+
+    // 2. Assert it exists
+    await expect(button).toBeInTheDocument();
+
+    // 3. Simulate user click
     await userEvent.click(button);
-    await expect(args.onClick).toHaveBeenCalledOnce();
+
+    // 4. Verify behavior
+    await expect(args.onClick).toHaveBeenCalledTimes(1);
   },
 };
 
