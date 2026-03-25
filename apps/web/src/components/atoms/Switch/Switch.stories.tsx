@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { fn } from 'storybook/test';
 import { Switch, type SwitchPseudoState } from './Switch';
 
 type SwitchStoryProps = React.ComponentProps<typeof Switch>;
@@ -34,6 +35,9 @@ const meta: Meta<typeof Switch> = {
             control: { type: 'select' },
             options: pseudoStateOptions,
         },
+        label: {
+            control: 'text',
+        },
         checked: {
             control: 'boolean',
         },
@@ -45,6 +49,8 @@ const meta: Meta<typeof Switch> = {
         pseudoState: 'none',
         checked: false,
         disabled: false,
+        label: 'toggle switch',
+        onChange: fn(),
     },
 };
 
@@ -84,6 +90,24 @@ export const CheckedDisabled: Story = {
     args: {
         checked: true,
         disabled: true,
+    },
+};
+
+export const Interactive: Story = {
+    parameters: {
+        layout: 'padded',
+    },
+    render: (args: SwitchStoryProps) => (
+        <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
+            <p className="text-sm text-neutral-700">
+                Toggle this switch to test real interaction behavior. This story does not force any pseudo state.
+            </p>
+            <SwitchWrapper {...args} pseudoState="none" />
+        </div>
+    ),
+    args: {
+        checked: false,
+        disabled: false,
     },
 };
 
@@ -127,5 +151,62 @@ export const States: Story = {
     ),
     args: {
         disabled: false,
+    },
+};
+
+export const VariantsAndStates: Story = {
+    parameters: {
+        layout: 'fullscreen',
+    },
+    render: (args: SwitchStoryProps) => (
+        <div className="space-y-10 p-8">
+            <table className="w-full max-w-2xl border-collapse">
+                <thead>
+                    <tr>
+                        <th className="sticky left-0 z-10 bg-white p-3 text-left text-sm font-semibold text-neutral-900">
+                            State
+                        </th>
+                        <th className="p-3 text-center text-xs font-semibold uppercase tracking-wider text-neutral-500">
+                            Unchecked
+                        </th>
+                        <th className="p-3 text-center text-xs font-semibold uppercase tracking-wider text-neutral-500">
+                            Checked
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {stateMatrix.map((state) => (
+                        <tr
+                            key={state.label}
+                            className="border-t border-dashed border-neutral-200"
+                        >
+                            <td className="sticky left-0 z-10 bg-white p-3 text-sm font-medium text-neutral-500">
+                                {state.label}
+                            </td>
+                            <td className="p-3 text-center">
+                                <Switch
+                                    {...args}
+                                    checked={false}
+                                    onChange={fn()}
+                                    pseudoState={state.pseudoState as SwitchPseudoState}
+                                />
+                            </td>
+                            <td className="p-3 text-center">
+                                <Switch
+                                    {...args}
+                                    checked
+                                    onChange={fn()}
+                                    pseudoState={state.pseudoState as SwitchPseudoState}
+                                />
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    ),
+    args: {
+        disabled: false,
+        label: 'toggle switch',
     },
 };
