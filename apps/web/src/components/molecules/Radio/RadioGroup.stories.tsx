@@ -1,7 +1,32 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
-import { RadioGroup, type Option } from "./RadioGroup";
+import {
+  RadioGroup,
+  type Option,
+  type RadioGroupProps,
+} from "./RadioGroup";
+
+const pseudoStateOptions = [
+  "none",
+  "hover",
+  "active",
+  "focus",
+  "focus-visible",
+  "disabled",
+] as const;
+
+const stateMatrix = [
+  { label: "Default", props: { pseudoState: "none" as const } },
+  { label: "Hover", props: { pseudoState: "hover" as const } },
+  { label: "Active", props: { pseudoState: "active" as const } },
+  { label: "Focus", props: { pseudoState: "focus" as const } },
+  {
+    label: "Focus Visible",
+    props: { pseudoState: "focus-visible" as const },
+  },
+  { label: "Disabled", props: { pseudoState: "disabled" as const } },
+] as const;
 
 const meta = {
   title: "Molecules/RadioGroup",
@@ -15,6 +40,11 @@ const meta = {
       control: { type: "select" },
       options: ["sm", "md", "lg"],
     },
+    pseudoState: {
+      control: { type: "select" },
+      options: pseudoStateOptions,
+    },
+    disabled: { control: "boolean" },
     className: { control: "text" },
     value: { control: "text" },
     defaultValue: { control: "text" },
@@ -30,6 +60,8 @@ const meta = {
       { label: "Option 3", value: "3" },
     ] as Option[],
     name: "example",
+    pseudoState: "none",
+    disabled: false,
     onChange: fn(),
   },
 } satisfies Meta<typeof RadioGroup>;
@@ -70,4 +102,23 @@ export const Large: Story = {
   args: {
     size: "lg",
   },
+};
+
+export const States: Story = {
+  parameters: {
+    layout: "padded",
+  },
+  render: (args: RadioGroupProps) => (
+    <div className="grid gap-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6 md:grid-cols-2">
+      {stateMatrix.map((state) => (
+        <div
+          key={state.label}
+          className="space-y-3 rounded-md border border-neutral-200 bg-white p-4"
+        >
+          <p className="text-sm font-medium text-neutral-700">{state.label}</p>
+          <RadioGroup {...args} {...state.props} />
+        </div>
+      ))}
+    </div>
+  ),
 };
