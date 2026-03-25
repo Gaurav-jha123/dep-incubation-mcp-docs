@@ -45,20 +45,39 @@ const SkillMatrix = () => {
   const [scoreFilters, setScoreFilters] = useState<string[]>([]);
   const [queryFilters, setQueryFilters] = useState<QueryFilter[]>([]);
   const [showAlert, setShowAlert] = useState(false);
-  const prevSuccessRef = useRef(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const prevCreateSuccessRef = useRef(false);
+  const prevUpdateSuccessRef = useRef(false);
 
-  // Show alert only when new skill is created (not on updates)
+  // Show alert when a skill is created
   useEffect(() => {
-    if ((createMutation.isSuccess || updateMutation.isSuccess) && !prevSuccessRef.current) {
-      prevSuccessRef.current = true;
+    if (createMutation.isSuccess && !prevCreateSuccessRef.current) {
+      prevCreateSuccessRef.current = true;
       // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAlertMessage("Skill added successfully!");
+       
       setShowAlert(true);
       const timer = setTimeout(() => setShowAlert(false), 3000);
       return () => clearTimeout(timer);
-    } else if (!createMutation.isSuccess || !updateMutation.isSuccess) {
-      prevSuccessRef.current = false;
+    } else if (!createMutation.isSuccess) {
+      prevCreateSuccessRef.current = false;
     }
-  }, [createMutation.isSuccess, updateMutation.isSuccess]);
+  }, [createMutation.isSuccess]);
+
+  // Show alert when a skill is updated
+  useEffect(() => {
+    if (updateMutation.isSuccess && !prevUpdateSuccessRef.current) {
+      prevUpdateSuccessRef.current = true;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAlertMessage("Skill updated successfully!");
+       
+      setShowAlert(true);
+      const timer = setTimeout(() => setShowAlert(false), 3000);
+      return () => clearTimeout(timer);
+    } else if (!updateMutation.isSuccess) {
+      prevUpdateSuccessRef.current = false;
+    }
+  }, [updateMutation.isSuccess]);
 
   /**
    * USER FILTER HANDLER
@@ -188,11 +207,11 @@ const SkillMatrix = () => {
 
   return (
     <div className="p-6 space-y-6 h-full flex flex-col relative">
-      {/* Alert Notification - Only for new skill additions */}
+      {/* Alert Notification */}
       {showAlert && (
         <Alert
           type="success"
-          message="Skill added successfully!"
+          message={alertMessage}
           isOpen={showAlert}
           closable
           onClose={() => setShowAlert(false)}
