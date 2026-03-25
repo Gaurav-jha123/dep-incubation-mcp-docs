@@ -65,7 +65,7 @@ const Layout: React.FC = () => {
             isSidebarCollapsed ? "lg:left-20" : "lg:left-70"
           }`}
         >
-          <div className="flex items-center justify-between px-4">
+          <div className="flex items-center justify-between px-4 h-16">
             <Header onMenuClick={toggleSidebar} isSidebarOpen={isSidebarOpen} />
             {/* <ThemeToggle /> */}
           </div>
