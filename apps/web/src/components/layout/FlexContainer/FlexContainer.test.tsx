@@ -116,4 +116,40 @@ describe("FlexContainer Component", () => {
     expect(div.className.includes("custom-class")).toBe(true);
   });
 
+  it("applies decorative variant styles", () => {
+    const { container } = render(
+      <FlexContainer variant="outline">
+        <div>Item</div>
+      </FlexContainer>
+    );
+
+    const div = container.firstChild as HTMLElement;
+
+    expect(div.className.includes("border-neutral-200")).toBe(true);
+  });
+
+  it("supports pseudo state previews", () => {
+    const { container } = render(
+      <FlexContainer pseudoState="focus">
+        <div>Item</div>
+      </FlexContainer>
+    );
+
+    const div = container.firstChild as HTMLElement;
+
+    expect(div.getAttribute("data-pseudo-state")).toBe("focus");
+  });
+
+  it("marks disabled pseudo state previews as aria-disabled", () => {
+    const { container } = render(
+      <FlexContainer pseudoState="disabled">
+        <div>Item</div>
+      </FlexContainer>
+    );
+
+    const div = container.firstChild as HTMLElement;
+
+    expect(div.getAttribute("aria-disabled")).toBe("true");
+  });
+
 });
