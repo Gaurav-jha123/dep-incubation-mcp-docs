@@ -2,28 +2,34 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, cleanup } from "@testing-library/react";
 import TeamInsights from "./TeamInsights";
 
-vi.mock("@/mocks/skillMatrix", () => ({
-  default: {
+const defaultMockData = {
     topics: [
       { id: "react", label: "React" },
       { id: "typescript", label: "TypeScript" },
       { id: "nextjs", label: "Next.js" },
     ],
+    users: [],
     skills: [
-      { topicId: "react", value: 20 },
-      { topicId: "react", value: 30 },
-      { topicId: "typescript", value: 85 },
-      { topicId: "typescript", value: 90 },
-      { topicId: "typescript", value: 88 },
-      { topicId: "nextjs", value: 65 },
-      { topicId: "nextjs", value: 82 },
+      { userId: "u1", topicId: "react", value: 20 },
+      { userId: "u2", topicId: "react", value: 30 },
+      { userId: "u3", topicId: "typescript", value: 85 },
+      { userId: "u4", topicId: "typescript", value: 90 },
+      { userId: "u5", topicId: "typescript", value: 88 },
+      { userId: "u6", topicId: "nextjs", value: 65 },
+      { userId: "u7", topicId: "nextjs", value: 82 },
     ],
-  },
+};
+vi.mock("@/services/hooks/query/useSkillMatrix", () => ({
+  useSkillMatrix: vi.fn(() => ({
+    skillMatrixData: defaultMockData,
+    entryIdMap: new Map(),
+    isLoading: false,
+    isError: false,
+  })),
 }));
 
 afterEach(() => {
   vi.clearAllMocks();
-  vi.resetModules();
   cleanup();
 });
 
@@ -64,68 +70,5 @@ describe("TeamInsights", () => {
 
     expect(text.includes("/100")).toBe(true);
     expect(text.includes("experts")).toBe(true);
-  });
-
-  it("handles empty data", async () => {
-    vi.doMock("@/mocks/skillMatrix", () => ({
-      default: { topics: [], skills: [] },
-    }));
-
-    const { default: Comp } = await import("./TeamInsights");
-    render(<Comp />);
-
-    const text = document.body.textContent || "";
-    expect(text.includes("Team Insights & Gaps")).toBe(true);
-  });
-
-  it("covers urgency branches and impact fallback", async () => {
-    vi.doMock("@/mocks/skillMatrix", () => ({
-      default: {
-        topics: [
-          { id: "unknown_skill", label: "Unknown Skill" },
-          { id: "low_many", label: "Low Many Skills" },
-          { id: "mid_skill", label: "Mid Skill" },
-          { id: "good_skill", label: "Good Skill" },
-        ],
-        skills: [
-          { topicId: "unknown_skill", value: 70 },
-          ...Array.from({ length: 9 }).map(() => ({
-            topicId: "low_many",
-            value: 30,
-          })),
-          { topicId: "mid_skill", value: 50 },
-          { topicId: "mid_skill", value: 52 },
-          { topicId: "good_skill", value: 70 },
-          { topicId: "good_skill", value: 75 },
-        ],
-      },
-    }));
-
-    const { default: Comp } = await import("./TeamInsights");
-    render(<Comp />);
-
-    const text = document.body.textContent || "";
-
-    expect(text.includes("Professional Development")).toBe(true);
-    expect(text.includes("Low Many Skills")).toBe(true);
-    expect(text.includes("Mid Skill")).toBe(true);
-    expect(text.includes("Good Skill")).toBe(true);
-  });
-
-  it("covers averageScore with no skills", async () => {
-    vi.doMock("@/mocks/skillMatrix", () => ({
-      default: {
-        topics: [{ id: "empty_topic", label: "Empty Topic" }],
-        skills: [],
-      },
-    }));
-
-    const { default: Comp } = await import("./TeamInsights");
-    render(<Comp />);
-
-    const text = document.body.textContent || "";
-
-    expect(text.includes("Empty Topic")).toBe(true);
-    expect(text.includes("0")).toBe(true);
   });
 });

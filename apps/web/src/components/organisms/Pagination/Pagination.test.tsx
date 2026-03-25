@@ -158,4 +158,59 @@ describe("Pagination Component", () => {
 
     expect(onPageChange).not.toHaveBeenCalled();
   });
+
+  it("applies data-pseudo-state when pseudoState is set", () => {
+    render(
+      <Pagination
+        currentPage={2}
+        totalPages={5}
+        pseudoState="hover"
+        onPageChange={() => {}}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Previous" }).getAttribute("data-pseudo-state")).toBe("hover");
+    expect(screen.getByRole("button", { name: "2" }).getAttribute("data-pseudo-state")).toBe("hover");
+    expect(screen.getByRole("button", { name: "Next" }).getAttribute("data-pseudo-state")).toBe("hover");
+  });
+
+  it("does not apply data-pseudo-state when pseudoState is none", () => {
+    render(
+      <Pagination
+        currentPage={2}
+        totalPages={5}
+        pseudoState="none"
+        onPageChange={() => {}}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Previous" }).getAttribute("data-pseudo-state")).toBeNull();
+  });
+
+  it("disables interaction when pseudoState is disabled", () => {
+    const onPageChange = vi.fn();
+
+    render(
+      <Pagination
+        currentPage={3}
+        totalPages={5}
+        pseudoState="disabled"
+        onPageChange={onPageChange}
+      />,
+    );
+
+    const previous = screen.getByRole("button", { name: "Previous" }) as HTMLButtonElement;
+    const next = screen.getByRole("button", { name: "Next" }) as HTMLButtonElement;
+    const pageButton = screen.getByRole("button", { name: "4" }) as HTMLButtonElement;
+
+    expect(previous.disabled).toBe(true);
+    expect(next.disabled).toBe(true);
+    expect(pageButton.disabled).toBe(true);
+
+    fireEvent.click(previous);
+    fireEvent.click(next);
+    fireEvent.click(pageButton);
+
+    expect(onPageChange).not.toHaveBeenCalled();
+  });
 });

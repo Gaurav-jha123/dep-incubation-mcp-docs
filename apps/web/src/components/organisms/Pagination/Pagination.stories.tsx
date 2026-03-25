@@ -5,12 +5,21 @@ import { Pagination } from './Pagination';
 type PaginationStoryProps = React.ComponentProps<typeof Pagination>;
 
 const pseudoStateOptions = [
-  'none',
-  'hover',
-  'active',
-  'focus',
-  'focus-visible',
-  'disabled',
+    'none',
+    'hover',
+    'active',
+    'focus',
+    'focus-visible',
+    'disabled',
+] as const;
+
+const stateMatrix = [
+    { label: 'Default', pseudoState: 'none' as const },
+    { label: 'Hover', pseudoState: 'hover' as const },
+    { label: 'Active', pseudoState: 'active' as const },
+    { label: 'Focus', pseudoState: 'focus' as const },
+    { label: 'Focus Visible', pseudoState: 'focus-visible' as const },
+    { label: 'Disabled', pseudoState: 'disabled' as const },
 ] as const;
 
 const meta: Meta<typeof Pagination> = {
@@ -25,9 +34,17 @@ const meta: Meta<typeof Pagination> = {
             control: { type: 'select' },
             options: pseudoStateOptions,
         },
+        currentPage: {
+            control: { type: 'number', min: 1 },
+        },
+        totalPages: {
+            control: { type: 'number', min: 1 },
+        },
     },
     args: {
         pseudoState: 'none',
+        currentPage: 1,
+        totalPages: 10,
     },
 };
 
@@ -71,14 +88,23 @@ export const LastPage: Story = {
     },
 };
 
-const stateMatrix = [
-    { label: 'Default', pseudoState: 'none' as const },
-    { label: 'Hover', pseudoState: 'hover' as const },
-    { label: 'Active', pseudoState: 'active' as const },
-    { label: 'Focus', pseudoState: 'focus' as const },
-    { label: 'Focus Visible', pseudoState: 'focus-visible' as const },
-    { label: 'Disabled', pseudoState: 'disabled' as const },
-];
+export const Interactive: Story = {
+    parameters: {
+        layout: 'padded',
+    },
+    render: (args: PaginationStoryProps) => (
+        <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
+            <p className="text-sm text-neutral-700">
+                Use this story to test real interactions. No pseudo state is forced.
+            </p>
+            <PaginationWrapper {...args} pseudoState="none" />
+        </div>
+    ),
+    args: {
+        currentPage: 4,
+        totalPages: 10,
+    },
+};
 
 export const States: Story = {
     parameters: {
