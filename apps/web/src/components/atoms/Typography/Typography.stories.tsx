@@ -204,27 +204,6 @@ export const CollapsibleHeading: Story = {
   },
 };
 
-export const StatePreviews: Story = {
-  args: {
-    pseudoState: "hover",
-    collapsible: false,
-  },
-  render: (args: TypographyStoryArgs) => (
-    <div className="space-y-4 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
-      <div className="space-y-1">
-        <Typography variant="overline">{args.pseudoState ?? "none"}</Typography>
-        <Typography variant="h4" pseudoState={args.pseudoState}>
-          Project readiness summary
-        </Typography>
-        <Typography variant="body" pseudoState={args.pseudoState}>
-          Typography pseudo states are intended for design review and Storybook
-          previews.
-        </Typography>
-      </div>
-    </div>
-  ),
-};
-
 export const AllVariants: Story = {
   args: {
     pseudoState: "none",
@@ -244,6 +223,27 @@ export const AllVariants: Story = {
           </Typography>
         </div>
       ))}
+    </div>
+  ),
+};
+
+export const StatePreviews: Story = {
+  args: {
+    pseudoState: "hover",
+    collapsible: false,
+  },
+  render: (args: TypographyStoryArgs) => (
+    <div className="space-y-4 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
+      <div className="space-y-1">
+        <Typography variant="overline">{args.pseudoState ?? "none"}</Typography>
+        <Typography variant="h4" pseudoState={args.pseudoState}>
+          Project readiness summary
+        </Typography>
+        <Typography variant="body" pseudoState={args.pseudoState}>
+          Typography pseudo states are intended for design review and Storybook
+          previews.
+        </Typography>
+      </div>
     </div>
   ),
 };

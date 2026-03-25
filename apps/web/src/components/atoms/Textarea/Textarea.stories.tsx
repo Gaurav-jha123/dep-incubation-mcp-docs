@@ -186,6 +186,40 @@ export const AllVariants: Story = {
   ),
 };
 
+export const PseudoStatePreview: Story = {
+  parameters: {
+    layout: "fullscreen",
+  },
+  render: (args: TextareaStoryArgs) => (
+    <div className="grid gap-4 p-8 md:grid-cols-2 xl:grid-cols-5">
+      {pseudoStateOptions.map((pseudoState) => (
+        <div
+          key={pseudoState}
+          className="space-y-3 rounded-xl border border-neutral-200 bg-neutral-50 p-4"
+        >
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-neutral-700">
+              {pseudoState === "none" ? "Default" : pseudoState}
+            </p>
+          </div>
+
+          <Textarea
+            {...args}
+            label="Message"
+            placeholder="Write a status update"
+            helperText="Helper text"
+            pseudoState={pseudoState}
+          />
+        </div>
+      ))}
+    </div>
+  ),
+  args: {
+    variant: "default",
+    textareaSize: "md",
+  },
+};
+
 export const VariantsAndStates: Story = {
   parameters: {
     layout: "fullscreen",
