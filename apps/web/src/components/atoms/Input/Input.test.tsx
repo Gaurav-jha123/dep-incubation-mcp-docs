@@ -94,7 +94,7 @@ describe("Input Component", () => {
       renderInput({ showCharCount: true, maxLength: 3, value: "hello" });
 
       const counter = screen.getByText("5 / 3");
-      expect(counter.className.includes("text-danger-900")).toBe(true);
+      expect(counter.className.includes("text-danger-500")).toBe(true);
     });
   });
 
