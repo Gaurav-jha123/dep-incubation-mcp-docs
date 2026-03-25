@@ -58,7 +58,7 @@ describe("Header", () => {
     expect(header.className).toContain("w-full");
     expect(header.className).toContain("bg-card");
     expect(header.className).toContain("flex");
-    expect(header.className).toContain("border-b");
+    expect(header.className).toContain("items-center");
   });
 
   it("shows empty title if route is not found", () => {
