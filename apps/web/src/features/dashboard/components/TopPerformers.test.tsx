@@ -2,8 +2,7 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, cleanup } from "@testing-library/react";
 import TopPerformers from "./TopPerformers";
 
-vi.mock("@/mocks/skillMatrix", () => ({
-  default: {
+const defaultMockData = {
     users: [
       { id: "u1", name: "John Doe" },
       { id: "u2", name: "Jane Smith" },
@@ -34,7 +33,17 @@ vi.mock("@/mocks/skillMatrix", () => ({
 
       { userId: "u6", topicId: "react", value: 95 },
     ],
-  },
+};
+
+const mockUseSkillMatrix = vi.fn(() => ({
+  skillMatrixData: defaultMockData,
+  entryIdMap: new Map(),
+  isLoading: false,
+  isError: false,
+}));
+
+vi.mock("@/services/hooks/query/useSkillMatrix", () => ({
+  useSkillMatrix: (...args: unknown[]) => mockUseSkillMatrix(...args),
 }));
 
 afterEach(() => {
@@ -91,36 +100,40 @@ describe("TopPerformers", () => {
     expect(text.includes("JS")).toBe(true);
   });
 
-  it("covers unknown topic fallback", async () => {
-    vi.doMock("@/mocks/skillMatrix", () => ({
-      default: {
+  it("covers unknown topic fallback", () => {
+    mockUseSkillMatrix.mockReturnValueOnce({
+      skillMatrixData: {
         users: [{ id: "u1", name: "Test User" }],
         topics: [],
         skills: [
           { userId: "u1", topicId: "unknown", value: 70 },
         ],
       },
-    }));
+      entryIdMap: new Map(),
+      isLoading: false,
+      isError: false,
+    });
 
-    const { default: Comp } = await import("./TopPerformers");
-    render(<Comp />);
+    render(<TopPerformers />);
 
     const text = document.body.textContent || "";
 
     expect(text.includes("unknown")).toBe(true);
   });
 
-  it("covers user with no skills", async () => {
-    vi.doMock("@/mocks/skillMatrix", () => ({
-      default: {
+  it("covers user with no skills", () => {
+    mockUseSkillMatrix.mockReturnValueOnce({
+      skillMatrixData: {
         users: [{ id: "u1", name: "No Skill User" }],
         topics: [],
         skills: [],
       },
-    }));
+      entryIdMap: new Map(),
+      isLoading: false,
+      isError: false,
+    });
 
-    const { default: Comp } = await import("./TopPerformers");
-    render(<Comp />);
+    render(<TopPerformers />);
 
     const text = document.body.textContent || "";
 
@@ -128,9 +141,9 @@ describe("TopPerformers", () => {
     expect(text.includes("0/100")).toBe(true);
   });
 
-  it("covers all score color branches", async () => {
-    vi.doMock("@/mocks/skillMatrix", () => ({
-      default: {
+  it("covers all score color branches", () => {
+    mockUseSkillMatrix.mockReturnValueOnce({
+      skillMatrixData: {
         users: [
           { id: "u1", name: "High" },
           { id: "u2", name: "MidHigh" },
@@ -145,10 +158,12 @@ describe("TopPerformers", () => {
           { userId: "u4", topicId: "t1", value: 20 },
         ],
       },
-    }));
+      entryIdMap: new Map(),
+      isLoading: false,
+      isError: false,
+    });
 
-    const { default: Comp } = await import("./TopPerformers");
-    render(<Comp />);
+    render(<TopPerformers />);
 
     const text = document.body.textContent || "";
 

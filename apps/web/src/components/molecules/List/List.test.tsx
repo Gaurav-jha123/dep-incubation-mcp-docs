@@ -1,5 +1,7 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { cleanup } from "@testing-library/react";
 import { List } from "./List";
 
 const mockItems = [
@@ -14,6 +16,8 @@ const mockItems = [
 ];
 
 describe("List Component", () => {
+
+  afterEach(() => cleanup());
 
   it("renders all list items", () => {
     render(<List items={mockItems} />);
@@ -35,31 +39,33 @@ describe("List Component", () => {
     expect(desc2).toBeTruthy();
   });
 
-  it("calls onChange when an item is clicked", () => {
+  it("calls onChange when an item is clicked", async () => {
   const handleChange = vi.fn();
+  const user = userEvent.setup();
 
-  const { container } = render(
+  render(
     <List items={mockItems} onChange={handleChange} />
   );
 
-  const items = container.querySelectorAll("li");
+  const options = screen.getAllByRole("option");
 
-  fireEvent.click(items[0]);
+  await user.click(options[0]);
 
   expect(handleChange).toHaveBeenCalled();
 });
 
     
-it("passes correct item to onChange", () => {
+it("passes correct item to onChange", async () => {
   const handleChange = vi.fn();
+  const user = userEvent.setup();
 
-  const { container } = render(
+  render(
     <List items={mockItems} onChange={handleChange} />
   );
 
-  const items = container.querySelectorAll("li");
+  const options = screen.getAllByRole("option");
 
-  fireEvent.click(items[1]);
+  await user.click(options[1]);
 
   expect(handleChange).toHaveBeenCalledWith(mockItems[1]);
 });
@@ -92,9 +98,9 @@ it("passes correct item to onChange", () => {
       <List items={mockItems} variant="bordered" />
     );
 
-    const ul = container.querySelector("ul");
+    const listbox = container.querySelector("[aria-label='Selectable items']");
 
-    expect(ul?.className.includes("border")).toBe(true);
+    expect(listbox?.className.includes("border")).toBe(true);
   });
 
   it("applies custom className", () => {
@@ -102,9 +108,9 @@ it("passes correct item to onChange", () => {
       <List items={mockItems} className="custom-class" />
     );
 
-    const ul = container.querySelector("ul");
+    const listbox = container.querySelector("[aria-label='Selectable items']");
 
-    expect(ul?.className.includes("custom-class")).toBe(true);
+    expect(listbox?.className.includes("custom-class")).toBe(true);
   });
 
 });
