@@ -28,7 +28,7 @@ const mockUseSkillMatrix = vi.fn(() => ({
 }));
 
 vi.mock("@/services/hooks/query/useSkillMatrix", () => ({
-  useSkillMatrix: (...args: unknown[]) => mockUseSkillMatrix(...args),
+  useSkillMatrix: mockUseSkillMatrix,
 }));
 
 afterEach(() => {
