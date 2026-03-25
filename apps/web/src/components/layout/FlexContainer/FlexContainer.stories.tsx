@@ -30,11 +30,30 @@ const stateMatrix = [
   { label: "Disabled", props: { pseudoState: "disabled" as const } },
 ] as const;
 
+const renderPlayground = (args: React.ComponentProps<typeof FlexContainer>) => (
+  <FlexContainer {...args} className="w-[640px] rounded bg-neutral-50 p-4">
+    <Item>Item 1</Item>
+    <Item>Item 2</Item>
+    <Item>Item 3</Item>
+  </FlexContainer>
+);
+
 const meta: Meta<typeof FlexContainer> = {
   title: "Layout/FlexContainer",
   component: FlexContainer,
+  tags: ["autodocs"],
+  render: renderPlayground,
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component:
+          "FlexContainer is a layout primitive for composing rows and columns with configurable alignment, spacing, wrapping, and visual surface variants.",
+      },
+      source: {
+        type: "dynamic",
+      },
+    },
   },
   args: {
     direction: "row",
