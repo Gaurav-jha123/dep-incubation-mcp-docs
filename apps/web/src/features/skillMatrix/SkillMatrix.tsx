@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState, useCallback, useRef } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
 import type { Topic } from "./components/types";
 import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
@@ -46,38 +46,14 @@ const SkillMatrix = () => {
   const [queryFilters, setQueryFilters] = useState<QueryFilter[]>([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const prevCreateSuccessRef = useRef(false);
-  const prevUpdateSuccessRef = useRef(false);
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  // Show alert when a skill is created
-  useEffect(() => {
-    if (createMutation.isSuccess && !prevCreateSuccessRef.current) {
-      prevCreateSuccessRef.current = true;
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setAlertMessage("Skill added successfully!");
-       
-      setShowAlert(true);
-      const timer = setTimeout(() => setShowAlert(false), 3000);
-      return () => clearTimeout(timer);
-    } else if (!createMutation.isSuccess) {
-      prevCreateSuccessRef.current = false;
-    }
-  }, [createMutation.isSuccess]);
-
-  // Show alert when a skill is updated
-  useEffect(() => {
-    if (updateMutation.isSuccess && !prevUpdateSuccessRef.current) {
-      prevUpdateSuccessRef.current = true;
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setAlertMessage("Skill updated successfully!");
-       
-      setShowAlert(true);
-      const timer = setTimeout(() => setShowAlert(false), 3000);
-      return () => clearTimeout(timer);
-    } else if (!updateMutation.isSuccess) {
-      prevUpdateSuccessRef.current = false;
-    }
-  }, [updateMutation.isSuccess]);
+  const showSuccessAlert = useCallback((message: string) => {
+    clearTimeout(hideTimerRef.current);
+    setAlertMessage(message);
+    setShowAlert(true);
+    hideTimerRef.current = setTimeout(() => setShowAlert(false), 3000);
+  }, []);
 
   /**
    * USER FILTER HANDLER
@@ -112,7 +88,10 @@ const SkillMatrix = () => {
     
     if (entryId) {
       // Entry exists - update it
-      updateMutation.mutate({ id: entryId, data: { value } });
+      updateMutation.mutate(
+        { id: entryId, data: { value } },
+        { onSuccess: () => showSuccessAlert("Skill updated successfully!") },
+      );
     } else {
       // Entry doesn't exist - create a new one
       // Convert string IDs back to numbers for API
@@ -120,7 +99,10 @@ const SkillMatrix = () => {
       const topicIdNum = Number(topicId);
       
       if (!Number.isNaN(userIdNum) && !Number.isNaN(topicIdNum)) {
-        createMutation.mutate({ topicId: topicIdNum, value });
+        createMutation.mutate(
+          { topicId: topicIdNum, value },
+          { onSuccess: () => showSuccessAlert("Skill added successfully!") },
+        );
       }
     }
   };
