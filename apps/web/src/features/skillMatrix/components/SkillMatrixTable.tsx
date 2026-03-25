@@ -179,7 +179,10 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
                         return;
                       }
 
-                      onUpdateSkill(row.id, key, val);
+                      // Only update if value actually changed
+                      if (val !== value) {
+                        onUpdateSkill(row.id, key, val);
+                      }
                       setEditingCell(null);
                     }}
                     onKeyDown={(e) => {
@@ -200,7 +203,10 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
                           return;
                         }
 
-                        onUpdateSkill(row.id, key, val);
+                        // Only update if value actually changed
+                        if (val !== value) {
+                          onUpdateSkill(row.id, key, val);
+                        }
                         setEditingCell(null);
                       }
                     }}

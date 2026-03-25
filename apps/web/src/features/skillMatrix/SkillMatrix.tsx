@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState, useCallback, useRef, useEffect } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
 import type { Topic } from "./components/types";
 import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
@@ -13,8 +13,12 @@ import { useTopicMutation } from "@/services/hooks/mutations/useTopicMutation";
 import { useAuthStore } from "@/store/use-auth-store/use-auth-store";
 
 const SkillMatrix = () => {
-
-  const { skillMatrixData: skillMatrix, entryIdMap, isLoading, isError } = useSkillMatrix();
+  const {
+    skillMatrixData: skillMatrix,
+    entryIdMap,
+    isLoading,
+    isError,
+  } = useSkillMatrix();
   const { updateMutation, createMutation } = useSkillMatrixMutation();
   const { createMutation: createUserMutation } = useUserMutation();
   const { createMutation: createTopicMutation } = useTopicMutation();
@@ -23,42 +27,39 @@ const SkillMatrix = () => {
   const users = skillMatrix.users;
   const topics = skillMatrix.topics;
 
-  const allUserIds = users.map((u) => u.id);
-  const allTopicIds = topics.map((t) => t.id);
+  const allUserIds = useMemo(() => users.map((u) => u.id), [users]);
+  const allTopicIds = useMemo(() => topics.map((t) => t.id), [topics]);
 
   const [selectedUsers, setSelectedUsers] = useState<string[]>(allUserIds);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(allTopicIds);
 
-  // Adjust selections during render when data changes (React-recommended pattern)
-  const [prevUserCount, setPrevUserCount] = useState(allUserIds.length);
-  if (allUserIds.length !== prevUserCount) {
-    setPrevUserCount(allUserIds.length);
+  useEffect(() => {
     setSelectedUsers(allUserIds);
-  }
+  }, [allUserIds]);
 
-  const [prevTopicCount, setPrevTopicCount] = useState(allTopicIds.length);
-  if (allTopicIds.length !== prevTopicCount) {
-    setPrevTopicCount(allTopicIds.length);
+  useEffect(() => {
     setSelectedTopics(allTopicIds);
-  }
+  }, [allTopicIds]);
 
   const [scoreFilters, setScoreFilters] = useState<string[]>([]);
   const [queryFilters, setQueryFilters] = useState<QueryFilter[]>([]);
   const [showAlert, setShowAlert] = useState(false);
-  const prevSuccessRef = useRef(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  // Show alert only when new skill is created (not on updates)
+  const showSuccessAlert = useCallback((message: string) => {
+    clearTimeout(hideTimerRef.current);
+    setAlertMessage(message);
+    setShowAlert(true);
+    hideTimerRef.current = setTimeout(() => setShowAlert(false), 3000);
+  }, []);
   useEffect(() => {
-    if ((createMutation.isSuccess || updateMutation.isSuccess) && !prevSuccessRef.current) {
-      prevSuccessRef.current = true;
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setShowAlert(true);
-      const timer = setTimeout(() => setShowAlert(false), 3000);
-      return () => clearTimeout(timer);
-    } else if (!createMutation.isSuccess || !updateMutation.isSuccess) {
-      prevSuccessRef.current = false;
-    }
-  }, [createMutation.isSuccess, updateMutation.isSuccess]);
+    return () => {
+      if (hideTimerRef.current) {
+        clearTimeout(hideTimerRef.current);
+      }
+    };
+  }, []);
 
   /**
    * USER FILTER HANDLER
@@ -90,18 +91,24 @@ const SkillMatrix = () => {
    */
   const updateSkill = (userId: string, topicId: string, value: number) => {
     const entryId = entryIdMap.get(`${userId}-${topicId}`);
-    
+
     if (entryId) {
       // Entry exists - update it
-      updateMutation.mutate({ id: entryId, data: { value } });
+      updateMutation.mutate(
+        { id: entryId, data: { value } },
+        { onSuccess: () => showSuccessAlert("Skill updated successfully!") },
+      );
     } else {
       // Entry doesn't exist - create a new one
       // Convert string IDs back to numbers for API
       const userIdNum = Number(userId);
       const topicIdNum = Number(topicId);
-      
+
       if (!Number.isNaN(userIdNum) && !Number.isNaN(topicIdNum)) {
-        createMutation.mutate({ topicId: topicIdNum, value });
+        createMutation.mutate(
+          { topicId: topicIdNum, value },
+          { onSuccess: () => showSuccessAlert("Skill added successfully!") },
+        );
       }
     }
   };
@@ -118,12 +125,25 @@ const SkillMatrix = () => {
       selectedUsers,
       selectedTopics,
       scoreFilters,
-      queryFilters
+      queryFilters,
     );
-  }, [skillMatrix, scoreFilters, queryFilters, selectedTopics, selectedUsers, topics, users]);
+  }, [
+    skillMatrix,
+    scoreFilters,
+    queryFilters,
+    selectedTopics,
+    selectedUsers,
+    topics,
+    users,
+  ]);
 
   // Store custom topic order as IDs only
-  const [topicOrder, setTopicOrder] = useState<string[]>(() => allTopicIds);
+  const [topicOrder, setTopicOrder] = useState<string[]>(allTopicIds);
+
+  // Keep topicOrder in sync when new topics arrive
+  useEffect(() => {
+    setTopicOrder(allTopicIds);
+  }, [allTopicIds]);
 
   const handleUserCreate = (name: string) => {
     const normalizedName = name.trim().toLowerCase();
@@ -163,7 +183,7 @@ const SkillMatrix = () => {
       }
     }
 
-// Add any newly selected topics not in custom order
+    // Add any newly selected topics not in custom order
     const orderedIds = new Set(ordered.map((t) => t.id));
     for (const topic of filteredData.topics) {
       if (!orderedIds.has(topic.id)) {
@@ -188,11 +208,11 @@ const SkillMatrix = () => {
 
   return (
     <div className="p-6 space-y-6 h-full flex flex-col relative">
-      {/* Alert Notification - Only for new skill additions */}
+      {/* Alert Notification */}
       {showAlert && (
         <Alert
           type="success"
-          message="Skill added successfully!"
+          message={alertMessage}
           isOpen={showAlert}
           closable
           onClose={() => setShowAlert(false)}
