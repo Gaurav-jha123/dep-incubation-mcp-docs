@@ -49,16 +49,16 @@ const SkillMatrix = () => {
 
   // Show alert only when new skill is created (not on updates)
   useEffect(() => {
-    if (createMutation.isSuccess && !prevSuccessRef.current) {
+    if ((createMutation.isSuccess || updateMutation.isSuccess) && !prevSuccessRef.current) {
       prevSuccessRef.current = true;
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowAlert(true);
       const timer = setTimeout(() => setShowAlert(false), 3000);
       return () => clearTimeout(timer);
-    } else if (!createMutation.isSuccess) {
+    } else if (!createMutation.isSuccess || !updateMutation.isSuccess) {
       prevSuccessRef.current = false;
     }
-  }, [createMutation.isSuccess]);
+  }, [createMutation.isSuccess, updateMutation.isSuccess]);
 
   /**
    * USER FILTER HANDLER

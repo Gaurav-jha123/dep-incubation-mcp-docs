@@ -69,7 +69,48 @@ describe("Toast", () => {
       
       const toast = screen.getByTestId("custom-toast");
       expect(toast.className).toContain("my-custom-class");
-      expect(toast.className).toContain("bg-background"); 
+      expect(toast.className).toContain("bg-primary-50");
+    });
+
+    it("applies the selected variant classes", () => {
+      render(
+        <Toast
+          title="Warning toast"
+          description="Heads up"
+          variant="warning"
+          data-testid="warning-toast"
+        />,
+      );
+
+      const toast = screen.getByTestId("warning-toast");
+      expect(toast.className).toContain("bg-warning-50");
+      expect(toast.className).toContain("border-warning-200");
+    });
+
+    it("adds pseudo state data attribute for preview behavior", () => {
+      render(
+        <Toast
+          title="Preview toast"
+          pseudoState="hover"
+          data-testid="preview-toast"
+        />,
+      );
+
+      const toast = screen.getByTestId("preview-toast");
+      expect(toast.getAttribute("data-pseudo-state")).toBe("hover");
+    });
+
+    it("disables the close button when pseudoState is disabled", () => {
+      render(
+        <Toast
+          title="Disabled toast"
+          onClose={() => {}}
+          pseudoState="disabled"
+        />,
+      );
+
+      const closeButton = screen.getByRole("button", { name: "Close toast" });
+      expect(closeButton.hasAttribute("disabled")).toBe(true);
     });
   });
 });

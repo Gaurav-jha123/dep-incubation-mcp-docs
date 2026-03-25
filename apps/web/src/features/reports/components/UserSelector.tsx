@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -37,10 +37,17 @@ export default function UserSelector({
 
   const [open, setOpen] = useState(false)
 
+  // Auto-select first user if users are available and none selected
+  useEffect(() => {
+    if (users.length > 0 && !selectedUser) {
+      onChange(users[0].id)
+    }
+  }, [users, selectedUser, onChange])
+
   const selectedUserObj = users.find((u) => u.id === selectedUser)
 
   return (
-    <div className="flex flex-col gap-2 w-[300px]">
+    <div className="flex flex-col gap-2 w-75">
 
       <label htmlFor="user-selector-btn" className="font-semibold">
         Select User
@@ -56,12 +63,12 @@ export default function UserSelector({
             aria-expanded={open}
             className="justify-between"
           >
-            {selectedUserObj ? selectedUserObj.name : "Select user..."}
+            {selectedUserObj ? selectedUserObj.name : users.length === 0 ? "test user" : "Select user..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-[300px] p-0">
+        <PopoverContent className="w-75 p-0">
 
           <Command>
 
