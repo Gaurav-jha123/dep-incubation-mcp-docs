@@ -22,6 +22,7 @@ const meta: Meta<typeof Alert> = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+type AlertStoryArgs = React.ComponentProps<typeof Alert>;
 
 export const Info: Story = {
   args: {
@@ -52,7 +53,7 @@ export const Warning: Story = {
 };
 
 export const Closable: Story = {
-  render: (args) => {
+  render: (args: AlertStoryArgs) => {
     const [visible, setVisible] = useState(true);
     return (
       <div>

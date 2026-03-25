@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ComponentProps } from 'react';
 
 import { useState } from 'react';
 import { Slider } from './Slider';
@@ -15,14 +16,15 @@ const meta: Meta<typeof Slider> = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+type SliderStoryArgs = ComponentProps<typeof Slider>;
 
-const SliderWrapper = (args: React.ComponentProps<typeof Slider>) => {
+const SliderWrapper = (args: SliderStoryArgs) => {
     const [value, setValue] = useState(args.value || 0);
     return <Slider {...args} value={value} onChange={setValue} />;
 };
 
 export const Default: Story = {
-    render: (args) => <SliderWrapper {...args} />,
+    render: (args: SliderStoryArgs) => <SliderWrapper {...args} />,
     args: {
         value: 50,
         min: 0,
@@ -32,7 +34,7 @@ export const Default: Story = {
 };
 
 export const CustomRange: Story = {
-    render: (args) => <SliderWrapper {...args} />,
+    render: (args: SliderStoryArgs) => <SliderWrapper {...args} />,
     args: {
         value: 20,
         min: 10,
@@ -42,7 +44,7 @@ export const CustomRange: Story = {
 };
 
 export const Disabled: Story = {
-    render: (args) => <SliderWrapper {...args} />,
+    render: (args: SliderStoryArgs) => <SliderWrapper {...args} />,
     args: {
         value: 40,
         disabled: true,
