@@ -22,12 +22,12 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, isSidebarOpen }) => {
         <button
           data-testid="menu-button"
           onClick={onMenuClick}
-          aria-haspopup="menu"
+          aria-label={isSidebarOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={isSidebarOpen}
           aria-controls="mobile-sidebar"
           className="p-2 -ml-2 text-muted-foreground hover:bg-accent rounded-md lg:hidden"
         >
-          <Menu size={24} />
+          <Menu size={24} aria-hidden="true" />
         </button>
 
         {/* Dynamic Title Section */}

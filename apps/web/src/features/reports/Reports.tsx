@@ -2,11 +2,11 @@ import React, { useState, useMemo } from "react";
 import { useSkillMatrix } from "@/services/hooks/query/useSkillMatrix";
 
 import TopSkillsChart from "./components/TopSkillsChart";
-import SkillsTable from "./components/SkillsTable";
 import UserSelector from "./components/UserSelector";
 import SummaryCards from "./components/SummaryCards";
 import ExportButtons from "./components/ExportButtons";
 import MemberProfileView from "./components/MemberProfileView";
+import { Alert } from "@/components/molecules/Alert/Alert";
 import { useAuthStore } from "@/store/use-auth-store/use-auth-store";
 import { getScore } from "@/lib/data-helpers";
 
@@ -88,20 +88,32 @@ export default function Reports() {
 
   return (
     <div className="p-8 space-y-8">
+      {!selectedUser && (
+        <Alert
+          type="info"
+          message="Please select a user to view their skill report and export data."
+          isOpen={!selectedUser}
+        />
+      )}
+
       <div className="flex items-start justify-between">
         <UserSelector
           users={skillMatrix.users}
           selectedUser={selectedUser ?? ""}
           onChange={setSelectedUser}
         />
-        {selectedUser && <ExportButtons skills={sortedSkills} />}
+        <ExportButtons
+          skills={sortedSkills}
+          user={selectedUserObj}
+          disabled={!selectedUser || sortedSkills.length === 0}
+        />
       </div>
       {selectedUser && (
         <div id="report-section" className="space-y-6">
           <SummaryCards skills={sortedSkills} user={selectedUserObj} />
           <MemberProfileView userSkills={userSkills} user={selectedUserObj} />
           <TopSkillsChart data={topSkills} />
-          <SkillsTable skills={sortedSkills} />
+          {/* <SkillsTable skills={sortedSkills} /> */}
         </div>
       )}
     </div>

@@ -147,11 +147,24 @@ async function main() {
     console.log(`  ✓ Topic: ${topic.label}`);
   }
 
-  // Seed skill matrix with random skillLevel (0-100) for every user × topic
+  // Seed skill matrix with realistic skillLevel (0-100) for every user × topic
   console.log('\n  Seeding skill matrix...');
   for (const user of createdUsers) {
     for (const topic of createdTopics) {
-      const value = Math.floor(Math.random() * 100);
+      // Generate realistic skill distribution:
+      // - 30% chance of high skill (70-100)
+      // - 40% chance of medium skill (40-69)
+      // - 30% chance of low skill (0-39)
+      const rand = Math.random();
+      let value: number;
+      if (rand < 0.3) {
+        value = Math.floor(Math.random() * 31) + 70; // 70-100
+      } else if (rand < 0.7) {
+        value = Math.floor(Math.random() * 30) + 40; // 40-69
+      } else {
+        value = Math.floor(Math.random() * 40); // 0-39
+      }
+
       await prisma.skillMatrix.upsert({
         where: {
           userId_topicId: { userId: user.id, topicId: topic.id },

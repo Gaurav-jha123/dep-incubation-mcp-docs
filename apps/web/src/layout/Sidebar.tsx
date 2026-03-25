@@ -69,11 +69,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           <button
             data-testid="close-sidebar"
             onClick={onClose}
+            aria-label="Close sidebar"
             className={`p-2 lg:hidden text-muted-foreground hover:bg-accent rounded-md ${
               isCollapsed ? "hidden" : ""
             }`}
           >
-            <X size={20} />
+            <X size={20} aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -93,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 }
                 aria-label={item.name}
               >
-                <span className="shrink-0">{item.icon}</span>
+                <span className="shrink-0" aria-hidden="true">{item.icon}</span>
                 {!isCollapsed && item.name}
               </NavLink>
             </li>

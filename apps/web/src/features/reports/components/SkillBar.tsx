@@ -18,7 +18,14 @@ export default function SkillBar({
   return (
     <div className="flex items-center gap-2.5 mb-2.5">
       <span className={`flex-1 ${fontSize} text-muted-foreground`}>{label}</span>
-      <div className={`${trackWidth} ${barHeight} bg-foreground rounded-full overflow-hidden`}>
+      <div
+        role="progressbar"
+        aria-valuenow={value}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`${label}: ${value} out of 100`}
+        className={`${trackWidth} ${barHeight} bg-foreground rounded-full overflow-hidden`}
+      >
         <div
           className={`h-full rounded-full ${scoreBarClass(value)}`}
           style={{ width: `${value}%` }}

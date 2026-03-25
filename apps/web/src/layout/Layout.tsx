@@ -16,7 +16,7 @@ const Layout: React.FC = () => {
     <div className="min-h-screen w-full flex bg-background">
       <a 
         href="#main-content" 
-        className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-4 focus:bg-card focus:text-primary focus:font-bold focus:shadow-md"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-100 focus:p-4 focus:bg-card focus:text-primary focus:font-bold focus:shadow-md"
       >
         Skip to main content
       </a>
@@ -43,7 +43,7 @@ const Layout: React.FC = () => {
         aria-hidden={!isSidebarOpen}
         className={`
         fixed top-0 left-0 h-screen bg-card border-r shadow-sm z-50 transition-all duration-300 ease-in-out
-        ${isSidebarCollapsed ? "lg:w-20" : "lg:w-[280px]"}
+        ${isSidebarCollapsed ? "lg:w-20" : "lg:w-70"}
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}
       >
@@ -56,13 +56,13 @@ const Layout: React.FC = () => {
 
       {/* Main area */}
       <div className={`flex-1 flex flex-col min-h-screen min-w-0 transition-all duration-300 ease-in-out ${
-          isSidebarCollapsed ? "lg:ml-20" : "lg:ml-[280px]"
+          isSidebarCollapsed ? "lg:ml-20" : "lg:ml-70"
         }`}
       >
         {/* Header */}
         <div
           className={`fixed top-0 right-0 left-0 h-16 bg-card border-b shadow-sm z-30 transition-all duration-300 ease-in-out ${
-            isSidebarCollapsed ? "lg:left-20" : "lg:left-[280px]"
+            isSidebarCollapsed ? "lg:left-20" : "lg:left-70"
           }`}
         >
           <div className="flex items-center justify-between px-4">
