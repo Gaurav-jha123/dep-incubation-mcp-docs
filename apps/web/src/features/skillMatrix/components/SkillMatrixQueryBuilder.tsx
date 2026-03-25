@@ -1,8 +1,10 @@
 import { useState, useMemo, useCallback } from 'react';
 import { Search, Filter, X, Plus } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import { Input } from '@/components/atoms/Input/Input';
+import { Label } from '@/components/atoms/Label/Label';
+import { Button } from '@/components/atoms/Button/Button';
+import { Dropdown } from '@/components/organisms/Dropdown/Dropdown';
+
 import type { User, Topic } from './types';
 
 export interface QueryFilter {
@@ -10,7 +12,7 @@ export interface QueryFilter {
   type: 'topic' | 'user' | 'score';
   operator: 'contains' | 'equals' | 'greater_than' | 'less_than' | 'between';
   value: string | number;
-  value2?: number; // for 'between' operator
+  value2?: number;
 }
 
 interface SkillMatrixQueryBuilderProps {
@@ -51,19 +53,18 @@ export default function SkillMatrixQueryBuilder({
 }: SkillMatrixQueryBuilderProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [draftFilters, setDraftFilters] = useState<QueryFilter[]>(filters);
 
-  // Quick search functionality
   const handleQuickSearch = useCallback((term: string) => {
     setSearchTerm(term);
-    
+
     if (!term.trim()) {
-      onFiltersChange([]);
+      setDraftFilters([]);
       return;
     }
 
     const quickFilters: QueryFilter[] = [];
-    
-    // Search in topic names
+
     if (topics.some(topic => topic.label.toLowerCase().includes(term.toLowerCase()))) {
       quickFilters.push({
         id: 'quick-topic-' + Date.now(),
@@ -72,8 +73,7 @@ export default function SkillMatrixQueryBuilder({
         value: term.toLowerCase(),
       });
     }
-    
-    // Search in user names
+
     if (users.some(user => user.name.toLowerCase().includes(term.toLowerCase()))) {
       quickFilters.push({
         id: 'quick-user-' + Date.now(),
@@ -82,11 +82,10 @@ export default function SkillMatrixQueryBuilder({
         value: term.toLowerCase(),
       });
     }
-    
-    onFiltersChange(quickFilters);
-  }, [topics, users, onFiltersChange]);
 
-  // Add new filter
+    setDraftFilters(quickFilters);
+  }, [topics, users]);
+
   const addFilter = () => {
     const newFilter: QueryFilter = {
       id: 'filter-' + Date.now(),
@@ -94,33 +93,37 @@ export default function SkillMatrixQueryBuilder({
       operator: 'contains',
       value: '',
     };
-    onFiltersChange([...filters, newFilter]);
+    setDraftFilters([...draftFilters, newFilter]);
   };
 
-  // Remove filter
   const removeFilter = (filterId: string) => {
-    onFiltersChange(filters.filter(f => f.id !== filterId));
+    setDraftFilters(draftFilters.filter(f => f.id !== filterId));
   };
 
-  // Update filter
   const updateFilter = (filterId: string, updates: Partial<QueryFilter>) => {
-    onFiltersChange(
-      filters.map(f => f.id === filterId ? { ...f, ...updates } : f)
+    setDraftFilters(
+      draftFilters.map(f => f.id === filterId ? { ...f, ...updates } : f)
     );
   };
 
-  // Clear all filters
+  const applyFilters = () => {
+    onFiltersChange(draftFilters);
+  };
+
   const clearAll = () => {
     setSearchTerm('');
+    setDraftFilters([]);
     onFiltersChange([]);
   };
 
-  // Get suggestions for autocomplete
+  const hasChanges = JSON.stringify(draftFilters) !== JSON.stringify(filters);
+  const pendingCount = draftFilters.filter(f => f.value !== '' && f.value !== undefined).length;
+
   const getSuggestions = (type: 'topic' | 'user', value: string) => {
     if (!value) return [];
-    
+
     const items = type === 'topic' ? topics : users;
-    
+
     return items
       .filter(item => {
         const text = type === 'topic' ? (item as Topic).label : (item as User).name;
@@ -139,7 +142,7 @@ export default function SkillMatrixQueryBuilder({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Search className="w-4 h-4" />
-          <Label className="font-medium">Query Builder</Label>
+          <Label className="font-medium" label='Query Builder'/>
         </div>
         <div className="flex gap-2">
           <Button
@@ -150,7 +153,18 @@ export default function SkillMatrixQueryBuilder({
             <Filter className="w-4 h-4 mr-1" />
             Advanced
           </Button>
-          {filters.length > 0 && (
+
+          {hasChanges && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={applyFilters}
+            >
+              Apply Filters {pendingCount > 0 && `(${pendingCount})`}
+            </Button>
+          )}
+
+          {(filters.some(f => f.value !== '' && f.value !== undefined) || draftFilters.some(f => f.value !== '' && f.value !== undefined)) && (
             <Button
               variant="outline"
               size="sm"
@@ -164,43 +178,75 @@ export default function SkillMatrixQueryBuilder({
 
       {/* Quick Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
         <Input
+          leftIcon={<Search className="w-4 h-4" />}
           placeholder="Quick search by topic or user name..."
           value={searchTerm}
           onChange={(e) => handleQuickSearch(e.target.value)}
           className="pl-10"
+          fullWidth
         />
       </div>
 
       {/* Active Filters Display */}
-      {filters.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {filters.map((filter) => (
-            <div
-              key={filter.id}
-              className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-900 text-sm rounded-md border"
-            >
-              <span className="capitalize">{filter.type}</span>
-              <span className="text-xs">{filter.operator.replace('_', ' ')}</span>
-              <span>{filter.value}</span>
-              {filter.value2 && <span>- {filter.value2}</span>}
-              <button
+      {filters.some(f => f.value !== '' && f.value !== undefined) && (
+        <div className="flex flex-col gap-2">
+          <div className="text-sm font-medium text-neutral-700">Applied Filters:</div>
+          <div className="flex flex-wrap gap-2">
+            {filters
+              .filter(f => f.value !== '' && f.value !== undefined)
+              .map((filter) => (
+              <div
+                key={filter.id}
+                role="button"
+                tabIndex={0}
+                className="inline-flex items-center gap-1 px-2 py-1 bg-primary-200 text-neutral-900 text-sm rounded-md border"
                 onClick={() => removeFilter(filter.id)}
-                className="ml-1 hover:bg-blue-200 rounded-full p-0.5"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    removeFilter(filter.id);
+                  }
+                }}
               >
+                <span className="capitalize">{filter.type}</span>
+                <span className="text-xs">{filter.operator.replace('_', ' ')}</span>
+                <span>{filter.value}</span>
+                {filter.value2 && <span>- {filter.value2}</span>}
                 <X className="w-3 h-3" />
-              </button>
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Draft Filters Preview */}
+      {hasChanges && draftFilters.some(f => f.value !== '' && f.value !== undefined) && (
+        <div className="flex flex-col gap-2 border rounded-lg p-3 bg-primary-100/50">
+          <div className="text-sm font-medium text-neutral-700">Preview (click Apply to use):</div>
+          <div className="flex flex-wrap gap-2">
+            {draftFilters
+              .filter(f => f.value !== '' && f.value !== undefined)
+              .map((filter) => (
+                <div
+                  key={filter.id}
+                  className="inline-flex items-center gap-1 px-2 py-1 bg-primary-300 text-neutral-900 text-sm rounded-md border border-primary-400"
+                >
+                  <span className="capitalize">{filter.type}</span>
+                  <span className="text-xs">{filter.operator.replace('_', ' ')}</span>
+                  <span>{filter.value}</span>
+                  {filter.value2 && <span>- {filter.value2}</span>}
+                </div>
+              ))}
+          </div>
         </div>
       )}
 
       {/* Advanced Filters */}
       {showAdvanced && (
-        <div className="border rounded-lg p-4 bg-gray-50/50">
+        <div className="border rounded-lg p-4 bg-neutral-50/50">
           <div className="flex items-center justify-between mb-3">
-            <Label className="font-medium">Advanced Filters</Label>
+            <Label className="font-medium" label='Advanced Filters'/>
             <Button
               variant="outline"
               size="sm"
@@ -212,7 +258,7 @@ export default function SkillMatrixQueryBuilder({
           </div>
 
           <div className="space-y-3">
-            {filters.map((filter, index) => (
+            {draftFilters.map((filter, index) => (
               <AdvancedFilterRow
                 key={filter.id}
                 filter={filter}
@@ -227,9 +273,19 @@ export default function SkillMatrixQueryBuilder({
       )}
 
       {/* Results Summary */}
-      {filters.length > 0 && (
-        <div className="text-sm text-gray-600 bg-blue-50 p-2 rounded">
-          <span className="font-medium">Active filters:</span> {filters.length} filter{filters.length !== 1 ? 's' : ''} applied
+      {filters.some(f => f.value !== '' && f.value !== undefined) && (
+        <div className="text-sm text-neutral-700 bg-primary-200 p-2 rounded">
+          <span className="font-medium">Active filters:</span>{' '}
+          {filters.filter(f => f.value !== '' && f.value !== undefined).length} filter
+          {filters.filter(f => f.value !== '' && f.value !== undefined).length !== 1 ? 's' : ''} applied
+        </div>
+      )}
+
+      {/* Pending Changes Indicator */}
+      {hasChanges && (
+        <div className="text-sm text-primary-700 bg-primary-100 p-2 rounded border border-primary-300">
+          <span className="font-medium">Pending changes:</span>{' '}
+          {pendingCount} filter{pendingCount !== 1 ? 's' : ''} ready to apply
         </div>
       )}
     </div>
@@ -252,7 +308,7 @@ function AdvancedFilterRow({
   getSuggestions,
 }: AdvancedFilterRowProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
-  
+
   const suggestions = useMemo(() => {
     if (filter.type === 'score') return [];
     return getSuggestions(filter.type, filter.value.toString());
@@ -268,78 +324,104 @@ function AdvancedFilterRow({
   };
 
   return (
-    <div className="flex items-center gap-2 p-2 border rounded bg-white">
+    <div className="flex items-center gap-2 p-2 border rounded bg-neutral-50">
       {index > 0 && (
-        <span className="text-xs bg-gray-100 px-2 py-1 rounded">AND</span>
+        <span className="text-xs bg-neutral-500 px-2 py-1 rounded text-neutral-900">AND</span>
       )}
-      
-      {/* Type Select */}
-      <select
-        value={filter.type}
-        onChange={(e) => handleTypeChange(e.target.value as QueryFilter['type'])}
-        className="px-2 py-1 border rounded text-sm"
-      >
-        {FILTER_TYPES.map(type => (
-          <option key={type.value} value={type.value}>
-            {type.label}
-          </option>
-        ))}
-      </select>
 
-      {/* Operator Select */}
-      <select
-        value={filter.operator}
-        onChange={(e) => onUpdate({ operator: e.target.value as QueryFilter['operator'] })}
-        className="px-2 py-1 border rounded text-sm"
-      >
-        {OPERATORS[filter.type].map(op => (
-          <option key={op.value} value={op.value}>
-            {op.label}
-          </option>
-        ))}
-      </select>
+      <Dropdown size="sm" className="flex-shrink-0">
+        <Dropdown.Trigger>{filter.type}</Dropdown.Trigger>
+        <Dropdown.Content>
+          {FILTER_TYPES.map((type) => (
+            <Dropdown.Item
+              key={type.value}
+              onClick={() => handleTypeChange(type.value)}
+            >
+              {type.label}
+            </Dropdown.Item>
+          ))}
+        </Dropdown.Content>
+      </Dropdown>
 
-      {/* Value Input */}
-      <div className="relative">
+      <Dropdown size="sm" className="flex-shrink-0">
+        <Dropdown.Trigger>{filter.operator}</Dropdown.Trigger>
+        <Dropdown.Content>
+          {OPERATORS[filter.type].map((op) => (
+            <Dropdown.Item
+              key={op.value}
+              onClick={() =>
+                onUpdate({ operator: op.value as QueryFilter["operator"] })
+              }
+            >
+              {op.label}
+            </Dropdown.Item>
+          ))}
+        </Dropdown.Content>
+      </Dropdown>
+
+      <div className="relative flex-1">
         <Input
-          type={filter.type === 'score' ? 'number' : 'text'}
+          type={filter.type === "score" ? "number" : "text"}
           value={filter.value}
-          onChange={(e) => onUpdate({ value: filter.type === 'score' ? parseInt(e.target.value) || 0 : e.target.value })}
+          onChange={(e) =>
+            onUpdate({
+              value:
+                filter.type === "score"
+                  ? parseInt(e.target.value) || 0
+                  : e.target.value,
+            })
+          }
           onFocus={() => setShowSuggestions(true)}
           onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-          placeholder={filter.type === 'score' ? '0-100' : `Search ${filter.type}...`}
-          className="text-sm w-32"
-          min={filter.type === 'score' ? 0 : undefined}
-          max={filter.type === 'score' ? 100 : undefined}
+          placeholder={
+            filter.type === "score" ? "0-100" : `Search ${filter.type}...`
+          }
+          fullWidth
+          inputSize='sm'
+          min={filter.type === "score" ? 0 : undefined}
+          max={filter.type === "score" ? 100 : undefined}
         />
-        
-        {/* Suggestions Dropdown */}
+
         {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute top-full left-0 right-0 bg-white border rounded-md shadow-lg z-10 mt-1">
+          <ul className="absolute top-full left-0 right-0 bg-neutral-50 border rounded-md shadow-lg z-10 mt-1"
+          role="listbox"
+          aria-label={`${filter.type} suggestions`}
+          >
             {suggestions.map((suggestion) => (
-              <button
+              <li
+                role='option'
                 key={suggestion.id}
-                className="w-full px-3 py-1.5 text-left text-sm hover:bg-gray-100"
+                aria-selected={false}
+                tabIndex={0}
+                className="w-full px-3 py-1.5 text-left text-sm hover:bg-neutral-400 cursor-pointer"
                 onClick={() => {
                   onUpdate({ value: suggestion.text });
                   setShowSuggestions(false);
                 }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onUpdate({ value: suggestion.text });
+                    setShowSuggestions(false);
+                  }
+                }}
               >
                 {suggestion.text}
-              </button>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </div>
 
-      {/* Second Value for 'between' operator */}
-      {filter.operator === 'between' && (
+      {filter.operator === "between" && (
         <>
-          <span className="text-sm text-gray-500">and</span>
+          <span className="text-sm text-neutral-500">and</span>
           <Input
             type="number"
-            value={filter.value2 || ''}
-            onChange={(e) => onUpdate({ value2: parseInt(e.target.value) || 0 })}
+            value={filter.value2 || ""}
+            onChange={(e) =>
+              onUpdate({ value2: parseInt(e.target.value) || 0 })
+            }
             placeholder="100"
             className="text-sm w-20"
             min={0}
@@ -348,12 +430,11 @@ function AdvancedFilterRow({
         </>
       )}
 
-      {/* Remove Button */}
       <Button
-        variant="outline"
+        variant="ghost"
         size="sm"
         onClick={onRemove}
-        className="p-1 h-auto"
+        className="p-1 h-auto flex-shrink-0"
       >
         <X className="w-4 h-4" />
       </Button>

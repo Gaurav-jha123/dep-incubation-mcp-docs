@@ -83,6 +83,13 @@ export const Table = <T extends Record<string, unknown>>({
   /* Pagination */
   const totalPages = Math.ceil(sortedData.length / rowsPerPage);
 
+  // Reset to first page when filtered data shrinks below current page
+  const [prevDataLength, setPrevDataLength] = useState(data.length);
+  if (data.length !== prevDataLength) {
+    setPrevDataLength(data.length);
+    setPage(0);
+  }
+
   const startIndex = page * rowsPerPage;
   const currentRows = sortedData.slice(startIndex, startIndex + rowsPerPage);
 
@@ -253,3 +260,4 @@ export const Table = <T extends Record<string, unknown>>({
 };
 
 Table.displayName = "Table";
+ 

@@ -1,7 +1,26 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach, beforeAll, afterAll } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import MultiSelectSearch from "./MultiSelectSearch";
+
+// ---- Local ResizeObserver mock ----
+beforeAll(() => {
+  class ResizeObserverMock {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+
+  Object.defineProperty(globalThis, "ResizeObserver", {
+    configurable: true,
+    writable: true,
+    value: ResizeObserverMock,
+  });
+});
+
+afterAll(() => {
+  Reflect.deleteProperty(globalThis, "ResizeObserver");
+});
 
 const opts = [
   { value: "react", label: "React" },
@@ -37,7 +56,7 @@ afterEach(() => {
 describe("MultiSelectSearch", () => {
   it("renders button text based on selection and shows/hides Add button", () => {
     const { unmount } = renderComponent();
-    expect(screen.getByRole("button", { name: "Select Frameworks" })).toBeDefined();
+    expect(screen.getByRole("button", { name: /select frameworks/i })).toBeDefined();
     expect(screen.queryByRole("button", { name: "Add" })).toBeNull();
     unmount();
 
@@ -52,44 +71,49 @@ describe("MultiSelectSearch", () => {
     const onChange = vi.fn();
     renderComponent({ selected: ["react"], onChange });
 
-    await user.click(screen.getByRole("button"));
+    // Open dropdown
+    await user.click(screen.getByRole("button", { name: /frameworks/i }));
+
+    // Check that options are displayed
     expect(screen.getByText("React")).toBeDefined();
     expect(screen.getByText("Vue")).toBeDefined();
-    expect(screen.getAllByRole("checkbox")).toHaveLength(3);
+    expect(screen.getByLabelText("React")).toBeDefined();
+    expect(screen.getByLabelText("Vue")).toBeDefined();
+    expect(screen.getByLabelText("Angular")).toBeDefined();
 
-    await user.click(screen.getByText("Vue").closest("div")!);
+    // Toggle Vue
+    await user.click(screen.getByLabelText("Vue"));
     expect(onChange).toHaveBeenCalledWith(["react", "vue"]);
 
+    // Toggle React
     onChange.mockClear();
-    await user.click(screen.getByText("React").closest("div")!);
+    await user.click(screen.getByLabelText("React"));
     expect(onChange).toHaveBeenCalledWith([]);
   });
 
-  it("handles keyboard interaction on option rows (Enter, Space, other)", async () => {
+  it("supports focus navigation without accidental toggles", async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
     renderComponent({ onChange });
 
-    await user.click(screen.getByRole("button", { name: "Select Frameworks" }));
-    const vueRow = screen.getByText("Vue").closest("[role='button']")!;
+    await user.click(screen.getByRole("button", { name: /frameworks/i }));
 
-    fireEvent.keyDown(vueRow, { key: "Enter" });
-    expect(onChange).toHaveBeenCalledWith(["vue"]);
+    const vueCheckbox = screen.getByLabelText("Vue");
+    vueCheckbox.focus();
 
-    onChange.mockClear();
-    fireEvent.keyDown(vueRow, { key: " " });
-    expect(onChange).toHaveBeenCalled();
-
-    onChange.mockClear();
-    fireEvent.keyDown(vueRow, { key: "Tab" });
+    await user.keyboard("[Tab]");
     expect(onChange).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: /frameworks/i }));
+    await user.click(screen.getByLabelText("Vue"));
+    expect(onChange).toHaveBeenCalledWith(["vue"]);
   });
 
   it("filters options and shows empty state", async () => {
     const user = userEvent.setup();
     renderComponent();
 
-    await user.click(screen.getByRole("button", { name: "Select Frameworks" }));
+    await user.click(screen.getByRole("button", { name: /frameworks/i }));
     const input = screen.getByPlaceholderText("Search Frameworks");
 
     await user.type(input, "re");

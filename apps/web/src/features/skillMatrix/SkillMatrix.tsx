@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import SkillMatrixTable from "./components/SkillMatrixTable";
 import type { Topic } from "./components/types";
 import SkillMatrixDrawer from "./components/SkillMatrixDrawer";
 import HeatmapLegend from "./components/SkillMatrixTableLegend";
+import { Alert } from "@/components/molecules/Alert/Alert";
 import type { QueryFilter } from "./components/SkillMatrixQueryBuilder";
 import { applySkillMatrixFilters } from "./utils/skillMatrixFilters";
 import { useSkillMatrix } from "@/services/hooks/query/useSkillMatrix";
@@ -14,7 +15,7 @@ import { useAuthStore } from "@/store/use-auth-store/use-auth-store";
 const SkillMatrix = () => {
 
   const { skillMatrixData: skillMatrix, entryIdMap, isLoading, isError } = useSkillMatrix();
-  const { updateMutation } = useSkillMatrixMutation();
+  const { updateMutation, createMutation } = useSkillMatrixMutation();
   const { createMutation: createUserMutation } = useUserMutation();
   const { createMutation: createTopicMutation } = useTopicMutation();
   const currentUser = useAuthStore((s) => s.user);
@@ -43,6 +44,21 @@ const SkillMatrix = () => {
 
   const [scoreFilters, setScoreFilters] = useState<string[]>([]);
   const [queryFilters, setQueryFilters] = useState<QueryFilter[]>([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const prevSuccessRef = useRef(false);
+
+  // Show alert only when new skill is created (not on updates)
+  useEffect(() => {
+    if (createMutation.isSuccess && !prevSuccessRef.current) {
+      prevSuccessRef.current = true;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShowAlert(true);
+      const timer = setTimeout(() => setShowAlert(false), 3000);
+      return () => clearTimeout(timer);
+    } else if (!createMutation.isSuccess) {
+      prevSuccessRef.current = false;
+    }
+  }, [createMutation.isSuccess]);
 
   /**
    * USER FILTER HANDLER
@@ -69,12 +85,24 @@ const SkillMatrix = () => {
   };
 
   /**
-   * UPDATE SKILL VALUE
+   * UPDATE OR CREATE SKILL VALUE
+   * First tries to update existing entry, if not found creates a new one
    */
   const updateSkill = (userId: string, topicId: string, value: number) => {
     const entryId = entryIdMap.get(`${userId}-${topicId}`);
+    
     if (entryId) {
+      // Entry exists - update it
       updateMutation.mutate({ id: entryId, data: { value } });
+    } else {
+      // Entry doesn't exist - create a new one
+      // Convert string IDs back to numbers for API
+      const userIdNum = Number(userId);
+      const topicIdNum = Number(topicId);
+      
+      if (!Number.isNaN(userIdNum) && !Number.isNaN(topicIdNum)) {
+        createMutation.mutate({ topicId: topicIdNum, value });
+      }
     }
   };
 
@@ -159,7 +187,19 @@ const SkillMatrix = () => {
   );
 
   return (
-    <div className="p-6 space-y-6 h-full flex flex-col">
+    <div className="p-6 space-y-6 h-full flex flex-col relative">
+      {/* Alert Notification - Only for new skill additions */}
+      {showAlert && (
+        <Alert
+          type="success"
+          message="Skill added successfully!"
+          isOpen={showAlert}
+          closable
+          onClose={() => setShowAlert(false)}
+          className="fixed top-15 right-4 z-50"
+        />
+      )}
+
       {isLoading && (
         <div className="flex-1 flex items-center justify-center">
           <p className="text-muted-foreground">Loading skill matrix…</p>
