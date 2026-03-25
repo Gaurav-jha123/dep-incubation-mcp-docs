@@ -1,52 +1,6 @@
 import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import type { ReactNode } from "react";
 import { Pagination } from "./Pagination";
-
-const getPaginationWithMockedHeadlessUi = async () => {
-  vi.resetModules();
-
-  vi.doMock("@headlessui/react", () => {
-    const Menu = ({
-      children,
-      className,
-    }: {
-      children: ReactNode;
-      className?: string;
-    }) => <nav className={className}>{children}</nav>;
-
-    Menu.Items = ({
-      children,
-      className,
-    }: {
-      children: ReactNode;
-      className?: string;
-    }) => <div className={className}>{children}</div>;
-
-    Menu.Item = ({
-      children,
-    }: {
-      children: ((state: { active: boolean }) => ReactNode) | ReactNode;
-    }) => {
-      if (typeof children === "function") {
-        return (
-          <>
-            {children({ active: true })}
-            {children({ active: false })}
-          </>
-        );
-      }
-
-      return <>{children}</>;
-    };
-
-    return { Menu };
-  });
-
-  const mod = await import("./Pagination");
-  vi.doUnmock("@headlessui/react");
-  return mod.Pagination;
-};
 
 afterEach(() => {
   cleanup();
@@ -152,8 +106,7 @@ describe("Pagination Component", () => {
       />,
     );
 
-    const menuItems = screen.getAllByRole("menuitem");
-    fireEvent.click(menuItems[0]);
+    fireEvent.click(screen.getByRole("button", { name: "1" }));
 
     expect(onPageChange).toHaveBeenCalledWith(1);
   });
@@ -169,19 +122,17 @@ describe("Pagination Component", () => {
       />,
     );
 
-    const menuItems = screen.getAllByRole("menuitem");
-    fireEvent.click(menuItems[menuItems.length - 1]);
+    fireEvent.click(screen.getByRole("button", { name: "20" }));
 
     expect(onPageChange).toHaveBeenCalledWith(20);
   });
 
-  it("covers guard false path for previous when currentPage is below 1", async () => {
-    const MockedPagination = await getPaginationWithMockedHeadlessUi();
+  it("does not call onPageChange from previous when currentPage is 1", () => {
     const onPageChange = vi.fn();
 
     render(
-      <MockedPagination
-        currentPage={0}
+      <Pagination
+        currentPage={1}
         totalPages={5}
         onPageChange={onPageChange}
       />,
@@ -192,13 +143,12 @@ describe("Pagination Component", () => {
     expect(onPageChange).not.toHaveBeenCalled();
   });
 
-  it("covers guard false path for next when currentPage is above totalPages", async () => {
-    const MockedPagination = await getPaginationWithMockedHeadlessUi();
+  it("does not call onPageChange from next when currentPage is totalPages", () => {
     const onPageChange = vi.fn();
 
     render(
-      <MockedPagination
-        currentPage={6}
+      <Pagination
+        currentPage={5}
         totalPages={5}
         onPageChange={onPageChange}
       />,
