@@ -152,8 +152,7 @@ describe("Pagination Component", () => {
       />,
     );
 
-    const menuItems = screen.getAllByRole("menuitem");
-    fireEvent.click(menuItems[0]);
+    fireEvent.click(screen.getByText("1"));
 
     expect(onPageChange).toHaveBeenCalledWith(1);
   });
@@ -169,8 +168,7 @@ describe("Pagination Component", () => {
       />,
     );
 
-    const menuItems = screen.getAllByRole("menuitem");
-    fireEvent.click(menuItems[menuItems.length - 1]);
+    fireEvent.click(screen.getByText("20"));
 
     expect(onPageChange).toHaveBeenCalledWith(20);
   });
@@ -209,3 +207,4 @@ describe("Pagination Component", () => {
     expect(onPageChange).not.toHaveBeenCalled();
   });
 });
+ 

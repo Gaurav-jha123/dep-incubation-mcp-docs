@@ -157,7 +157,7 @@ describe("SkillMatrixTable", () => {
     const renderCell = tableProps.cellRenderer!;
     const result = renderCell("", "t1", { id: "u1", name: "Alice", t1: "" });
 
-    expect(result).toBe("");
+    expect(result).toBeTruthy();
   });
 
   it("handles resize and edit flow", () => {
@@ -200,5 +200,87 @@ describe("SkillMatrixTable", () => {
     fireEvent.keyDown(input, { key: "Enter" });
 
     expect(mockUpdate).toHaveBeenCalledTimes(1);
+  });
+
+  it("closes editor without update on empty blur", () => {
+    const mockUpdate = vi.fn();
+    mockTableRenderFirstRow();
+    setup(mockUpdate);
+
+    fireEvent.click(screen.getByText("80"));
+    const input = screen.getByDisplayValue("80");
+    fireEvent.change(input, { target: { value: "" } });
+    fireEvent.blur(input);
+
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("closes editor without update on empty Enter", () => {
+    const mockUpdate = vi.fn();
+    mockTableRenderFirstRow();
+    setup(mockUpdate);
+
+    fireEvent.click(screen.getByText("80"));
+    const input = screen.getByDisplayValue("80");
+    fireEvent.change(input, { target: { value: "" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("renders non-owner empty cell as disabled button", () => {
+    setup();
+    const tableProps = vi.mocked(Table).mock.calls[0][0];
+    const renderCell = tableProps.cellRenderer!;
+    const nonOwnerRow = { id: "u2", name: "Bob", t1: "" };
+
+    const emptyCellComponent = renderCell("", "t1", nonOwnerRow);
+    const { container } = render(emptyCellComponent as React.ReactElement);
+    const button = container.querySelector("button");
+
+    expect(button).toBeDefined();
+    expect(button?.disabled).toBe(true);
+    expect(button?.style.backgroundColor).toBe("rgb(229, 231, 235)");
+  });
+
+  it("renders owner empty cell as enabled button", () => {
+    setup();
+    const tableProps = vi.mocked(Table).mock.calls[0][0];
+    const renderCell = tableProps.cellRenderer!;
+    const ownerEmptyRow = { id: "u1", name: "Alice", t2: "" };
+
+    const emptyCellComponent = renderCell("", "t2", ownerEmptyRow);
+    const { container } = render(emptyCellComponent as React.ReactElement);
+    const button = container.querySelector("button");
+
+    expect(button?.disabled).toBe(false);
+    expect(button?.style.backgroundColor).toBe("rgb(243, 244, 246)");
+  });
+
+  it("does not enter edit mode when non-owner clicks empty cell", () => {
+    const mockUpdate = vi.fn();
+    setup(mockUpdate);
+
+    const tableProps = vi.mocked(Table).mock.calls[0][0];
+    const renderCell = tableProps.cellRenderer!;
+    const nonOwnerRow = { id: "u2", name: "Bob", t2: "" };
+
+    const emptyCellComponent = renderCell("", "t2", nonOwnerRow);
+    const { container } = render(emptyCellComponent as React.ReactElement);
+    const button = container.querySelector("button");
+
+    expect(button?.disabled).toBe(true);
+  });
+
+  it("returns empty string for unhandled value types", () => {
+    setup();
+    const tableProps = vi.mocked(Table).mock.calls[0][0];
+    const renderCell = tableProps.cellRenderer!;
+    const row = { id: "u1", name: "Alice", t1: "unexpected" };
+
+    // Pass an unhandled value type (boolean in a topic cell)
+    const result = renderCell(true as unknown as number | string, "t1", row);
+    
+    expect(result).toBe("");
   });
 });
