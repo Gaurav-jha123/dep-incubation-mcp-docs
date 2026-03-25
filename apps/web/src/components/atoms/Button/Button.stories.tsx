@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryContext, StoryObj } from "@storybook/react-vite";
 import { Plus } from "lucide-react";
-import { fn } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { Button, type ButtonProps } from "./Button";
 
 const variantOptions = [
@@ -108,6 +108,13 @@ export const Primary: Story = {
   args: {
     variant: "primary",
     children: "Primary Button",
+  },
+  play: async ({ canvasElement, args }: StoryContext<ButtonProps>) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole("button", { name: /primary button/i });
+
+    await userEvent.click(button);
+    await expect(args.onClick).toHaveBeenCalledOnce();
   },
 };
 
