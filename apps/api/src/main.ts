@@ -50,9 +50,9 @@ async function createApp() {
       customSiteTitle: 'Dashboard API Docs',
     });
 
-    // Enable CORS - allow all origins
+    // Enable CORS - restrict to configured origin in production
     app.enableCors({
-      origin: true,
+      origin: configService.get<string>('CORS_ORIGIN', 'http://localhost:5173'),
       credentials: true,
     });
 
