@@ -13,6 +13,7 @@ const pseudoStateOptions = [
   "none",
   "hover",
   "active",
+  "focus",
   "focus-visible",
   "disabled",
 ] as const;
@@ -21,6 +22,7 @@ const stateMatrix = [
   { label: "Default", props: { pseudoState: "none" as const } },
   { label: "Hover", props: { pseudoState: "hover" as const } },
   { label: "Active", props: { pseudoState: "active" as const } },
+  { label: "Focus", props: { pseudoState: "focus" as const } },
   {
     label: "Focus Visible",
     props: { pseudoState: "focus-visible" as const },

@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Textarea } from "./Textarea";
 
+type TextareaStoryArgs = React.ComponentProps<typeof Textarea>;
+
 const variantOptions = ["default", "success", "filled", "error"] as const;
 
 const sizeOptions = ["sm", "md", "lg"] as const;
@@ -159,7 +161,7 @@ export const AllVariants: Story = {
     helperText: "Helper text",
   },
 
-  render: (args) => (
+  render: (args: TextareaStoryArgs) => (
     <div className="space-y-8">
       {(["sm", "md", "lg"] as const).map((textareaSize) => (
         <div key={textareaSize} className="space-y-3">

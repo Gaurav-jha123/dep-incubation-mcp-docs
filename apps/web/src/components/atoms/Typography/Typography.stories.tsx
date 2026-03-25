@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Typography, type TypographyVariant } from "./Typography";
 
+type TypographyStoryArgs = React.ComponentProps<typeof Typography>;
+
 const variantOptions: TypographyVariant[] = [
   "h1",
   "h2",
@@ -85,7 +87,7 @@ export const TypographyScale: Story = {
     pseudoState: "hover",
   },
 
-  render: (args) => (
+  render: (args: TypographyStoryArgs) => (
     <div className="space-y-4">
       <Typography {...args} variant="overline">
         Section label
@@ -207,7 +209,7 @@ export const StatePreviews: Story = {
     pseudoState: "hover",
     collapsible: false,
   },
-  render: (args) => (
+  render: (args: TypographyStoryArgs) => (
     <div className="space-y-4 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
       <div className="space-y-1">
         <Typography variant="overline">{args.pseudoState ?? "none"}</Typography>
@@ -228,7 +230,7 @@ export const AllVariants: Story = {
     pseudoState: "none",
     collapsible: false,
   },
-  render: (args) => (
+  render: (args: TypographyStoryArgs) => (
     <div className="space-y-4 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
       {variantOptions.map((variant) => (
         <div key={variant} className="space-y-1">
