@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { createRef } from "react";
 import { RadioGroup } from "./RadioGroup";
 
 afterEach(() => {
@@ -85,6 +86,45 @@ describe("RadioGroup Component", () => {
       const className = radioA.className;
       expect(className.includes("h-5")).toBe(true);
       expect(className.includes("w-5")).toBe(true);
+    });
+  });
+
+  describe("pseudo states", () => {
+    it("applies a data attribute for pseudo state previews", () => {
+      render(
+        <RadioGroup name="group1" options={options} pseudoState="hover" />,
+      );
+      const radioA = screen.getByRole("radio", { name: "Option A" });
+
+      expect(radioA.getAttribute("data-pseudo-state")).toBe("hover");
+    });
+
+    it("disables the full group for disabled pseudo state previews", () => {
+      render(
+        <RadioGroup name="group1" options={options} pseudoState="disabled" />,
+      );
+      const radioA = screen.getByRole("radio", { name: "Option A" });
+
+      expect(radioA.getAttribute("aria-disabled")).toBe("true");
+      expect(radioA.getAttribute("data-pseudo-state")).toBe("disabled");
+    });
+
+    it("omits the pseudo state data attribute by default", () => {
+      render(<RadioGroup name="group1" options={options} />);
+      const radioA = screen.getByRole("radio", { name: "Option A" });
+
+      expect(radioA.hasAttribute("data-pseudo-state")).toBe(false);
+    });
+  });
+
+  describe("ref forwarding", () => {
+    it("forwards ref to the group element", () => {
+      const ref = createRef<HTMLDivElement>();
+
+      render(<RadioGroup ref={ref} name="group1" options={options} />);
+
+      expect(ref.current).not.toBeNull();
+      expect(ref.current instanceof HTMLDivElement).toBe(true);
     });
   });
 });

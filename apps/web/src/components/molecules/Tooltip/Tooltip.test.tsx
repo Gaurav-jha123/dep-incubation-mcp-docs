@@ -77,6 +77,28 @@ describe("Tooltip", () => {
     expect(tooltip.getAttribute("role")).toBe("tooltip");
   });
 
+  it("shows tooltip for preview pseudo states without interaction", () => {
+    render(
+      <Tooltip content="Preview tooltip" pseudoState="hover">
+        <span>Preview trigger</span>
+      </Tooltip>,
+    );
+
+    const tooltip = screen.getByRole("tooltip");
+    expect(tooltip.getAttribute("data-pseudo-state")).toBe("hover");
+    expect(screen.getByText("Preview tooltip")).not.toBeNull();
+  });
+
+  it("keeps tooltip hidden when pseudoState is disabled", () => {
+    render(
+      <Tooltip content="Disabled tooltip" pseudoState="disabled">
+        <span>Disabled preview trigger</span>
+      </Tooltip>,
+    );
+
+    expect(screen.queryByRole("tooltip")).toBeNull();
+  });
+
   it("computes and renders position for bottom, left, and right placements", () => {
     const rectSpy = vi
       .spyOn(HTMLElement.prototype, "getBoundingClientRect")
