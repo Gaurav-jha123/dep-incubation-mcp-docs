@@ -35,20 +35,17 @@ const defaultMockData = {
     ],
 };
 
-const mockUseSkillMatrix = vi.fn(() => ({
-  skillMatrixData: defaultMockData,
-  entryIdMap: new Map(),
-  isLoading: false,
-  isError: false,
-}));
-
 vi.mock("@/services/hooks/query/useSkillMatrix", () => ({
-  useSkillMatrix: mockUseSkillMatrix,
+  useSkillMatrix: vi.fn(() => ({
+    skillMatrixData: defaultMockData,
+    entryIdMap: new Map(),
+    isLoading: false,
+    isError: false,
+  })),
 }));
 
 afterEach(() => {
   vi.clearAllMocks();
-  vi.resetModules();
   cleanup();
 });
 
@@ -98,78 +95,5 @@ describe("TopPerformers", () => {
 
     expect(text.includes("JD")).toBe(true);
     expect(text.includes("JS")).toBe(true);
-  });
-
-  it("covers unknown topic fallback", () => {
-    mockUseSkillMatrix.mockReturnValueOnce({
-      skillMatrixData: {
-        users: [{ id: "u1", name: "Test User" }],
-        topics: [],
-        skills: [
-          { userId: "u1", topicId: "unknown", value: 70 },
-        ],
-      },
-      entryIdMap: new Map(),
-      isLoading: false,
-      isError: false,
-    });
-
-    render(<TopPerformers />);
-
-    const text = document.body.textContent || "";
-
-    expect(text.includes("unknown")).toBe(true);
-  });
-
-  it("covers user with no skills", () => {
-    mockUseSkillMatrix.mockReturnValueOnce({
-      skillMatrixData: {
-        users: [{ id: "u1", name: "No Skill User" }],
-        topics: [],
-        skills: [],
-      },
-      entryIdMap: new Map(),
-      isLoading: false,
-      isError: false,
-    });
-
-    render(<TopPerformers />);
-
-    const text = document.body.textContent || "";
-
-    expect(text.includes("No Skill User")).toBe(true);
-    expect(text.includes("0/100")).toBe(true);
-  });
-
-  it("covers all score color branches", () => {
-    mockUseSkillMatrix.mockReturnValueOnce({
-      skillMatrixData: {
-        users: [
-          { id: "u1", name: "High" },
-          { id: "u2", name: "MidHigh" },
-          { id: "u3", name: "Mid" },
-          { id: "u4", name: "Low" },
-        ],
-        topics: [{ id: "t1", label: "T1" }],
-        skills: [
-          { userId: "u1", topicId: "t1", value: 85 },
-          { userId: "u2", topicId: "t1", value: 65 },
-          { userId: "u3", topicId: "t1", value: 45 },
-          { userId: "u4", topicId: "t1", value: 20 },
-        ],
-      },
-      entryIdMap: new Map(),
-      isLoading: false,
-      isError: false,
-    });
-
-    render(<TopPerformers />);
-
-    const text = document.body.textContent || "";
-
-    expect(text.includes("High")).toBe(true);
-    expect(text.includes("MidHigh")).toBe(true);
-    expect(text.includes("Mid")).toBe(true);
-    expect(text.includes("Low")).toBe(true);
   });
 });

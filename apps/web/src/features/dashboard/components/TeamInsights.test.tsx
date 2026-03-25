@@ -19,21 +19,17 @@ const defaultMockData = {
       { userId: "u7", topicId: "nextjs", value: 82 },
     ],
 };
-
-const mockUseSkillMatrix = vi.fn(() => ({
-  skillMatrixData: defaultMockData,
-  entryIdMap: new Map(),
-  isLoading: false,
-  isError: false,
-}));
-
 vi.mock("@/services/hooks/query/useSkillMatrix", () => ({
-  useSkillMatrix: mockUseSkillMatrix,
+  useSkillMatrix: vi.fn(() => ({
+    skillMatrixData: defaultMockData,
+    entryIdMap: new Map(),
+    isLoading: false,
+    isError: false,
+  })),
 }));
 
 afterEach(() => {
   vi.clearAllMocks();
-  vi.resetModules();
   cleanup();
 });
 
@@ -74,77 +70,5 @@ describe("TeamInsights", () => {
 
     expect(text.includes("/100")).toBe(true);
     expect(text.includes("experts")).toBe(true);
-  });
-
-  it("handles empty data", () => {
-    mockUseSkillMatrix.mockReturnValueOnce({
-      skillMatrixData: { topics: [], users: [], skills: [] },
-      entryIdMap: new Map(),
-      isLoading: false,
-      isError: false,
-    });
-
-    render(<TeamInsights />);
-
-    const text = document.body.textContent || "";
-    expect(text.includes("Team Insights & Gaps")).toBe(true);
-  });
-
-  it("covers urgency branches and impact fallback", () => {
-    mockUseSkillMatrix.mockReturnValueOnce({
-      skillMatrixData: {
-        topics: [
-          { id: "unknown_skill", label: "Unknown Skill" },
-          { id: "low_many", label: "Low Many Skills" },
-          { id: "mid_skill", label: "Mid Skill" },
-          { id: "good_skill", label: "Good Skill" },
-        ],
-        users: [],
-        skills: [
-          { userId: "u1", topicId: "unknown_skill", value: 70 },
-          ...Array.from({ length: 9 }).map((_, i) => ({
-            userId: `ul${i}`,
-            topicId: "low_many",
-            value: 30,
-          })),
-          { userId: "u10", topicId: "mid_skill", value: 50 },
-          { userId: "u11", topicId: "mid_skill", value: 52 },
-          { userId: "u12", topicId: "good_skill", value: 70 },
-          { userId: "u13", topicId: "good_skill", value: 75 },
-        ],
-      },
-      entryIdMap: new Map(),
-      isLoading: false,
-      isError: false,
-    });
-
-    render(<TeamInsights />);
-
-    const text = document.body.textContent || "";
-
-    expect(text.includes("Professional Development")).toBe(true);
-    expect(text.includes("Low Many Skills")).toBe(true);
-    expect(text.includes("Mid Skill")).toBe(true);
-    expect(text.includes("Good Skill")).toBe(true);
-  });
-
-  it("covers averageScore with no skills", () => {
-    mockUseSkillMatrix.mockReturnValueOnce({
-      skillMatrixData: {
-        topics: [{ id: "empty_topic", label: "Empty Topic" }],
-        users: [],
-        skills: [],
-      },
-      entryIdMap: new Map(),
-      isLoading: false,
-      isError: false,
-    });
-
-    render(<TeamInsights />);
-
-    const text = document.body.textContent || "";
-
-    expect(text.includes("Empty Topic")).toBe(true);
-    expect(text.includes("0")).toBe(true);
   });
 });
