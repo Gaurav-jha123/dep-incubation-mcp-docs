@@ -69,6 +69,7 @@ interface TriggerProps {
   className?: string
   showChevron?: boolean
   size?: Size // optional override
+  ariaLabel?: string
 }
 
 const Trigger: React.FC<TriggerProps> = ({
@@ -76,6 +77,7 @@ const Trigger: React.FC<TriggerProps> = ({
   className,
   showChevron = true,
   size: sizeProp,
+  ariaLabel,
 }) => {
   const { size: contextSize } = useDropdownContext()
   const size = sizeProp ?? contextSize
@@ -83,6 +85,7 @@ const Trigger: React.FC<TriggerProps> = ({
   return (
     <MenuButton
       data-testid="dropdown-trigger"
+      aria-label={ariaLabel}
       className={cn(
         "inline-flex items-center rounded-md gap-2 bg-neutral-50 border border-neutral-300 text-neutral-700 hover:bg-neutral-100",
         triggerSizes[size],
