@@ -17,6 +17,20 @@ type ExportButtonsProps = {
 };
 
 export default function ExportButtons({ skills, user, disabled = false }: ExportButtonsProps) {
+  const triggerDownload = (blob: Blob, filename: string) => {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    window.setTimeout(() => {
+      URL.revokeObjectURL(url);
+    }, 1000);
+  };
 
   const downloadCSV = () => {
     const headers = ["Skill", "Score"];
@@ -24,12 +38,7 @@ export default function ExportButtons({ skills, user, disabled = false }: Export
     const csvContent = [headers, ...rows].map((row) => row.join(",")).join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "skill-report.csv";
-    link.click();
-    URL.revokeObjectURL(url);
+    triggerDownload(blob, "skill-report.csv");
   };
 
   const downloadPDF = async () => {
@@ -37,13 +46,7 @@ export default function ExportButtons({ skills, user, disabled = false }: Export
       const blob = await pdf(
         <SkillReportDocument skills={skills} user={user} />
       ).toBlob();
-
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "skill-report.pdf";
-      link.click();
-      URL.revokeObjectURL(url);
+      triggerDownload(blob, "skill-report.pdf");
     } catch (error) {
       console.error("PDF generation failed:", error);
     }
