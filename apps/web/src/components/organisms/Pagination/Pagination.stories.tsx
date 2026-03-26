@@ -50,8 +50,9 @@ const meta: Meta<typeof Pagination> = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+// type PaginationStoryArgs = ComponentProps<typeof Pagination>
 
-const PaginationWrapper = (args: PaginationStoryProps) => {
+const PaginationWrapper = (args: React.ComponentProps<typeof Pagination>) => {
     const [currentPage, setCurrentPage] = useState(args.currentPage);
     return <Pagination {...args} currentPage={currentPage} onPageChange={setCurrentPage} />;
 };

@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 import { Switch, type SwitchPseudoState } from './Switch';
 
-type SwitchStoryProps = React.ComponentProps<typeof Switch>;
+type SwitchStoryProps = ComponentProps<typeof Switch>;
 
 const pseudoStateOptions = [
   "none",
