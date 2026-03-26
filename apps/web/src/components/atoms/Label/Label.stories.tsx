@@ -1,6 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Label } from "./Label";
 
+const variantOptions = [
+  "default",
+  "required",
+  "with helper",
+  "error",
+] as const;
+
+
 const meta: Meta<typeof Label> = {
   title: "Atoms/Label",
   component: Label,
@@ -41,4 +49,21 @@ export const Error: Story = {
     htmlFor: "email",
     error: "Invalid email address",
   },
+};
+
+export const AllVariants: Story = {
+  render: () => (
+    <div className="space-y-4 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
+      {variantOptions.map((variant) => (
+        <div key={variant} className="space-y-1">
+          <Label
+          htmlFor={`${variant}-input`}
+          required={variant === "required"}
+          helperText={variant === "with helper" ? "Helper text goes here" : undefined}
+          error={variant === "error" ? "Error message goes here" : undefined}
+          label="Label" />
+        </div>
+      ))}
+    </div>
+  ),
 };
