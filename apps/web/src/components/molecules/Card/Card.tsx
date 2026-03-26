@@ -1,5 +1,13 @@
 import React from "react";
 
+export type CardPseudoState =
+  | "none"
+  | "hover"
+  | "active"
+  | "focus"
+  | "focus-visible"
+  | "disabled";
+
 export interface CardProps {
   /** Card variant */
   variant?: "simple" | "header" | "image" | "actions" | "styled";
@@ -27,6 +35,9 @@ export interface CardProps {
 
   /** Extra classes */
   className?: string;
+
+  /** Preview pseudo states in Storybook */
+  pseudoState?: CardPseudoState;
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -39,9 +50,11 @@ export const Card: React.FC<CardProps> = ({
   styleVariant = "solid",
   children,
   className = "",
+  pseudoState = "none",
 }) => {
+  const pseudoStateData = pseudoState === "none" ? undefined : pseudoState;
   const base =
-    "rounded-lg overflow-hidden bg-card shadow-sm border border-border";
+    "rounded-lg overflow-hidden border border-border bg-card shadow-sm transition-[background-color,border-color,box-shadow,transform,opacity] data-[pseudo-state=hover]:border-neutral-400 data-[pseudo-state=hover]:bg-neutral-50 data-[pseudo-state=hover]:shadow-md data-[pseudo-state=active]:translate-y-px data-[pseudo-state=active]:border-neutral-700 data-[pseudo-state=active]:bg-neutral-50 data-[pseudo-state=active]:shadow-sm data-[pseudo-state=focus]:border-neutral-500 data-[pseudo-state=focus]:ring-2 data-[pseudo-state=focus]:ring-neutral-400/60 data-[pseudo-state=focus]:ring-offset-2 data-[pseudo-state=focus-visible]:border-primary-500 data-[pseudo-state=focus-visible]:ring-2 data-[pseudo-state=focus-visible]:ring-primary-500/40 data-[pseudo-state=focus-visible]:ring-offset-2 data-[pseudo-state=disabled]:bg-neutral-50 data-[pseudo-state=disabled]:opacity-60";
 
   const styledVariants = {
     solid: "bg-card border border-border shadow-md",
@@ -50,11 +63,18 @@ export const Card: React.FC<CardProps> = ({
   };
 
   return (
-    <div className={`${base} ${variant === "styled" ? styledVariants[styleVariant] : ""} ${className}`}>
-      
+    <div
+      data-pseudo-state={pseudoStateData}
+      aria-disabled={pseudoState === "disabled" || undefined}
+      className={`${base} ${variant === "styled" ? styledVariants[styleVariant] : ""} ${className}`}
+    >
       {/* Image Variant */}
       {variant === "image" && imageSrc && (
-        <img src={imageSrc} alt={imageAlt} className="w-full object-cover h-48" />
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          className="w-full object-cover h-48"
+        />
       )}
 
       {/* Header Variant */}

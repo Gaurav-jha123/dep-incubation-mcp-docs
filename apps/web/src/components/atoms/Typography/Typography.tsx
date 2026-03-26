@@ -43,8 +43,8 @@ interface TypographyProps {
 const typographyVariants = cva(
   [
     "rounded-sm text-balance transition-[color,opacity,box-shadow]",
-    "data-[pseudo-state=hover]:text-primary-900",
-    "data-[pseudo-state=active]:text-primary-900",
+    "data-[pseudo-state=hover]:text-neutral-900",
+    "data-[pseudo-state=active]:text-neutral-900",
     "data-[pseudo-state=focus]:ring-2 data-[pseudo-state=focus]:ring-primary-500/30 data-[pseudo-state=focus]:ring-offset-2",
     "data-[pseudo-state=focus-visible]:ring-2 data-[pseudo-state=focus-visible]:ring-primary-500/30 data-[pseudo-state=focus-visible]:ring-offset-2",
     "data-[pseudo-state=disabled]:text-neutral-700",
