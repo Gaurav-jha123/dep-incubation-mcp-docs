@@ -45,14 +45,18 @@ const SkillMatrix = () => {
   const [queryFilters, setQueryFilters] = useState<QueryFilter[]>([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState<"success" | "error">("success");
   const hideTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const showSuccessAlert = useCallback((message: string) => {
-    clearTimeout(hideTimerRef.current);
-    setAlertMessage(message);
-    setShowAlert(true);
-    hideTimerRef.current = setTimeout(() => setShowAlert(false), 3000);
-  }, []);
+  const showAlertNotification = useCallback(
+    (message: string, type: "success" | "error" = "success") => {
+      clearTimeout(hideTimerRef.current);
+      setAlertMessage(message);
+      setAlertType(type);
+      setShowAlert(true);
+      hideTimerRef.current = setTimeout(() => setShowAlert(false), 3000);
+    },[],
+  );
   useEffect(() => {
     return () => {
       if (hideTimerRef.current) {
@@ -96,7 +100,10 @@ const SkillMatrix = () => {
       // Entry exists - update it
       updateMutation.mutate(
         { id: entryId, data: { value } },
-        { onSuccess: () => showSuccessAlert("Skill updated successfully!") },
+        {
+          onSuccess: () => showAlertNotification("Skill updated successfully!"),
+          onError: () => showAlertNotification("Failed to update skill.", "error"),
+        },
       );
     } else {
       // Entry doesn't exist - create a new one
@@ -107,7 +114,10 @@ const SkillMatrix = () => {
       if (!Number.isNaN(userIdNum) && !Number.isNaN(topicIdNum)) {
         createMutation.mutate(
           { topicId: topicIdNum, value },
-          { onSuccess: () => showSuccessAlert("Skill added successfully!") },
+          {
+            onSuccess: () => showAlertNotification("Skill added successfully!"),
+            onError: () => showAlertNotification("Failed to add skill.", "error"),
+          },
         );
       }
     }
@@ -155,7 +165,10 @@ const SkillMatrix = () => {
       return;
     }
 
-    createUserMutation.mutate(name.trim());
+    createUserMutation.mutate(name.trim(), {
+      onSuccess: () => showAlertNotification("User added successfully!"),
+      onError: () => showAlertNotification("Failed to add user.", "error"),
+    });
   };
 
   const handleTopicCreate = (label: string) => {
@@ -168,7 +181,10 @@ const SkillMatrix = () => {
       return;
     }
 
-    createTopicMutation.mutate(label.trim());
+    createTopicMutation.mutate(label.trim(), {
+      onSuccess: () => showAlertNotification("Topic added successfully!"),
+      onError: () => showAlertNotification("Failed to add topic.", "error"),
+    });
   };
 
   // Compute ordered topics based on current filter and custom order
@@ -211,12 +227,12 @@ const SkillMatrix = () => {
       {/* Alert Notification */}
       {showAlert && (
         <Alert
-          type="success"
+          type={alertType}
           message={alertMessage}
           isOpen={showAlert}
           closable
           onClose={() => setShowAlert(false)}
-          className="fixed top-15 right-4 z-50"
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] transition-all duration-300"
         />
       )}
 
@@ -271,3 +287,4 @@ const SkillMatrix = () => {
 };
 
 export default SkillMatrix;
+ 
