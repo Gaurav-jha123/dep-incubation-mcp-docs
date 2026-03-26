@@ -7,10 +7,12 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
+import { Button } from '@/components/atoms';
 import {SlidersHorizontal, X} from 'lucide-react';
 import SkillMatrixFilter from './SkillMatrixFilter';
 import SkillMatrixColumnRearrange from './SkillMatrixColumnRearrange';
 import SkillMatrixQueryBuilder, { type QueryFilter } from './SkillMatrixQueryBuilder';
+
 import type {Topic} from './types';
 
 interface SkillMatrixDrawerProps {
@@ -49,14 +51,14 @@ export default function SkillMatrixDrawer({
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
-        <button
+        <Button
           type="button"
-          className="cursor-pointer rounded-md border border-input bg-background px-3 py-2 text-sm font-medium text-foreground hover:bg-accent"
+          variant='secondary'
           aria-label="Open filters and settings"
           title="Filters & Settings"
         >
           <SlidersHorizontal className="size-5" />
-        </button>
+        </Button>
       </DrawerTrigger>
       <DrawerContent className="sm:max-w-3xl md:max-w-4xl lg:max-w-5xl">
         <DrawerHeader className="flex flex-row items-start justify-between">
@@ -67,13 +69,12 @@ export default function SkillMatrixDrawer({
             </DrawerDescription>
           </div>
           <DrawerClose asChild>
-            <button
-              type="button"
-              className="rounded-sm cursor-pointer opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            <Button
               aria-label="Close"
+              variant='ghost'
             >
               <X className="size-5" />
-            </button>
+            </Button>
           </DrawerClose>
         </DrawerHeader>
         <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-4">
