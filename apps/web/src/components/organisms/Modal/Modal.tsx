@@ -9,6 +9,14 @@ import {
 } from "@headlessui/react";
 import { X } from "lucide-react";
 
+export type ModalPseudoState =
+  | "none"
+  | "hover"
+  | "active"
+  | "focus"
+  | "focus-visible"
+  | "disabled";
+
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -21,6 +29,7 @@ export interface ModalProps {
   footer?: React.ReactNode;
 
   size?: "sm" | "md" | "lg" | "xl";
+  pseudoState?: ModalPseudoState;
 
   className?: string;
 }
@@ -34,6 +43,7 @@ export const Modal: React.FC<ModalProps> = ({
   children,
   footer,
   size = "md",
+  pseudoState = "none",
   className = "",
 }) => {
   const sizeStyles = {
@@ -80,8 +90,18 @@ export const Modal: React.FC<ModalProps> = ({
                 bg-card
                 shadow-xl
                 overflow-hidden
+                transition-[transform,box-shadow,outline-color]
+                data-[pseudo-state=hover]:shadow-2xl
+                data-[pseudo-state=active]:scale-[0.99]
+                data-[pseudo-state=focus]:ring-2
+                data-[pseudo-state=focus]:ring-primary-500/40
+                data-[pseudo-state=focus-visible]:ring-2
+                data-[pseudo-state=focus-visible]:ring-primary-500/40
+                data-[pseudo-state=disabled]:opacity-60
                 ${className}
               `}
+              data-pseudo-state={pseudoState === "none" ? undefined : pseudoState}
+              aria-disabled={pseudoState === "disabled" || undefined}
             >
               {(title || description || showCancelButton) && (
                 <div className="px-6 py-4 border-b border-border">
@@ -99,6 +119,10 @@ export const Modal: React.FC<ModalProps> = ({
                         aria-label="Close modal"
                         className="inline-flex cursor-pointer size-8 items-center justify-center rounded-md border border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground"
                         onClick={onClose}
+                        data-pseudo-state={
+                          pseudoState === "none" ? undefined : pseudoState
+                        }
+                        disabled={pseudoState === "disabled"}
                       >
                         <X size={16} />
                       </button>
