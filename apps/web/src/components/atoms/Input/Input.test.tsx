@@ -1,9 +1,8 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { createRef  } from "react";
+import { createRef } from "react";
 import { Input } from "./Input";
 import type { ChangeEvent } from "react";
-
 
 afterEach(() => cleanup());
 
@@ -11,9 +10,7 @@ const renderInput = (props = {}) => render(<Input {...props} />);
 const getInput = () => screen.getByRole("textbox");
 
 describe("Input Component", () => {
-
   describe("Rendering", () => {
-
     it("renders input element", () => {
       renderInput();
       expect(getInput()).not.toBeNull();
@@ -33,27 +30,25 @@ describe("Input Component", () => {
       renderInput({ label: "Email", required: true });
       expect(screen.getByText("*")).not.toBeNull();
     });
-
   });
 
   describe("Interaction", () => {
-  it("calls onChange callback", () => {
-    let value = "";
+    it("calls onChange callback", () => {
+      let value = "";
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      value = e.target.value;
-    };
+      const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        value = e.target.value;
+      };
 
-    renderInput({ onChange: handleChange });
+      renderInput({ onChange: handleChange });
 
-    fireEvent.change(getInput(), { target: { value: "test" } });
+      fireEvent.change(getInput(), { target: { value: "test" } });
 
-    expect(value).toBe("test");
+      expect(value).toBe("test");
+    });
   });
-});
 
   describe("Variants", () => {
-
     it("applies default styles", () => {
       renderInput();
       expect(getInput().className.includes("border-neutral-500")).toBe(true);
@@ -70,11 +65,9 @@ describe("Input Component", () => {
       expect(getInput()).not.toBeNull();
       expect(screen.getByText("Outlined Input")).not.toBeNull();
     });
-
   });
 
   describe("Messages", () => {
-
     it("shows helper text", () => {
       renderInput({ helperText: "Enter username" });
       expect(screen.getByText("Enter username")).not.toBeNull();
@@ -89,11 +82,9 @@ describe("Input Component", () => {
       renderInput({ error: "Invalid", helperText: "Helper text" });
       expect(screen.queryByText("Helper text")).toBeNull();
     });
-
   });
 
   describe("Character Count", () => {
-
     it("shows character count", () => {
       renderInput({ showCharCount: true, maxLength: 10, value: "test" });
       expect(screen.getByText("4 / 10")).not.toBeNull();
@@ -105,11 +96,9 @@ describe("Input Component", () => {
       const counter = screen.getByText("5 / 3");
       expect(counter.className.includes("text-danger-500")).toBe(true);
     });
-
   });
 
   describe("Icons", () => {
-
     it("renders left icon", () => {
       renderInput({ leftIcon: <span data-testid="left-icon">L</span> });
       expect(screen.getByTestId("left-icon")).not.toBeNull();
@@ -131,7 +120,6 @@ describe("Input Component", () => {
       expect(input.className.includes("pl-10")).toBe(true);
       expect(input.className.includes("pr-10")).toBe(true);
     });
-
   });
 
   describe("State", () => {
@@ -144,11 +132,9 @@ describe("Input Component", () => {
       const { container } = renderInput({ fullWidth: true });
       expect(container.querySelector(".w-full")).not.toBeNull();
     });
-
   });
 
   describe("Accessibility", () => {
-
     it("adds aria-describedby when helper text exists", () => {
       renderInput({ helperText: "helper message" });
 
@@ -160,11 +146,9 @@ describe("Input Component", () => {
 
       expect(getInput().getAttribute("aria-describedby")).not.toBeNull();
     });
-
   });
 
   describe("Ref Forwarding", () => {
-
     it("forwards ref to input element", () => {
       const ref = createRef<HTMLInputElement>();
 
@@ -173,11 +157,9 @@ describe("Input Component", () => {
       expect(ref.current).not.toBeNull();
       expect(ref.current instanceof HTMLInputElement).toBe(true);
     });
-
   });
 
   describe("Remaining Branch Coverage", () => {
-
     it("renders right icon only", () => {
       renderInput({ rightIcon: <span data-testid="right">R</span> });
       expect(screen.getByTestId("right")).not.toBeNull();
@@ -205,7 +187,11 @@ describe("Input Component", () => {
     });
 
     it("renders outlined input with helper text", () => {
-      renderInput({ variant: "outlined", label: "Email", helperText: "Helper text" });
+      renderInput({
+        variant: "outlined",
+        label: "Email",
+        helperText: "Helper text",
+      });
 
       expect(screen.getByText("Helper text")).not.toBeNull();
     });
@@ -221,7 +207,5 @@ describe("Input Component", () => {
 
       expect(screen.getByText("4 / 10")).not.toBeNull();
     });
-
   });
-
 });

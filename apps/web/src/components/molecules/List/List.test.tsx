@@ -4,6 +4,10 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { cleanup } from "@testing-library/react";
 import { List } from "./List";
 
+afterEach(() => {
+  cleanup();
+});
+
 const mockItems = [
   {
     label: "Item 1",
@@ -67,8 +71,8 @@ it("passes correct item to onChange", async () => {
 
   await user.click(options[1]);
 
-  expect(handleChange).toHaveBeenCalledWith(mockItems[1]);
-});
+    expect(handleChange).toHaveBeenCalledWith(mockItems[1]);
+  });
 
   it("shows checkmark when item is selected", () => {
     render(<List items={mockItems} value={mockItems[0]} />);
@@ -94,9 +98,7 @@ it("passes correct item to onChange", async () => {
   });
 
   it("applies bordered variant styles", () => {
-    const { container } = render(
-      <List items={mockItems} variant="bordered" />
-    );
+    const { container } = render(<List items={mockItems} variant="bordered" />);
 
     const listbox = container.querySelector("[aria-label='Selectable items']");
 
@@ -105,12 +107,11 @@ it("passes correct item to onChange", async () => {
 
   it("applies custom className", () => {
     const { container } = render(
-      <List items={mockItems} className="custom-class" />
+      <List items={mockItems} className="custom-class" />,
     );
 
     const listbox = container.querySelector("[aria-label='Selectable items']");
 
     expect(listbox?.className.includes("custom-class")).toBe(true);
   });
-
 });

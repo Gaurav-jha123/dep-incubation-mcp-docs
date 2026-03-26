@@ -11,11 +11,13 @@ const selectSchema = z.object({
 
 type SelectValues = z.infer<typeof selectSchema>;
 
-const SingleSelectTemplate = ({ options, label, placeholder }: {
+type SelectTemplateProps = {
   options: string[];
   label?: string;
   placeholder?: string;
-}) => {
+};
+
+const SingleSelectTemplate = ({ options, label, placeholder }: SelectTemplateProps) => {
   const {
     control,
     formState: { errors },
@@ -66,11 +68,7 @@ const SingleSelectTemplate = ({ options, label, placeholder }: {
   );
 };
 
-const MultiSelectTemplate = ({ options, label, placeholder }: {
-  options: string[];
-  label?: string;
-  placeholder?: string;
-}) => {
+const MultiSelectTemplate = ({ options, label, placeholder }: SelectTemplateProps) => {
   const {
     control,
     formState: { errors },
@@ -158,7 +156,7 @@ export const RoleSelect: Story = {
 };
 
 export const MultiSelectHobbies: Story = {
-  render: (args) => <MultiSelectTemplate {...args} />,
+  render: (args: SelectTemplateProps) => <MultiSelectTemplate {...args} />,
   args: {
     options: ["reading", "sports", "music", "travel", "cooking"],
     label: "Hobbies",
@@ -175,7 +173,7 @@ export const CountrySelect: Story = {
 };
 
 export const MultiSelectSkills: Story = {
-  render: (args) => <MultiSelectTemplate {...args} />,
+  render: (args: SelectTemplateProps) => <MultiSelectTemplate {...args} />,
   args: {
     options: ["javascript", "typescript", "react", "vue", "angular", "nodejs"],
     label: "Skills",

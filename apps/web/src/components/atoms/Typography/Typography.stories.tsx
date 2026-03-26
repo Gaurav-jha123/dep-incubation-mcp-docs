@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Typography, type TypographyVariant } from "./Typography";
 
+type TypographyStoryArgs = React.ComponentProps<typeof Typography>;
+
 const variantOptions: TypographyVariant[] = [
   "h1",
   "h2",
@@ -85,7 +87,7 @@ export const TypographyScale: Story = {
     pseudoState: "hover",
   },
 
-  render: (args) => (
+  render: (args: TypographyStoryArgs) => (
     <div className="space-y-4">
       <Typography {...args} variant="overline">
         Section label
@@ -202,33 +204,12 @@ export const CollapsibleHeading: Story = {
   },
 };
 
-export const StatePreviews: Story = {
-  args: {
-    pseudoState: "hover",
-    collapsible: false,
-  },
-  render: (args) => (
-    <div className="space-y-4 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
-      <div className="space-y-1">
-        <Typography variant="overline">{args.pseudoState ?? "none"}</Typography>
-        <Typography variant="h4" pseudoState={args.pseudoState}>
-          Project readiness summary
-        </Typography>
-        <Typography variant="body" pseudoState={args.pseudoState}>
-          Typography pseudo states are intended for design review and Storybook
-          previews.
-        </Typography>
-      </div>
-    </div>
-  ),
-};
-
 export const AllVariants: Story = {
   args: {
     pseudoState: "none",
     collapsible: false,
   },
-  render: (args) => (
+  render: (args: TypographyStoryArgs) => (
     <div className="space-y-4 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
       {variantOptions.map((variant) => (
         <div key={variant} className="space-y-1">
@@ -242,6 +223,27 @@ export const AllVariants: Story = {
           </Typography>
         </div>
       ))}
+    </div>
+  ),
+};
+
+export const StatePreviews: Story = {
+  args: {
+    pseudoState: "hover",
+    collapsible: false,
+  },
+  render: (args: TypographyStoryArgs) => (
+    <div className="space-y-4 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
+      <div className="space-y-1">
+        <Typography variant="overline">{args.pseudoState ?? "none"}</Typography>
+        <Typography variant="h4" pseudoState={args.pseudoState}>
+          Project readiness summary
+        </Typography>
+        <Typography variant="body" pseudoState={args.pseudoState}>
+          Typography pseudo states are intended for design review and Storybook
+          previews.
+        </Typography>
+      </div>
     </div>
   ),
 };
