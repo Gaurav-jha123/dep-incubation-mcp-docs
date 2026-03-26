@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { within, userEvent } from '@storybook/testing-library';
 import { Pagination } from './Pagination';
 
 type PaginationStoryProps = React.ComponentProps<typeof Pagination>;
@@ -128,5 +129,130 @@ export const States: Story = {
     args: {
         currentPage: 4,
         totalPages: 10,
+    },
+};
+
+export const ClickNext: Story = {
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
+    args: {
+        currentPage: 1,
+        totalPages: 10,
+    },
+    play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+        const canvas = within(canvasElement);
+        const nextButton = canvas.getByText('Next');
+
+        await userEvent.click(nextButton);
+
+        const page2Button = canvas.getByText('2');
+        if (!page2Button.className.includes('bg-primary-500')) {
+            throw new Error('Page 2 should be active after clicking Next');
+        }
+    },
+};
+
+export const ClickPrevious: Story = {
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
+    args: {
+        currentPage: 5,
+        totalPages: 10,
+    },
+    play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+        const canvas = within(canvasElement);
+        const prevButton = canvas.getByText('Previous');
+
+        await userEvent.click(prevButton);
+
+        const page4Button = canvas.getByText('4');
+        if (!page4Button.className.includes('bg-primary-500')) {
+            throw new Error('Page 4 should be active after clicking Previous');
+        }
+    },
+};
+
+export const ClickSpecificPage: Story = {
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
+    args: {
+        currentPage: 1,
+        totalPages: 10,
+    },
+    play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+        const canvas = within(canvasElement);
+
+        await userEvent.click(canvas.getByText('3'));
+
+        const page3Button = canvas.getByText('3');
+        if (!page3Button.className.includes('bg-primary-500')) {
+            throw new Error('Page 3 should be active after clicking it');
+        }
+    },
+};
+
+export const NavigateMultipleSteps: Story = {
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
+    args: {
+        currentPage: 1,
+        totalPages: 10,
+    },
+    play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+        const canvas = within(canvasElement);
+        const nextButton = canvas.getByText('Next');
+        const prevButton = canvas.getByText('Previous');
+
+        await userEvent.click(nextButton);
+        await userEvent.click(nextButton);
+        await userEvent.click(nextButton);
+        await userEvent.click(prevButton);
+
+        const page3Button = canvas.getByText('3');
+        if (!page3Button.className.includes('bg-primary-500')) {
+            throw new Error('Page 3 should be active after 3 Nexts and 1 Previous');
+        }
+    },
+};
+
+export const FirstPageBoundary: Story = {
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
+    args: {
+        currentPage: 1,
+        totalPages: 10,
+    },
+    play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+        const canvas = within(canvasElement);
+        const prevButton = canvas.getByText('Previous');
+        const nextButton = canvas.getByText('Next');
+
+        if (!prevButton.hasAttribute('disabled')) {
+            throw new Error('Previous should be disabled on page 1');
+        }
+
+        await userEvent.click(nextButton);
+
+        if (prevButton.hasAttribute('disabled')) {
+            throw new Error('Previous should be enabled after navigating to page 2');
+        }
+    },
+};
+
+export const LastPageBoundary: Story = {
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
+    args: {
+        currentPage: 10,
+        totalPages: 10,
+    },
+    play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+        const canvas = within(canvasElement);
+        const nextButton = canvas.getByText('Next');
+        const prevButton = canvas.getByText('Previous');
+
+        if (!nextButton.hasAttribute('disabled')) {
+            throw new Error('Next should be disabled on the last page');
+        }
+
+        await userEvent.click(prevButton);
+
+        if (nextButton.hasAttribute('disabled')) {
+            throw new Error('Next should be enabled after navigating to page 9');
+        }
     },
 };
