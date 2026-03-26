@@ -155,7 +155,9 @@ const SkillMatrix = () => {
       return;
     }
 
-    createUserMutation.mutate(name.trim());
+    createUserMutation.mutate(name.trim(), {
+      onSuccess: () => showSuccessAlert("User added successfully!"),
+    });
   };
 
   const handleTopicCreate = (label: string) => {
@@ -168,7 +170,9 @@ const SkillMatrix = () => {
       return;
     }
 
-    createTopicMutation.mutate(label.trim());
+    createTopicMutation.mutate(label.trim(), {
+      onSuccess: () => showSuccessAlert("Topic added successfully!"),
+    });
   };
 
   // Compute ordered topics based on current filter and custom order
@@ -216,7 +220,7 @@ const SkillMatrix = () => {
           isOpen={showAlert}
           closable
           onClose={() => setShowAlert(false)}
-          className="fixed top-15 right-4 z-50"
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] transition-all duration-300"
         />
       )}
 
@@ -271,3 +275,4 @@ const SkillMatrix = () => {
 };
 
 export default SkillMatrix;
+ 
