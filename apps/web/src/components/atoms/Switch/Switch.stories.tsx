@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { Switch } from './Switch';
 
@@ -14,28 +15,29 @@ const meta: Meta<typeof Switch> = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+type SwitchStoryArgs = ComponentProps<typeof Switch>;
 
-const SwitchWrapper = (args: React.ComponentProps<typeof Switch>) => {
+const SwitchWrapper = (args: SwitchStoryArgs) => {
     const [checked, setChecked] = useState(args.checked || false);
     return <Switch {...args} checked={checked} onChange={setChecked} />;
 };
 
 export const Default: Story = {
-    render: (args) => <SwitchWrapper {...args} />,
+    render: (args: SwitchStoryArgs) => <SwitchWrapper {...args} />,
     args: {
         checked: false,
     },
 };
 
 export const Checked: Story = {
-    render: (args) => <SwitchWrapper {...args} />,
+    render: (args: SwitchStoryArgs) => <SwitchWrapper {...args} />,
     args: {
         checked: true,
     },
 };
 
 export const Disabled: Story = {
-    render: (args) => <SwitchWrapper {...args} />,
+    render: (args: SwitchStoryArgs) => <SwitchWrapper {...args} />,
     args: {
         checked: false,
         disabled: true,
@@ -43,7 +45,7 @@ export const Disabled: Story = {
 };
 
 export const CheckedDisabled: Story = {
-    render: (args) => <SwitchWrapper {...args} />,
+    render: (args: SwitchStoryArgs) => <SwitchWrapper {...args} />,
     args: {
         checked: true,
         disabled: true,

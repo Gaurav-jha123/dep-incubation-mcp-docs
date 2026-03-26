@@ -74,6 +74,7 @@ const meta: Meta<typeof Tabs> = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+type TabsStoryArgs = React.ComponentProps<typeof Tabs>;
 
 export const Basic: Story = {
   args: {
@@ -92,7 +93,7 @@ export const Basic: Story = {
       },
     ],
   },
-  render: (args) => (
+  render: (args: TabsStoryArgs) => (
     <div className="w-[500px]">
       <Tabs {...args} />
     </div>
@@ -117,7 +118,7 @@ export const WithDisabledTab: Story = {
       },
     ],
   },
-  render: (args) => (
+  render: (args: TabsStoryArgs) => (
     <div className="w-[500px]">
       <Tabs {...args} />
     </div>
@@ -192,7 +193,7 @@ export const PillVariant: Story = {
       },
     ],
   },
-  render: (args) => (
+  render: (args: TabsStoryArgs) => (
     <div className="w-[500px]">
       <Tabs {...args} />
     </div>

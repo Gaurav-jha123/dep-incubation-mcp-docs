@@ -20,9 +20,10 @@ const meta: Meta<typeof Modal> = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+type ModalStoryArgs = React.ComponentProps<typeof Modal>;
 
 export const Default: Story = {
-  render: (args) => {
+  render: (args: ModalStoryArgs) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -50,7 +51,7 @@ export const Default: Story = {
 };
 
 export const WithFooterActions: Story = {
-  render: (args) => {
+  render: (args: ModalStoryArgs) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -88,7 +89,7 @@ export const WithFooterActions: Story = {
 };
 
 export const LargeModal: Story = {
-  render: (args) => {
+  render: (args: ModalStoryArgs) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -117,7 +118,7 @@ export const LargeModal: Story = {
 };
 
 export const ScrollableContent: Story = {
-  render: (args) => {
+  render: (args: ModalStoryArgs) => {
     const [open, setOpen] = useState(false);
 
     return (
