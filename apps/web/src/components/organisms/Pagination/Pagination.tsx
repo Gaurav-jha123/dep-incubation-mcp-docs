@@ -5,22 +5,35 @@ interface PaginationProps {
   totalPages: number;
   onPageChange: (page: number) => void;
   className?: string;
+  pseudoState?:
+    | 'none'
+    | 'hover'
+    | 'active'
+    | 'focus'
+    | 'focus-visible'
+    | 'disabled';
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
-    className = '',
+  className = '',
+  pseudoState = 'none',
 }) => {
+  const isPseudoDisabled = pseudoState === 'disabled';
+
+  const baseButtonClasses =
+    'px-3 py-1 text-sm border rounded transition-[background-color,border-color,color,box-shadow] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500/40 hover:bg-neutral-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent data-[pseudo-state=hover]:bg-neutral-200 data-[pseudo-state=active]:bg-neutral-300 data-[pseudo-state=focus]:ring-2 data-[pseudo-state=focus]:ring-offset-2 data-[pseudo-state=focus]:ring-primary-500/40 data-[pseudo-state=focus-visible]:ring-2 data-[pseudo-state=focus-visible]:ring-offset-2 data-[pseudo-state=focus-visible]:ring-primary-500/40';
+
   const handlePrevious = () => {
-    if (currentPage > 1) {
+    if (currentPage > 1 && !isPseudoDisabled) {
       onPageChange(currentPage - 1);
     }
   };
 
   const handleNext = () => {
-    if (currentPage < totalPages) {
+    if (currentPage < totalPages && !isPseudoDisabled) {
       onPageChange(currentPage + 1);
     }
   };
@@ -40,10 +53,12 @@ export const Pagination: React.FC<PaginationProps> = ({
       <button
         key={p}
         onClick={() => onPageChange(p)}
-        className={`px-3 py-1 text-sm border rounded ${
+        disabled={isPseudoDisabled}
+        data-pseudo-state={pseudoState === 'none' ? undefined : pseudoState}
+        className={`${baseButtonClasses} ${
           currentPage === p
             ? "bg-primary-500 text-neutral-50 border-primary-500"
-            : "hover:bg-neutral-200"
+            : ''
         }`}
       >
         {p}
@@ -55,7 +70,9 @@ export const Pagination: React.FC<PaginationProps> = ({
         <button
           key={1}
           onClick={() => onPageChange(1)}
-          className="px-3 py-1 text-sm border rounded hover:bg-neutral-200"
+          disabled={isPseudoDisabled}
+          data-pseudo-state={pseudoState === 'none' ? undefined : pseudoState}
+          className={baseButtonClasses}
         >
           1
         </button>
@@ -85,7 +102,9 @@ export const Pagination: React.FC<PaginationProps> = ({
         <button
           key={totalPages}
           onClick={() => onPageChange(totalPages)}
-          className="px-3 py-1 text-sm border rounded hover:bg-neutral-200"
+          disabled={isPseudoDisabled}
+          data-pseudo-state={pseudoState === 'none' ? undefined : pseudoState}
+          className={baseButtonClasses}
         >
           {totalPages}
         </button>
@@ -99,8 +118,9 @@ export const Pagination: React.FC<PaginationProps> = ({
     <div className={`flex items-center gap-2 ${className}`}>
       <button
         onClick={handlePrevious}
-        disabled={currentPage === 1}
-        className="px-3 py-1 text-sm border rounded hover:bg-neutral-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={currentPage === 1 || isPseudoDisabled}
+        data-pseudo-state={pseudoState === 'none' ? undefined : pseudoState}
+        className={baseButtonClasses}
       >
         Previous
       </button>
@@ -111,8 +131,9 @@ export const Pagination: React.FC<PaginationProps> = ({
 
       <button
         onClick={handleNext}
-        disabled={currentPage === totalPages}
-        className="px-3 py-1 text-sm border rounded hover:bg-neutral-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={currentPage === totalPages || isPseudoDisabled}
+        data-pseudo-state={pseudoState === 'none' ? undefined : pseudoState}
+        className={baseButtonClasses}
       >
         Next
       </button>
