@@ -20,6 +20,7 @@ const meta: Meta<typeof List> = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+type ListStoryArgs = React.ComponentProps<typeof List>;
 
 const items: ListItem[] = [
   {
@@ -37,7 +38,7 @@ const items: ListItem[] = [
 ];
 
 export const Default: Story = {
-  render: (args) => {
+  render: (args: ListStoryArgs) => {
     const [selected, setSelected] = useState<ListItem>(items[0]);
 
     return (

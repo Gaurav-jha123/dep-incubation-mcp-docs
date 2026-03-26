@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { within, userEvent } from '@storybook/testing-library';
 import { Pagination } from './Pagination';
@@ -16,8 +17,9 @@ const meta: Meta<typeof Pagination> = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+type PaginationStoryArgs = ComponentProps<typeof Pagination>;
 
-const PaginationWrapper = (args: React.ComponentProps<typeof Pagination>) => {
+const PaginationWrapper = (args: PaginationStoryArgs) => {
     const [currentPage, setCurrentPage] = useState(args.currentPage);
     return <Pagination {...args} currentPage={currentPage} onPageChange={setCurrentPage} />;
 };
