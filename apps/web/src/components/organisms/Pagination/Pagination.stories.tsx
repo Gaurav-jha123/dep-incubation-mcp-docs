@@ -116,7 +116,11 @@ export const States: Story = {
             {stateMatrix.map((state) => (
                 <div key={state.label} className="space-y-2">
                     <p className="text-sm font-medium text-neutral-700">{state.label}</p>
-                    <PaginationWrapper {...args} pseudoState={state.pseudoState} />
+                    <PaginationWrapper
+                        {...args}
+                        pseudoState={state.pseudoState}
+                        navAriaLabel={`Pagination ${state.label}`}
+                    />
                 </div>
             ))}
         </div>

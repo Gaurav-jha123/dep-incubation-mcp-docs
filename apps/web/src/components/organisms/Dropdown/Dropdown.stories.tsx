@@ -130,7 +130,7 @@ export const IconOnlyTrigger: Story = {
   name: "Icon-only trigger (kebab)",
   render: () => (
     <Dropdown>
-      <Dropdown.Trigger>
+      <Dropdown.Trigger ariaLabel="More options">
         <Ellipsis className="w-5 h-5 text-neutral-700" />
       </Dropdown.Trigger>
       <Dropdown.Content placement="bottom-end">

@@ -12,6 +12,7 @@ interface PaginationProps {
     | 'focus'
     | 'focus-visible'
     | 'disabled';
+  navAriaLabel?: string;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
@@ -20,6 +21,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
   className = '',
   pseudoState = 'none',
+  navAriaLabel = 'Pagination',
 }) => {
   const isPseudoDisabled = pseudoState === 'disabled';
 
@@ -125,7 +127,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         Previous
       </button>
 
-      <nav className="flex gap-1" aria-label="Pagination">
+      <nav className="flex gap-1" aria-label={navAriaLabel}>
         {renderPageButtons()}
       </nav>
 

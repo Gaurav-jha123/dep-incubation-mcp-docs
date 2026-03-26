@@ -8,6 +8,7 @@ interface SliderProps {
     onChange: (value: number) => void;
     disabled?: boolean;
     className?: string;
+    ariaLabel?: string;
 }
 
 export const Slider: React.FC<SliderProps> = ({
@@ -18,6 +19,7 @@ export const Slider: React.FC<SliderProps> = ({
     onChange,
     disabled = false,
     className = '',
+    ariaLabel = 'Slider',
 }) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange(Number(e.target.value));
@@ -27,6 +29,7 @@ export const Slider: React.FC<SliderProps> = ({
         <input
             type="range"
             value={value}
+            aria-label={ariaLabel}
             min={min}
             max={max}
             step={step}
