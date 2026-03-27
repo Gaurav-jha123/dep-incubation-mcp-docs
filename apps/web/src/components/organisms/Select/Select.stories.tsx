@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
+import { userEvent } from "storybook/test";
 import { Select, type SelectPseudoState } from "./Select";
 
 type SelectStoryProps = React.ComponentProps<typeof Select>;
@@ -80,6 +81,10 @@ export const Default: Story = {
   args: {
     placeholder: "Select",
   },
+  play: async ({ canvas }) => {
+    const toggle = await canvas.findByRole("button", { name: /toggle options/i });
+    await userEvent.click(toggle);
+  },
 };
 
 /* Multi Select */
@@ -88,6 +93,34 @@ export const MultiSelect: Story = {
   args: {
     multiple: true,
     placeholder: "Select",
+  },
+  play: async ({ canvas }) => {
+    const toggle = await canvas.findByRole("button", { name: /toggle options/i });
+    await userEvent.click(toggle);
+
+    const apple = await canvas.findByRole("option", { name: /^apple$/i });
+    await userEvent.click(apple);
+
+    const mango = await canvas.findByRole("option", { name: /^mango$/i });
+    await userEvent.click(mango);
+
+    const strawberry = await canvas.findByRole("option", { name: /^strawberry$/i });
+    await userEvent.click(strawberry);
+  },
+};
+
+/* Filtering — open full list, then type "bana" to filter */
+export const Filtering: Story = {
+  render: (args: SelectStoryProps) => <StatefulTemplate {...args} />,
+  args: {
+    placeholder: "Search fruits...",
+  },
+  play: async ({ canvas }) => {
+    const toggle = await canvas.findByRole("button", { name: /toggle options/i });
+    await userEvent.click(toggle);
+
+    const input = await canvas.findByPlaceholderText("Search fruits...");
+    await userEvent.type(input, "bana");
   },
 };
 
