@@ -292,6 +292,8 @@ export const VariantsAndStates: Story = {
                         variant={variant}
                         inputSize={size}
                         {...props}
+                        helperText={variant === "error" ? undefined: props.helperText}
+                        error={variant === "error" ? props.helperText : undefined}
                       />
                     </td>
                   ))}
