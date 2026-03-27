@@ -100,7 +100,7 @@ export function Select({
             aria-label="Toggle options"
             className="absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500"
           >
-            <ChevronDown className="h-5 w-5" />
+            <ChevronDown className="h-5 w-5 cursor-pointer" />
           </ComboboxButton>
 
           {/* Dropdown */}
