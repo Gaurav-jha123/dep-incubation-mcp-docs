@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { userEvent } from "storybook/test";
 import { Tabs } from "./Tabs";
 
 const pseudoStateOptions = [
@@ -98,6 +99,13 @@ export const Basic: Story = {
       <Tabs {...args} />
     </div>
   ),
+  play: async ({ canvas }) => {
+    const tabTwo = await canvas.findByRole("tab", { name: /tab two/i });
+    await userEvent.click(tabTwo);
+
+    const tabThree = await canvas.findByRole("tab", { name: /tab three/i });
+    await userEvent.click(tabThree);
+  },
 };
 
 export const WithDisabledTab: Story = {
@@ -123,6 +131,10 @@ export const WithDisabledTab: Story = {
       <Tabs {...args} />
     </div>
   ),
+  play: async ({ canvas }) => {
+    const notifications = await canvas.findByRole("tab", { name: /notifications/i });
+    await userEvent.click(notifications);
+  },
 };
 
 export const UnderlineVariant: Story = {
@@ -148,6 +160,10 @@ export const UnderlineVariant: Story = {
       <Tabs {...args} />
     </div>
   ),
+  play: async ({ canvas }) => {
+    const membersTab = await canvas.findByRole("tab", { name: /members/i });
+    await userEvent.click(membersTab);
+  },
 };
 
 export const SolidVariant: Story = {
@@ -173,6 +189,10 @@ export const SolidVariant: Story = {
       <Tabs {...args} />
     </div>
   ),
+  play: async ({ canvas }) => {
+    const activityTab = await canvas.findByRole("tab", { name: /activity/i });
+    await userEvent.click(activityTab);
+  },
 };
 
 export const PillVariant: Story = {
@@ -198,6 +218,13 @@ export const PillVariant: Story = {
       <Tabs {...args} />
     </div>
   ),
+  play: async ({ canvas }) => {
+    const analyticsTab = await canvas.findByRole("tab", { name: /analytics/i });
+    await userEvent.click(analyticsTab);
+
+    const settingsTab = await canvas.findByRole("tab", { name: /settings/i });
+    await userEvent.click(settingsTab);
+  },
 };
 
 export const AllVariants: Story = {

@@ -37,7 +37,6 @@ describe("Divider", () => {
     it("applies separator role and orientation when not decorative", () => {
       render(
         <Divider 
-          decorative={false} 
           orientation="vertical" 
           data-testid="divider" 
         />

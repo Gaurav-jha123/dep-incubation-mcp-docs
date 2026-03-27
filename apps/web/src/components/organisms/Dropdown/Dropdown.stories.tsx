@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
+import { userEvent } from "storybook/test"
 import { Dropdown } from "./Dropdown"
 import {
   ArrowRight,
@@ -78,6 +79,10 @@ export const Default: Story = {
       </Dropdown.Content>
     </Dropdown>
   ),
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /options/i });
+    await userEvent.click(trigger);
+  },
 }
 
 // ─── With Icons ──────────────────────────────────────────────────────────────
@@ -92,6 +97,10 @@ export const WithIcons: Story = {
       </Dropdown.Content>
     </Dropdown>
   ),
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /my account/i });
+    await userEvent.click(trigger);
+  },
 }
 
 // ─── With Disabled Items ─────────────────────────────────────────────────────
@@ -106,6 +115,10 @@ export const WithDisabledItems: Story = {
       </Dropdown.Content>
     </Dropdown>
   ),
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /actions/i });
+    await userEvent.click(trigger);
+  },
 }
 
 // ─── Placements ───────────────────────────────────────────────────────────────
@@ -121,6 +134,10 @@ export const PlacementBottomEnd: Story = {
       </Dropdown.Content>
     </Dropdown>
   ),
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /bottom end/i });
+    await userEvent.click(trigger);
+  },
 }
 
 export const PlacementTopStart: Story = {
@@ -137,6 +154,10 @@ export const PlacementTopStart: Story = {
       </Dropdown.Content>
     </Dropdown>
   ),
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /top start/i });
+    await userEvent.click(trigger);
+  },
 }
 
 export const PlacementTopEnd: Story = {
@@ -153,6 +174,10 @@ export const PlacementTopEnd: Story = {
       </Dropdown.Content>
     </Dropdown>
   ),
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /top end/i });
+    await userEvent.click(trigger);
+  },
 }
 
 // ─── Icon-Only Trigger (Kebab Menu) ──────────────────────────────────────────
@@ -170,6 +195,10 @@ export const IconOnlyTrigger: Story = {
       </Dropdown.Content>
     </Dropdown>
   ),
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /more options/i });
+    await userEvent.click(trigger);
+  },
 }
 
 // ─── Profile Dropdown Menu ──────────────────────────────────────────
@@ -188,6 +217,10 @@ export const ProfileDropdownMenu: Story = {
       </Dropdown.Content>
     </Dropdown>
   ),
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByTestId("dropdown-trigger");
+    await userEvent.click(trigger);
+  },
 }
 
 // ─── Long List ────────────────────────────────────────────────────────────────
@@ -202,6 +235,10 @@ export const LongList: Story = {
       </Dropdown.Content>
     </Dropdown>
   ),
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /select country/i });
+    await userEvent.click(trigger);
+  },
 }
 
 // ─── With Divider ─────────────────────────────────────────────────────────────
@@ -217,6 +254,10 @@ export const WithDivider: Story = {
       </Dropdown.Content>
     </Dropdown>
   ),
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /my account/i });
+    await userEvent.click(trigger);
+  },
 }
 
 // ─── Sizes ───────────────────────────────────────────────────────────────
@@ -256,6 +297,10 @@ export const Sizes: Story = {
 
     </div>
   ),
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /small/i });
+    await userEvent.click(trigger);
+  },
 }
 
 export const States: Story = {

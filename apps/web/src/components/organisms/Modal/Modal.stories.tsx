@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { fn } from "storybook/test";
+import { fn, userEvent } from "storybook/test";
 import { Button } from "../../atoms/Button/Button";
 import { Modal, type ModalProps } from "./Modal";
 
@@ -108,6 +108,10 @@ export const Default: Story = {
     onClose: fn(),
     isOpen: false
   },
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /open modal/i });
+    await userEvent.click(trigger);
+  },
 };
 
 export const WithFooterActions: Story = {
@@ -125,6 +129,10 @@ export const WithFooterActions: Story = {
     onClose: fn(),
     isOpen: false
   },
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /open modal/i });
+    await userEvent.click(trigger);
+  },
 };
 
 export const LargeModal: Story = {
@@ -137,6 +145,10 @@ export const LargeModal: Story = {
     onClose: fn(),
     isOpen: false
   },
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /open modal/i });
+    await userEvent.click(trigger);
+  },
 };
 
 export const ExtraLargeModal: Story = {
@@ -148,6 +160,10 @@ export const ExtraLargeModal: Story = {
     children: "This variant gives you the maximum content area.",
     onClose: fn(),
     isOpen: false
+  },
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /open modal/i });
+    await userEvent.click(trigger);
   },
 };
 
@@ -166,6 +182,10 @@ export const ScrollableContent: Story = {
     ),
     onClose: fn(),
     isOpen: false
+  },
+  play: async ({ canvas }) => {
+    const trigger = await canvas.findByRole("button", { name: /open modal/i });
+    await userEvent.click(trigger);
   },
 };
 
