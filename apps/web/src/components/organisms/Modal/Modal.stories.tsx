@@ -104,6 +104,10 @@ const renderWithTrigger = (args: ModalStoryArgs) => (
 
 export const Default: Story = {
   render: renderWithTrigger,
+  args: {
+    onClose: fn(),
+    isOpen: false
+  },
 };
 
 export const WithFooterActions: Story = {
@@ -118,6 +122,8 @@ export const WithFooterActions: Story = {
       </>
     ),
     children: "This action cannot be undone.",
+    onClose: fn(),
+    isOpen: false
   },
 };
 
@@ -128,6 +134,8 @@ export const LargeModal: Story = {
     title: "Large Modal",
     description: "This modal uses the large size",
     children: "This modal is wider than the default modal.",
+    onClose: fn(),
+    isOpen: false
   },
 };
 
@@ -138,6 +146,8 @@ export const ExtraLargeModal: Story = {
     title: "XL Modal",
     description: "Useful for long forms or complex content.",
     children: "This variant gives you the maximum content area.",
+    onClose: fn(),
+    isOpen: false
   },
 };
 
@@ -154,10 +164,12 @@ export const ScrollableContent: Story = {
         ))}
       </div>
     ),
+    onClose: fn(),
+    isOpen: false
   },
 };
 
-export const states: Story = {
+export const States: Story = {
   parameters: {
     layout: "fullscreen",
   },
@@ -171,4 +183,8 @@ export const states: Story = {
       ))}
     </div>
   ),
+  args: {
+    onClose: fn(),
+    isOpen: false
+  },
 };
