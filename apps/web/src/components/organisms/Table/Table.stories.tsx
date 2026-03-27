@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { userEvent, within } from "@storybook/testing-library";
 import { Table } from "./Table";
 
 const meta: Meta<typeof Table> = {
@@ -33,6 +34,15 @@ export const Default: Story = {
     keys: ["name", "role", "email"],
     rowsPerPageOptions: [5, 10, 20],
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.type(canvas.getByPlaceholderText("Search..."), "designer");
+    await userEvent.clear(canvas.getByPlaceholderText("Search..."));
+
+    await userEvent.click(canvas.getByText("Name"));
+    await userEvent.click(canvas.getByText("Name"));
+  },
 };
 
 export const SmallDataset: Story = {
@@ -41,6 +51,12 @@ export const SmallDataset: Story = {
     data: sampleData.slice(0, 3),
     keys: ["name", "role", "email"],
     rowsPerPageOptions: [2, 3, 5],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole("button", { name: "Next" }));
+    await userEvent.click(canvas.getByRole("button", { name: "Previous" }));
   },
 };
 
@@ -55,6 +71,13 @@ export const LargeDataset: Story = {
     keys: ["name", "role", "email"],
     rowsPerPageOptions: [5, 10, 20],
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByText("Role"));
+    await userEvent.click(canvas.getByText("Role"));
+    await userEvent.click(canvas.getByRole("button", { name: "Next" }));
+  },
 };
 
 export const ManyRowsPerPageOptions: Story = {
@@ -63,5 +86,11 @@ export const ManyRowsPerPageOptions: Story = {
     data: sampleData,
     keys: ["name", "role", "email"],
     rowsPerPageOptions: [3, 5, 8, 10],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole("button", { name: "Rows: 3" }));
+    await userEvent.click(canvas.getByRole("option", { name: "10" }));
   },
 };
