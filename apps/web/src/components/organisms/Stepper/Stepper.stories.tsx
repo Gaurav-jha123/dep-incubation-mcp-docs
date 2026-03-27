@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
+import { userEvent } from "storybook/test";
 import Stepper from "./Stepper";
 
 const pseudoStateOptions = [
@@ -88,6 +89,13 @@ export const Default: Story = {
     currentStep: 1,
   },
   render: (args: StepperStoryArgs) => <InteractiveStepper {...args} />,
+  play: async ({ canvas }) => {
+    const billingTab = await canvas.findByRole("tab", { name: /billing/i });
+    await userEvent.click(billingTab);
+
+    const confirmTab = await canvas.findByRole("tab", { name: /confirm/i });
+    await userEvent.click(confirmTab);
+  },
 };
 
 export const Minimal: Story = {
@@ -97,6 +105,13 @@ export const Minimal: Story = {
     currentStep: 2,
   },
   render: (args: StepperStoryArgs) => <InteractiveStepper {...args} />,
+  play: async ({ canvas }) => {
+    const confirmTab = await canvas.findByRole("tab", { name: /confirm/i });
+    await userEvent.click(confirmTab);
+
+    const accountTab = await canvas.findByRole("tab", { name: /account/i });
+    await userEvent.click(accountTab);
+  },
 };
 
 export const States: Story = {
