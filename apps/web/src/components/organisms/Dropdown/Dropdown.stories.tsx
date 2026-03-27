@@ -15,6 +15,24 @@ import {
 } from "lucide-react"
 import { Avatar } from "../../atoms/Avatar/Avatar"
 
+const pseudoStateOptions = [
+  "none",
+  "hover",
+  "active",
+  "focus",
+  "focus-visible",
+  "disabled",
+] as const
+
+const stateMatrix = [
+  { label: "Default", pseudoState: "none" as const },
+  { label: "Hover", pseudoState: "hover" as const },
+  { label: "Active", pseudoState: "active" as const },
+  { label: "Focus", pseudoState: "focus" as const },
+  { label: "Focus Visible", pseudoState: "focus-visible" as const },
+  { label: "Disabled", pseudoState: "disabled" as const },
+] as const
+
 const meta: Meta<typeof Dropdown> = {
   title: "Organisms/Dropdown",
   component: Dropdown,
@@ -29,7 +47,19 @@ const meta: Meta<typeof Dropdown> = {
   },
   argTypes: {
     className: { description: "Extra Tailwind or CSS classes", control: "text" },
+    size: {
+      control: { type: "select" },
+      options: ["sm", "md", "lg"],
+    },
+    pseudoState: {
+      control: { type: "select" },
+      options: pseudoStateOptions,
+    },
     children: { description: "Dropdown structure with Trigger and Content", control: false },
+  },
+  args: {
+    size: "md",
+    pseudoState: "none",
   },
 }
 
@@ -224,6 +254,32 @@ export const Sizes: Story = {
         </Dropdown.Content>
       </Dropdown>
 
+    </div>
+  ),
+}
+
+export const States: Story = {
+  parameters: {
+    layout: "fullscreen",
+  },
+  args: {
+    size: "md",
+  },
+  render: (args) => (
+    <div className="space-y-6 p-8">
+      {stateMatrix.map((state) => (
+        <div key={state.label} className="flex items-center gap-4 rounded-md border border-neutral-200 p-4">
+          <p className="w-28 text-sm font-medium text-neutral-700">{state.label}</p>
+          <Dropdown size={args.size} pseudoState={state.pseudoState}>
+            <Dropdown.Trigger>Options</Dropdown.Trigger>
+            <Dropdown.Content>
+              <Dropdown.Item>Edit</Dropdown.Item>
+              <Dropdown.Item>Duplicate</Dropdown.Item>
+              <Dropdown.Item>Delete</Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+      ))}
     </div>
   ),
 }

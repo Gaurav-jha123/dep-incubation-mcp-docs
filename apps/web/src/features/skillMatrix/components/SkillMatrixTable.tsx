@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useLayoutEffect, useRef } from "react";
+import { Button, Input } from "@/components/atoms";
 import { Table } from "@/components/organisms";
 import { type SkillMatrixData } from "./types";
 
@@ -70,8 +71,6 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
     const skillLookup: Record<string, Record<string, number>> = {};
 
     data.skills.forEach(({ userId, topicId, value }) => {
-
-
       if (!skillLookup[userId]) {
         skillLookup[userId] = {};
       }
@@ -152,17 +151,18 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
 
               if (isEditing) {
                 return (
-                  <input
+                  <Input
                     type="text"
                     inputMode="numeric"
                     pattern="[0-9]*"
                     min={0}
                     max={100}
                     step={1}
+                    fullWidth
                     defaultValue={isNumeric ? value : ""}
                     // eslint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus
-                    className="w-full h-full px-4 py-3 text-center bg-white border-none outline-none appearance-none"
+                    className="h-full border-none rounded-none px-4 py-3 text-center appearance-none focus:border-none"
                     onBlur={(e) => {
                       const inputValue = e.target.value.trim();
 
@@ -217,10 +217,11 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
               // Render empty cells
               if (!isNumeric) {
                 return (
-                  <button
+                  <Button
                     type="button"
                     disabled={!isOwner}
-                    className={`px-4 py-3 w-full h-full flex items-center justify-center font-medium ${
+                    variant="ghost"
+                    className={`h-full w-full rounded-none px-4 py-3 font-medium shadow-none transition-none hover:translate-y-0 hover:scale-100 hover:shadow-none hover:ring-0 active:translate-y-0 disabled:opacity-100 ${
                       isOwner
                         ? "cursor-pointer hover:bg-gray-200"
                         : "bg-gray-100"
@@ -238,16 +239,17 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
                     }}
                   >
                     <span className="text-gray-400">—</span>
-                  </button>
+                  </Button>
                 );
               }
 
               // Render cells with numeric values
               return (
-                <button
+                <Button
                   type="button"
                   disabled={!isOwner}
-                  className={`px-4 py-3 w-full flex items-center justify-center font-medium ${
+                  variant="ghost"
+                  className={`w-full rounded-none px-4 py-3 font-medium shadow-none transition-none hover:translate-y-0 hover:scale-100 hover:shadow-none hover:ring-0 active:translate-y-0 disabled:opacity-100 ${
                     isOwner ? "cursor-pointer" : ""
                   }`}
                   style={{
@@ -263,7 +265,7 @@ const SkillMatrixTable: React.FC<SkillMatrixTableProps> = ({
                   }}
                 >
                   {value}
-                </button>
+                </Button>
               );
             }
 

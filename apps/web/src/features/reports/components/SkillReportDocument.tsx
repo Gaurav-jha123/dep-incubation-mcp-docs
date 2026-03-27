@@ -43,16 +43,19 @@ const styles = StyleSheet.create({
   // ── Summary stat cards ───────────────────────────────────
   statsRow: {
     flexDirection: "row",
-    gap: 10,
     marginBottom: 24,
   },
   statCard: {
     flex: 1,
     padding: 12,
+    marginRight: 10,
     backgroundColor: "#F9FAFB",
     borderRadius: 6,
     borderWidth: 1,
     borderColor: "#E5E7EB",
+  },
+  statCardLast: {
+    marginRight: 0,
   },
   statLabel: {
     fontSize: 8,
@@ -247,7 +250,7 @@ export default function SkillReportDocument({
               {strongest ? `${strongest.topic} (${strongest.value})` : "–"}
             </Text>
           </View>
-          <View style={styles.statCard}>
+          <View style={[styles.statCard, styles.statCardLast]}>
             <Text style={styles.statLabel}>Needs Work</Text>
             <Text style={styles.statValue}>
               {weakest ? `${weakest.topic} (${weakest.value})` : "–"}
