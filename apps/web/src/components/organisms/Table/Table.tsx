@@ -6,6 +6,7 @@ export interface TableProps<T> {
   headers: string[];
   data: T[];
   keys: (keyof T)[];
+  caption?: string;
   rowsPerPageOptions?: number[];
   className?: string;
   showSearch?: boolean;
@@ -20,6 +21,7 @@ export const Table = <T extends Record<string, unknown>>({
   headers,
   data,
   keys,
+  caption,
   rowsPerPageOptions = [5, 10, 20],
   className = "",
   showSearch = true,
@@ -152,6 +154,7 @@ export const Table = <T extends Record<string, unknown>>({
       {/* Table */}
       <div className="overflow-auto border border-neutral-200 rounded-lg max-h-full">
         <table className="table-fixed min-w-full text-left text-sm">
+          {caption && <caption className="sr-only">{caption}</caption>}
           <thead
             className={`bg-neutral-200 text-neutral-700 ${stickyHeader ? "sticky top-0 z-20" : ""}`}
           >
@@ -190,10 +193,7 @@ export const Table = <T extends Record<string, unknown>>({
           {/* Body */}
           <tbody>
             {currentRows.map((row, idx) => (
-              <tr
-                key={idx}
-                className="border-b hover:bg-neutral-50 transition"
-              >
+              <tr key={idx} className="border-b hover:bg-neutral-50 transition">
                 {keys.map((key, colIdx) => {
                   const value = row[key];
 
@@ -260,4 +260,3 @@ export const Table = <T extends Record<string, unknown>>({
 };
 
 Table.displayName = "Table";
- 

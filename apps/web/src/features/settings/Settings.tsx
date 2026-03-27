@@ -8,7 +8,14 @@ import {
   Textarea,
 } from "@/components/atoms";
 import { Card } from "@/components/molecules";
+import { Select } from "@/components/organisms";
 import "./Settings.scss";
+
+const appearanceOptions = [
+  { label: "System", value: "system" },
+  { label: "Light", value: "light" },
+  { label: "Dark", value: "dark" },
+];
 
 export default function Settings() {
   // State for various settings
@@ -177,15 +184,18 @@ export default function Settings() {
             <h2 className="text-xl font-semibold text-primary-700 mb-2">
               Appearance
             </h2>
-            <select
+            <Select
+              options={appearanceOptions}
               value={appearance}
-              onChange={(e) => setAppearance(e.target.value)}
-              className="w-full px-3 py-2 border border-neutral-400 rounded-md bg-neutral-50 text-neutral-900"
-            >
-              <option value="system">System</option>
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </select>
+              onChange={(value) => {
+                if (typeof value === "string") {
+                  setAppearance(value);
+                }
+              }}
+              searchable={false}
+              placeholder="Select appearance"
+              className="w-full"
+            />
           </section>
           <Divider />
           {/* Save Button */}
