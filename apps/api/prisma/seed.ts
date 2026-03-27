@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { PrismaClient } from '../src/generated/prisma/client.js';
+import { PrismaClient, Role } from '../src/generated/prisma/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 import * as bcrypt from 'bcrypt';
 
@@ -15,76 +15,91 @@ const users = [
     name: 'Alex Johnson',
     email: 'alex.johnson@example.com',
     password: 'password123',
+    role: Role.ADMIN,
   },
   {
     name: 'Sarah Wilson',
     email: 'sarah.wilson@example.com',
     password: 'password123',
+    role: Role.MANAGER,
   },
   {
     name: 'Michael Chen',
     email: 'michael.chen@example.com',
     password: 'password123',
+    role: Role.MANAGER,
   },
   {
     name: 'Emily Rodriguez',
     email: 'emily.rodriguez@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
   {
     name: 'David Thompson',
     email: 'david.thompson@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
   {
     name: 'Lisa Anderson',
     email: 'lisa.anderson@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
   {
     name: 'James Martinez',
     email: 'james.martinez@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
   {
     name: 'Rachel Kim',
     email: 'rachel.kim@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
   {
     name: "Kevin O'Connor",
     email: 'kevin.oconnor@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
   {
     name: 'Maya Patel',
     email: 'maya.patel@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
   {
     name: 'John Davis',
     email: 'john.davis@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
   {
     name: 'Sophia Williams',
     email: 'sophia.williams@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
   {
     name: 'Daniel Brown',
     email: 'daniel.brown@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
   {
     name: 'Olivia Miller',
     email: 'olivia.miller@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
   {
     name: 'Ryan Taylor',
     email: 'ryan.taylor@example.com',
     password: 'password123',
+    role: Role.EMPLOYEE,
   },
 ];
 
@@ -123,11 +138,12 @@ async function main() {
     const hashedPassword = await bcrypt.hash(userData.password, SALT_ROUNDS);
     const user = await prisma.user.upsert({
       where: { email: userData.email },
-      update: { name: userData.name },
+      update: { name: userData.name, role: userData.role },
       create: {
         name: userData.name,
         email: userData.email,
         password: hashedPassword,
+        role: userData.role,
       },
     });
     createdUsers.push(user);
