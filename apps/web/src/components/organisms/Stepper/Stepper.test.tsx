@@ -53,4 +53,63 @@ describe("Stepper", () => {
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith(2);
   });
+
+  it("applies data-pseudo-state only to the targeted step", () => {
+    render(
+      <Stepper
+        steps={steps}
+        currentStep={1}
+        pseudoState="hover"
+        pseudoStateTarget={2}
+      />,
+    );
+
+    const tabs = screen.getAllByRole("tab");
+
+    expect(tabs[0].getAttribute("data-pseudo-state")).toBeNull();
+    expect(tabs[1].getAttribute("data-pseudo-state")).toBeNull();
+    expect(tabs[2].getAttribute("data-pseudo-state")).toBe("hover");
+    expect(tabs[3].getAttribute("data-pseudo-state")).toBeNull();
+  });
+
+  it("does not apply pseudo-state data attribute when pseudoState is none", () => {
+    render(
+      <Stepper
+        steps={steps}
+        currentStep={1}
+        pseudoState="none"
+        pseudoStateTarget={2}
+      />,
+    );
+
+    const tabs = screen.getAllByRole("tab");
+    tabs.forEach((tab) => {
+      expect(tab.getAttribute("data-pseudo-state")).toBeNull();
+    });
+  });
+
+  it("disables only targeted step when pseudoState is disabled", () => {
+    const onChange = vi.fn();
+
+    render(
+      <Stepper
+        steps={steps}
+        currentStep={0}
+        onChange={onChange}
+        pseudoState="disabled"
+        pseudoStateTarget={2}
+      />,
+    );
+
+    const tabs = screen.getAllByRole("tab") as HTMLButtonElement[];
+
+    expect(tabs[2].disabled).toBe(true);
+    expect(tabs[0].disabled).toBe(false);
+
+    fireEvent.click(tabs[2]);
+    fireEvent.click(tabs[1]);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(1);
+  });
 });

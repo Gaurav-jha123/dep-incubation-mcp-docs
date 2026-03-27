@@ -210,4 +210,52 @@ it('renders dropdown items', async ()=> {
     expect(content.className).toContain("right-0")
     expect(content.className).toContain("bottom-full")
   })
+
+  it("applies data-pseudo-state to trigger when pseudoState is set", () => {
+    render(
+      <Dropdown pseudoState="hover">
+        <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Item>Profile</Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+
+    const trigger = screen.getByTestId("dropdown-trigger")
+    expect(trigger.getAttribute("data-pseudo-state")).toBe("hover")
+  })
+
+  it("does not apply data-pseudo-state when pseudoState is none", () => {
+    render(
+      <Dropdown pseudoState="none">
+        <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Item>Profile</Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+
+    const trigger = screen.getByTestId("dropdown-trigger")
+    expect(trigger.getAttribute("data-pseudo-state")).toBeNull()
+  })
+
+  it("disables trigger when pseudoState is disabled", async () => {
+    const user = userEvent.setup()
+
+    render(
+      <Dropdown pseudoState="disabled">
+        <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Item>Profile</Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+
+    const trigger = screen.getByTestId("dropdown-trigger") as HTMLButtonElement
+    expect(trigger.disabled).toBe(true)
+    expect(trigger.getAttribute("aria-disabled")).toBe("true")
+
+    await user.click(trigger)
+    expect(screen.queryByTestId("dropdown-content")).toBeNull()
+  })
 })

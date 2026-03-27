@@ -1,6 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import Stepper from "./Stepper";
 import { useState } from "react";
+import Stepper from "./Stepper";
+
+const pseudoStateOptions = [
+  "none",
+  "hover",
+  "active",
+  "focus",
+  "focus-visible",
+  "disabled",
+] as const;
 
 const meta: Meta<typeof Stepper> = {
   title: "Organisms/Stepper",
@@ -23,12 +32,30 @@ const meta: Meta<typeof Stepper> = {
     currentStep: {
       control: { type: "number", min: 0, max: 3 },
     },
+    pseudoState: {
+      control: { type: "select" },
+      options: pseudoStateOptions,
+    },
+    pseudoStateTarget: {
+      control: { type: "number", min: 0, max: 3 },
+    },
+    onChange: {
+      control: false,
+      table: { disable: true },
+    },
+  },
+  args: {
+    variant: "default",
+    currentStep: 1,
+    pseudoState: "none",
+    pseudoStateTarget: 1,
   },
 };
 
 export default meta;
 
 type Story = StoryObj<typeof Stepper>;
+type StepperStoryArgs = React.ComponentProps<typeof Stepper>;
 
 const steps = [
   { title: "Account" },
@@ -37,32 +64,75 @@ const steps = [
   { title: "Confirm" },
 ];
 
+const stateMatrix = [
+  { label: "Start", currentStep: 0 },
+  { label: "In Progress", currentStep: 1 },
+  { label: "Review", currentStep: 2 },
+  { label: "Done", currentStep: 3 },
+] as const;
+
+const InteractiveStepper = (args: StepperStoryArgs) => {
+  const [step, setStep] = useState(args.currentStep ?? 0);
+
+  return (
+    <div className="w-[700px] p-8">
+      <Stepper {...args} currentStep={step} onChange={setStep} />
+    </div>
+  );
+};
+
 export const Default: Story = {
   args: {
     steps,
     variant: "default",
+    currentStep: 1,
   },
-  render: (args) => {
-    const [step, setStep] = useState(1);
-    return (
-        <div className="w-[700px] p-8">
-            <Stepper {...args} currentStep={step} onChange={setStep} />
-        </div>
-    )
-  },
+  render: (args: StepperStoryArgs) => <InteractiveStepper {...args} />,
 };
 
 export const Minimal: Story = {
   args: {
     steps,
     variant: "minimal",
+    currentStep: 2,
   },
-  render: (args) => {
-    const [step, setStep] = useState(2);
+  render: (args: StepperStoryArgs) => <InteractiveStepper {...args} />,
+};
+
+export const States: Story = {
+  parameters: {
+    layout: "fullscreen",
+  },
+  args: {
+    steps,
+    variant: "default",
+  },
+  render: (args: StepperStoryArgs) => {
+    const variants: StepperStoryArgs["variant"][] = ["default", "minimal"];
+
     return (
-        <div className="w-[700px] p-8">
-            <Stepper {...args} currentStep={step} onChange={setStep} />
-        </div>
-    )
+      <div className="space-y-8 p-8">
+        {variants.map((variant) => (
+          <div key={variant} className="space-y-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-600">
+              {variant} variant
+            </h3>
+            <div className="space-y-4">
+              {stateMatrix.map((state) => (
+                <div key={`${variant}-${state.label}`} className="rounded-md border border-neutral-200 p-4">
+                  <p className="mb-3 text-sm font-medium text-neutral-700">{state.label}</p>
+                  <Stepper
+                    {...args}
+                    variant={variant}
+                    currentStep={state.currentStep}
+                    onChange={undefined}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   },
 };
