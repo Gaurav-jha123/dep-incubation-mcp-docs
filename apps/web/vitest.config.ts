@@ -16,12 +16,13 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": "/src",
+       "@": path.resolve(dirname, "./src"),
     },
   },
   test: {
     projects: [
       {
+        extends: true,
         test: {
           name: "unit",
           include: ["src/**/*.{test,spec}.{ts,tsx,js,jsx}"],

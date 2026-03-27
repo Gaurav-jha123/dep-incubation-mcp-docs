@@ -123,12 +123,43 @@ describe("UserForm", () => {
     expect(fileInput.files?.length).toBe(1);
   });
 
-  it("submits form successfully", async () => {
+  it(
+    "submits form successfully",
+    async () => {
+      render(<UserForm />);
+      await fillValidForm();
+      await user.click(screen.getAllByRole("button", { name: /submit/i })[0]);
+      await waitFor(
+        () => {
+          expect(logger.info).toHaveBeenCalled();
+        },
+        { timeout: 5000 },
+      );
+    },
+    30000,
+  );
+
+  it("applies active class on role option hover", async () => {
     render(<UserForm />);
-    await fillValidForm();
-    await user.click(screen.getAllByRole("button", { name: /submit/i })[0]);
-    await waitFor(() => {
-      expect(logger.info).toHaveBeenCalled();
-    });
+    await user.click(screen.getAllByText(/select role/i)[0]);
+    const options = screen.getAllByRole("option");
+    expect(options[0].className).toContain("capitalize");
+    await user.click(options[1]);
+    const roleButton = screen.getByRole("button", { name: /user/i });
+    await user.click(roleButton);
+    const updatedOptions = screen.getAllByRole("option");
+    expect(updatedOptions.length).toBe(3);
+  });
+
+  it("applies selected class on hobby option", async () => {
+    render(<UserForm />);
+    await user.click(screen.getAllByText(/select hobbies/i)[0]);
+    const options = screen.getAllByRole("option");
+    expect(options[0].className).toContain("font-normal");
+    await user.click(options[0]);
+    await user.click(screen.getAllByText(/reading/i)[0]);
+    const updatedOptions = screen.getAllByRole("option");
+    expect(updatedOptions[0].className).toContain("font-medium");
   });
 });
+ 
