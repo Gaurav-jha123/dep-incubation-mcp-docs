@@ -1,49 +1,78 @@
-# image: node:22
+image: node:22
 
-# stages:
-#   - build
-#   - deploy
+stages:
+  - deploy
 
-# cache:
-#   paths:
-#     - node_modules/
-#     - apps/web/node_modules/
-#     - apps/api/node_modules/
+# Shared setup — runs before every job
+.setup: &setup
+  before_script:
+    - npm install -g pnpm vercel
+    - pnpm install
 
-# install:
-#   stage: build
-#   script:
-#     - npm install -g pnpm
-#     - pnpm install
+# ── PROD deploys (dev branch) ────────────────────────────────────────────────
 
-# deploy_web:
-#   stage: deploy
-#   variables:
-#     VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID_WEB
-#   script:
-#     - npm install -g pnpm
-#     - npm install -g vercel
-#     - pnpm install
-#     - pnpm turbo run build --filter=@dep-incubation-dashboard/web
-#     - cd apps/web
-#     - vercel pull --yes --environment=production --token=$VERCEL_TOKEN
-#     - vercel build --prod --token=$VERCEL_TOKEN
-#     - vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
-#   only:
-#     - dev
+deploy_web_prod:
+  <<: *setup
+  stage: deploy
+  variables:
+    VERCEL_ORG_ID: "team_jWzoJccjWNuoTy4WE8Cgzslb"
+    VERCEL_PROJECT_ID: "prj_59InRSACCzLHSfXxIGezfKpadHSd"
+  script:
+    - TOKEN="${VERCEL_TOKEN:-vcp_4Fq1ryYTD8uhkY8YpkaMR7yZFuZXqIxQSazXWexJaqFQBgLYrB0pY0Ty}"
+    - pnpm turbo run build --filter=@dep-incubation-dashboard/web
+    - cd apps/web
+    - vercel pull --yes --environment=production --token=$TOKEN
+    - vercel build --prod --token=$TOKEN
+    - vercel deploy --prebuilt --prod --token=$TOKEN
+  only:
+    - dev
 
-# deploy_api:
-#   stage: deploy
-#   variables:
-#     VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID_API
-#   script:
-#     - npm install -g pnpm
-#     - npm install -g vercel
-#     - pnpm install
-#     - pnpm turbo run build --filter=@dep-incubation-dashboard/api
-#     - cd apps/api
-#     - vercel pull --yes --environment=production --token=$VERCEL_TOKEN
-#     - vercel build --prod --token=$VERCEL_TOKEN
-#     - vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
-#   only:
-#     - dev
+deploy_api_prod:
+  <<: *setup
+  stage: deploy
+  variables:
+    VERCEL_ORG_ID: "team_jWzoJccjWNuoTy4WE8Cgzslb"
+    VERCEL_PROJECT_ID: "prj_N8kBoeHuskRrA8Jeo4mTguED5jWS"
+  script:
+    - TOKEN="${VERCEL_TOKEN:-vcp_4Fq1ryYTD8uhkY8YpkaMR7yZFuZXqIxQSazXWexJaqFQBgLYrB0pY0Ty}"
+    - pnpm turbo run build --filter=@dep-incubation-dashboard/api
+    - cd apps/api
+    - vercel pull --yes --environment=production --token=$TOKEN
+    - vercel build --prod --token=$TOKEN
+    - vercel deploy --prebuilt --prod --token=$TOKEN
+  only:
+    - dev
+
+# ── UAT deploys (UAT branch) ─────────────────────────────────────────────────
+
+deploy_web_uat:
+  <<: *setup
+  stage: deploy
+  variables:
+    VERCEL_ORG_ID: "team_jWzoJccjWNuoTy4WE8Cgzslb"
+    VERCEL_PROJECT_ID: "prj_5Kt3holOWeGDesen12S4pGrsvMiF"
+  script:
+    - TOKEN="${VERCEL_TOKEN:-vcp_4Fq1ryYTD8uhkY8YpkaMR7yZFuZXqIxQSazXWexJaqFQBgLYrB0pY0Ty}"
+    - pnpm turbo run build --filter=@dep-incubation-dashboard/web
+    - cd apps/web
+    - vercel pull --yes --environment=production --token=$TOKEN
+    - vercel build --prod --token=$TOKEN
+    - vercel deploy --prebuilt --prod --token=$TOKEN
+  only:
+    - UAT
+
+deploy_api_uat:
+  <<: *setup
+  stage: deploy
+  variables:
+    VERCEL_ORG_ID: "team_jWzoJccjWNuoTy4WE8Cgzslb"
+    VERCEL_PROJECT_ID: "prj_cBoYxIR1ho95p9OmJLAcEGca6tpc"
+  script:
+    - TOKEN="${VERCEL_TOKEN:-vcp_4Fq1ryYTD8uhkY8YpkaMR7yZFuZXqIxQSazXWexJaqFQBgLYrB0pY0Ty}"
+    - pnpm turbo run build --filter=@dep-incubation-dashboard/api
+    - cd apps/api
+    - vercel pull --yes --environment=production --token=$TOKEN
+    - vercel build --prod --token=$TOKEN
+    - vercel deploy --prebuilt --prod --token=$TOKEN
+  only:
+    - UAT
