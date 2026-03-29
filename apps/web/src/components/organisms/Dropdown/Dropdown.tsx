@@ -2,18 +2,27 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react"
 import { ChevronDownIcon } from "lucide-react"
 import React, { createContext, useContext } from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "../../../lib/utils"
 
 type Placement = "bottom-start" | "bottom-end" | "top-start" | "top-end"
 type Size = "sm" | "md" | "lg"
+export type DropdownPseudoState =
+  | "none"
+  | "hover"
+  | "active"
+  | "focus"
+  | "focus-visible"
+  | "disabled"
 
 // ─── Context ─────────────────────────────────────────────────────────────
 interface DropdownContextValue {
   size: Size
+  pseudoState: DropdownPseudoState
 }
 
 const DropdownContext = createContext<DropdownContextValue>({
   size: "md",
+  pseudoState: "none",
 })
 
 const useDropdownContext = () => useContext(DropdownContext)
@@ -44,15 +53,17 @@ interface RootProps {
   children: React.ReactNode
   className?: string
   size?: Size
+  pseudoState?: DropdownPseudoState
 }
 
 const Root: React.FC<RootProps> = ({
   children,
   className,
   size = "md",
+  pseudoState = "none",
 }) => {
   return (
-    <DropdownContext.Provider value={{ size }}>
+    <DropdownContext.Provider value={{ size, pseudoState }}>
       <div
         data-testid="dropdown-root"
         className={cn("relative inline-block", className)}
@@ -69,6 +80,7 @@ interface TriggerProps {
   className?: string
   showChevron?: boolean
   size?: Size // optional override
+  ariaLabel?: string
 }
 
 const Trigger: React.FC<TriggerProps> = ({
@@ -76,15 +88,22 @@ const Trigger: React.FC<TriggerProps> = ({
   className,
   showChevron = true,
   size: sizeProp,
+  ariaLabel,
 }) => {
-  const { size: contextSize } = useDropdownContext()
+  const { size: contextSize, pseudoState } = useDropdownContext()
   const size = sizeProp ?? contextSize
+  const pseudoStateData = pseudoState === "none" ? undefined : pseudoState
+  const isDisabled = pseudoState === "disabled"
 
   return (
     <MenuButton
       data-testid="dropdown-trigger"
+      aria-label={ariaLabel}
+      data-pseudo-state={pseudoStateData}
+      aria-disabled={isDisabled || undefined}
+      disabled={isDisabled}
       className={cn(
-        "inline-flex items-center rounded-md gap-2 bg-neutral-50 border border-neutral-300 text-neutral-700 hover:bg-neutral-100",
+        "inline-flex items-center rounded-md gap-2 bg-neutral-50 border border-neutral-300 text-neutral-700 hover:bg-neutral-100 transition-[background-color,box-shadow,transform] data-[pseudo-state=hover]:bg-neutral-100 data-[pseudo-state=active]:translate-y-px data-[pseudo-state=focus]:ring-2 data-[pseudo-state=focus]:ring-neutral-400/60 data-[pseudo-state=focus]:ring-offset-2 data-[pseudo-state=focus-visible]:ring-2 data-[pseudo-state=focus-visible]:ring-primary-500/40 data-[pseudo-state=focus-visible]:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
         triggerSizes[size],
         className
       )}

@@ -8,6 +8,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
 } from "lucide-react";
+import { Button } from "@/components/atoms";
 
 interface SidebarProps {
   onClose?: () => void;
@@ -51,9 +52,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           </h1>
         )}
         <div className="flex items-center gap-2">
-          <button
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
             onClick={onToggleCollapse}
-            className="hidden lg:inline-flex p-2 text-muted-foreground hover:bg-accent rounded-md"
+            className="hidden p-2 text-muted-foreground hover:bg-accent rounded-md shadow-none transition-none hover:translate-y-0 hover:scale-100 hover:shadow-none hover:ring-0 active:translate-y-0 lg:inline-flex"
             aria-expanded={!isCollapsed}
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -63,19 +67,22 @@ const Sidebar: React.FC<SidebarProps> = ({
             ) : (
               <PanelLeftClose size={20} />
             )}
-          </button>
+          </Button>
 
           {/* Close Button for Mobile */}
-          <button
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
             data-testid="close-sidebar"
             onClick={onClose}
             aria-label="Close sidebar"
-            className={`p-2 lg:hidden text-muted-foreground hover:bg-accent rounded-md ${
+            className={`p-2 text-muted-foreground hover:bg-accent rounded-md shadow-none transition-none hover:translate-y-0 hover:scale-100 hover:shadow-none hover:ring-0 active:translate-y-0 lg:hidden ${
               isCollapsed ? "hidden" : ""
             }`}
           >
             <X size={20} aria-hidden="true" />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -94,7 +101,9 @@ const Sidebar: React.FC<SidebarProps> = ({
                 }
                 aria-label={item.name}
               >
-                <span className="shrink-0" aria-hidden="true">{item.icon}</span>
+                <span className="shrink-0" aria-hidden="true">
+                  {item.icon}
+                </span>
                 {!isCollapsed && item.name}
               </NavLink>
             </li>

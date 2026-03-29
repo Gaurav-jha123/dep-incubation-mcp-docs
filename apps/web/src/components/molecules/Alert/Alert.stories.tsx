@@ -1,6 +1,28 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Alert } from "./Alert";
+import { Alert, type AlertPseudoState } from "./Alert";
+
+type AlertStoryProps = React.ComponentProps<typeof Alert>;
+
+const pseudoStateOptions = [
+  "none",
+  "hover",
+  "active",
+  "focus",
+  "focus-visible",
+  "disabled",
+] as const;
+
+const typeOptions = ["info", "success", "warning", "error"] as const;
+
+const stateMatrix = [
+  { label: "Default",       pseudoState: "none" as const },
+  { label: "Hover",         pseudoState: "hover" as const },
+  { label: "Active",        pseudoState: "active" as const },
+  { label: "Focus",         pseudoState: "focus" as const },
+  { label: "Focus Visible", pseudoState: "focus-visible" as const },
+  { label: "Disabled",      pseudoState: "disabled" as const },
+];
 
 const meta: Meta<typeof Alert> = {
   title: "Molecules/Alert",
@@ -12,17 +34,25 @@ const meta: Meta<typeof Alert> = {
   argTypes: {
     type: {
       control: { type: "select" },
-      options: ["info", "success", "warning", "error"],
+      options: typeOptions,
+    },
+    pseudoState: {
+      control: { type: "select" },
+      options: pseudoStateOptions,
     },
     message: { control: "text" },
     closable: { control: "boolean" },
+  },
+  args: {
+    pseudoState: "none",
+    type: "info",
+    closable: false,
   },
 };
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-type AlertStoryArgs = React.ComponentProps<typeof Alert>;
 
 export const Info: Story = {
   args: {
@@ -53,10 +83,10 @@ export const Warning: Story = {
 };
 
 export const Closable: Story = {
-  render: (args: AlertStoryArgs) => {
+  render: (args: AlertStoryProps) => {
     const [visible, setVisible] = useState(true);
     return (
-      <div>
+      <div style={{ minWidth: 360 }}>
         {visible && (
           <Alert {...args} closable onClose={() => setVisible(false)} />
         )}
@@ -66,5 +96,38 @@ export const Closable: Story = {
   args: {
     type: "info",
     message: "You can close this alert.",
+  },
+};
+
+export const States: Story = {
+  parameters: {
+    layout: "padded",
+  },
+  render: (args: AlertStoryProps) => (
+    <div className="space-y-6" style={{ minWidth: 480 }}>
+      {typeOptions.map((type) => (
+        <div key={type} className="space-y-2">
+          <p className="text-sm font-semibold capitalize text-neutral-700">{type}</p>
+          <div className="space-y-1">
+            {stateMatrix.map((state) => (
+              <div key={state.label} className="flex items-center gap-4">
+                <p className="w-28 shrink-0 text-xs font-medium text-neutral-500">
+                  {state.label}
+                </p>
+                <Alert
+                  {...args}
+                  type={type}
+                  pseudoState={state.pseudoState as AlertPseudoState}
+                  closable
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
+  args: {
+    message: "Alert message example.",
   },
 };

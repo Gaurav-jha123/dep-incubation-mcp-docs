@@ -208,4 +208,104 @@ describe("Select Component", () => {
 
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  it("applies data-pseudo-state to wrapper when pseudoState is set", () => {
+    const { container } = render(
+      <Select
+        options={options}
+        value=""
+        onChange={() => {}}
+        pseudoState="hover"
+      />,
+    );
+
+    const wrapper = container.querySelector("[data-pseudo-state]");
+    expect(wrapper).toBeDefined();
+    expect(wrapper?.getAttribute("data-pseudo-state")).toBe("hover");
+  });
+
+  it("does not apply data-pseudo-state when pseudoState is none", () => {
+    const { container } = render(
+      <Select
+        options={options}
+        value=""
+        onChange={() => {}}
+        pseudoState="none"
+      />,
+    );
+
+    expect(container.querySelector("[data-pseudo-state]")).toBeNull();
+  });
+
+  it("applies data-pseudo-state for each pseudo-state variant", () => {
+    const states = ["hover", "active", "focus", "focus-visible", "disabled"] as const;
+
+    states.forEach((state) => {
+      const { container, unmount } = render(
+        <Select
+          options={options}
+          value=""
+          onChange={() => {}}
+          pseudoState={state}
+        />,
+      );
+      const wrapper = container.querySelector("[data-pseudo-state]");
+      expect(wrapper?.getAttribute("data-pseudo-state")).toBe(state);
+      unmount();
+    });
+  });
+
+  it("disables combobox when pseudoState is disabled", () => {
+    const onChange = vi.fn();
+
+    render(
+      <Select
+        options={options}
+        value=""
+        onChange={onChange}
+        pseudoState="disabled"
+      />,
+    );
+
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveProperty("disabled", true);
+  });
+
+  it("applies focus border class when pseudoState is focus", () => {
+    render(
+      <Select
+        options={options}
+        value=""
+        onChange={() => {}}
+        pseudoState="focus"
+      />,
+    );
+
+    const input = screen.getByRole("combobox");
+    expect(input.className).toContain("border-primary-500");
+    expect(input.className).toContain("ring-1");
+  });
+
+  it("applies hover border class when pseudoState is hover", () => {
+    render(
+      <Select
+        options={options}
+        value=""
+        onChange={() => {}}
+        pseudoState="hover"
+      />,
+    );
+
+    const input = screen.getByRole("combobox");
+    expect(input.className).toContain("border-primary-300");
+  });
+
+  it("applies neutral border class when pseudoState is none", () => {
+    render(
+      <Select options={options} value="" onChange={() => {}} pseudoState="none" />,
+    );
+
+    const input = screen.getByRole("combobox");
+    expect(input.className).toContain("border-neutral-200");
+  });
 });

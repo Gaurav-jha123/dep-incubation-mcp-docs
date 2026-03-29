@@ -1,10 +1,27 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { within, userEvent } from '@storybook/testing-library';
 import { Pagination } from './Pagination';
 
-type PaginationProps = React.ComponentProps<typeof Pagination>;
+type PaginationStoryProps = React.ComponentProps<typeof Pagination>;
+
+const pseudoStateOptions = [
+    'none',
+    'hover',
+    'active',
+    'focus',
+    'focus-visible',
+    'disabled',
+] as const;
+
+const stateMatrix = [
+    { label: 'Default', pseudoState: 'none' as const },
+    { label: 'Hover', pseudoState: 'hover' as const },
+    { label: 'Active', pseudoState: 'active' as const },
+    { label: 'Focus', pseudoState: 'focus' as const },
+    { label: 'Focus Visible', pseudoState: 'focus-visible' as const },
+    { label: 'Disabled', pseudoState: 'disabled' as const },
+] as const;
 
 const meta: Meta<typeof Pagination> = {
     title: "Organisms/Pagination",
@@ -13,19 +30,36 @@ const meta: Meta<typeof Pagination> = {
         layout: 'centered',
     },
     tags: ['autodocs'],
+    argTypes: {
+        pseudoState: {
+            control: { type: 'select' },
+            options: pseudoStateOptions,
+        },
+        currentPage: {
+            control: { type: 'number', min: 1 },
+        },
+        totalPages: {
+            control: { type: 'number', min: 1 },
+        },
+    },
+    args: {
+        pseudoState: 'none',
+        currentPage: 1,
+        totalPages: 10,
+    },
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-type PaginationStoryArgs = ComponentProps<typeof Pagination>;
+// type PaginationStoryArgs = ComponentProps<typeof Pagination>
 
-const PaginationWrapper = (args: PaginationStoryArgs) => {
+const PaginationWrapper = (args: React.ComponentProps<typeof Pagination>) => {
     const [currentPage, setCurrentPage] = useState(args.currentPage);
     return <Pagination {...args} currentPage={currentPage} onPageChange={setCurrentPage} />;
 };
 
 export const Default: Story = {
-    render: (args: PaginationProps) => <PaginationWrapper {...args} />,
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} />,
     args: {
         currentPage: 1,
         totalPages: 10,
@@ -33,7 +67,7 @@ export const Default: Story = {
 };
 
 export const MultiplePages: Story = {
-    render: (args: PaginationProps) => <PaginationWrapper {...args} />,
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} />,
     args: {
         currentPage: 5,
         totalPages: 20,
@@ -41,7 +75,7 @@ export const MultiplePages: Story = {
 };
 
 export const TwoPages: Story = {
-    render: (args: PaginationProps) => <PaginationWrapper {...args} />,
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} />,
     args: {
         currentPage: 1,
         totalPages: 2,
@@ -49,16 +83,57 @@ export const TwoPages: Story = {
 };
 
 export const LastPage: Story = {
-    render: (args: PaginationProps) => <PaginationWrapper {...args} />,
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} />,
     args: {
         currentPage: 10,
         totalPages: 10,
     },
 };
 
-/** Clicks Next and verifies page 2 becomes active */
+export const Interactive: Story = {
+    parameters: {
+        layout: 'padded',
+    },
+    render: (args: PaginationStoryProps) => (
+        <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
+            <p className="text-sm text-neutral-700">
+                Use this story to test real interactions. No pseudo state is forced.
+            </p>
+            <PaginationWrapper {...args} pseudoState="none" />
+        </div>
+    ),
+    args: {
+        currentPage: 4,
+        totalPages: 10,
+    },
+};
+
+export const States: Story = {
+    parameters: {
+        layout: 'padded',
+    },
+    render: (args: PaginationStoryProps) => (
+        <div className="space-y-4">
+            {stateMatrix.map((state) => (
+                <div key={state.label} className="space-y-2">
+                    <p className="text-sm font-medium text-neutral-700">{state.label}</p>
+                    <PaginationWrapper
+                        {...args}
+                        pseudoState={state.pseudoState}
+                        navAriaLabel={`Pagination ${state.label}`}
+                    />
+                </div>
+            ))}
+        </div>
+    ),
+    args: {
+        currentPage: 4,
+        totalPages: 10,
+    },
+};
+
 export const ClickNext: Story = {
-    render: (args: PaginationProps) => <PaginationWrapper {...args} />,
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {
         currentPage: 1,
         totalPages: 10,
@@ -76,9 +151,8 @@ export const ClickNext: Story = {
     },
 };
 
-/** Clicks Previous and verifies page 4 becomes active */
 export const ClickPrevious: Story = {
-    render: (args: PaginationProps) => <PaginationWrapper {...args} />,
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {
         currentPage: 5,
         totalPages: 10,
@@ -96,9 +170,8 @@ export const ClickPrevious: Story = {
     },
 };
 
-/** Clicks a specific page number and verifies it becomes active */
 export const ClickSpecificPage: Story = {
-    render: (args: PaginationProps) => <PaginationWrapper {...args} />,
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {
         currentPage: 1,
         totalPages: 10,
@@ -115,9 +188,8 @@ export const ClickSpecificPage: Story = {
     },
 };
 
-/** Navigates forward 3 times, then back once — page 3 should be active */
 export const NavigateMultipleSteps: Story = {
-    render: (args: PaginationProps) => <PaginationWrapper {...args} />,
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {
         currentPage: 1,
         totalPages: 10,
@@ -127,10 +199,10 @@ export const NavigateMultipleSteps: Story = {
         const nextButton = canvas.getByText('Next');
         const prevButton = canvas.getByText('Previous');
 
-        await userEvent.click(nextButton); // → page 2
-        await userEvent.click(nextButton); // → page 3
-        await userEvent.click(nextButton); // → page 4
-        await userEvent.click(prevButton); // → page 3
+        await userEvent.click(nextButton);
+        await userEvent.click(nextButton);
+        await userEvent.click(nextButton);
+        await userEvent.click(prevButton);
 
         const page3Button = canvas.getByText('3');
         if (!page3Button.className.includes('bg-primary-500')) {
@@ -139,9 +211,8 @@ export const NavigateMultipleSteps: Story = {
     },
 };
 
-/** Verifies Previous is disabled on page 1 and enabled after navigating forward */
 export const FirstPageBoundary: Story = {
-    render: (args: PaginationProps) => <PaginationWrapper {...args} />,
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {
         currentPage: 1,
         totalPages: 10,
@@ -163,9 +234,8 @@ export const FirstPageBoundary: Story = {
     },
 };
 
-/** Verifies Next is disabled on last page and enabled after navigating back */
 export const LastPageBoundary: Story = {
-    render: (args: PaginationProps) => <PaginationWrapper {...args} />,
+    render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {
         currentPage: 10,
         totalPages: 10,

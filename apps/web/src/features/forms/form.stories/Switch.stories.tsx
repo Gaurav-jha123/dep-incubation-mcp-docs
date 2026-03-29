@@ -40,6 +40,7 @@ const SwitchTemplate = ({ fieldName, label, helperText, defaultValue = false }: 
             <Switch
               checked={field.value}
               onChange={field.onChange}
+              aria-label={label || "Status toggle"}
               className={`${field.value ? "bg-blue-600" : "bg-gray-300"
                 } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500`}
             >

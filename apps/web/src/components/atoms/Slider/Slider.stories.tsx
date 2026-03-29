@@ -30,6 +30,7 @@ export const Default: Story = {
         min: 0,
         max: 100,
         step: 1,
+        ariaLabel: 'Default slider',
     },
 };
 
@@ -40,6 +41,7 @@ export const CustomRange: Story = {
         min: 10,
         max: 30,
         step: 2,
+        ariaLabel: 'Custom range slider',
     },
 };
 
@@ -48,5 +50,6 @@ export const Disabled: Story = {
     args: {
         value: 40,
         disabled: true,
+        ariaLabel: 'Disabled slider',
     },
 };

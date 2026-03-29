@@ -2,6 +2,55 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Input } from "./Input";
 import { Mail, Lock, Eye } from "lucide-react";
 
+const pseudoStateOptions = [
+  "none",
+  "focus-visible",
+  "disabled",
+  "required"
+] as const;
+
+const variantOptions = [
+  "default",
+  "success",
+  "error",
+  "outlined",
+  // "with helper",
+  // "Left icon",
+  // "Right icon",
+  // "With char count",
+  // "Char count exceeded",
+] as const;
+
+const stateMatrix = [
+  { label: "Default", props: { pseudoState: "none" as const,  helperText: "This field is mandatory" } },
+  {
+    label: "Focus Visible",
+    props: { pseudoState: "focus-visible" as const, helperText: "This field is mandatory" },
+  },
+  { label: "Disabled", props: { pseudoState: "disabled" as const,helperText: "This field is mandatory" } },
+  { label: "Required", props: { pseudoState: "required" as const, required: true , helperText: "This field is mandatory",} },
+] as const;
+
+const sizeOptions = ["sm", "md", "lg"] as const;
+
+const sizeLabels: Record<(typeof sizeOptions)[number], string> = {
+  lg: "Large",
+  md: "Medium",
+  sm: "Small",
+};
+
+const variantLabels: Record<(typeof variantOptions)[number], string> = {
+  default: "Default",
+  success: "Success",
+  error: "Error",
+  outlined: "Outlined",
+  // "with helper": "With Helper",
+  // "Left icon": "Left Icon",
+  // "Right icon": "Right Icon",
+  // "With char count": "With Character Count",
+  // "Char count exceeded": "Character Count Exceeded",
+};
+
 const meta = {
   title: "Atoms/Input",
   component: Input,
@@ -18,6 +67,7 @@ const meta = {
     required: false,
     fullWidth: false,
     showCharCount: false,
+    pseudoState: "none",
   },
   argTypes: {
     variant: {
@@ -42,6 +92,10 @@ const meta = {
     },
     maxLength: {
       control: { type: "number", min: 10, max: 500 },
+    },
+    pseudoState: {
+      control: { type: "select" },
+      options: pseudoStateOptions,
     },
     disabled: { control: "boolean" },
     required: { control: "boolean" },
@@ -114,6 +168,7 @@ export const Error: Story = {
     variant: "error",
     error: "Password must be at least 8 characters",
     defaultValue: "short",
+    pseudoState: "focus-visible",
   },
 };
 
@@ -124,6 +179,7 @@ export const Success: Story = {
     variant: "success",
     helperText: "This username is available",
     defaultValue: "johndoe",
+    pseudoState: "focus-visible",
   },
 };
 
@@ -141,6 +197,14 @@ export const Small: Story = {
     placeholder: "Small input",
     label: "Small Size",
     inputSize: "sm",
+  },
+};
+
+export const Medium: Story = {
+  args: {
+    placeholder: "Medium input",
+    label: "Medium Size",
+    inputSize: "md",
   },
 };
 
@@ -171,7 +235,7 @@ export const Required: Story = {
 
 export const Outlined: Story = {
   args: {
-    placeholder: "",
+    placeholder: "Outlined",
     label: "Outlined",
     variant: "outlined",
   },
@@ -179,9 +243,66 @@ export const Outlined: Story = {
 
 export const OutlinedWithIcon: Story = {
   args: {
-    placeholder: "",
+    placeholder: "Outlined with Icon",
     label: "Outlined with Icon",
     variant: "outlined",
     leftIcon: <Lock size={18} />,
   },
+};
+
+
+export const VariantsAndStates: Story = {
+  parameters: {
+    layout: "fullscreen",
+  },
+  render: () => (
+    <div className="space-y-10 p-8">
+      {sizeOptions.map((size) => (
+        <div key={size}>
+          <table className="w-full border-collapse">
+            <thead>
+              <tr>
+                <th className="sticky left-0 z-10 bg-white p-3 text-left text-sm font-semibold text-neutral-900">
+                  {sizeLabels[size]}
+                </th>
+                {variantOptions.map((variant) => (
+                  <th
+                    key={variant}
+                    className="p-3 text-center text-xs font-semibold uppercase tracking-wider text-neutral-500"
+                  >
+                    {variantLabels[variant]}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {stateMatrix.map(({ label, props }) => (
+                <tr
+                  key={label}
+                  className="border-t border-dashed border-neutral-200"
+                >
+                  <td className="sticky left-0 z-10 bg-white p-3 text-sm font-medium text-neutral-500">
+                    {label}
+                  </td>
+                  {variantOptions.map((variant) => (
+                    <td key={variant} className="p-3 text-center">
+                      <Input
+                        placeholder="Enter text..."
+                        label="Label"
+                        variant={variant}
+                        inputSize={size}
+                        {...props}
+                        helperText={variant === "error" ? undefined: props.helperText}
+                        error={variant === "error" ? props.helperText : undefined}
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </div>
+  ),
 };

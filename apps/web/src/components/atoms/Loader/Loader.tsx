@@ -18,7 +18,7 @@ export default function Loader({ open, size = 'medium', color = 'blue' }: Loader
   };
 
   return (
-    <Dialog open={open} onClose={() => {}} className="relative z-50">
+    <Dialog open={open} onClose={() => {}} className="relative z-50" aria-label="Loading">
       <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
         <div data-testid="loader-spinner" className={`${sizeClasses[size]} ${colorClasses[color]} border-t-transparent rounded-full animate-spin`}></div>
       </div>
