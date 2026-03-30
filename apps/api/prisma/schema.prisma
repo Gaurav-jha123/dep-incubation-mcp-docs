@@ -37,6 +37,7 @@ model Topic {
 
   skillMatrix  SkillMatrix[]
   projectSkills ProjectSkill[]
+  subTopics     SubTopic[]
 
   @@map("topics")
 }
@@ -114,4 +115,15 @@ model SkillMatrix {
   @@index([userId])
   @@index([topicId])
   @@map("skill_matrix")
+}
+
+model SubTopic {
+  id Int @id @default(autoincrement())
+  label String
+  topicId   Int @map("topic_id")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  topic Topic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  @@map("subtopics")
 }

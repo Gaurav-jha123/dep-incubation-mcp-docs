@@ -129,6 +129,36 @@ const topics = [
   { label: 'Styling-CSS, SCSS, Style components, Tailwind' },
 ];
 
+const subtopicsData: Record<string, { label: string }[]> = {
+  'Problem solving': [
+    { label: 'Recursion' },
+    { label: 'Sliding window' },
+    { label: 'Two pointers' },
+    { label: 'Dynamic programming' },
+  ],
+  React: [
+    { label: 'Hooks (useState, useEffect)' },
+    { label: 'Components & Props' },
+    { label: 'Context API' },
+    { label: 'JSX & Rendering' },
+  ],
+  Typescript: [
+    { label: 'Types & Interfaces' },
+    { label: 'Generics' },
+    { label: 'Advanced Types' },
+  ],
+  'Next.js': [
+    { label: 'App Router' },
+    { label: 'Server Components' },
+    { label: 'API Routes' },
+  ],
+  'Design patterns': [
+    { label: 'Singleton' },
+    { label: 'Observer' },
+    { label: 'Factory' },
+  ],
+};
+
 async function main() {
   console.log('🌱 Seeding database...\n');
 
@@ -161,6 +191,49 @@ async function main() {
     }
     createdTopics.push(topic);
     console.log(`  ✓ Topic: ${topic.label}`);
+  }
+
+  // Seed subtopics linked to topics
+  console.log('\n  Seeding subtopics...');
+  for (const topic of createdTopics) {
+    const subtopics = subtopicsData[topic.label] || [];
+    for (const subtopicData of subtopics) {
+      try {
+        // Try to find existing subtopic
+        const existingSubTopic = await prisma.subTopic.findFirst({
+          where: {
+            label: subtopicData.label,
+            topicId: topic.id,
+          },
+        });
+
+        if (!existingSubTopic) {
+          const subTopic = await prisma.subTopic.create({
+            data: {
+              label: subtopicData.label,
+              topicId: topic.id,
+            },
+          });
+          console.log(
+            `    ✓ Added subtopic "${subTopic.label}" to "${topic.label}"`,
+          );
+        } else {
+          console.log(
+            `    ⚠ Subtopic "${existingSubTopic.label}" already exists for "${topic.label}"`,
+          );
+        }
+      } catch (error) {
+        console.log(
+          `    ❌ Error creating subtopic "${subtopicData.label}" for "${topic.label}":`,
+          error.message,
+        );
+      }
+    }
+    if (subtopics.length > 0) {
+      console.log(
+        `  ✓ Processed ${subtopics.length} subtopics for: ${topic.label}`,
+      );
+    }
   }
 
   // Seed skill matrix with realistic skillLevel (0-100) for every user × topic
