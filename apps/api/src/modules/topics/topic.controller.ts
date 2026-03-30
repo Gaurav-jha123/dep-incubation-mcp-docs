@@ -22,10 +22,12 @@ import { CreateTopicDto } from './dto/create-topic.dto.js';
 import { UpdateTopicDto } from './dto/update-topic.dto.js';
 import { PaginationQueryDto } from './dto/pagination-query.dto.js';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { Roles, Role } from '../auth/decorators/roles.decorator.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
 
 @ApiTags('Topics')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('topics')
 export class TopicController {
   constructor(private readonly topicService: TopicService) {}
@@ -47,6 +49,7 @@ export class TopicController {
   }
 
   @Post()
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Create topic' })
   @ApiResponse({ status: 201, description: 'Topic created' })
   create(@Body() dto: CreateTopicDto) {
@@ -54,6 +57,7 @@ export class TopicController {
   }
 
   @Patch(':id')
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Update topic' })
   @ApiParam({ name: 'id', type: Number })
   update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateTopicDto) {
@@ -61,6 +65,7 @@ export class TopicController {
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Delete topic' })
   @ApiParam({ name: 'id', type: Number })
   remove(@Param('id', ParseIntPipe) id: number) {

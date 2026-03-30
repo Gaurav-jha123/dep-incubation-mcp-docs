@@ -35,10 +35,15 @@ export class AuthService {
       },
     });
 
-    const tokens = await this.generateTokens(user.id, user.email);
+    const tokens = await this.generateTokens(user.id, user.email, user.role);
 
     return {
-      user: { id: user.id, name: user.name, email: user.email },
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
       ...tokens,
     };
   }
@@ -58,10 +63,15 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const tokens = await this.generateTokens(user.id, user.email);
+    const tokens = await this.generateTokens(user.id, user.email, user.role);
 
     return {
-      user: { id: user.id, name: user.name, email: user.email },
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
       ...tokens,
     };
   }
@@ -69,7 +79,13 @@ export class AuthService {
   async getProfile(email: string) {
     const user = await this.prisma.user.findUnique({
       where: { email },
-      select: { id: true, name: true, email: true, createdAt: true },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      },
     });
 
     if (!user) {
@@ -79,14 +95,14 @@ export class AuthService {
     return user;
   }
 
-  private async generateTokens(userId: number, email: string) {
+  private async generateTokens(userId: number, email: string, role: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { id: userId, email, type: 'access' },
+        { id: userId, email, role, type: 'access' },
         { expiresIn: '15m' },
       ),
       this.jwtService.signAsync(
-        { id: userId, email, type: 'refresh' },
+        { id: userId, email, role, type: 'refresh' },
         { expiresIn: '7d' },
       ),
     ]);
@@ -99,6 +115,7 @@ export class AuthService {
       const payload = await this.jwtService.verifyAsync<{
         id: number;
         email: string;
+        role: string;
         type: string;
       }>(token);
 
@@ -106,7 +123,7 @@ export class AuthService {
         throw new UnauthorizedException('Invalid refresh token');
       }
 
-      return this.generateTokens(payload.id, payload.email);
+      return this.generateTokens(payload.id, payload.email, payload.role);
     } catch (error) {
       if (error instanceof UnauthorizedException) throw error;
       throw new UnauthorizedException('Invalid refresh token');
