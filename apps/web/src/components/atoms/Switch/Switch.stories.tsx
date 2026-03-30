@@ -65,6 +65,13 @@ const SwitchWrapper = (args: SwitchStoryProps) => {
 };
 
 export const Default: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'A basic toggle switch component.'
+            }
+        }
+    },
     render: (args: SwitchStoryProps) => <SwitchWrapper {...args} />,
     args: {
         checked: false,
@@ -72,6 +79,13 @@ export const Default: Story = {
 };
 
 export const Checked: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'Switch in checked (on) state.'
+            }
+        }
+    },
     render: (args: SwitchStoryProps) => <SwitchWrapper {...args} />,
     args: {
         checked: true,
@@ -79,6 +93,13 @@ export const Checked: Story = {
 };
 
 export const Disabled: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'Switch in a disabled state.'
+            }
+        }
+    },
     render: (args: SwitchStoryProps) => <SwitchWrapper {...args} />,
     args: {
         checked: false,
@@ -87,6 +108,13 @@ export const Disabled: Story = {
 };
 
 export const CheckedDisabled: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'Switch in checked and disabled state.'
+            }
+        }
+    },
     render: (args: SwitchStoryProps) => <SwitchWrapper {...args} />,
     args: {
         checked: true,
@@ -97,6 +125,11 @@ export const CheckedDisabled: Story = {
 export const Interactive: Story = {
     parameters: {
         layout: 'padded',
+        docs: {
+            description: {
+                story: 'Interactive switch for real user testing.'
+            }
+        }
     },
     render: (args: SwitchStoryProps) => (
         <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
@@ -112,52 +145,15 @@ export const Interactive: Story = {
     },
 };
 
-export const States: Story = {
-    parameters: {
-        layout: 'padded',
-    },
-    render: (args: SwitchStoryProps) => (
-        <div className="space-y-6">
-            <div className="space-y-4">
-                <p className="text-lg font-semibold text-neutral-900">Unchecked States</p>
-                <div className="space-y-3">
-                    {stateMatrix.map((state) => (
-                        <div key={`unchecked-${state.label}`} className="flex items-center gap-4">
-                            <p className="w-24 text-sm font-medium text-neutral-700">{state.label}</p>
-                            <SwitchWrapper
-                                {...args}
-                                checked={false}
-                                pseudoState={state.pseudoState as SwitchPseudoState}
-                            />
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <div className="space-y-4">
-                <p className="text-lg font-semibold text-neutral-900">Checked States</p>
-                <div className="space-y-3">
-                    {stateMatrix.map((state) => (
-                        <div key={`checked-${state.label}`} className="flex items-center gap-4">
-                            <p className="w-24 text-sm font-medium text-neutral-700">{state.label}</p>
-                            <SwitchWrapper
-                                {...args}
-                                checked={true}
-                                pseudoState={state.pseudoState as SwitchPseudoState}
-                            />
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    ),
-    args: {
-        disabled: false,
-    },
-};
 
 export const VariantsAndStates: Story = {
     parameters: {
         layout: 'fullscreen',
+        docs: {
+            description: {
+                story: 'Table of all switch variants and states.'
+            }
+        }
     },
     render: (args: SwitchStoryProps) => (
         <div className="space-y-10 p-8">

@@ -135,10 +135,24 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Simple: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Basic card with simple content."
+      }
+    }
+  },
   args: { children: "Simple card content." },
 };
 
 export const Header: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Card with header, title, and subtitle."
+      }
+    }
+  },
   args: {
     variant: "header",
     title: "Profile",
@@ -148,6 +162,13 @@ export const Header: Story = {
 };
 
 export const Image: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Card with an image at the top."
+      }
+    }
+  },
   args: {
     variant: "image",
     imageSrc: "https://via.placeholder.com/300x150",
@@ -157,6 +178,13 @@ export const Image: Story = {
 };
 
 export const Actions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Card with action buttons in the footer."
+      }
+    }
+  },
   args: {
     variant: "actions",
     title: "Confirm",
@@ -175,6 +203,13 @@ export const Actions: Story = {
 };
 
 export const Styled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Styled card with outline surface."
+      }
+    }
+  },
   args: {
     variant: "styled",
     styleVariant: "outline",
@@ -183,6 +218,13 @@ export const Styled: Story = {
 };
 
 export const StyledSolid: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Styled card with solid surface."
+      }
+    }
+  },
   args: {
     variant: "styled",
     styleVariant: "solid",
@@ -191,6 +233,13 @@ export const StyledSolid: Story = {
 };
 
 export const StyledOutline: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Styled card with outline surface."
+      }
+    }
+  },
   args: {
     variant: "styled",
     styleVariant: "outline",
@@ -199,6 +248,13 @@ export const StyledOutline: Story = {
 };
 
 export const StyledGhost: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Styled card with ghost surface."
+      }
+    }
+  },
   args: {
     variant: "styled",
     styleVariant: "ghost",

@@ -63,6 +63,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Basic usage of Tooltip with a button trigger.
+ */
 export const Basic: Story = {
   render: (args: TooltipProps) => (
     <Tooltip {...args}>
@@ -71,6 +74,9 @@ export const Basic: Story = {
   ),
 };
 
+/**
+ * Tooltip placements: top, bottom, left, right.
+ */
 export const Placements: Story = {
   render: () => (
     <div className="flex flex-wrap gap-6">
@@ -93,6 +99,9 @@ export const Placements: Story = {
   ),
 };
 
+/**
+ * Disabled tooltip (not shown on hover).
+ */
 export const Disabled: Story = {
   render: () => (
     <Tooltip content="You should not see this" disabled>
@@ -103,6 +112,9 @@ export const Disabled: Story = {
   ),
 };
 
+/**
+ * Tooltip with long, multi-line content.
+ */
 export const LongContent: Story = {
   render: () => (
     <Tooltip
@@ -122,29 +134,41 @@ export const LongContent: Story = {
   ),
 };
 
+/**
+ * Preview tooltip in all pseudo states (hover, focus, disabled, etc).
+ */
 export const States: Story = {
   parameters: {
     layout: "fullscreen",
   },
   render: (args: TooltipProps) => (
-    <div className="grid gap-4 bg-neutral-50 p-8 md:grid-cols-2">
-      {pseudoStateOptions.map((pseudoState) => (
-        <div
-          key={pseudoState}
-          className="space-y-3 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm"
-        >
-          <p className="text-sm font-medium capitalize text-neutral-700">
-            {pseudoState}
-          </p>
-          <Tooltip
-            {...args}
-            pseudoState={pseudoState}
-            content={`Tooltip in ${pseudoState} state`}
-          >
-            <Button variant="outline">Preview tooltip</Button>
-          </Tooltip>
-        </div>
-      ))}
+    <div className="grid gap-6 bg-neutral-50 p-8" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
+      {variantOptions.map((variant) =>
+        sizeOptions.map((size) =>
+          pseudoStateOptions.map((pseudoState) => (
+            <div
+              key={`${variant}-${size}-${pseudoState}`}
+              className="space-y-3 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm"
+            >
+              <p className="text-xs font-semibold text-neutral-700">
+                <span className="capitalize">{variant}</span> / <span>{size}</span> / <span className="capitalize">{pseudoState}</span>
+              </p>
+              <Tooltip
+                {...args}
+                variant={variant}
+                size={size}
+                pseudoState={pseudoState}
+                disabled={pseudoState === "disabled"}
+                content={`Tooltip: ${variant}, ${size}, ${pseudoState}`}
+              >
+                <Button variant="outline" disabled={pseudoState === "disabled"}>
+                  {`${variant} / ${size} / ${pseudoState}`}
+                </Button>
+              </Tooltip>
+            </div>
+          ))
+        )
+      )}
     </div>
   ),
 };

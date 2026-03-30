@@ -68,6 +68,9 @@ export default meta
 type Story = StoryObj<typeof Dropdown>
 
 // ─── Default ────────────────────────────────────────────────────────────────
+/**
+ * Basic dropdown with trigger and menu items.
+ */
 export const Default: Story = {
   render: () => (
     <Dropdown>
@@ -86,6 +89,9 @@ export const Default: Story = {
 }
 
 // ─── With Icons ──────────────────────────────────────────────────────────────
+/**
+ * Dropdown menu with icons for each item.
+ */
 export const WithIcons: Story = {
   render: () => (
     <Dropdown>
@@ -104,6 +110,9 @@ export const WithIcons: Story = {
 }
 
 // ─── With Disabled Items ─────────────────────────────────────────────────────
+/**
+ * Dropdown with a disabled menu item.
+ */
 export const WithDisabledItems: Story = {
   render: () => (
     <Dropdown>
@@ -122,6 +131,9 @@ export const WithDisabledItems: Story = {
 }
 
 // ─── Placements ───────────────────────────────────────────────────────────────
+/**
+ * Dropdown with bottom-end placement.
+ */
 export const PlacementBottomEnd: Story = {
   name: "Placement: bottom-end",
   render: () => (
@@ -140,6 +152,9 @@ export const PlacementBottomEnd: Story = {
   },
 }
 
+/**
+ * Dropdown with top-start placement.
+ */
 export const PlacementTopStart: Story = {
   name: "Placement: top-start",
   parameters: { layout: "padded" },
@@ -160,6 +175,9 @@ export const PlacementTopStart: Story = {
   },
 }
 
+/**
+ * Dropdown with top-end placement.
+ */
 export const PlacementTopEnd: Story = {
   name: "Placement: top-end",
   parameters: { layout: "padded" },
@@ -181,6 +199,9 @@ export const PlacementTopEnd: Story = {
 }
 
 // ─── Icon-Only Trigger (Kebab Menu) ──────────────────────────────────────────
+/**
+ * Dropdown with icon-only (kebab) trigger.
+ */
 export const IconOnlyTrigger: Story = {
   name: "Icon-only trigger (kebab)",
   render: () => (
@@ -202,6 +223,9 @@ export const IconOnlyTrigger: Story = {
 }
 
 // ─── Profile Dropdown Menu ──────────────────────────────────────────
+/**
+ * Profile dropdown menu with avatar trigger.
+ */
 export const ProfileDropdownMenu: Story = {
   render: () => (
     <Dropdown>
@@ -224,6 +248,9 @@ export const ProfileDropdownMenu: Story = {
 }
 
 // ─── Long List ────────────────────────────────────────────────────────────────
+/**
+ * Dropdown with a long scrollable list of items.
+ */
 export const LongList: Story = {
   render: () => (
     <Dropdown>
@@ -242,6 +269,9 @@ export const LongList: Story = {
 }
 
 // ─── With Divider ─────────────────────────────────────────────────────────────
+/**
+ * Dropdown menu with a divider between items.
+ */
 export const WithDivider: Story = {
   render: () => (
     <Dropdown>
@@ -261,6 +291,9 @@ export const WithDivider: Story = {
 }
 
 // ─── Sizes ───────────────────────────────────────────────────────────────
+/**
+ * Dropdown in small, medium, and large sizes.
+ */
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-6">
@@ -303,6 +336,9 @@ export const Sizes: Story = {
   },
 }
 
+/**
+ * Dropdown in all pseudo states (hover, focus, disabled, etc).
+ */
 export const States: Story = {
   parameters: {
     layout: "fullscreen",

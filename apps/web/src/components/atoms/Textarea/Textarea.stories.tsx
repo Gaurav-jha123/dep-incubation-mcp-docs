@@ -8,6 +8,7 @@ const variantOptions = ["default", "success", "filled", "error"] as const;
 
 const sizeOptions = ["sm", "md", "lg"] as const;
 
+
 const sizeLabels: Record<(typeof sizeOptions)[number], string> = {
   sm: "Small",
   md: "Medium",
@@ -68,6 +69,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'A basic textarea for multi-line input.'
+      }
+    }
+  },
   args: {
     placeholder: "Enter your message...",
     label: "Message",
@@ -75,6 +83,13 @@ export const Default: Story = {
 };
 
 export const WithHelper: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Textarea with helper text and required indicator.'
+      }
+    }
+  },
   args: {
     placeholder: "Write something...",
     label: "Description",
@@ -84,6 +99,13 @@ export const WithHelper: Story = {
 };
 
 export const Error: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Textarea in error state with error message.'
+      }
+    }
+  },
   args: {
     placeholder: "Enter description",
     label: "Description",
@@ -94,6 +116,13 @@ export const Error: Story = {
 };
 
 export const Success: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Textarea in success state with positive feedback.'
+      }
+    }
+  },
   args: {
     placeholder: "Enter details",
     label: "Details",
@@ -105,6 +134,13 @@ export const Success: Story = {
 };
 
 export const Filled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Filled variant for a subtle background.'
+      }
+    }
+  },
   args: {
     placeholder: "Start writing...",
     label: "Notes",
@@ -114,6 +150,13 @@ export const Filled: Story = {
 };
 
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Textarea in a disabled state.'
+      }
+    }
+  },
   args: {
     placeholder: "Disabled textarea",
     label: "Disabled",
@@ -123,6 +166,13 @@ export const Disabled: Story = {
 };
 
 export const Small: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Small size textarea.'
+      }
+    }
+  },
   args: {
     placeholder: "Small textarea",
     label: "Small Size",
@@ -131,6 +181,13 @@ export const Small: Story = {
 };
 
 export const Large: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Large size textarea.'
+      }
+    }
+  },
   args: {
     placeholder: "Large textarea",
     label: "Large Size",
@@ -139,6 +196,13 @@ export const Large: Story = {
 };
 
 export const FullWidth: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Textarea that expands to full width.'
+      }
+    }
+  },
   args: {
     placeholder: "Full width textarea",
     label: "Full Width",
@@ -146,7 +210,16 @@ export const FullWidth: Story = {
   },
 };
 
+
+
 export const Required: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Textarea with required indicator and helper text.'
+      }
+    }
+  },
   args: {
     placeholder: "Required field",
     label: "Required Field",
@@ -156,11 +229,17 @@ export const Required: Story = {
 };
 
 export const AllVariants: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Showcases all textarea variants and sizes.'
+      }
+    }
+  },
   args: {
     pseudoState: "active",
     helperText: "Helper text",
   },
-
   render: (args: TextareaStoryArgs) => (
     <div className="space-y-8">
       {(["sm", "md", "lg"] as const).map((textareaSize) => (
@@ -189,6 +268,11 @@ export const AllVariants: Story = {
 export const PseudoStatePreview: Story = {
   parameters: {
     layout: "fullscreen",
+    docs: {
+      description: {
+        story: 'Preview of all textarea pseudo states.'
+      }
+    }
   },
   render: (args: TextareaStoryArgs) => (
     <div className="grid gap-4 p-8 md:grid-cols-2 xl:grid-cols-5">
@@ -223,6 +307,11 @@ export const PseudoStatePreview: Story = {
 export const VariantsAndStates: Story = {
   parameters: {
     layout: "fullscreen",
+    docs: {
+      description: {
+        story: 'Table of all textarea variants, sizes, and pseudo states.'
+      }
+    }
   },
   render: () => (
     <div className="space-y-8 p-8">

@@ -83,6 +83,13 @@ const InteractiveStepper = (args: StepperStoryArgs) => {
 };
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Default stepper with four steps and interactive navigation."
+      }
+    }
+  },
   args: {
     steps,
     variant: "default",
@@ -99,6 +106,13 @@ export const Default: Story = {
 };
 
 export const Minimal: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Minimal stepper variant with four steps."
+      }
+    }
+  },
   args: {
     steps,
     variant: "minimal",
@@ -117,6 +131,11 @@ export const Minimal: Story = {
 export const States: Story = {
   parameters: {
     layout: "fullscreen",
+    docs: {
+      description: {
+        story: "Stepper in all states and both variants."
+      }
+    }
   },
   args: {
     steps,

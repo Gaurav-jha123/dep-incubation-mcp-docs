@@ -70,10 +70,26 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Default RadioGroup
-export const Default: Story = {};
+// Removed duplicate Default export to resolve redeclaration error
+export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Standard radio group with three options."
+      }
+    }
+  },
+};
 
 // Pre-selected
 export const PreSelected: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Radio group with a pre-selected option."
+      }
+    }
+  },
   args: {
     value: "2",
   },
@@ -81,6 +97,13 @@ export const PreSelected: Story = {
 
 // With disabled option
 export const DisabledOption: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Radio group with a disabled option."
+      }
+    }
+  },
   args: {
     options: [
       { label: "Option 1", value: "1" },
@@ -92,6 +115,13 @@ export const DisabledOption: Story = {
 
 // Small size
 export const Small: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Radio group with small size."
+      }
+    }
+  },
   args: {
     size: "sm",
   },
@@ -99,6 +129,13 @@ export const Small: Story = {
 
 // Large size
 export const Large: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Radio group with large size."
+      }
+    }
+  },
   args: {
     size: "lg",
   },
@@ -107,6 +144,11 @@ export const Large: Story = {
 export const States: Story = {
   parameters: {
     layout: "padded",
+    docs: {
+      description: {
+        story: "Preview of all pseudo states for the radio group."
+      }
+    }
   },
   render: (args: RadioGroupProps) => (
     <div className="grid gap-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6 md:grid-cols-2">

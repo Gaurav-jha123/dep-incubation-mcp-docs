@@ -24,6 +24,13 @@ const SliderWrapper = (args: SliderStoryArgs) => {
 };
 
 export const Default: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'A basic slider for selecting a value within a range.'
+            }
+        }
+    },
     render: (args: SliderStoryArgs) => <SliderWrapper {...args} />,
     args: {
         value: 50,
@@ -35,6 +42,13 @@ export const Default: Story = {
 };
 
 export const CustomRange: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'Slider with a custom min, max, and step.'
+            }
+        }
+    },
     render: (args: SliderStoryArgs) => <SliderWrapper {...args} />,
     args: {
         value: 20,
@@ -46,10 +60,50 @@ export const CustomRange: Story = {
 };
 
 export const Disabled: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'A slider in a disabled state.'
+            }
+        }
+    },
     render: (args: SliderStoryArgs) => <SliderWrapper {...args} />,
     args: {
         value: 40,
         disabled: true,
         ariaLabel: 'Disabled slider',
+    },
+};
+// Pseudo states for demonstration (visual only)
+const pseudoStates = [
+    { label: 'Default', props: {} },
+    { label: 'Focus', props: { 'data-focus': true } },
+    { label: 'Disabled', props: { disabled: true } },
+];
+
+export const PseudoStates: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'Slider with various pseudo states (visual only, not interactive).',
+            },
+        },
+        layout: 'centered',
+    },
+    render: (args: SliderStoryArgs) => (
+        <div className="flex gap-8 items-center justify-center">
+            {pseudoStates.map(({ label, props }) => (
+                <div key={label} className="flex flex-col items-center gap-2">
+                    <span className="text-xs text-neutral-500">{label}</span>
+                    <Slider {...args} {...props} aria-label={label + ' slider'} />
+                </div>
+            ))}
+        </div>
+    ),
+    args: {
+        value: 50,
+        min: 0,
+        max: 100,
+        step: 1,
     },
 };

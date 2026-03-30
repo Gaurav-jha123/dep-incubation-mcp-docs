@@ -111,9 +111,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "A basic input field for text entry."
+      }
+    }
+  },
+};
 
 export const WithHelper: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Input with helper text for additional guidance."
+      }
+    }
+  },
   args: {
     placeholder: "example@email.com",
     label: "Email Address",
@@ -123,6 +138,13 @@ export const WithHelper: Story = {
 };
 
 export const WithLeftIcon: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Input with a left icon for visual context."
+      }
+    }
+  },
   args: {
     placeholder: "example@email.com",
     label: "Email Address",
@@ -132,6 +154,13 @@ export const WithLeftIcon: Story = {
 };
 
 export const WithRightIcon: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Input with a right icon, e.g., for password visibility toggle."
+      }
+    }
+  },
   args: {
     placeholder: "Enter password",
     label: "Password",
@@ -142,6 +171,13 @@ export const WithRightIcon: Story = {
 };
 
 export const WithCharCount: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Input with character count for limited text fields."
+      }
+    }
+  },
   args: {
     placeholder: "Write your bio",
     label: "Bio",
@@ -152,6 +188,13 @@ export const WithCharCount: Story = {
 };
 
 export const CharCountExceeded: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Input showing error when character limit is exceeded."
+      }
+    }
+  },
   args: {
     placeholder: "Write your bio",
     label: "Bio",
@@ -162,6 +205,13 @@ export const CharCountExceeded: Story = {
 };
 
 export const Error: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Input in error state with error message."
+      }
+    }
+  },
   args: {
     placeholder: "Enter password",
     label: "Password",
@@ -173,6 +223,13 @@ export const Error: Story = {
 };
 
 export const Success: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Input in success state with helper text."
+      }
+    }
+  },
   args: {
     placeholder: "Username",
     label: "Username",
@@ -184,6 +241,13 @@ export const Success: Story = {
 };
 
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Disabled input for read-only or unavailable fields."
+      }
+    }
+  },
   args: {
     placeholder: "Disabled input",
     label: "Disabled",
@@ -193,6 +257,13 @@ export const Disabled: Story = {
 };
 
 export const Small: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Small input for compact layouts."
+      }
+    }
+  },
   args: {
     placeholder: "Small input",
     label: "Small Size",
@@ -201,6 +272,13 @@ export const Small: Story = {
 };
 
 export const Medium: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Medium input for standard forms."
+      }
+    }
+  },
   args: {
     placeholder: "Medium input",
     label: "Medium Size",
@@ -209,6 +287,13 @@ export const Medium: Story = {
 };
 
 export const Large: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Large input for high-visibility fields."
+      }
+    }
+  },
   args: {
     placeholder: "Large input",
     label: "Large Size",
@@ -217,6 +302,13 @@ export const Large: Story = {
 };
 
 export const FullWidth: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Full width input for responsive layouts."
+      }
+    }
+  },
   args: {
     placeholder: "Full width input",
     label: "Full Width",
@@ -225,6 +317,13 @@ export const FullWidth: Story = {
 };
 
 export const Required: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Input with required validation."
+      }
+    }
+  },
   args: {
     placeholder: "Required field",
     label: "Required Field",
@@ -234,6 +333,13 @@ export const Required: Story = {
 };
 
 export const Outlined: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Outlined input for alternative visual style."
+      }
+    }
+  },
   args: {
     placeholder: "Outlined",
     label: "Outlined",
@@ -242,6 +348,13 @@ export const Outlined: Story = {
 };
 
 export const OutlinedWithIcon: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Outlined input with a left icon for enhanced context."
+      }
+    }
+  },
   args: {
     placeholder: "Outlined with Icon",
     label: "Outlined with Icon",
@@ -253,6 +366,11 @@ export const OutlinedWithIcon: Story = {
 
 export const VariantsAndStates: Story = {
   parameters: {
+    docs: {
+      description: {
+        story: "Matrix of all input variants, sizes, and pseudo states for comprehensive visual testing."
+      }
+    },
     layout: "fullscreen",
   },
   render: () => (

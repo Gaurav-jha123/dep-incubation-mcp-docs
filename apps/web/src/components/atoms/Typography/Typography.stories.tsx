@@ -132,7 +132,15 @@ export const TypographyScale: Story = {
   },
 };
 
+
 export const Heading1: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Typography heading 1 style.'
+      }
+    }
+  },
   args: {
     variant: "h1",
     children: "Heading 1: font-size 36px, font-weight 700 (bold)",
@@ -140,63 +148,135 @@ export const Heading1: Story = {
   },
 };
 
+
 export const Heading2: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Typography heading 2 style.'
+      }
+    }
+  },
   args: {
     variant: "h2",
     children: "Heading 2: font-size 30px, font-weight 700 (bold)",
   },
 };
 
+
 export const Heading3: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Typography heading 3 style.'
+      }
+    }
+  },
   args: {
     variant: "h3",
     children: "Heading 3: font-size 24px, font-weight 700 (bold)",
   },
 };
 
+
 export const Heading4: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Typography heading 4 style.'
+      }
+    }
+  },
   args: {
     variant: "h4",
     children: "Heading 4: font-size 20px, font-weight 700 (bold)",
   },
 };
 
+
 export const Heading5: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Typography heading 5 style.'
+      }
+    }
+  },
   args: {
     variant: "h5",
     children: "Heading 5: font-size 18px, font-weight 600 (semi-bold)",
   },
 };
 
+
 export const Lead: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Typography lead style for intro paragraphs.'
+      }
+    }
+  },
   args: {
     variant: "lead",
     children: "Lead copy for intro paragraphs and section summaries.",
   },
 };
 
+
 export const Body: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Typography body style for standard text.'
+      }
+    }
+  },
   args: {
     variant: "body",
     children: "body: font-size 16px, font-weight 400 (normal)",
   },
 };
 
+
 export const Caption: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Typography caption style for small text.'
+      }
+    }
+  },
   args: {
     variant: "caption",
     children: "caption: font-size 14px, font-weight 400 (normal)",
   },
 };
 
+
 export const Overline: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Typography overline style for section labels.'
+      }
+    }
+  },
   args: {
     variant: "overline",
     children: "Overview",
   },
 };
 
+
 export const CollapsibleHeading: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Typography heading 3 with collapsible option.'
+      }
+    }
+  },
   args: {
     variant: "h3",
     children: "Click to expand",
@@ -204,49 +284,6 @@ export const CollapsibleHeading: Story = {
   },
 };
 
-export const AllVariants: Story = {
-  args: {
-    pseudoState: "none",
-    collapsible: false,
-  },
-  render: (args: TypographyStoryArgs) => (
-    <div className="space-y-4 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
-      {variantOptions.map((variant) => (
-        <div key={variant} className="space-y-1">
-          <Typography variant="overline">{variant}</Typography>
-          <Typography
-            variant={variant}
-            pseudoState={args.pseudoState}
-            collapsible={args.collapsible && variant === "h3"}
-          >
-            {variantSampleText[variant]}
-          </Typography>
-        </div>
-      ))}
-    </div>
-  ),
-};
-
-export const StatePreviews: Story = {
-  args: {
-    pseudoState: "hover",
-    collapsible: false,
-  },
-  render: (args: TypographyStoryArgs) => (
-    <div className="space-y-4 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
-      <div className="space-y-1">
-        <Typography variant="overline">{args.pseudoState ?? "none"}</Typography>
-        <Typography variant="h4" pseudoState={args.pseudoState}>
-          Project readiness summary
-        </Typography>
-        <Typography variant="body" pseudoState={args.pseudoState}>
-          Typography pseudo states are intended for design review and Storybook
-          previews.
-        </Typography>
-      </div>
-    </div>
-  ),
-};
 
 export const VariantsAndStates: Story = {
   args: {

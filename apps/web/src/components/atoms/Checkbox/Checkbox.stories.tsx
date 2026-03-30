@@ -76,6 +76,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "A basic checkbox for binary choices."
+      }
+    }
+  },
   args: {
     label: "Accept Terms",
     checked: false,
@@ -83,6 +90,13 @@ export const Default: Story = {
 };
 
 export const Checked: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Checked state for selected or agreed options."
+      }
+    }
+  },
   args: {
     label: "Subscribed",
     checked: true,
@@ -90,6 +104,13 @@ export const Checked: Story = {
 };
 
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Disabled checkbox for unavailable options."
+      }
+    }
+  },
   args: {
     label: "Disabled Checkbox",
     disabled: true,
@@ -98,6 +119,13 @@ export const Disabled: Story = {
 };
 
 export const DisabledChecked: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Disabled and checked for locked-in selections."
+      }
+    }
+  },
   args: {
     label: "Archived",
     disabled: true,
@@ -106,9 +134,15 @@ export const DisabledChecked: Story = {
 };
 
 export const Interactive: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Interactive checkbox with local state."
+      }
+    }
+  },
   render: () => {
     const [checked, setChecked] = useState(false);
-
     return (
       <Checkbox
         label="Enable Notifications"
@@ -120,6 +154,13 @@ export const Interactive: Story = {
 };
 
 export const AllStates: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Shows checked and unchecked states for visual comparison."
+      }
+    }
+  },
   args: {
     pseudoState: "none",
   },
@@ -133,11 +174,16 @@ export const AllStates: Story = {
 };
 
 export const InteractiveHover: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Test real hover behavior on checkboxes. No pseudo state is forced."
+      }
+    },
+    layout: "padded",
+  },
   args: {
     pseudoState: "none",
-  },
-  parameters: {
-    layout: "padded",
   },
   render: (args: CheckboxProps) => (
     <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
@@ -168,6 +214,11 @@ const selectionOptions = [
 
 export const StatesAndSelection: Story = {
   parameters: {
+    docs: {
+      description: {
+        story: "Matrix of all checkbox states and checked/unchecked options for comprehensive visual testing."
+      }
+    },
     layout: "fullscreen",
   },
   render: () => (

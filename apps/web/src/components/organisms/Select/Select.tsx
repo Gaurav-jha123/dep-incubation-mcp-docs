@@ -6,7 +6,7 @@ import {
   ComboboxButton,
 } from "@headlessui/react";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 export interface Option {
   label: string;
@@ -45,6 +45,7 @@ export function Select({
   pseudoState = "none",
 }: SelectProps) {
   const isPseudoDisabled = pseudoState === "disabled";
+  const optionsId = `select-options-${useId().replace(/:/g, "")}`;
   const [query, setQuery] = useState("");
 
   const values = Array.isArray(value) ? value : value ? [value] : [];
@@ -82,6 +83,7 @@ export function Select({
           {/* Input */}
           {searchable ? (
             <ComboboxInput
+              aria-label={placeholder}
               className={`w-full rounded-md border bg-neutral-50 py-2 pl-3 pr-10 text-sm shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 data-[pseudo-state=focus]:border-primary-500 data-[pseudo-state=focus]:ring-1 data-[pseudo-state=focus]:ring-primary-500 data-[pseudo-state=focus-visible]:border-primary-500 data-[pseudo-state=focus-visible]:ring-1 data-[pseudo-state=focus-visible]:ring-primary-500 data-[pseudo-state=hover]:border-primary-300 data-[pseudo-state=disabled]:opacity-50 data-[pseudo-state=disabled]:cursor-not-allowed ${pseudoState === "focus" || pseudoState === "focus-visible" ? "border-primary-500 ring-1 ring-primary-500" : pseudoState === "hover" ? "border-primary-300" : "border-neutral-200"}`}
               displayValue={(option: Option) =>
                 multiple ? "" : (option?.label ?? "")
@@ -104,7 +106,11 @@ export function Select({
           </ComboboxButton>
 
           {/* Dropdown */}
-          <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-neutral-50 shadow-lg ring-1 ring-neutral-900/5">
+          <ComboboxOptions
+            id={optionsId}
+            unmount={false}
+            className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-neutral-50 shadow-lg ring-1 ring-neutral-900/5"
+          >
             {filteredOptions.length === 0 && (
               <div className="px-3 py-2 text-sm text-neutral-500">
                 No results found
@@ -126,12 +132,24 @@ export function Select({
                 {() => (
                   <>
                     {multiple && (
-                      <input
-                        type="checkbox"
-                        checked={values.includes(option.value)}
-                        readOnly
-                        className="pointer-events-none accent-black"
-                      />
+                      <span
+                        aria-hidden="true"
+                        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
+                          values.includes(option.value)
+                            ? "border-primary-500 bg-primary-500 text-neutral-50"
+                            : "border-neutral-400 bg-neutral-50"
+                        }`}
+                      >
+                        {values.includes(option.value) && (
+                          <svg
+                            viewBox="0 0 10 8"
+                            fill="currentColor"
+                            className="h-2.5 w-2.5"
+                          >
+                            <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                          </svg>
+                        )}
+                      </span>
                     )}
 
                     {option.label}

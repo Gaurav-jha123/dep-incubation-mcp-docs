@@ -27,6 +27,9 @@ const sampleData = [
   { name: "Sophia Nguyen", role: "Designer", email: "sophia@example.com" },
 ];
 
+/**
+ * Default table with sample data and pagination.
+ */
 export const Default: Story = {
   args: {
     headers: ["Name", "Role", "Email"],
@@ -45,6 +48,9 @@ export const Default: Story = {
   },
 };
 
+/**
+ * Table with a small dataset (3 rows).
+ */
 export const SmallDataset: Story = {
   args: {
     headers: ["Name", "Role", "Email"],
@@ -60,6 +66,9 @@ export const SmallDataset: Story = {
   },
 };
 
+/**
+ * Table with a large dataset (50 rows).
+ */
 export const LargeDataset: Story = {
   args: {
     headers: ["Name", "Role", "Email"],
@@ -80,6 +89,9 @@ export const LargeDataset: Story = {
   },
 };
 
+/**
+ * Table with multiple rows-per-page options.
+ */
 export const ManyRowsPerPageOptions: Story = {
   args: {
     headers: ["Name", "Role", "Email"],

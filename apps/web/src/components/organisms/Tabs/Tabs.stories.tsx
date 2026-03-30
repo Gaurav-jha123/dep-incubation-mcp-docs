@@ -77,6 +77,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 type TabsStoryArgs = React.ComponentProps<typeof Tabs>;
 
+/**
+ * Basic tabs with three sections.
+ */
 export const Basic: Story = {
   args: {
     tabs: [
@@ -108,6 +111,9 @@ export const Basic: Story = {
   },
 };
 
+/**
+ * Tabs with a disabled tab item.
+ */
 export const WithDisabledTab: Story = {
   args: {
     tabs: [
@@ -137,6 +143,9 @@ export const WithDisabledTab: Story = {
   },
 };
 
+/**
+ * Tabs using the underline visual variant.
+ */
 export const UnderlineVariant: Story = {
   args: {
     variant: "underline",
@@ -166,6 +175,9 @@ export const UnderlineVariant: Story = {
   },
 };
 
+/**
+ * Tabs using the solid visual variant.
+ */
 export const SolidVariant: Story = {
   args: {
     variant: "solid",
@@ -195,6 +207,9 @@ export const SolidVariant: Story = {
   },
 };
 
+/**
+ * Tabs using the pill visual variant.
+ */
 export const PillVariant: Story = {
   args: {
     variant: "pill",
@@ -227,6 +242,9 @@ export const PillVariant: Story = {
   },
 };
 
+/**
+ * All tab visual variants side by side.
+ */
 export const AllVariants: Story = {
   args: {
     size: "md",
@@ -269,6 +287,9 @@ export const AllVariants: Story = {
   ),
 };
 
+/**
+ * Preview tabs in all pseudo states (hover, focus, disabled, etc).
+ */
 export const PseudoStatePreview: Story = {
   args: {
     variant: "underline",
@@ -309,6 +330,9 @@ export const PseudoStatePreview: Story = {
   ),
 };
 
+/**
+ * Table of all variants and pseudo states.
+ */
 export const VariantsAndStates: Story = {
   parameters: {
     layout: "fullscreen",

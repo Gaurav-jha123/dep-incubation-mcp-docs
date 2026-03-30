@@ -50,10 +50,24 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Default toast with title and description."
+      }
+    }
+  },
   args: {},
 };
 
 export const TitleOnly: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Toast with only a title."
+      }
+    }
+  },
   args: {
     title: "Settings saved successfully.",
     description: undefined,
@@ -61,6 +75,13 @@ export const TitleOnly: Story = {
 };
 
 export const WithoutCloseButton: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Toast without a close button."
+      }
+    }
+  },
   args: {
     title: "Processing...",
     description: "Please wait while we update the dashboard.",
@@ -69,6 +90,13 @@ export const WithoutCloseButton: Story = {
 };
 
 export const Success: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Success toast for positive feedback."
+      }
+    }
+  },
   args: {
     variant: "success",
     title: "Profile updated",
@@ -77,6 +105,13 @@ export const Success: Story = {
 };
 
 export const Warning: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Warning toast for cautionary messages."
+      }
+    }
+  },
   args: {
     variant: "warning",
     title: "Storage almost full",
@@ -85,6 +120,13 @@ export const Warning: Story = {
 };
 
 export const Danger: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Danger toast for error or failure messages."
+      }
+    }
+  },
   args: {
     variant: "danger",
     title: "Login failed",
@@ -95,6 +137,11 @@ export const Danger: Story = {
 export const VariantsAndStates: Story = {
   parameters: {
     layout: "fullscreen",
+    docs: {
+      description: {
+        story: "Grid of all toast variants and pseudo states."
+      }
+    }
   },
   render: (args: ToastProps) => (
     <div className="grid gap-6 bg-neutral-50 p-8 md:grid-cols-2">

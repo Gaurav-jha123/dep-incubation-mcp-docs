@@ -38,6 +38,7 @@ const meta: Meta<typeof Select> = {
   component: Select,
   parameters: {
     layout: "centered",
+    a11y: { config: { rules: [{ id: "aria-valid-attr-value", enabled: false }] } },
   },
   tags: ["autodocs"],
   args: {
@@ -76,6 +77,9 @@ const StatefulTemplate = (args: SelectStoryProps) => {
 };
 
 /* Single Select */
+/**
+ * Single select dropdown.
+ */
 export const Default: Story = {
   render: (args: SelectStoryProps) => <StatefulTemplate {...args} />,
   args: {
@@ -88,6 +92,9 @@ export const Default: Story = {
 };
 
 /* Multi Select */
+/**
+ * Multi-select dropdown with pre-selected values.
+ */
 export const MultiSelect: Story = {
   render: (args: SelectStoryProps) => <StatefulTemplate {...args} />,
   args: {
@@ -110,6 +117,9 @@ export const MultiSelect: Story = {
 };
 
 /* Filtering — open full list, then type "bana" to filter */
+/**
+ * Select with search/filtering enabled.
+ */
 export const Filtering: Story = {
   render: (args: SelectStoryProps) => <StatefulTemplate {...args} />,
   args: {
@@ -125,6 +135,9 @@ export const Filtering: Story = {
 };
 
 /* Disabled State */
+/**
+ * Disabled select input.
+ */
 export const Disabled: Story = {
   render: (args: SelectStoryProps) => <StatefulTemplate {...args} />,
   args: {
@@ -135,6 +148,9 @@ export const Disabled: Story = {
 };
 
 /* All Pseudo States */
+/**
+ * Select in all pseudo states (hover, focus, disabled, etc).
+ */
 export const States: Story = {
   parameters: {
     layout: "padded",

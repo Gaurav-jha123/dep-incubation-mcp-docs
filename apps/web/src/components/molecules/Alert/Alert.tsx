@@ -94,7 +94,12 @@ export const Alert: React.FC<AlertProps> = ({
         {...rest}
       >
         <span className="flex shrink-0 items-center text-current">{icons[type]}</span>
-        <span className="flex-1 text-current">{children ?? message}</span>
+        <span
+          className="flex-1 text-current"
+          style={type === "info" ? { color: "var(--color-primary-900)" } : undefined}
+        >
+          {children ?? message}
+        </span>
         {closable && (
           <button
             type="button"

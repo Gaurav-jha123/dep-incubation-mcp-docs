@@ -14,6 +14,13 @@ export default meta;
 type Story = StoryObj<typeof Divider>;
 
 export const HorizontalSmall: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "A small horizontal divider for subtle content separation."
+      }
+    }
+  },
   args: {
     orientation: "horizontal",
     size: "sm",
@@ -30,6 +37,13 @@ export const HorizontalSmall: Story = {
 };
 
 export const HorizontalMedium: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "A medium horizontal divider for standard content separation."
+      }
+    }
+  },
   args: {
     orientation: "horizontal",
     size: "md",
@@ -46,6 +60,13 @@ export const HorizontalMedium: Story = {
 };
 
 export const HorizontalLarge: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "A large horizontal divider for prominent content separation."
+      }
+    }
+  },
   args: {
     orientation: "horizontal",
     size: "lg",
@@ -62,6 +83,13 @@ export const HorizontalLarge: Story = {
 };
 
 export const VerticalSmall: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "A small vertical divider for subtle side-by-side separation."
+      }
+    }
+  },
   args: {
     orientation: "vertical",
     size: "sm",
@@ -78,6 +106,13 @@ export const VerticalSmall: Story = {
 };
 
 export const VerticalMedium: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "A medium vertical divider for standard side-by-side separation."
+      }
+    }
+  },
   args: {
     orientation: "vertical",
     size: "md",
@@ -94,6 +129,13 @@ export const VerticalMedium: Story = {
 };
 
 export const VerticalLarge: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "A large vertical divider for prominent side-by-side separation."
+      }
+    }
+  },
   args: {
     orientation: "vertical",
     size: "lg",

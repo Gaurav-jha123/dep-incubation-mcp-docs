@@ -171,7 +171,10 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
         {icon ?? <Icon aria-hidden="true" className={iconContainerVariants({ size, variant })} />}
 
         <div className="ml-1 flex flex-1 flex-col gap-0.5">
-          <h3 className={titleVariants({ size })}>
+          <h3
+            className={titleVariants({ size })}
+            style={variant === "info" ? { color: "var(--color-primary-900)" } : undefined}
+          >
             {title}
           </h3>
           {description && (
