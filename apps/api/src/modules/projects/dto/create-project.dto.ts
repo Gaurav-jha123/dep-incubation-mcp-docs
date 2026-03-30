@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsArray,
   IsInt,
+  IsISO8601,
   MinLength,
 } from 'class-validator';
 import {
@@ -39,12 +40,12 @@ export class CreateProjectDto {
 
   @ApiPropertyOptional({ example: '2026-01-01' })
   @IsOptional()
-  @IsString()
+  @IsISO8601()
   startDate?: string;
 
   @ApiPropertyOptional({ example: '2026-12-31' })
   @IsOptional()
-  @IsString()
+  @IsISO8601()
   endDate?: string;
 
   @ApiPropertyOptional({
