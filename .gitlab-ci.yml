@@ -3,24 +3,20 @@ image: node:22
 stages:
   - deploy
 
-# Shared setup — runs before every job
 .setup: &setup
   before_script:
     - npm install -g pnpm vercel
     - pnpm install
 
-# ── PROD deploys (dev branch) ────────────────────────────────────────────────
-
 deploy_web_prod:
   <<: *setup
   stage: deploy
-  variables:
-    VERCEL_ORG_ID: "team_jWzoJccjWNuoTy4WE8Cgzslb"
-    VERCEL_PROJECT_ID: "prj_59InRSACCzLHSfXxIGezfKpadHSd"
   script:
-    - TOKEN="${VERCEL_TOKEN:-vcp_4Fq1ryYTD8uhkY8YpkaMR7yZFuZXqIxQSazXWexJaqFQBgLYrB0pY0Ty}"
-    - pnpm turbo run build --filter=@dep-incubation-dashboard/web
+    - TOKEN="$VERCEL_TOKEN"
+    - pnpm turbo run build --filter=@dep-incubation-dashboard/web --force
     - cd apps/web
+    - mkdir -p .vercel
+    - echo '{"projectId":"prj_59InRSACCzLHSfXxIGezfKpadHSd","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel pull --yes --environment=production --token=$TOKEN
     - vercel build --prod --token=$TOKEN
     - vercel deploy --prebuilt --prod --token=$TOKEN
@@ -30,31 +26,27 @@ deploy_web_prod:
 deploy_api_prod:
   <<: *setup
   stage: deploy
-  variables:
-    VERCEL_ORG_ID: "team_jWzoJccjWNuoTy4WE8Cgzslb"
-    VERCEL_PROJECT_ID: "prj_N8kBoeHuskRrA8Jeo4mTguED5jWS"
   script:
-    - TOKEN="${VERCEL_TOKEN:-vcp_4Fq1ryYTD8uhkY8YpkaMR7yZFuZXqIxQSazXWexJaqFQBgLYrB0pY0Ty}"
-    - pnpm turbo run build --filter=@dep-incubation-dashboard/api
+    - TOKEN="$VERCEL_TOKEN"
+    - pnpm turbo run build --filter=@dep-incubation-dashboard/api --force
     - cd apps/api
+    - mkdir -p .vercel
+    - echo '{"projectId":"prj_N8kBoeHuskRrA8Jeo4mTguED5jWS","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel pull --yes --environment=production --token=$TOKEN
     - vercel build --prod --token=$TOKEN
     - vercel deploy --prebuilt --prod --token=$TOKEN
   only:
     - dev
 
-# ── UAT deploys (UAT branch) ─────────────────────────────────────────────────
-
 deploy_web_uat:
   <<: *setup
   stage: deploy
-  variables:
-    VERCEL_ORG_ID: "team_jWzoJccjWNuoTy4WE8Cgzslb"
-    VERCEL_PROJECT_ID: "prj_5Kt3holOWeGDesen12S4pGrsvMiF"
   script:
-    - TOKEN="${VERCEL_TOKEN:-vcp_4Fq1ryYTD8uhkY8YpkaMR7yZFuZXqIxQSazXWexJaqFQBgLYrB0pY0Ty}"
-    - pnpm turbo run build --filter=@dep-incubation-dashboard/web
+    - TOKEN="$VERCEL_TOKEN"
+    - pnpm turbo run build --filter=@dep-incubation-dashboard/web --force
     - cd apps/web
+    - mkdir -p .vercel
+    - echo '{"projectId":"prj_5Kt3holOWeGDesen12S4pGrsvMiF","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel pull --yes --environment=production --token=$TOKEN
     - vercel build --prod --token=$TOKEN
     - vercel deploy --prebuilt --prod --token=$TOKEN
@@ -64,13 +56,12 @@ deploy_web_uat:
 deploy_api_uat:
   <<: *setup
   stage: deploy
-  variables:
-    VERCEL_ORG_ID: "team_jWzoJccjWNuoTy4WE8Cgzslb"
-    VERCEL_PROJECT_ID: "prj_cBoYxIR1ho95p9OmJLAcEGca6tpc"
   script:
-    - TOKEN="${VERCEL_TOKEN:-vcp_4Fq1ryYTD8uhkY8YpkaMR7yZFuZXqIxQSazXWexJaqFQBgLYrB0pY0Ty}"
-    - pnpm turbo run build --filter=@dep-incubation-dashboard/api
+    - TOKEN="$VERCEL_TOKEN"
+    - pnpm turbo run build --filter=@dep-incubation-dashboard/api --force
     - cd apps/api
+    - mkdir -p .vercel
+    - echo '{"projectId":"prj_cBoYxIR1ho95p9OmJLAcEGca6tpc","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel pull --yes --environment=production --token=$TOKEN
     - vercel build --prod --token=$TOKEN
     - vercel deploy --prebuilt --prod --token=$TOKEN
