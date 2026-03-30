@@ -4,6 +4,8 @@ import {
   Role,
   ProjectType,
   ProjectStatus,
+  type User,
+  type Topic,
 } from '../src/generated/prisma/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 import * as bcrypt from 'bcrypt';
@@ -168,7 +170,7 @@ async function main() {
   console.log('🌱 Seeding database...\n');
 
   // Upsert users
-  const createdUsers = [];
+  const createdUsers: User[] = [];
   for (const userData of users) {
     const hashedPassword = await bcrypt.hash(userData.password, SALT_ROUNDS);
     const user = await prisma.user.upsert({
@@ -186,7 +188,7 @@ async function main() {
   }
 
   // Upsert topics
-  const createdTopics = [];
+  const createdTopics: Topic[] = [];
   for (const topicData of topics) {
     let topic = await prisma.topic.findFirst({
       where: { label: topicData.label },
