@@ -105,6 +105,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Primary button for main actions."
+      }
+    }
+  },
   args: {
     variant: "primary",
     children: "Primary Button",
@@ -112,24 +119,23 @@ export const Primary: Story = {
   },
   play: async (context: StoryContext<ButtonProps>) => {
     const { canvas, args } = context;
-
-    // 1. Find button (async → safe)
     const button = await canvas.findByRole("button", {
       name: /primary button/i,
     });
-
-    // 2. Assert it exists
     await expect(button).toBeInTheDocument();
-
-    // 3. Simulate user click
     await userEvent.click(button);
-
-    // 4. Verify behavior
     await expect(args.onClick).toHaveBeenCalledTimes(1);
   },
 };
 
 export const Secondary: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Secondary button for less prominent actions."
+      }
+    }
+  },
   args: {
     variant: "secondary",
     children: "Secondary Button",
@@ -137,6 +143,13 @@ export const Secondary: Story = {
 };
 
 export const Danger: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Danger button for destructive or irreversible actions."
+      }
+    }
+  },
   args: {
     variant: "danger",
     children: "Delete",
@@ -144,6 +157,13 @@ export const Danger: Story = {
 };
 
 export const Ghost: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Ghost button for minimal, low-emphasis actions."
+      }
+    }
+  },
   args: {
     variant: "ghost",
     children: "Ghost Button",
@@ -151,6 +171,13 @@ export const Ghost: Story = {
 };
 
 export const Outline: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Outline button for secondary or alternative actions."
+      }
+    }
+  },
   args: {
     variant: "outline",
     children: "Outline Button",
@@ -158,6 +185,13 @@ export const Outline: Story = {
 };
 
 export const Link: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Text button for inline or less-pronounced actions."
+      }
+    }
+  },
   args: {
     variant: "link",
     children: "Link Button",
@@ -165,6 +199,13 @@ export const Link: Story = {
 };
 
 export const Large: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Large button for high-visibility actions."
+      }
+    }
+  },
   args: {
     size: "lg",
     children: "Large Button",
@@ -172,6 +213,13 @@ export const Large: Story = {
 };
 
 export const Medium: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Medium button for standard actions."
+      }
+    }
+  },
   args: {
     size: "md",
     children: "Medium Button",
@@ -179,6 +227,13 @@ export const Medium: Story = {
 };
 
 export const Small: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Small button for compact or dense layouts."
+      }
+    }
+  },
   args: {
     size: "sm",
     children: "Small Button",
@@ -186,6 +241,13 @@ export const Small: Story = {
 };
 
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Disabled button for unavailable or inactive actions."
+      }
+    }
+  },
   args: {
     disabled: true,
     children: "Disabled Button",
@@ -193,6 +255,13 @@ export const Disabled: Story = {
 };
 
 export const Loading: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Button in loading state, shows spinner and disables interaction."
+      }
+    }
+  },
   args: {
     isLoading: true,
     children: "Loading...",
@@ -200,6 +269,13 @@ export const Loading: Story = {
 };
 
 export const WithIcon: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Button with an icon and text for visual emphasis."
+      }
+    }
+  },
   args: {
     children: (
       <>
@@ -211,6 +287,13 @@ export const WithIcon: Story = {
 };
 
 export const AllVariants: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Displays all button variants for comparison."
+      }
+    }
+  },
   args: {
     pseudoState: "none",
   },
@@ -229,11 +312,16 @@ export const AllVariants: Story = {
 };
 
 export const InteractiveHover: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Test real hover behavior on buttons. No pseudo state is forced."
+      }
+    },
+    layout: "padded",
+  },
   args: {
     pseudoState: "none",
-  },
-  parameters: {
-    layout: "padded",
   },
   render: (args: ButtonProps) => (
     <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
@@ -274,6 +362,11 @@ const variantLabels: Record<(typeof variantOptions)[number], string> = {
 
 export const VariantsAndStates: Story = {
   parameters: {
+    docs: {
+      description: {
+        story: "Matrix of all button variants, sizes, and pseudo states for comprehensive visual testing."
+      }
+    },
     layout: "fullscreen",
   },
   render: () => (

@@ -13,6 +13,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Basic avatar group with images and initials."
+      }
+    }
+  },
   args: {
     avatars: [
       { src: "https://via.placeholder.com/150" },
@@ -24,6 +31,13 @@ export const Default: Story = {
 };
 
 export const LimitedVisible: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Avatar group with a maximum number of visible avatars."
+      }
+    }
+  },
   args: {
     maxVisible: 3,
     avatars: [

@@ -103,6 +103,13 @@ const renderWithTrigger = (args: ModalStoryArgs) => (
 );
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Default modal with trigger button."
+      }
+    }
+  },
   render: renderWithTrigger,
   args: {
     onClose: fn(),
@@ -115,6 +122,13 @@ export const Default: Story = {
 };
 
 export const WithFooterActions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Modal with custom footer actions."
+      }
+    }
+  },
   render: renderWithTrigger,
   args: {
     title: "Delete Account",
@@ -136,6 +150,13 @@ export const WithFooterActions: Story = {
 };
 
 export const LargeModal: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Modal with large size."
+      }
+    }
+  },
   render: renderWithTrigger,
   args: {
     size: "lg",
@@ -152,6 +173,13 @@ export const LargeModal: Story = {
 };
 
 export const ExtraLargeModal: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Modal with extra large size for complex content."
+      }
+    }
+  },
   render: renderWithTrigger,
   args: {
     size: "xl",
@@ -168,6 +196,13 @@ export const ExtraLargeModal: Story = {
 };
 
 export const ScrollableContent: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Modal with scrollable content area."
+      }
+    }
+  },
   render: renderWithTrigger,
   args: {
     title: "Scrollable Modal",

@@ -384,5 +384,31 @@ describe("Table", () => {
     expect(screen.queryByRole("button", { name: /Rows:/ })).toBeNull();
     expect(screen.getByText("Zoe")).not.toBeNull();
   });
+
+  it("resets page when data length changes", () => {
+    const { rerender } = render(
+      <Table
+        headers={headers}
+        data={data}
+        keys={keys}
+        rowsPerPageOptions={[2, 5, 10]}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Next" }));
+    expect(screen.getByText("Page 2 of 3")).not.toBeNull();
+
+    rerender(
+      <Table
+        headers={headers}
+        data={[{ name: "Only", role: "One" }]}
+        keys={keys}
+        rowsPerPageOptions={[2, 5, 10]}
+      />,
+    );
+
+    expect(screen.getByText("Page 1 of 1")).not.toBeNull();
+    expect(screen.getByText("Only")).not.toBeNull();
+  });
 });
  

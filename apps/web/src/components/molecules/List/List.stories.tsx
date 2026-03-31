@@ -144,10 +144,24 @@ function renderSelectableList(args: ListProps, storyArgs?: Partial<ListProps>) {
 }
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Default selectable list with icons and descriptions."
+      }
+    }
+  },
   render: (args) => renderSelectableList(args),
 };
 
 export const Bordered: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "List with bordered variant."
+      }
+    }
+  },
   args: {
     variant: "bordered",
   },
@@ -156,6 +170,13 @@ export const Bordered: Story = {
 
 export const CardVariant: Story = {
   name: "Card",
+  parameters: {
+    docs: {
+      description: {
+        story: "List with card variant."
+      }
+    }
+  },
   args: {
     variant: "card",
   },
@@ -163,12 +184,17 @@ export const CardVariant: Story = {
 };
 
 export const AllVariants: Story = {
+  parameters: {
+    layout: "padded",
+    docs: {
+      description: {
+        story: "Grid of all list variants."
+      }
+    }
+  },
   args: {
     pseudoState: "none",
     pseudoStateTarget: 1,
-  },
-  parameters: {
-    layout: "padded",
   },
   render: (args: ListProps) => {
     const [selected, setSelected] = useState<ListItem>(baseItems[0]);
@@ -198,13 +224,18 @@ export const AllVariants: Story = {
 };
 
 export const PseudoStatePreview: Story = {
+  parameters: {
+    layout: "padded",
+    docs: {
+      description: {
+        story: "Preview of all pseudo states for the list."
+      }
+    }
+  },
   args: {
     variant: "bordered",
     pseudoState: "none",
     pseudoStateTarget: 1,
-  },
-  parameters: {
-    layout: "padded",
   },
   render: (args: ListProps) => (
     <div className="grid w-full max-w-6xl gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -231,6 +262,11 @@ export const PseudoStatePreview: Story = {
 export const VariantsAndStates: Story = {
   parameters: {
     layout: "fullscreen",
+    docs: {
+      description: {
+        story: "Table of all list variants and pseudo states."
+      }
+    }
   },
   render: () => (
     <div className="space-y-8 p-8">

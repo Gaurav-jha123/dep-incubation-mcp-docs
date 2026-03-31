@@ -47,6 +47,13 @@ const stateMatrix: Array<{ label: string; items: AccordionItem[] }> = [
 ];
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Accordion with three expandable sections."
+      }
+    }
+  },
   args: { items: defaultItems },
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement);
@@ -63,6 +70,13 @@ export const Default: Story = {
 };
 
 export const Single: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Accordion with a single item."
+      }
+    }
+  },
   args: { items: [{ title: "Only one", content: "Single item content" }] },
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement);
@@ -73,6 +87,13 @@ export const Single: Story = {
 };
 
 export const Many: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Accordion with five sections, each expandable."
+      }
+    }
+  },
   render: () => (
     <Accordion
       items={

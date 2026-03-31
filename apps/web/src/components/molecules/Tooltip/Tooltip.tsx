@@ -183,7 +183,11 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
               id={tooltipId}
               ref={tooltipRef}
               role="tooltip"
-              style={{ top: coords.top, left: coords.left }}
+              style={{
+                top: coords.top,
+                left: coords.left,
+                ...(variant === "subtle" ? { color: "var(--color-neutral-900)" } : {}),
+              }}
               data-state={isOpen ? "open" : "closed"}
               data-pseudo-state={pseudoState === "none" ? undefined : pseudoState}
               className={cn(

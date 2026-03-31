@@ -123,10 +123,16 @@ const Item = ({ children }: { children: React.ReactNode }) => (
  * Basic row layout with controls.
  */
 export const Playground: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic row layout with configurable controls.'
+      }
+    }
+  },
   args: {
     gap: "",
   },
-
   render: (args) => (
     <FlexContainer {...args} className="w-[640px] rounded bg-neutral-50 p-4">
       <Item>Item 1</Item>
@@ -140,6 +146,13 @@ export const Playground: Story = {
  * Demonstrates row alignment across main/cross axes.
  */
 export const RowAlignment: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates row alignment across main/cross axes.'
+      }
+    }
+  },
   args: {
     direction: "row",
     justify: "between",
@@ -162,6 +175,13 @@ export const RowAlignment: Story = {
  * Column layout with vertical spacing (justify controls vertical alignment in column).
  */
 export const ColumnCentered: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Column layout with vertical spacing and centered alignment.'
+      }
+    }
+  },
   args: {
     direction: "col",
     justify: "center",
@@ -184,6 +204,13 @@ export const ColumnCentered: Story = {
  * Wrapping behavior with many items.
  */
 export const WrapWithManyItems: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Wrapping behavior with many items.'
+      }
+    }
+  },
   args: {
     direction: "row",
     wrap: "wrap",
@@ -212,6 +239,13 @@ export const WrapWithManyItems: Story = {
  * Custom CSS gap value using a string (no Tailwind safelist needed).
  */
 export const CustomGapString: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Custom CSS gap value using a string.'
+      }
+    }
+  },
   args: {
     gap: "18px",
     justify: "between",
@@ -229,6 +263,13 @@ export const CustomGapString: Story = {
  * Tight spacing (number → follows Tailwind convention: 1 = 0.25rem).
  */
 export const TightSpacing: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tight spacing using Tailwind convention (1 = 0.25rem).' 
+      }
+    }
+  },
   args: {
     gap: 1, // 0.25rem
     justify: "around",
@@ -245,6 +286,11 @@ export const TightSpacing: Story = {
 export const DecorativeVariants: Story = {
   parameters: {
     layout: "fullscreen",
+    docs: {
+      description: {
+        story: 'Showcases all decorative FlexContainer variants.'
+      }
+    }
   },
   render: () => (
     <div className="grid gap-4 p-8 md:grid-cols-2 xl:grid-cols-5">
@@ -272,30 +318,19 @@ export const DecorativeVariants: Story = {
   ),
 };
 
-export const PseudoStatePreview: Story = {
-  render: (args) => (
-    <FlexContainer
-      {...args}
-      variant="outline"
-      gap={4}
-      className="w-[720px] p-6"
-    >
-      <Item>Filter</Item>
-      <Item>Sort</Item>
-      <Item>Export</Item>
-    </FlexContainer>
-  ),
-};
 
 export const VariantsAndStates: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Grid of all pseudo states and variants for design review.'
+      }
+    },
+    layout: "fullscreen",
+  },
   args: {
     direction: "col",
   },
-
-  parameters: {
-    layout: "fullscreen",
-  },
-
   render: () => (
     <div className="space-y-8 p-8">
       <table className="w-full border-collapse">

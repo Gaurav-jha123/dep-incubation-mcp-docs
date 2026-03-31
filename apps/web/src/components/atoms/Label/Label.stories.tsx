@@ -15,6 +15,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "A basic label for form fields."
+      }
+    }
+  },
   args: {
     label: "Username",
     htmlFor: "username",
@@ -22,6 +29,13 @@ export const Default: Story = {
 };
 
 export const Required: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Label with required indicator for mandatory fields."
+      }
+    }
+  },
   args: {
     label: "Email",
     htmlFor: "email",
@@ -30,6 +44,13 @@ export const Required: Story = {
 };
 
 export const WithHelper: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Label with helper text for additional guidance."
+      }
+    }
+  },
   args: {
     label: "Password",
     htmlFor: "password",
@@ -38,6 +59,13 @@ export const WithHelper: Story = {
 };
 
 export const Error: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Label with error message for invalid input."
+      }
+    }
+  },
   args: {
     label: "Email",
     htmlFor: "email",

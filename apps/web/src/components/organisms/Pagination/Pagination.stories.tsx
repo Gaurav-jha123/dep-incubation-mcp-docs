@@ -58,6 +58,9 @@ const PaginationWrapper = (args: React.ComponentProps<typeof Pagination>) => {
     return <Pagination {...args} currentPage={currentPage} onPageChange={setCurrentPage} />;
 };
 
+/**
+ * Default pagination with 10 pages.
+ */
 export const Default: Story = {
     render: (args: PaginationStoryProps) => <PaginationWrapper {...args} />,
     args: {
@@ -66,6 +69,9 @@ export const Default: Story = {
     },
 };
 
+/**
+ * Pagination with 20 pages, starting at page 5.
+ */
 export const MultiplePages: Story = {
     render: (args: PaginationStoryProps) => <PaginationWrapper {...args} />,
     args: {
@@ -74,6 +80,9 @@ export const MultiplePages: Story = {
     },
 };
 
+/**
+ * Pagination with only 2 pages.
+ */
 export const TwoPages: Story = {
     render: (args: PaginationStoryProps) => <PaginationWrapper {...args} />,
     args: {
@@ -82,6 +91,9 @@ export const TwoPages: Story = {
     },
 };
 
+/**
+ * Pagination on the last page.
+ */
 export const LastPage: Story = {
     render: (args: PaginationStoryProps) => <PaginationWrapper {...args} />,
     args: {
@@ -90,6 +102,9 @@ export const LastPage: Story = {
     },
 };
 
+/**
+ * Interactive pagination with real user interaction.
+ */
 export const Interactive: Story = {
     parameters: {
         layout: 'padded',
@@ -108,6 +123,9 @@ export const Interactive: Story = {
     },
 };
 
+/**
+ * Pagination in all pseudo states (hover, focus, disabled, etc).
+ */
 export const States: Story = {
     parameters: {
         layout: 'padded',
@@ -132,6 +150,9 @@ export const States: Story = {
     },
 };
 
+/**
+ * Test clicking the Next button.
+ */
 export const ClickNext: Story = {
     render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {
@@ -151,6 +172,9 @@ export const ClickNext: Story = {
     },
 };
 
+/**
+ * Test clicking the Previous button.
+ */
 export const ClickPrevious: Story = {
     render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {
@@ -170,6 +194,9 @@ export const ClickPrevious: Story = {
     },
 };
 
+/**
+ * Test clicking a specific page number.
+ */
 export const ClickSpecificPage: Story = {
     render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {
@@ -188,6 +215,9 @@ export const ClickSpecificPage: Story = {
     },
 };
 
+/**
+ * Test navigating multiple steps (Next, Previous).
+ */
 export const NavigateMultipleSteps: Story = {
     render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {
@@ -211,6 +241,9 @@ export const NavigateMultipleSteps: Story = {
     },
 };
 
+/**
+ * Test Previous button disabled/enabled at first page boundary.
+ */
 export const FirstPageBoundary: Story = {
     render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {
@@ -234,6 +267,9 @@ export const FirstPageBoundary: Story = {
     },
 };
 
+/**
+ * Test Next button disabled/enabled at last page boundary.
+ */
 export const LastPageBoundary: Story = {
     render: (args: PaginationStoryProps) => <PaginationWrapper {...args} pseudoState="none" />,
     args: {

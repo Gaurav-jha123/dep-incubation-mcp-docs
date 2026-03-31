@@ -55,6 +55,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Info: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Standard info alert.'
+      }
+    }
+  },
   args: {
     type: "info",
     message: "This is an info alert.",
@@ -62,6 +69,13 @@ export const Info: Story = {
 };
 
 export const Success: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Success alert for positive feedback.'
+      }
+    }
+  },
   args: {
     type: "success",
     message: "Operation successful!",
@@ -69,6 +83,13 @@ export const Success: Story = {
 };
 
 export const Error: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Error alert for failures or problems.'
+      }
+    }
+  },
   args: {
     type: "error",
     message: "Something went wrong.",
@@ -76,6 +97,13 @@ export const Error: Story = {
 };
 
 export const Warning: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Warning alert for cautionary messages.'
+      }
+    }
+  },
   args: {
     type: "warning",
     message: "This is a warning alert.",
@@ -83,6 +111,13 @@ export const Warning: Story = {
 };
 
 export const Closable: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Alert with close (dismiss) button.'
+      }
+    }
+  },
   render: (args: AlertStoryProps) => {
     const [visible, setVisible] = useState(true);
     return (
@@ -102,6 +137,11 @@ export const Closable: Story = {
 export const States: Story = {
   parameters: {
     layout: "padded",
+    docs: {
+      description: {
+        story: 'Grid of all alert types and pseudo states.'
+      }
+    }
   },
   render: (args: AlertStoryProps) => (
     <div className="space-y-6" style={{ minWidth: 480 }}>
@@ -111,7 +151,7 @@ export const States: Story = {
           <div className="space-y-1">
             {stateMatrix.map((state) => (
               <div key={state.label} className="flex items-center gap-4">
-                <p className="w-28 shrink-0 text-xs font-medium text-neutral-500">
+                <p className="w-28 shrink-0 text-xs font-medium text-neutral-700">
                   {state.label}
                 </p>
                 <Alert

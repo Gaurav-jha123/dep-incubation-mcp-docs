@@ -85,6 +85,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Simple: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "A basic avatar with a placeholder image and initials. Use for default or missing user images."
+      }
+    }
+  },
   args: {
     src: "/missing-avatar.png",
     alt: "KR",
@@ -92,6 +99,13 @@ export const Simple: Story = {
 };
 
 export const Status: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Showcases avatar with an online status indicator. Useful for presence or activity states."
+      }
+    }
+  },
   args: {
     ...previewAvatarArgs,
     status: "online",
@@ -99,6 +113,13 @@ export const Status: Story = {
 };
 
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Displays all avatar size options for visual comparison."
+      }
+    }
+  },
   args: {
     pseudoState: "none",
   },
@@ -112,6 +133,13 @@ export const Sizes: Story = {
 };
 
 export const AllStatuses: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Demonstrates all status variants for the avatar component."
+      }
+    }
+  },
   args: {
     ...previewAvatarArgs,
     pseudoState: "none",
@@ -126,12 +154,17 @@ export const AllStatuses: Story = {
 };
 
 export const InteractiveHover: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Test real hover behavior on avatars. No pseudo state is forced."
+      }
+    },
+    layout: "padded",
+  },
   args: {
     ...previewAvatarArgs,
     pseudoState: "none",
-  },
-  parameters: {
-    layout: "padded",
   },
   render: (args: AvatarProps) => (
     <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
@@ -157,6 +190,11 @@ const sizeLabels: Record<(typeof sizeOptions)[number], string> = {
 
 export const SizesAndStates: Story = {
   parameters: {
+    docs: {
+      description: {
+        story: "Matrix of all avatar sizes and pseudo states for comprehensive visual testing."
+      }
+    },
     layout: "fullscreen",
   },
   render: () => (
@@ -170,7 +208,7 @@ export const SizesAndStates: Story = {
             {sizeOptions.map((size) => (
               <th
                 key={size}
-                className="p-3 text-center text-xs font-semibold uppercase tracking-wider text-neutral-500"
+                className="p-3 text-center text-xs font-semibold uppercase tracking-wider text-neutral-700"
               >
                 {sizeLabels[size]}
               </th>
@@ -180,7 +218,7 @@ export const SizesAndStates: Story = {
         <tbody>
           {stateMatrix.map(({ label, props }) => (
             <tr key={label} className="border-t border-dashed border-neutral-200">
-              <td className="sticky left-0 z-10 bg-white p-3 text-sm font-medium text-neutral-500">
+              <td className="sticky left-0 z-10 bg-white p-3 text-sm font-medium text-neutral-700">
                 {label}
               </td>
               {sizeOptions.map((size) => (

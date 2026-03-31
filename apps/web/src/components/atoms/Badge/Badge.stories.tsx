@@ -98,12 +98,26 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: "A basic badge for labeling or highlighting content."
+            }
+        }
+    },
     args: {
         text: "Default",
     },
 };
 
 export const Success: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: "A success badge for positive or completed states."
+            }
+        }
+    },
     args: {
         text: "Success",
         variant: "success",
@@ -111,6 +125,13 @@ export const Success: Story = {
 };
 
 export const Warning: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: "A warning badge for caution or alert states."
+            }
+        }
+    },
     args: {
         text: "Warning",
         variant: "warning",
@@ -118,6 +139,13 @@ export const Warning: Story = {
 };
 
 export const Error: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: "An error badge for critical or failed states."
+            }
+        }
+    },
     args: {
         text: "Error",
         variant: "error",
@@ -125,6 +153,13 @@ export const Error: Story = {
 };
 
 export const Info: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: "An info badge for neutral or informational content."
+            }
+        }
+    },
     args: {
         text: "Info",
         variant: "info",
@@ -132,6 +167,13 @@ export const Info: Story = {
 };
 
 export const AllVariants: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: "Displays all badge variants for comparison."
+            }
+        }
+    },
     args: {
         pseudoState: "none",
     },
@@ -150,11 +192,16 @@ export const AllVariants: Story = {
 };
 
 export const InteractiveHover: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: "Test real hover behavior on badges. No pseudo state is forced."
+            }
+        },
+        layout: "padded",
+    },
     args: {
         pseudoState: "none",
-    },
-    parameters: {
-        layout: "padded",
     },
     render: (args: BadgeProps) => (
         <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
@@ -178,6 +225,11 @@ export const InteractiveHover: Story = {
 
 export const VariantsAndStates: Story = {
     parameters: {
+        docs: {
+            description: {
+                story: "Matrix of all badge variants and pseudo states for comprehensive visual testing."
+            }
+        },
         layout: "fullscreen",
     },
     render: () => (
@@ -191,7 +243,7 @@ export const VariantsAndStates: Story = {
                         {variantOptions.map((variant) => (
                             <th
                                 key={variant}
-                                className="p-3 text-center text-xs font-semibold uppercase tracking-wider text-neutral-500"
+                                className="p-3 text-center text-xs font-semibold uppercase tracking-wider text-neutral-700"
                             >
                                 {variantLabels[variant]}
                             </th>
@@ -201,16 +253,46 @@ export const VariantsAndStates: Story = {
                 <tbody>
                     {stateMatrix.map(({ label, text, props }) => (
                         <tr key={label} className="border-t border-dashed border-neutral-200">
-                            <td className="sticky left-0 z-10 bg-white p-3 text-sm font-medium text-neutral-500">
+                            <td className="sticky left-0 z-10 bg-white p-3 text-sm font-medium text-neutral-700">
                                 {label}
                             </td>
                             {variantOptions.map((variant) => (
                                 <td key={variant} className="p-3 text-center">
-                                    <Badge
-                                        variant={variant}
-                                        text={text}
-                                        {...props}
-                                    />
+                                    {variant === "success" && props.pseudoState === "hover" ? (
+                                        <span
+                                            style={{
+                                                backgroundColor: "var(--color-success-400)",
+                                                color: "var(--color-success-900)",
+                                                display: "inline-block"
+                                            }}
+                                        >
+                                            <Badge
+                                                variant={variant}
+                                                text={text}
+                                                {...props}
+                                            />
+                                        </span>
+                                    ) : variant === "error" && props.pseudoState === "hover" ? (
+                                        <span
+                                            style={{
+                                                backgroundColor: "var(--color-danger-50) !important",
+                                                color: "var(--color-danger-900) !important",
+                                                display: "inline-block"
+                                            }}
+                                        >
+                                            <Badge
+                                                variant={variant}
+                                                text={text}
+                                                {...props}
+                                            />
+                                        </span>
+                                    ) : (
+                                        <Badge
+                                            variant={variant}
+                                            text={text}
+                                            {...props}
+                                        />
+                                    )}
                                 </td>
                             ))}
                         </tr>
