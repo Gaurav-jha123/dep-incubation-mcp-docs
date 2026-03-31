@@ -14,6 +14,7 @@ interface Props {
   options: Option[];
   selected: string[];
   onChange: (value: string[]) => void;
+  enableAdd?: boolean;
   onCreateOption?: (label: string) => void;
 }
 
@@ -21,6 +22,7 @@ const MultiSelectSearch = ({
   label,
   options,
   selected,
+  enableAdd,
   onChange,
   onCreateOption,
 }: Props) => {
@@ -28,6 +30,7 @@ const MultiSelectSearch = ({
   const [isAdding, setIsAdding] = useState(false);
   const [newOptionLabel, setNewOptionLabel] = useState("");
   const [error, setError] = useState<string | null>(null);
+ 
 
   const filteredOptions =
     query === ""
@@ -122,8 +125,9 @@ const MultiSelectSearch = ({
           </Dropdown.Content>
         </Dropdown>
 
-        {onCreateOption && (
+        {enableAdd && onCreateOption && (
           <Button
+            role="button"
             onClick={() => {
               setError(null);
               setIsAdding((current) => !current);

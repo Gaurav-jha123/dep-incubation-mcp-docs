@@ -35,6 +35,7 @@ export const useAuthStore = create<IAuthStore>()(
             id: data.id,
             name: data.name,
             email: data.email,
+            role: data.role
           },
         }),
 

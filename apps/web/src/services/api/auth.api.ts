@@ -7,6 +7,7 @@ export interface IUser {
   id: number;
   name: string;
   email: string;
+  role: 'EMPLOYEE' | 'ADMIN' | 'MANAGER';
 }
 
 export interface ILoginResponse {

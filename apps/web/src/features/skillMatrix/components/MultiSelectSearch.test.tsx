@@ -1,4 +1,12 @@
-import { describe, it, expect, vi, afterEach, beforeAll, afterAll } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  afterEach,
+  beforeAll,
+  afterAll,
+} from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import MultiSelectSearch from "./MultiSelectSearch";
@@ -31,12 +39,17 @@ const opts = [
 const noop = vi.fn();
 
 type RenderOpts = {
+  enableAdd?: boolean;
   selected?: string[];
   onChange?: (value: string[]) => void;
   onCreateOption?: (label: string) => void;
 };
 
-function renderComponent({ selected = [], onChange, onCreateOption }: RenderOpts = {}) {
+function renderComponent(
+  { selected = [], onChange, onCreateOption, enableAdd }: RenderOpts = {
+    enableAdd: true,
+  },
+) {
   return render(
     <MultiSelectSearch
       label="Frameworks"
@@ -44,7 +57,8 @@ function renderComponent({ selected = [], onChange, onCreateOption }: RenderOpts
       selected={selected}
       onChange={onChange ?? noop}
       onCreateOption={onCreateOption}
-    />
+      enableAdd={enableAdd}
+    />,
   );
 }
 
@@ -55,12 +69,18 @@ afterEach(() => {
 
 describe("MultiSelectSearch", () => {
   it("renders button text based on selection and shows/hides Add button", () => {
-    const { unmount } = renderComponent();
-    expect(screen.getByRole("button", { name: /select frameworks/i })).toBeDefined();
+    const { unmount } = renderComponent({ enableAdd: true });
+    expect(
+      screen.getByRole("button", { name: /select frameworks/i }),
+    ).toBeDefined();
     expect(screen.queryByRole("button", { name: "Add" })).toBeNull();
     unmount();
 
-    renderComponent({ selected: ["react", "vue"], onCreateOption: vi.fn() });
+    renderComponent({
+      selected: ["react", "vue"],
+      onCreateOption: vi.fn(),
+      enableAdd: true,
+    });
     expect(screen.getByText("Frameworks")).toBeDefined();
     expect(screen.getByText("2")).toBeDefined();
     expect(screen.getByRole("button", { name: "Add" })).toBeDefined();
@@ -128,7 +148,7 @@ describe("MultiSelectSearch", () => {
   it("add form: toggle, save validations, successful create, cancel, and keyboard shortcuts", async () => {
     const user = userEvent.setup();
     const onCreateMock = vi.fn();
-    renderComponent({ onCreateOption: onCreateMock });
+    renderComponent({ onCreateOption: onCreateMock, enableAdd: true });
 
     // Toggle form on/off
     await user.click(screen.getByRole("button", { name: "Add" }));
@@ -176,5 +196,14 @@ describe("MultiSelectSearch", () => {
     await user.type(screen.getByPlaceholderText("Add Framework"), "Y");
     await user.click(screen.getByRole("button", { name: "Cancel" }));
     expect(screen.queryByPlaceholderText("Add Framework")).toBeNull();
+  });
+
+  it("add button should be hidden if enableAdd is false", () => {
+    renderComponent({ enableAdd: false, onCreateOption: vi.fn() });
+    expect(
+      screen.queryByRole("button", {
+        name: "Add",
+      }),
+    ).toBeNull();
   });
 });

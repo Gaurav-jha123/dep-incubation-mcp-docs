@@ -46,12 +46,13 @@ describe("useAuthStore", () => {
   });
 
   it("should clear user details", () => {
-    const userDetails = {
+    const userDetails: IUser & { accessToken: string; refreshToken: string } = {
       id: 1,
       name: "John Doe",
       email: "john@example.com",
       accessToken: "mock-access-token",
       refreshToken: "mock-refresh-token",
+      role: "EMPLOYEE"
     };
 
     const store = useAuthStore.getState();
