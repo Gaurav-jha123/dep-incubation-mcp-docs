@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { userEvent } from "storybook/test";
+import { userEvent, within } from "storybook/test";
 import { Accordion, type AccordionItem } from "./Accordion";
 
 const meta: Meta<typeof Accordion> = {
@@ -18,6 +18,34 @@ const defaultItems: AccordionItem[] = [
   { title: "Third section", content: "Content for the third section." },
 ];
 
+const stateMatrix: Array<{ label: string; items: AccordionItem[] }> = [
+  {
+    label: "All collapsed",
+    items: defaultItems,
+  },
+  {
+    label: "First expanded",
+    items: defaultItems.map((item, index) => ({
+      ...item,
+      defaultOpen: index === 0,
+    })),
+  },
+  {
+    label: "Middle expanded",
+    items: defaultItems.map((item, index) => ({
+      ...item,
+      defaultOpen: index === 1,
+    })),
+  },
+  {
+    label: "Multiple expanded",
+    items: defaultItems.map((item, index) => ({
+      ...item,
+      defaultOpen: index !== 1,
+    })),
+  },
+];
+
 export const Default: Story = {
   parameters: {
     docs: {
@@ -27,7 +55,9 @@ export const Default: Story = {
     }
   },
   args: { items: defaultItems },
-  play: async ({ canvas }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+
     const firstTrigger = await canvas.findByRole("button", { name: /first section/i });
     await userEvent.click(firstTrigger);
 
@@ -48,7 +78,9 @@ export const Single: Story = {
     }
   },
   args: { items: [{ title: "Only one", content: "Single item content" }] },
-  play: async ({ canvas }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+
     const trigger = await canvas.findByRole("button", { name: /only one/i });
     await userEvent.click(trigger);
   },
@@ -72,7 +104,9 @@ export const Many: Story = {
       }
     />
   ),
-  play: async ({ canvas }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+
     const sectionOne = await canvas.findByRole("button", { name: /section 1/i });
     await userEvent.click(sectionOne);
 
@@ -88,4 +122,22 @@ export const Many: Story = {
     const sectionFive = await canvas.findByRole("button", { name: /section 5/i });
     await userEvent.click(sectionFive);
   },
+};
+
+export const States: Story = {
+  parameters: {
+    layout: "padded",
+  },
+  render: () => (
+    <div className="space-y-4">
+      {stateMatrix.map((state) => (
+        <div key={state.label} className="flex items-start gap-6">
+          <p className="w-32 shrink-0 pt-4 text-sm font-medium text-neutral-700">
+            {state.label}
+          </p>
+          <Accordion items={state.items} />
+        </div>
+      ))}
+    </div>
+  ),
 };
