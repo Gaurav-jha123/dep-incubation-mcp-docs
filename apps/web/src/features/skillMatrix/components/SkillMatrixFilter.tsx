@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/store/use-auth-store/use-auth-store";
 import MultiSelectSearch from "./MultiSelectSearch";
 
 interface Props {
@@ -25,8 +26,12 @@ const SkillMatrixFilter = ({
   onTopicsChange,
   onUserCreate,
   onTopicCreate,
-
 }: Props) => {
+  const {
+    user,
+  } = useAuthStore();
+  const isAdmin = user?.role === "ADMIN";
+  
   return (
     <div className="flex flex-col gap-4 w-full">
       <MultiSelectSearch
@@ -37,6 +42,7 @@ const SkillMatrixFilter = ({
         }))}
         selected={selectedUsers}
         onChange={onUsersChange}
+        enableAdd={!!isAdmin}
         onCreateOption={onUserCreate}
       />
 
@@ -48,6 +54,7 @@ const SkillMatrixFilter = ({
         }))}
         selected={selectedTopics}
         onChange={onTopicsChange}
+        enableAdd={!!isAdmin}
         onCreateOption={onTopicCreate}
       />
     </div>
