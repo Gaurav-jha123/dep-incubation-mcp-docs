@@ -19,6 +19,9 @@ export class TopicService {
           skip,
           take: limit,
           orderBy: { id: 'asc' },
+          include: {
+            subTopics: true,
+          },
         }),
         this.prisma.topic.count(),
       ]);
@@ -36,6 +39,9 @@ export class TopicService {
 
     return this.prisma.topic.findMany({
       orderBy: { id: 'asc' },
+      include: {
+        subTopics: true,
+      },
     });
   }
 
@@ -44,6 +50,7 @@ export class TopicService {
       where: { id },
       include: {
         skillMatrix: true,
+        subTopics: true,
       },
     });
 
