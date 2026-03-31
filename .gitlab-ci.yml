@@ -18,6 +18,7 @@ deploy_web_prod:
     - mkdir -p .vercel
     - echo '{"projectId":"prj_59InRSACCzLHSfXxIGezfKpadHSd","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel pull --yes --environment=production --token=$TOKEN
+    - echo '{"projectId":"prj_59InRSACCzLHSfXxIGezfKpadHSd","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel build --prod --token=$TOKEN
     - vercel deploy --prebuilt --prod --token=$TOKEN
   only:
@@ -33,6 +34,7 @@ deploy_api_prod:
     - mkdir -p .vercel
     - echo '{"projectId":"prj_N8kBoeHuskRrA8Jeo4mTguED5jWS","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel pull --yes --environment=production --token=$TOKEN
+    - echo '{"projectId":"prj_N8kBoeHuskRrA8Jeo4mTguED5jWS","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel build --prod --token=$TOKEN
     - vercel deploy --prebuilt --prod --token=$TOKEN
   only:
@@ -48,6 +50,7 @@ deploy_web_uat:
     - mkdir -p .vercel
     - echo '{"projectId":"prj_5Kt3holOWeGDesen12S4pGrsvMiF","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel pull --yes --environment=production --token=$TOKEN
+    - echo '{"projectId":"prj_5Kt3holOWeGDesen12S4pGrsvMiF","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel build --prod --token=$TOKEN
     - vercel deploy --prebuilt --prod --token=$TOKEN
   only:
@@ -63,6 +66,7 @@ deploy_api_uat:
     - mkdir -p .vercel
     - echo '{"projectId":"prj_cBoYxIR1ho95p9OmJLAcEGca6tpc","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel pull --yes --environment=production --token=$TOKEN
+    - echo '{"projectId":"prj_cBoYxIR1ho95p9OmJLAcEGca6tpc","orgId":"team_jWzoJccjWNuoTy4WE8Cgzslb"}' > .vercel/project.json
     - vercel build --prod --token=$TOKEN
     - vercel deploy --prebuilt --prod --token=$TOKEN
   only:
