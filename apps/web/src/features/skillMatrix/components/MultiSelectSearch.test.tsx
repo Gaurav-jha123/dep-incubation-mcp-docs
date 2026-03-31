@@ -199,7 +199,7 @@ describe("MultiSelectSearch", () => {
   });
 
   it("add button should be hidden if enableAdd is false", () => {
-    renderComponent({ enableAdd: true });
+    renderComponent({ enableAdd: false, onCreateOption: vi.fn() });
     expect(
       screen.queryByRole("button", {
         name: "Add",
