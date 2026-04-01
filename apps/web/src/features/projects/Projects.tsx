@@ -294,7 +294,7 @@ export default function Projects() {
                   <select
                     id="project-skills"
                     multiple
-                    value={formData.skills}
+                    value={formData.skills.map(String)}
                     onChange={(e) => {
                       const selectedOptions = Array.from(e.target.selectedOptions, (option) => Number((option as HTMLOptionElement).value));
                       handleInputChange("skills", selectedOptions);
