@@ -4,6 +4,7 @@ import {
   Role,
   ProjectType,
   ProjectStatus,
+  AssignmentStatus,
   type User,
   type Topic,
 } from '../src/generated/prisma/client.js';
@@ -279,11 +280,11 @@ async function main() {
   // Seed projects
   console.log('\n  Seeding projects...');
   await prisma.projectAssignment.deleteMany();
-  await prisma.projectSkill.deleteMany();
   await prisma.project.deleteMany();
 
   const projectsData = [
     {
+      code: 'ACME-PORTAL',
       name: 'Client Portal Alpha',
       description:
         'Customer-facing portal for Acme Corp with dashboards and reporting',
@@ -291,10 +292,11 @@ async function main() {
       status: ProjectStatus.ACTIVE,
       clientName: 'Acme Corp',
       startDate: new Date('2025-09-01'),
-      skillTopicIndexes: [12, 14, 16, 19, 0], // React, TypeScript, State mgmt, Styling, Problem solving
-      assigneeIndexes: [0, 1, 3, 4], // Alex(ADMIN), Sarah(MGR), Emily, David
+      skillTopicIndexes: [12, 14, 16, 19, 0],
+      assigneeIndexes: [0, 1, 3, 4],
     },
     {
+      code: 'NS-FINTECH',
       name: 'FinTech Analytics Suite',
       description:
         'Real-time analytics platform for a financial services client',
@@ -302,10 +304,11 @@ async function main() {
       status: ProjectStatus.ACTIVE,
       clientName: 'NorthStar Financial',
       startDate: new Date('2025-11-15'),
-      skillTopicIndexes: [0, 2, 3, 14, 15], // Problem solving, Concurrency, Test Coverage, TypeScript, Build tools
-      assigneeIndexes: [2, 5, 6, 7], // Michael(MGR), Lisa, James, Rachel
+      skillTopicIndexes: [0, 2, 3, 14, 15],
+      assigneeIndexes: [2, 5, 6, 7],
     },
     {
+      code: 'RMAX-MIGRATE',
       name: 'Legacy Migration Project',
       description:
         'Migration of legacy CRM from AngularJS to React + TypeScript',
@@ -314,73 +317,75 @@ async function main() {
       clientName: 'RetailMax Inc',
       startDate: new Date('2024-06-01'),
       endDate: new Date('2025-03-31'),
-      skillTopicIndexes: [11, 12, 14, 5, 1], // Git, React, TypeScript, Design patterns, Error handling
-      assigneeIndexes: [0, 2, 8, 9], // Alex, Michael, Kevin, Maya
+      skillTopicIndexes: [11, 12, 14, 5, 1],
+      assigneeIndexes: [0, 2, 8, 9],
     },
     {
+      code: 'INT-DEVPLATFORM',
       name: 'Internal Dev Platform',
       description:
         'Internal tooling platform to streamline developer workflows and CI/CD visibility',
       type: ProjectType.INTERNAL,
       status: ProjectStatus.ACTIVE,
       startDate: new Date('2026-01-10'),
-      skillTopicIndexes: [0, 2, 11, 15, 3], // Problem solving, Concurrency, Git, Build tools, Test Coverage
-      assigneeIndexes: [1, 10, 11, 12], // Sarah, John, Sophia, Daniel
+      skillTopicIndexes: [0, 2, 11, 15, 3],
+      assigneeIndexes: [1, 10, 11, 12],
     },
     {
+      code: 'INT-DESIGNSYS',
       name: 'Design System v2',
       description:
         'Rebuild of the internal component library with Storybook and Tailwind',
       type: ProjectType.INTERNAL,
       status: ProjectStatus.ACTIVE,
       startDate: new Date('2025-12-01'),
-      skillTopicIndexes: [7, 18, 19, 12, 4], // Design System, UI toolkit, Styling, React, Programming paradigms
-      assigneeIndexes: [2, 13, 14, 3], // Michael, Olivia, Ryan, Emily
+      skillTopicIndexes: [7, 18, 19, 12, 4],
+      assigneeIndexes: [2, 13, 14, 3],
     },
     {
+      code: 'BENCH-UPSKILL',
       name: 'Bench Upskilling Initiative',
       description:
         'Structured upskilling programme for bench resources in modern frontend stack',
       type: ProjectType.BENCH,
       status: ProjectStatus.ON_HOLD,
       startDate: new Date('2026-02-01'),
-      skillTopicIndexes: [12, 13, 14, 17, 19], // React, Next.js, TypeScript, Form management, Styling
-      assigneeIndexes: [4, 6, 9, 14], // David, James, Maya, Ryan
+      skillTopicIndexes: [12, 13, 14, 17, 19],
+      assigneeIndexes: [4, 6, 9, 14],
     },
     {
+      code: 'INT-A11Y',
       name: 'Accessibility Audit & Remediation',
       description: 'Full WCAG 2.1 audit and fix across three internal apps',
       type: ProjectType.INTERNAL,
       status: ProjectStatus.COMPLETED,
       startDate: new Date('2025-04-01'),
       endDate: new Date('2025-08-31'),
-      skillTopicIndexes: [7, 9, 19, 12, 5], // Design System, Web browser, Styling, React, Design patterns
-      assigneeIndexes: [1, 3, 7, 13], // Sarah, Emily, Rachel, Olivia
+      skillTopicIndexes: [7, 9, 19, 12, 5],
+      assigneeIndexes: [1, 3, 7, 13],
     },
   ];
 
   for (const p of projectsData) {
     const { skillTopicIndexes, assigneeIndexes, ...projectFields } = p;
-    const project = await prisma.project.create({ data: projectFields });
+    const skillIds = skillTopicIndexes.map((idx) => createdTopics[idx].id);
 
-    await prisma.projectSkill.createMany({
-      data: skillTopicIndexes.map((idx) => ({
-        projectId: project.id,
-        topicId: createdTopics[idx].id,
-      })),
+    const project = await prisma.project.create({
+      data: { ...projectFields, skillIds },
     });
 
     await prisma.projectAssignment.createMany({
       data: assigneeIndexes.map((idx) => ({
         projectId: project.id,
         userId: createdUsers[idx].id,
+        status: AssignmentStatus.PRESELECTED,
         startDate: projectFields.startDate,
         endDate: projectFields.endDate ?? null,
       })),
     });
 
     console.log(
-      `  ✓ Project: ${project.name} (${project.type} / ${project.status}) — ${assigneeIndexes.length} members, ${skillTopicIndexes.length} skills`,
+      `  ✓ Project: ${project.name} (${project.code}) — ${assigneeIndexes.length} members, ${skillIds.length} skills`,
     );
   }
 

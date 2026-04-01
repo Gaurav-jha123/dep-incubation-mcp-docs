@@ -14,6 +14,11 @@ import {
 } from '../../../generated/prisma/client.js';
 
 export class CreateProjectDto {
+  @ApiProperty({ example: 'UKG-HPAY' })
+  @IsString()
+  @MinLength(1)
+  code: string;
+
   @ApiProperty({ example: 'Client Portal Alpha' })
   @IsString()
   @MinLength(1)
@@ -56,4 +61,14 @@ export class CreateProjectDto {
   @IsArray()
   @IsInt({ each: true })
   skillIds?: number[];
+
+  @ApiPropertyOptional({
+    example: [9, 10, 11],
+    description:
+      'User IDs to assign on creation (status defaults to PRESELECTED)',
+  })
+  @IsOptional()
+  @IsArray()
+  @IsInt({ each: true })
+  userIds?: number[];
 }

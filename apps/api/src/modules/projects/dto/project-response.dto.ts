@@ -2,28 +2,15 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   ProjectStatus,
   ProjectType,
+  AssignmentStatus,
 } from '../../../generated/prisma/client.js';
 
-export class TopicDto {
+export class SkillDto {
   @ApiProperty({ example: 1 })
   id: number;
 
   @ApiProperty({ example: 'React' })
   label: string;
-
-  @ApiPropertyOptional({ example: null, nullable: true })
-  description: string | null;
-}
-
-export class ProjectSkillDto {
-  @ApiProperty({ example: 1 })
-  projectId: number;
-
-  @ApiProperty({ example: 3 })
-  topicId: number;
-
-  @ApiProperty({ type: () => TopicDto })
-  topic: TopicDto;
 }
 
 export class AssignedUserDto {
@@ -47,6 +34,12 @@ export class ProjectAssignmentDto {
   @ApiProperty({ example: 2 })
   userId: number;
 
+  @ApiProperty({
+    enum: AssignmentStatus,
+    example: AssignmentStatus.PRESELECTED,
+  })
+  status: AssignmentStatus;
+
   @ApiPropertyOptional({ example: '2025-09-01T00:00:00.000Z', nullable: true })
   startDate: Date | null;
 
@@ -65,6 +58,9 @@ class AssignmentCountDto {
 export class ProjectResponseDto {
   @ApiProperty({ example: 1 })
   id: number;
+
+  @ApiProperty({ example: 'UKG-HPAY' })
+  code: string;
 
   @ApiProperty({ example: 'Client Portal Alpha' })
   name: string;
@@ -96,8 +92,8 @@ export class ProjectResponseDto {
   @ApiProperty({ example: '2026-01-01T00:00:00.000Z' })
   updatedAt: Date;
 
-  @ApiProperty({ type: () => [ProjectSkillDto] })
-  skills: ProjectSkillDto[];
+  @ApiProperty({ type: () => [SkillDto] })
+  skills: SkillDto[];
 
   @ApiProperty({ type: () => AssignmentCountDto })
   _count: AssignmentCountDto;

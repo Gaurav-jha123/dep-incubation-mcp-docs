@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -20,6 +21,7 @@ import { ProjectsService } from './projects.service.js';
 import { CreateProjectDto } from './dto/create-project.dto.js';
 import { UpdateProjectDto } from './dto/update-project.dto.js';
 import { AssignUserDto } from './dto/assign-user.dto.js';
+import { UpdateAssignmentStatusDto } from './dto/update-assignment.dto.js';
 import {
   ProjectDetailDto,
   ProjectResponseDto,
@@ -128,5 +130,33 @@ export class ProjectsController {
     @Param('userId', ParseIntPipe) userId: number,
   ) {
     return this.projectsService.removeUser(id, userId);
+  }
+
+  @Patch(':id/assignments/:userId')
+  @ApiOperation({ summary: 'Update assignment status' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'Assignment status updated',
+    type: ProjectDetailDto,
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Cannot update another user assignment',
+  })
+  @ApiResponse({ status: 404, description: 'Project not found' })
+  updateAssignmentStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() dto: UpdateAssignmentStatusDto,
+    @Request() req: any,
+  ) {
+    return this.projectsService.updateAssignmentStatus(
+      id,
+      userId,
+      dto,
+      req.user,
+    );
   }
 }
