@@ -1,7 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { CreateProjectDto } from './dto/create-project.dto.js';
 import { UpdateProjectDto } from './dto/update-project.dto.js';
+import { AssignUserDto } from './dto/assign-user.dto.js';
 
 @Injectable()
 export class ProjectsService {
@@ -86,5 +91,35 @@ export class ProjectsService {
   async remove(id: number) {
     await this.findOne(id);
     return this.prisma.project.delete({ where: { id } });
+  }
+
+  async assignUser(projectId: number, dto: AssignUserDto) {
+    await this.findOne(projectId);
+    try {
+      await this.prisma.projectAssignment.create({
+        data: {
+          projectId,
+          userId: dto.userId,
+          startDate: dto.startDate ? new Date(dto.startDate) : undefined,
+          endDate: dto.endDate ? new Date(dto.endDate) : undefined,
+        },
+      });
+    } catch (err: any) {
+      if (err?.code === 'P2002') {
+        throw new ConflictException(
+          `User #${dto.userId} is already assigned to project #${projectId}`,
+        );
+      }
+      throw err;
+    }
+    return this.findOne(projectId);
+  }
+
+  async removeUser(projectId: number, userId: number) {
+    await this.findOne(projectId);
+    await this.prisma.projectAssignment.delete({
+      where: { userId_projectId: { userId, projectId } },
+    });
+    return this.findOne(projectId);
   }
 }

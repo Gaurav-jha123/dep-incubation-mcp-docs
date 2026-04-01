@@ -19,6 +19,7 @@ import {
 import { ProjectsService } from './projects.service.js';
 import { CreateProjectDto } from './dto/create-project.dto.js';
 import { UpdateProjectDto } from './dto/update-project.dto.js';
+import { AssignUserDto } from './dto/assign-user.dto.js';
 import {
   ProjectDetailDto,
   ProjectResponseDto,
@@ -92,5 +93,40 @@ export class ProjectsController {
   @ApiResponse({ status: 404, description: 'Project not found' })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.projectsService.remove(id);
+  }
+
+  @Post(':id/assignments')
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @ApiOperation({ summary: 'Assign a user to a project' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiResponse({
+    status: 201,
+    description: 'User assigned',
+    type: ProjectDetailDto,
+  })
+  @ApiResponse({ status: 404, description: 'Project not found' })
+  assignUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: AssignUserDto,
+  ) {
+    return this.projectsService.assignUser(id, dto);
+  }
+
+  @Delete(':id/assignments/:userId')
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @ApiOperation({ summary: 'Remove a user from a project' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'User removed',
+    type: ProjectDetailDto,
+  })
+  @ApiResponse({ status: 404, description: 'Project not found' })
+  removeUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.projectsService.removeUser(id, userId);
   }
 }
