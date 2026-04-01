@@ -3,6 +3,7 @@ const Dashboard = lazy(() => import("./features/dashboard/dashboard"));
 const SkillMatrix = lazy(() => import("./features/skillMatrix/SkillMatrix"));
 // const UserForm = lazy(() => import("./features/forms/form"));
 const Reports = lazy(() => import("./features/reports/Reports"));
+const Topics = lazy(() => import("./features/topics/Topics"));
 
 const APP_ROUTES: {
   path: string;
@@ -13,6 +14,7 @@ const APP_ROUTES: {
   { path: "skillMatrix", element: SkillMatrix, title: "Skill Matrix" },
   // { path: "userform", element: UserForm, title: "User Form" },
   { path: "reports", element: Reports, title: "Reports" },
+  { path: "topics", element: Topics, title: "Topics" },
 ];
 
 export default APP_ROUTES;

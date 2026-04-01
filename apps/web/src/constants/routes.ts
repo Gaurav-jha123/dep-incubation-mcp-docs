@@ -21,4 +21,9 @@ export const APP_ROUTES = [
     element: lazy(() => import("../features/reports/Reports")), 
     title: "Reports" 
   },
+    { 
+    path: "topics", 
+    element: lazy(() => import("../features/topics/Topics")), 
+    title: "Topics" 
+  },
 ];

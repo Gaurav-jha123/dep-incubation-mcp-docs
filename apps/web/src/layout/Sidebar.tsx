@@ -37,6 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     // { name: "Users", path: "/userform", icon: <Users size={18} /> },
     { name: "Reports", path: "/reports", icon: <BarChart3 size={18} /> },
+    { name: "Topics", path: "/topics", icon: <BarChart3 size={18} /> },
   ];
 
   return (
