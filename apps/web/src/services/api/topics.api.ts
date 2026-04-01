@@ -1,11 +1,20 @@
 import { apiClient } from "./client";
 
+export interface ISubTopic {
+  id: number;
+  label: string;
+  topicId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ITopicResponse {
   id: number;
   label: string;
   description: string | null;
   createdAt: string;
   updatedAt: string;
+  subTopics: ISubTopic[];
 }
 
 export const fetchAllTopics = () =>
