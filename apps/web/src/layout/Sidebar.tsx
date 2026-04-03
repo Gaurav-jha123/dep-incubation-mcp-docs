@@ -7,6 +7,8 @@ import {
   DatabaseBackupIcon,
   PanelLeftClose,
   PanelLeftOpen,
+  PanelsTopLeft,
+  //Users,
 } from "lucide-react";
 import { Button } from "@/components/atoms";
 
@@ -34,6 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       path: "/skillMatrix",
       icon: <LayoutDashboard size={navIconSize} />,
     },
+    { name: "Projects", path: "/projects", icon: <PanelsTopLeft  size={18} /> },
 
     // { name: "Users", path: "/userform", icon: <Users size={18} /> },
     { name: "Reports", path: "/reports", icon: <BarChart3 size={18} /> },
