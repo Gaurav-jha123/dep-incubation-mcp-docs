@@ -5,14 +5,40 @@ A full-stack monorepo powered by **Turborepo**, containing a React frontend and 
 ## Monorepo Structure
 
 ```
+dep-incubation-dashboard/
 ├── apps/
-│   ├── web/            → React + Vite + TypeScript frontend
-│   └── api/            → NestJS + Prisma + PostgreSQL backend
-├── packages/           → Shared libraries (future use)
-├── turbo.json          → Turborepo pipeline configuration
-├── pnpm-workspace.yaml → pnpm workspace definition
-└── package.json        → Root scripts & shared devDependencies
+│   ├── api/                  NestJS REST API
+│   │   ├── src/modules/      Feature modules (auth, users, projects, …)
+│   │   └── prisma/           Schema, migrations, seed
+│   └── web/                  React SPA
+│       ├── src/features/     Feature slices (auth, dashboard, projects, …)
+│       └── src/components/   Shared UI components
+├── packages/                 Shared libraries (reserved)
+├── .codemie/                 Architecture and pattern guides
+├── .github/                  Copilot and agent customization
+└── turbo.json                Turborepo pipeline config
 ```
+
+## Deployed Environments
+
+### UAT
+| Service | URL |
+|---------|-----|
+| Web | https://uat-dep-incubation-dashboard-vercel.vercel.app |
+| API | https://uat-dep-incubation-backend.vercel.app |
+| Swagger | https://uat-dep-incubation-backend.vercel.app/api/docs |
+
+### Production
+| Service | URL |
+|---------|-----|
+| Web | https://dep-incubation-dashboard.vercel.app |
+| API | https://dep-incubation-backend.vercel.app |
+| Swagger | https://dep-incubation-backend.vercel.app/api/docs |
+
+## Documentation
+
+- Backend guide: [apps/api/README.md](apps/api/README.md)
+- Frontend guide: [apps/web/README.md](apps/web/README.md)
 
 ## Tech Stack
 
@@ -105,49 +131,13 @@ pnpm turbo run <script> --filter=@dep-incubation-dashboard/api
 
 ## Database Schema
 
-The backend uses Prisma with PostgreSQL. Three core tables:
+The backend uses **Prisma ORM** with PostgreSQL. For the complete schema definition, see [apps/api/prisma/schema.prisma](apps/api/prisma/schema.prisma).
 
-### `users`
-
-| Column     | Type      | Constraints              |
-| ---------- | --------- | ------------------------ |
-| id         | INT       | Primary Key, Auto-inc    |
-| name       | STRING    | Not Null                 |
-| email      | STRING    | Not Null, Unique         |
-| password   | STRING    | Not Null (hashed)        |
-| created_at | TIMESTAMP | Default: now()           |
-| updated_at | TIMESTAMP | Auto-updated on mutation |
-
-### `topics`
-
-| Column      | Type      | Constraints              |
-| ----------- | --------- | ------------------------ |
-| id          | INT       | Primary Key, Auto-inc    |
-| name        | STRING    | Not Null                 |
-| description | TEXT      | Nullable                 |
-| created_at  | TIMESTAMP | Default: now()           |
-| updated_at  | TIMESTAMP | Auto-updated on mutation |
-
-### `skill_matrix`
-
-| Column      | Type      | Constraints                           |
-| ----------- | --------- | ------------------------------------- |
-| id          | INT       | Primary Key, Auto-inc                 |
-| user_id     | INT       | Foreign Key → users.id, Not Null      |
-| topic_id    | INT       | Foreign Key → topics.id, Not Null     |
-| skill_level | INTEGER   | Not Null (1–5 proficiency scale)      |
-| created_at  | TIMESTAMP | Default: now()                        |
-| updated_at  | TIMESTAMP | Auto-updated on mutation              |
-
-### Relationships
-
-- **users ↔ skill_matrix** — One-to-Many (a user can have multiple skill entries)
-- **topics ↔ skill_matrix** — One-to-Many (a topic can appear in multiple skill entries)
-- **users ↔ topics** — Many-to-Many (linked through `skill_matrix` as a junction table)
+**Core models:** User, Topic, Project, ProjectAssignment, SkillMatrix, SubTopic
 
 ## Project Conventions
 
-- **Commits**: Follow [Conventional Commits](https://www.conventionalcommits.org/) — enforced by Commitlint + Husky
+- **Commits**: Follow [Conventional Commits](https://www.conventionalcommits.org/) — enforced by [commitlint.config.js](commitlint.config.js) + [.husky](.husky) git hooks
 - **Branching**: Feature branches off `dev`
 - **Linting**: Runs automatically on pre-commit via lint-staged
 - **Build check**: Runs on pre-push
