@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -19,6 +20,12 @@ import {
 import { ProjectsService } from './projects.service.js';
 import { CreateProjectDto } from './dto/create-project.dto.js';
 import { UpdateProjectDto } from './dto/update-project.dto.js';
+import { AssignUserDto } from './dto/assign-user.dto.js';
+import { UpdateAssignmentStatusDto } from './dto/update-assignment.dto.js';
+import {
+  ProjectDetailDto,
+  ProjectResponseDto,
+} from './dto/project-response.dto.js';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { Roles, Role } from '../auth/decorators/roles.decorator.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
@@ -35,6 +42,7 @@ export class ProjectsController {
   @ApiResponse({
     status: 200,
     description: 'List of projects with skills and assignment count',
+    type: [ProjectResponseDto],
   })
   findAll() {
     return this.projectsService.findAll();
@@ -43,7 +51,11 @@ export class ProjectsController {
   @Get(':id')
   @ApiOperation({ summary: 'Get project by ID' })
   @ApiParam({ name: 'id', type: Number })
-  @ApiResponse({ status: 200, description: 'Project with full details' })
+  @ApiResponse({
+    status: 200,
+    description: 'Project with full details including skills and assignments',
+    type: ProjectDetailDto,
+  })
   @ApiResponse({ status: 404, description: 'Project not found' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.projectsService.findOne(id);
@@ -52,7 +64,11 @@ export class ProjectsController {
   @Post()
   @Roles(Role.ADMIN, Role.MANAGER)
   @ApiOperation({ summary: 'Create project' })
-  @ApiResponse({ status: 201, description: 'Project created' })
+  @ApiResponse({
+    status: 201,
+    description: 'Project created',
+    type: ProjectDetailDto,
+  })
   create(@Body() dto: CreateProjectDto) {
     return this.projectsService.create(dto);
   }
@@ -61,7 +77,11 @@ export class ProjectsController {
   @Roles(Role.ADMIN, Role.MANAGER)
   @ApiOperation({ summary: 'Update project' })
   @ApiParam({ name: 'id', type: Number })
-  @ApiResponse({ status: 200, description: 'Project updated' })
+  @ApiResponse({
+    status: 200,
+    description: 'Project updated',
+    type: ProjectDetailDto,
+  })
   @ApiResponse({ status: 404, description: 'Project not found' })
   update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateProjectDto) {
     return this.projectsService.update(id, dto);
@@ -75,5 +95,68 @@ export class ProjectsController {
   @ApiResponse({ status: 404, description: 'Project not found' })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.projectsService.remove(id);
+  }
+
+  @Post(':id/assignments')
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @ApiOperation({ summary: 'Assign a user to a project' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiResponse({
+    status: 201,
+    description: 'User assigned',
+    type: ProjectDetailDto,
+  })
+  @ApiResponse({ status: 404, description: 'Project not found' })
+  assignUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: AssignUserDto,
+  ) {
+    return this.projectsService.assignUser(id, dto);
+  }
+
+  @Delete(':id/assignments/:userId')
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @ApiOperation({ summary: 'Remove a user from a project' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'User removed',
+    type: ProjectDetailDto,
+  })
+  @ApiResponse({ status: 404, description: 'Project not found' })
+  removeUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.projectsService.removeUser(id, userId);
+  }
+
+  @Patch(':id/assignments/:userId')
+  @ApiOperation({ summary: 'Update assignment status' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'Assignment status updated',
+    type: ProjectDetailDto,
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Cannot update another user assignment',
+  })
+  @ApiResponse({ status: 404, description: 'Project not found' })
+  updateAssignmentStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() dto: UpdateAssignmentStatusDto,
+    @Request() req: any,
+  ) {
+    return this.projectsService.updateAssignmentStatus(
+      id,
+      userId,
+      dto,
+      req.user,
+    );
   }
 }

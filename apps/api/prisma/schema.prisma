@@ -13,12 +13,32 @@ enum Role{
   MANAGER
 }
 
+enum ProjectType {
+  BENCH
+  CLIENT
+  INTERNAL
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+}
+
+enum AssignmentStatus {
+  PROPOSED
+  PRESELECTED
+  BOOKED
+  ASSIGNED
+  ONBOARDED
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   name      String
   email     String   @unique
   password  String
-  role      Role    @default(EMPLOYEE) 
+  role      Role    @default(EMPLOYEE)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -36,62 +56,39 @@ model Topic {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   skillMatrix  SkillMatrix[]
-  projectSkills ProjectSkill[]
   subTopics     SubTopic[]
 
   @@map("topics")
 }
 
-enum ProjectType {
-  BENCH
-  CLIENT
-  INTERNAL
-}
-
-enum ProjectStatus {
-  ACTIVE
-  ON_HOLD
-  COMPLETED
-}
-
 model Project {
   id          Int           @id @default(autoincrement())
+  code        String        @unique
   name        String
   description String?
   type        ProjectType
   status      ProjectStatus @default(ACTIVE)
   clientName  String?       @map("client_name")
+  skillIds    Int[]         @map("skill_ids")
   startDate   DateTime?     @map("start_date")
   endDate     DateTime?     @map("end_date")
   createdAt   DateTime      @default(now()) @map("created_at")
   updatedAt   DateTime      @updatedAt @map("updated_at")
 
   assignments ProjectAssignment[]
-  skills      ProjectSkill[]
 
   @@map("projects")
 }
 
-model ProjectSkill {
-  id        Int @id @default(autoincrement())
-  projectId Int @map("project_id")
-  topicId   Int @map("topic_id")
-
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  topic   Topic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
-
-  @@unique([projectId, topicId])
-  @@map("project_skills")
-}
-
 model ProjectAssignment {
-  id        Int       @id @default(autoincrement())
-  userId    Int       @map("user_id")
-  projectId Int       @map("project_id")
-  startDate DateTime? @map("start_date")
-  endDate   DateTime? @map("end_date")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  id        Int              @id @default(autoincrement())
+  userId    Int              @map("user_id")
+  projectId Int              @map("project_id")
+  status    AssignmentStatus @default(PRESELECTED)
+  startDate DateTime?        @map("start_date")
+  endDate   DateTime?        @map("end_date")
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
