@@ -1,7 +1,8 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { ChevronUpIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 
-export type AccordionItem = { title: string; content: string }
+export type AccordionItem = { title: string; content: ReactNode }
 
 export interface AccordionProps {
   items: AccordionItem[]

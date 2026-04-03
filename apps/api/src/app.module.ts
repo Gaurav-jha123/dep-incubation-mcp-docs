@@ -8,6 +8,7 @@ import { SkillMatrixModule } from './modules/skill-matrix/skill-matrix.module.js
 import { TopicModule } from './modules/topics/topic.module.js';
 import { UsersModule } from './modules/users/users.module.js';
 import { ProjectsModule } from './modules/projects/projects.module.js';
+import { SubTopicModule } from './modules/sub-topics/sub-topics.module.js';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ProjectsModule } from './modules/projects/projects.module.js';
     TopicModule,
     UsersModule,
     ProjectsModule,
+    SubTopicModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,3 +1,13 @@
 .topics-page {
   margin: 0 auto;
 }
+
+.sub-topic {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+.sub-topic-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
