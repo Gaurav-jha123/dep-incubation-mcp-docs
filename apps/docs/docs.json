@@ -16,70 +16,82 @@
     "name": "MCP Server",
     "url": "https://mcp-docs-ruby.vercel.app"
   },
-  "navigation": [
-    {
-      "group": "Overview",
-      "pages": ["introduction"]
-    },
-    {
-      "group": "Auth",
-      "pages": [
-        "api-reference/auth/auth__signup__POST",
-        "api-reference/auth/auth__login__POST",
-        "api-reference/auth/auth__refresh__POST",
-        "api-reference/auth/auth__me__GET",
-        "api-reference/auth/auth__logout__POST"
-      ]
-    },
-    {
-      "group": "Projects",
-      "pages": [
-        "api-reference/projects/projects__root__GET",
-        "api-reference/projects/projects__id__GET",
-        "api-reference/projects/projects__root__POST",
-        "api-reference/projects/projects__id__PATCH",
-        "api-reference/projects/projects__id__DELETE",
-        "api-reference/projects/projects__id_assignments__POST",
-        "api-reference/projects/projects__id_assignments_userId__DELETE",
-        "api-reference/projects/projects__id_assignments_userId__PATCH"
-      ]
-    },
-    {
-      "group": "Skill Matrix",
-      "pages": [
-        "api-reference/skill-matrix/skill-matrix__root__GET",
-        "api-reference/skill-matrix/skill-matrix__id__GET",
-        "api-reference/skill-matrix/skill-matrix__root__POST",
-        "api-reference/skill-matrix/skill-matrix__id__PATCH",
-        "api-reference/skill-matrix/skill-matrix__id__DELETE"
-      ]
-    },
-    {
-      "group": "Topics",
-      "pages": [
-        "api-reference/topics/topics__root__GET",
-        "api-reference/topics/topics__id__GET",
-        "api-reference/topics/topics__root__POST",
-        "api-reference/topics/topics__id__PATCH",
-        "api-reference/topics/topics__id__DELETE"
-      ]
-    },
-    {
-      "group": "Sub-Topics",
-      "pages": [
-        "api-reference/sub-topics/sub-topics__root__POST"
-      ]
-    },
-    {
-      "group": "Users",
-      "pages": [
-        "api-reference/users/users__root__GET",
-        "api-reference/users/users__root__POST",
-        "api-reference/users/users__id__PUT",
-        "api-reference/users/users__id__DELETE"
-      ]
-    }
-  ],
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Overview",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["introduction"]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Auth",
+            "pages": [
+              "api-reference/auth/auth__signup__POST",
+              "api-reference/auth/auth__login__POST",
+              "api-reference/auth/auth__refresh__POST",
+              "api-reference/auth/auth__me__GET",
+              "api-reference/auth/auth__logout__POST"
+            ]
+          },
+          {
+            "group": "Projects",
+            "pages": [
+              "api-reference/projects/projects__root__GET",
+              "api-reference/projects/projects__id__GET",
+              "api-reference/projects/projects__root__POST",
+              "api-reference/projects/projects__id__PATCH",
+              "api-reference/projects/projects__id__DELETE",
+              "api-reference/projects/projects__id_assignments__POST",
+              "api-reference/projects/projects__id_assignments_userId__DELETE",
+              "api-reference/projects/projects__id_assignments_userId__PATCH"
+            ]
+          },
+          {
+            "group": "Skill Matrix",
+            "pages": [
+              "api-reference/skill-matrix/skill-matrix__root__GET",
+              "api-reference/skill-matrix/skill-matrix__id__GET",
+              "api-reference/skill-matrix/skill-matrix__root__POST",
+              "api-reference/skill-matrix/skill-matrix__id__PATCH",
+              "api-reference/skill-matrix/skill-matrix__id__DELETE"
+            ]
+          },
+          {
+            "group": "Topics",
+            "pages": [
+              "api-reference/topics/topics__root__GET",
+              "api-reference/topics/topics__id__GET",
+              "api-reference/topics/topics__root__POST",
+              "api-reference/topics/topics__id__PATCH",
+              "api-reference/topics/topics__id__DELETE"
+            ]
+          },
+          {
+            "group": "Sub-Topics",
+            "pages": [
+              "api-reference/sub-topics/sub-topics__root__POST"
+            ]
+          },
+          {
+            "group": "Users",
+            "pages": [
+              "api-reference/users/users__root__GET",
+              "api-reference/users/users__root__POST",
+              "api-reference/users/users__id__PUT",
+              "api-reference/users/users__id__DELETE"
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "footerSocials": {
     "github": "https://github.com/Gaurav-jha123/dep-incubation-mcp-docs"
   }
