@@ -1,0 +1,28 @@
+---
+title: "PATCH /topics/:id"
+description: "Update topic"
+---
+
+## PATCH /topics/:id
+**Module:** topics
+
+### What it does
+Update topic
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `id` | `number` | param |
+| `dto` | `UpdateTopicDto` | body |
+
+### Response
+`unknown`
+
+### Business Logic
+`update()` — Calls `topic.update`, `topic.findUnique`.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+**Required roles:** ADMIN
+### Notes
+Requires JWT authentication. See module guards for role requirements.

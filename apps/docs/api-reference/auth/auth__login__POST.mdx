@@ -1,0 +1,28 @@
+---
+title: "POST /auth/login"
+description: "Login with email and password"
+---
+
+## POST /auth/login
+**Module:** auth
+
+### What it does
+Login with email and password
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `dto` | `LoginDto` | body |
+
+### Response
+Login successful
+
+### Business Logic
+`login()` — Calls `user.findUnique`. May throw: UnauthorizedException.
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 401 | Invalid credentials |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

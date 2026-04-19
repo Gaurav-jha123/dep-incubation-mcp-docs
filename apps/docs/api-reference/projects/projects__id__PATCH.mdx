@@ -1,0 +1,33 @@
+---
+title: "PATCH /projects/:id"
+description: "Update project"
+---
+
+## PATCH /projects/:id
+**Module:** projects
+
+### What it does
+Update project
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `id` | `number` | param |
+| `dto` | `UpdateProjectDto` | body |
+
+### Response
+Project updated
+
+### Business Logic
+`update()` — Calls `project.update`, `project.findUnique`, `topic.findMany`.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+**Required roles:** ADMIN, MANAGER
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 404 | Project not found |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

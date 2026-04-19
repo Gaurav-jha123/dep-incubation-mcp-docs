@@ -1,0 +1,34 @@
+---
+title: "PATCH /skill-matrix/:id"
+description: "Update a skill matrix entry"
+---
+
+## PATCH /skill-matrix/:id
+**Module:** skill-matrix
+
+### What it does
+Update a skill matrix entry
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `id` | `number` | param |
+| `dto` | `UpdateSkillMatrixDto` | body |
+
+### Response
+Skill matrix entry updated successfully
+
+### Business Logic
+`update()` — Calls `skillMatrix.update`, `skillMatrix.findUnique`. May throw: ForbiddenException.
+
+### Auth
+**Guards:** JwtAuthGuard
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 401 | Unauthorized |
+| 403 | Forbidden — not your entry |
+| 404 | Skill matrix entry not found |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

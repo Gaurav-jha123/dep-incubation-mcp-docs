@@ -1,0 +1,49 @@
+---
+title: "Introduction"
+description: "Auto-generated API documentation for the DEP Incubation Dashboard"
+---
+
+## DEP Incubation Dashboard API
+
+This documentation is automatically generated from the NestJS source code using [ts-morph](https://ts-morph.com/) AST parsing. Every time a controller or DTO changes, the affected docs are regenerated via GitHub Actions — no manual writing required.
+
+## Base URL
+
+All endpoints are prefixed with `/api/v1`.
+
+## Authentication
+
+Most endpoints require a JWT bearer token. Obtain one via `POST /auth/login` and pass it as:
+
+```
+Authorization: Bearer <access_token>
+```
+
+## Modules
+
+| Module | Endpoints | Description |
+|--------|-----------|-------------|
+| **Auth** | 5 | JWT authentication — signup, login, token refresh, logout |
+| **Projects** | 8 | Project management and team assignments |
+| **Skill Matrix** | 5 | Developer skill tracking per user |
+| **Topics** | 5 | Learning topic management |
+| **Sub-Topics** | 1 | Sub-topic creation |
+| **Users** | 4 | User management |
+
+## How this docs site works
+
+1. **Parser** — `ts-morph` extracts endpoint metadata (routes, params, guards, roles) from `*.controller.ts` files
+2. **Indexer** — Gemini/Groq generates a 200-word doc chunk per endpoint
+3. **Fingerprinting** — SHA-256 of source files; unchanged code = zero LLM calls on next run
+4. **GitHub Actions** — triggers on push to `main`, regenerates only changed chunks
+5. **Mintlify** — reads these `.mdx` files from the repo and renders this site
+
+## MCP Server
+
+This project also exposes a live MCP server for AI assistants:
+
+```
+https://mcp-docs-ruby.vercel.app
+```
+
+Add it to Claude.ai → Settings → Integrations to query these docs from any conversation.

@@ -1,0 +1,27 @@
+---
+title: "POST /sub-topics"
+description: "Create sub-topic"
+---
+
+## POST /sub-topics
+**Module:** sub-topics
+
+### What it does
+Create sub-topic
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `dto` | `CreateSubTopicDto` | body |
+
+### Response
+Sub-topic created
+
+### Business Logic
+`create()` — Calls `subTopic.findFirst`, `subTopic.create`. May throw: ConflictException.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+**Required roles:** ADMIN
+### Notes
+Requires JWT authentication. See module guards for role requirements.
