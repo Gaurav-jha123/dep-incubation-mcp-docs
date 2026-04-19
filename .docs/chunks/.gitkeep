@@ -1,0 +1,2 @@
+# Doc chunks are generated here by `pnpm --filter doc-indexer index`.
+# This file keeps the directory tracked by git before any docs are generated.

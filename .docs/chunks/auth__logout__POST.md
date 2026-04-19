@@ -1,0 +1,26 @@
+## POST /auth/logout
+**Module:** auth
+
+### What it does
+Logout current user
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| — | — | — |
+
+### Response
+Logged out successfully
+
+### Business Logic
+No service methods inferred.
+
+### Auth
+**Guards:** JwtAuthGuard
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 401 | Unauthorized |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

@@ -1,0 +1,26 @@
+## GET /skill-matrix/:id
+**Module:** skill-matrix
+
+### What it does
+Get a skill matrix entry by ID
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `id` | `number` | param |
+
+### Response
+Skill matrix entry found
+
+### Business Logic
+`findOne()` — Calls `skillMatrix.findUnique`. May throw: NotFoundException.
+
+### Auth
+**Guards:** JwtAuthGuard
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 404 | Skill matrix entry not found |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

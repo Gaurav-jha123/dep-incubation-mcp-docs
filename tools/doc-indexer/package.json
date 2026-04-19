@@ -1,0 +1,20 @@
+{
+  "name": "doc-indexer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "index": "node --env-file=.env --import tsx/esm src/indexer.ts",
+    "update": "node --env-file=.env --import tsx/esm src/updater.ts",
+    "preview": "node --env-file=.env --import tsx/esm src/preview.ts"
+  },
+  "dependencies": {
+    "simple-git": "^3.36.0",
+    "ts-morph": "^24.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.17",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

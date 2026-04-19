@@ -1,0 +1,29 @@
+## PUT /users/:id
+**Module:** users
+
+### What it does
+Update user by ID
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `id` | `number` | param |
+| `dto` | `UpdateUserDto` | body |
+
+### Response
+User updated successfully
+
+### Business Logic
+`updateUser()` — Calls `user.findUnique`, `user.update`. May throw: NotFoundException, ConflictException.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+**Required roles:** ADMIN
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 404 | User not found |
+| 409 | Generated email already registered |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

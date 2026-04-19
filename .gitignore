@@ -38,3 +38,15 @@ storybook-static
 /playwright/.auth/
 .vercel
 .env
+
+# AI tooling — local only
+.claude/
+Agents.md
+CLAUDE.md
+.mcp.json
+
+# AI tooling — local only
+.claude/
+Agents.md
+CLAUDE.md
+.mcp.json

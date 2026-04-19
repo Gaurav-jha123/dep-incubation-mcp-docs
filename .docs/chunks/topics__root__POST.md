@@ -1,0 +1,22 @@
+## POST /topics
+**Module:** topics
+
+### What it does
+Create topic
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `dto` | `CreateTopicDto` | body |
+
+### Response
+Topic created
+
+### Business Logic
+`create()` — Calls `topic.create`.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+**Required roles:** ADMIN
+### Notes
+Requires JWT authentication. See module guards for role requirements.

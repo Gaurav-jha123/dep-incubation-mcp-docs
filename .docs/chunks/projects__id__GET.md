@@ -1,0 +1,26 @@
+## GET /projects/:id
+**Module:** projects
+
+### What it does
+Get project by ID
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `id` | `number` | param |
+
+### Response
+Project with full details including skills and assignments
+
+### Business Logic
+`findOne()` — Calls `project.findUnique`, `topic.findMany`. May throw: NotFoundException.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 404 | Project not found |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

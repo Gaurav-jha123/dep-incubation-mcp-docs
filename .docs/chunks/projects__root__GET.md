@@ -1,0 +1,21 @@
+## GET /projects
+**Module:** projects
+
+### What it does
+Get all projects
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| — | — | — |
+
+### Response
+List of projects with skills and assignment count
+
+### Business Logic
+`findAll()` — Calls `project.findMany`, `topic.findMany`.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+### Notes
+Requires JWT authentication. See module guards for role requirements.

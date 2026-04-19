@@ -1,0 +1,22 @@
+## DELETE /topics/:id
+**Module:** topics
+
+### What it does
+Delete topic
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `id` | `number` | param |
+
+### Response
+`unknown`
+
+### Business Logic
+`remove()` — Calls `topic.delete`, `topic.findUnique`.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+**Required roles:** ADMIN
+### Notes
+Requires JWT authentication. See module guards for role requirements.

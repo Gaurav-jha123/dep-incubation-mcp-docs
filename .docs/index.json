@@ -1,0 +1,873 @@
+{
+  "lastIndexed": "2026-04-19T04:09:18.921Z",
+  "chunks": {
+    "app__root__GET": {
+      "chunkId": "app__root__GET",
+      "module": "app",
+      "method": "GET",
+      "path": "/",
+      "fingerprint": "75b87eb8c85a46bb5862f4b145d74b494791b3b28a74fe125fbfd9feb55431f7",
+      "sourceFiles": [
+        "apps/api/src/app.controller.ts",
+        "apps/api/src/app.service.ts"
+      ],
+      "docFile": ".docs/chunks/app__root__GET.md",
+      "lastUpdated": "2026-04-19T04:02:18.655Z",
+      "guards": [],
+      "roles": [],
+      "relatedChunks": []
+    },
+    "auth__signup__POST": {
+      "chunkId": "auth__signup__POST",
+      "module": "auth",
+      "method": "POST",
+      "path": "/auth/signup",
+      "fingerprint": "000e3acfe8b368d0685e0876d118b63b26e05cd0f26b9f763b026fd4a5e185f9",
+      "sourceFiles": [
+        "apps/api/src/modules/auth/auth.controller.ts",
+        "apps/api/src/modules/auth/dto/signup.dto.ts",
+        "apps/api/src/modules/auth/auth.service.ts"
+      ],
+      "docFile": ".docs/chunks/auth__signup__POST.md",
+      "lastUpdated": "2026-04-19T04:02:33.661Z",
+      "guards": [],
+      "roles": [],
+      "relatedChunks": [
+        "auth__login__POST",
+        "auth__logout__POST",
+        "auth__me__GET",
+        "auth__refresh__POST"
+      ]
+    },
+    "auth__login__POST": {
+      "chunkId": "auth__login__POST",
+      "module": "auth",
+      "method": "POST",
+      "path": "/auth/login",
+      "fingerprint": "2aab320a0c1c61d684754c2ac42e80052ed6fef8d7ff79cc456ed340dac04c44",
+      "sourceFiles": [
+        "apps/api/src/modules/auth/auth.controller.ts",
+        "apps/api/src/modules/auth/dto/login.dto.ts",
+        "apps/api/src/modules/auth/auth.service.ts"
+      ],
+      "docFile": ".docs/chunks/auth__login__POST.md",
+      "lastUpdated": "2026-04-19T04:02:48.665Z",
+      "guards": [],
+      "roles": [],
+      "relatedChunks": [
+        "auth__logout__POST",
+        "auth__me__GET",
+        "auth__refresh__POST",
+        "auth__signup__POST"
+      ]
+    },
+    "auth__refresh__POST": {
+      "chunkId": "auth__refresh__POST",
+      "module": "auth",
+      "method": "POST",
+      "path": "/auth/refresh",
+      "fingerprint": "4eb8e9a38f6f037924c3e173480f3b2fd9eb9be01a907550152bcf5c0223d662",
+      "sourceFiles": [
+        "apps/api/src/modules/auth/auth.controller.ts",
+        "apps/api/src/modules/auth/dto/refresh-token.dto.ts",
+        "apps/api/src/modules/auth/auth.service.ts"
+      ],
+      "docFile": ".docs/chunks/auth__refresh__POST.md",
+      "lastUpdated": "2026-04-19T04:03:03.669Z",
+      "guards": [],
+      "roles": [],
+      "relatedChunks": [
+        "auth__login__POST",
+        "auth__logout__POST",
+        "auth__me__GET",
+        "auth__signup__POST"
+      ]
+    },
+    "auth__me__GET": {
+      "chunkId": "auth__me__GET",
+      "module": "auth",
+      "method": "GET",
+      "path": "/auth/me",
+      "fingerprint": "028f57aa96da63d32af674c0bd865366032646ebfc38b2ebd76fa2567881d0a6",
+      "sourceFiles": [
+        "apps/api/src/modules/auth/auth.controller.ts",
+        "apps/api/src/modules/auth/auth.service.ts"
+      ],
+      "docFile": ".docs/chunks/auth__me__GET.md",
+      "lastUpdated": "2026-04-19T04:03:18.683Z",
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "auth__login__POST",
+        "auth__logout__POST",
+        "auth__refresh__POST",
+        "auth__signup__POST"
+      ]
+    },
+    "auth__logout__POST": {
+      "chunkId": "auth__logout__POST",
+      "module": "auth",
+      "method": "POST",
+      "path": "/auth/logout",
+      "fingerprint": "4471f1fa0e01dcab45333c59c47977ddc4c1484485a337b431a146bc04092cff",
+      "sourceFiles": [
+        "apps/api/src/modules/auth/auth.controller.ts",
+        "apps/api/src/modules/auth/auth.service.ts"
+      ],
+      "docFile": ".docs/chunks/auth__logout__POST.md",
+      "lastUpdated": "2026-04-19T04:03:33.702Z",
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "auth__login__POST",
+        "auth__me__GET",
+        "auth__refresh__POST",
+        "auth__signup__POST"
+      ]
+    },
+    "projects__root__GET": {
+      "chunkId": "projects__root__GET",
+      "module": "projects",
+      "method": "GET",
+      "path": "/projects",
+      "fingerprint": "7a5ea782ae1a25ef48edf7925163b40dbad2cceca88080d5fc3681362989fd70",
+      "sourceFiles": [
+        "apps/api/src/modules/projects/projects.controller.ts",
+        "apps/api/src/modules/projects/projects.service.ts"
+      ],
+      "docFile": ".docs/chunks/projects__root__GET.md",
+      "lastUpdated": "2026-04-19T04:03:48.711Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "projects__id__DELETE",
+        "projects__id__GET",
+        "projects__id__PATCH",
+        "projects__id_assignments__POST",
+        "projects__id_assignments_userId__DELETE",
+        "projects__id_assignments_userId__PATCH",
+        "projects__root__POST"
+      ]
+    },
+    "projects__id__GET": {
+      "chunkId": "projects__id__GET",
+      "module": "projects",
+      "method": "GET",
+      "path": "/projects/:id",
+      "fingerprint": "dc4ff555349820bd9a58f28d82b10941b04e5a519a7f7aab3ded4cea23e78075",
+      "sourceFiles": [
+        "apps/api/src/modules/projects/projects.controller.ts",
+        "apps/api/src/modules/projects/projects.service.ts"
+      ],
+      "docFile": ".docs/chunks/projects__id__GET.md",
+      "lastUpdated": "2026-04-19T04:04:03.722Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "projects__id__DELETE",
+        "projects__id__PATCH",
+        "projects__id_assignments__POST",
+        "projects__id_assignments_userId__DELETE",
+        "projects__id_assignments_userId__PATCH",
+        "projects__root__GET",
+        "projects__root__POST"
+      ]
+    },
+    "projects__root__POST": {
+      "chunkId": "projects__root__POST",
+      "module": "projects",
+      "method": "POST",
+      "path": "/projects",
+      "fingerprint": "c4660dacf199ca83ee2c303a918f282d42c35a464f033781a1c18920a9f86ff3",
+      "sourceFiles": [
+        "apps/api/src/modules/projects/projects.controller.ts",
+        "apps/api/src/modules/projects/dto/create-project.dto.ts",
+        "apps/api/src/modules/projects/projects.service.ts"
+      ],
+      "docFile": ".docs/chunks/projects__root__POST.md",
+      "lastUpdated": "2026-04-19T04:04:18.739Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN",
+        "MANAGER"
+      ],
+      "relatedChunks": [
+        "projects__id__DELETE",
+        "projects__id__GET",
+        "projects__id__PATCH",
+        "projects__id_assignments__POST",
+        "projects__id_assignments_userId__DELETE",
+        "projects__id_assignments_userId__PATCH",
+        "projects__root__GET"
+      ]
+    },
+    "projects__id__PATCH": {
+      "chunkId": "projects__id__PATCH",
+      "module": "projects",
+      "method": "PATCH",
+      "path": "/projects/:id",
+      "fingerprint": "43c5d9b07b438921043e1729ab3bd427424e97f7d5a1e9fa32161977cc6e1ca9",
+      "sourceFiles": [
+        "apps/api/src/modules/projects/projects.controller.ts",
+        "apps/api/src/modules/projects/dto/update-project.dto.ts",
+        "apps/api/src/modules/projects/projects.service.ts"
+      ],
+      "docFile": ".docs/chunks/projects__id__PATCH.md",
+      "lastUpdated": "2026-04-19T04:04:33.756Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN",
+        "MANAGER"
+      ],
+      "relatedChunks": [
+        "projects__id__DELETE",
+        "projects__id__GET",
+        "projects__id_assignments__POST",
+        "projects__id_assignments_userId__DELETE",
+        "projects__id_assignments_userId__PATCH",
+        "projects__root__GET",
+        "projects__root__POST"
+      ]
+    },
+    "projects__id__DELETE": {
+      "chunkId": "projects__id__DELETE",
+      "module": "projects",
+      "method": "DELETE",
+      "path": "/projects/:id",
+      "fingerprint": "e594c87ce0eabc8add9695b900d3ba647c840e3c928f515f765d37b5ed34fcea",
+      "sourceFiles": [
+        "apps/api/src/modules/projects/projects.controller.ts",
+        "apps/api/src/modules/projects/projects.service.ts"
+      ],
+      "docFile": ".docs/chunks/projects__id__DELETE.md",
+      "lastUpdated": "2026-04-19T04:04:48.768Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN",
+        "MANAGER"
+      ],
+      "relatedChunks": [
+        "projects__id__GET",
+        "projects__id__PATCH",
+        "projects__id_assignments__POST",
+        "projects__id_assignments_userId__DELETE",
+        "projects__id_assignments_userId__PATCH",
+        "projects__root__GET",
+        "projects__root__POST"
+      ]
+    },
+    "projects__id_assignments__POST": {
+      "chunkId": "projects__id_assignments__POST",
+      "module": "projects",
+      "method": "POST",
+      "path": "/projects/:id/assignments",
+      "fingerprint": "bd41c86a0ad14c731ea5a2ba9e48524debf7bddd62acc2fd1ea6aeee49b83f66",
+      "sourceFiles": [
+        "apps/api/src/modules/projects/projects.controller.ts",
+        "apps/api/src/modules/projects/dto/assign-user.dto.ts",
+        "apps/api/src/modules/projects/projects.service.ts"
+      ],
+      "docFile": ".docs/chunks/projects__id_assignments__POST.md",
+      "lastUpdated": "2026-04-19T04:05:03.784Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN",
+        "MANAGER"
+      ],
+      "relatedChunks": [
+        "projects__id__DELETE",
+        "projects__id__GET",
+        "projects__id__PATCH",
+        "projects__id_assignments_userId__DELETE",
+        "projects__id_assignments_userId__PATCH",
+        "projects__root__GET",
+        "projects__root__POST"
+      ]
+    },
+    "projects__id_assignments_userId__DELETE": {
+      "chunkId": "projects__id_assignments_userId__DELETE",
+      "module": "projects",
+      "method": "DELETE",
+      "path": "/projects/:id/assignments/:userId",
+      "fingerprint": "fb68750338437e858bd46d29ddee636a637e78bcd03909e7e55640d207252354",
+      "sourceFiles": [
+        "apps/api/src/modules/projects/projects.controller.ts",
+        "apps/api/src/modules/projects/projects.service.ts"
+      ],
+      "docFile": ".docs/chunks/projects__id_assignments_userId__DELETE.md",
+      "lastUpdated": "2026-04-19T04:05:18.801Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN",
+        "MANAGER"
+      ],
+      "relatedChunks": [
+        "projects__id__DELETE",
+        "projects__id__GET",
+        "projects__id__PATCH",
+        "projects__id_assignments__POST",
+        "projects__id_assignments_userId__PATCH",
+        "projects__root__GET",
+        "projects__root__POST"
+      ]
+    },
+    "projects__id_assignments_userId__PATCH": {
+      "chunkId": "projects__id_assignments_userId__PATCH",
+      "module": "projects",
+      "method": "PATCH",
+      "path": "/projects/:id/assignments/:userId",
+      "fingerprint": "2d9d71f42829495876e73abc7e200b777a9db14aefb61cd8235998dd3814dc7b",
+      "sourceFiles": [
+        "apps/api/src/modules/projects/projects.controller.ts",
+        "apps/api/src/modules/projects/dto/update-assignment.dto.ts",
+        "apps/api/src/modules/projects/projects.service.ts"
+      ],
+      "docFile": ".docs/chunks/projects__id_assignments_userId__PATCH.md",
+      "lastUpdated": "2026-04-19T04:05:33.812Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "projects__id__DELETE",
+        "projects__id__GET",
+        "projects__id__PATCH",
+        "projects__id_assignments__POST",
+        "projects__id_assignments_userId__DELETE",
+        "projects__root__GET",
+        "projects__root__POST"
+      ]
+    },
+    "skill-matrix__root__GET": {
+      "chunkId": "skill-matrix__root__GET",
+      "module": "skill-matrix",
+      "method": "GET",
+      "path": "/skill-matrix",
+      "fingerprint": "c878ed2e750f15d669e79b60140ff9e8d11b5c5c6b2431f55e7e3a6c0c3455b6",
+      "sourceFiles": [
+        "apps/api/src/modules/skill-matrix/skill-matrix.controller.ts",
+        "apps/api/src/modules/skill-matrix/dto/pagination-query.dto.ts",
+        "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
+      ],
+      "docFile": ".docs/chunks/skill-matrix__root__GET.md",
+      "lastUpdated": "2026-04-19T04:05:48.814Z",
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "skill-matrix__id__DELETE",
+        "skill-matrix__id__GET",
+        "skill-matrix__id__PATCH",
+        "skill-matrix__root__POST"
+      ]
+    },
+    "skill-matrix__id__GET": {
+      "chunkId": "skill-matrix__id__GET",
+      "module": "skill-matrix",
+      "method": "GET",
+      "path": "/skill-matrix/:id",
+      "fingerprint": "e7b25c23114e9dce7d3d2d7f8efde65cd5788ab2bd527a22f21ff7ac34079eb9",
+      "sourceFiles": [
+        "apps/api/src/modules/skill-matrix/skill-matrix.controller.ts",
+        "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
+      ],
+      "docFile": ".docs/chunks/skill-matrix__id__GET.md",
+      "lastUpdated": "2026-04-19T04:06:03.821Z",
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "skill-matrix__id__DELETE",
+        "skill-matrix__id__PATCH",
+        "skill-matrix__root__GET",
+        "skill-matrix__root__POST"
+      ]
+    },
+    "skill-matrix__root__POST": {
+      "chunkId": "skill-matrix__root__POST",
+      "module": "skill-matrix",
+      "method": "POST",
+      "path": "/skill-matrix",
+      "fingerprint": "cd66901ea7de19b97fb54bd9983ba0ae2bb0663913101630863a3101706863e2",
+      "sourceFiles": [
+        "apps/api/src/modules/skill-matrix/skill-matrix.controller.ts",
+        "apps/api/src/modules/skill-matrix/dto/create-skill-matrix.dto.ts",
+        "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
+      ],
+      "docFile": ".docs/chunks/skill-matrix__root__POST.md",
+      "lastUpdated": "2026-04-19T04:06:18.828Z",
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "skill-matrix__id__DELETE",
+        "skill-matrix__id__GET",
+        "skill-matrix__id__PATCH",
+        "skill-matrix__root__GET"
+      ]
+    },
+    "skill-matrix__id__PATCH": {
+      "chunkId": "skill-matrix__id__PATCH",
+      "module": "skill-matrix",
+      "method": "PATCH",
+      "path": "/skill-matrix/:id",
+      "fingerprint": "a5eb4c0f0de6f92dc368e83b858f84dfdf78fff6f05647387449c75e5eaaff3c",
+      "sourceFiles": [
+        "apps/api/src/modules/skill-matrix/skill-matrix.controller.ts",
+        "apps/api/src/modules/skill-matrix/dto/update-skill-matrix.dto.ts",
+        "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
+      ],
+      "docFile": ".docs/chunks/skill-matrix__id__PATCH.md",
+      "lastUpdated": "2026-04-19T04:06:33.840Z",
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "skill-matrix__id__DELETE",
+        "skill-matrix__id__GET",
+        "skill-matrix__root__GET",
+        "skill-matrix__root__POST"
+      ]
+    },
+    "skill-matrix__id__DELETE": {
+      "chunkId": "skill-matrix__id__DELETE",
+      "module": "skill-matrix",
+      "method": "DELETE",
+      "path": "/skill-matrix/:id",
+      "fingerprint": "58e7ee38034967e23a4babb341934451e0b97eef8b09e1f7037ee1545b448d21",
+      "sourceFiles": [
+        "apps/api/src/modules/skill-matrix/skill-matrix.controller.ts",
+        "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
+      ],
+      "docFile": ".docs/chunks/skill-matrix__id__DELETE.md",
+      "lastUpdated": "2026-04-19T04:06:48.851Z",
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "skill-matrix__id__GET",
+        "skill-matrix__id__PATCH",
+        "skill-matrix__root__GET",
+        "skill-matrix__root__POST"
+      ]
+    },
+    "sub-topics__root__POST": {
+      "chunkId": "sub-topics__root__POST",
+      "module": "sub-topics",
+      "method": "POST",
+      "path": "/sub-topics",
+      "fingerprint": "69d93d0028b0607b84453703d5d485aff56fb59675aad6be6f367f89443715e0",
+      "sourceFiles": [
+        "apps/api/src/modules/sub-topics/sub-topics.controller.ts",
+        "apps/api/src/modules/sub-topics/dto/create-sub-topics.dto.ts",
+        "apps/api/src/modules/sub-topics/sub-topics.service.ts"
+      ],
+      "docFile": ".docs/chunks/sub-topics__root__POST.md",
+      "lastUpdated": "2026-04-19T04:07:03.859Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN"
+      ],
+      "relatedChunks": []
+    },
+    "topics__root__GET": {
+      "chunkId": "topics__root__GET",
+      "module": "topics",
+      "method": "GET",
+      "path": "/topics",
+      "fingerprint": "a86dd10334cfeb8c94bcf9951361eba6a3170b5132a4d54ea3102807e9d8e897",
+      "sourceFiles": [
+        "apps/api/src/modules/topics/topic.controller.ts",
+        "apps/api/src/modules/topics/dto/pagination-query.dto.ts",
+        "apps/api/src/modules/topics/topic.service.ts"
+      ],
+      "docFile": ".docs/chunks/topics__root__GET.md",
+      "lastUpdated": "2026-04-19T04:07:18.864Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "topics__id__DELETE",
+        "topics__id__GET",
+        "topics__id__PATCH",
+        "topics__root__POST"
+      ]
+    },
+    "topics__id__GET": {
+      "chunkId": "topics__id__GET",
+      "module": "topics",
+      "method": "GET",
+      "path": "/topics/:id",
+      "fingerprint": "5df47116d73129353acfeaeb7d6b417abb3936ce437c3ac0f0a199e8124f00cf",
+      "sourceFiles": [
+        "apps/api/src/modules/topics/topic.controller.ts",
+        "apps/api/src/modules/topics/topic.service.ts"
+      ],
+      "docFile": ".docs/chunks/topics__id__GET.md",
+      "lastUpdated": "2026-04-19T04:07:33.870Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "topics__id__DELETE",
+        "topics__id__PATCH",
+        "topics__root__GET",
+        "topics__root__POST"
+      ]
+    },
+    "topics__root__POST": {
+      "chunkId": "topics__root__POST",
+      "module": "topics",
+      "method": "POST",
+      "path": "/topics",
+      "fingerprint": "8e687bcb47dd37718a97dcd3e61083c050df0a6f9bcaff92f6194b4ad0290e3f",
+      "sourceFiles": [
+        "apps/api/src/modules/topics/topic.controller.ts",
+        "apps/api/src/modules/topics/dto/create-topic.dto.ts",
+        "apps/api/src/modules/topics/topic.service.ts"
+      ],
+      "docFile": ".docs/chunks/topics__root__POST.md",
+      "lastUpdated": "2026-04-19T04:07:48.875Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN"
+      ],
+      "relatedChunks": [
+        "topics__id__DELETE",
+        "topics__id__GET",
+        "topics__id__PATCH",
+        "topics__root__GET"
+      ]
+    },
+    "topics__id__PATCH": {
+      "chunkId": "topics__id__PATCH",
+      "module": "topics",
+      "method": "PATCH",
+      "path": "/topics/:id",
+      "fingerprint": "a27d736c744f3c400856254e6e88a1b2a55559fbb9364e41a8f073d695e891e8",
+      "sourceFiles": [
+        "apps/api/src/modules/topics/topic.controller.ts",
+        "apps/api/src/modules/topics/dto/update-topic.dto.ts",
+        "apps/api/src/modules/topics/topic.service.ts"
+      ],
+      "docFile": ".docs/chunks/topics__id__PATCH.md",
+      "lastUpdated": "2026-04-19T04:08:03.883Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN"
+      ],
+      "relatedChunks": [
+        "topics__id__DELETE",
+        "topics__id__GET",
+        "topics__root__GET",
+        "topics__root__POST"
+      ]
+    },
+    "topics__id__DELETE": {
+      "chunkId": "topics__id__DELETE",
+      "module": "topics",
+      "method": "DELETE",
+      "path": "/topics/:id",
+      "fingerprint": "6078bf7cc8808dee69e56871c4928edeb32cb658902072e4585a42533eb12b30",
+      "sourceFiles": [
+        "apps/api/src/modules/topics/topic.controller.ts",
+        "apps/api/src/modules/topics/topic.service.ts"
+      ],
+      "docFile": ".docs/chunks/topics__id__DELETE.md",
+      "lastUpdated": "2026-04-19T04:08:18.891Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN"
+      ],
+      "relatedChunks": [
+        "topics__id__GET",
+        "topics__id__PATCH",
+        "topics__root__GET",
+        "topics__root__POST"
+      ]
+    },
+    "users__root__GET": {
+      "chunkId": "users__root__GET",
+      "module": "users",
+      "method": "GET",
+      "path": "/users",
+      "fingerprint": "5d6559a7c72145f78b765aede5b347dd0d535ffb9f229e1b90bef9302d9bdee2",
+      "sourceFiles": [
+        "apps/api/src/modules/users/users.controller.ts",
+        "apps/api/src/modules/users/users.service.ts"
+      ],
+      "docFile": ".docs/chunks/users__root__GET.md",
+      "lastUpdated": "2026-04-19T04:08:33.897Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [],
+      "relatedChunks": [
+        "users__id__DELETE",
+        "users__id__PUT",
+        "users__root__POST"
+      ]
+    },
+    "users__root__POST": {
+      "chunkId": "users__root__POST",
+      "module": "users",
+      "method": "POST",
+      "path": "/users",
+      "fingerprint": "bac31d99f4dbdaee5fab2482f7b33be812a89cf5909a426ad071e9fff14d5769",
+      "sourceFiles": [
+        "apps/api/src/modules/users/users.controller.ts",
+        "apps/api/src/modules/users/dto/create-user.dto.ts",
+        "apps/api/src/modules/users/users.service.ts"
+      ],
+      "docFile": ".docs/chunks/users__root__POST.md",
+      "lastUpdated": "2026-04-19T04:08:48.901Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN"
+      ],
+      "relatedChunks": [
+        "users__id__DELETE",
+        "users__id__PUT",
+        "users__root__GET"
+      ]
+    },
+    "users__id__PUT": {
+      "chunkId": "users__id__PUT",
+      "module": "users",
+      "method": "PUT",
+      "path": "/users/:id",
+      "fingerprint": "1a12281bbf268a8ce86452e64c70a7bd51625ead78a98593f97a2a3bb952aa85",
+      "sourceFiles": [
+        "apps/api/src/modules/users/users.controller.ts",
+        "apps/api/src/modules/users/dto/update-user.dto.ts",
+        "apps/api/src/modules/users/users.service.ts"
+      ],
+      "docFile": ".docs/chunks/users__id__PUT.md",
+      "lastUpdated": "2026-04-19T04:09:03.917Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN"
+      ],
+      "relatedChunks": [
+        "users__id__DELETE",
+        "users__root__GET",
+        "users__root__POST"
+      ]
+    },
+    "users__id__DELETE": {
+      "chunkId": "users__id__DELETE",
+      "module": "users",
+      "method": "DELETE",
+      "path": "/users/:id",
+      "fingerprint": "dbdd6a2e6c784edc28bae7384404af2eac981a4f289592e580b1a8d3f4096597",
+      "sourceFiles": [
+        "apps/api/src/modules/users/users.controller.ts",
+        "apps/api/src/modules/users/users.service.ts"
+      ],
+      "docFile": ".docs/chunks/users__id__DELETE.md",
+      "lastUpdated": "2026-04-19T04:09:18.921Z",
+      "guards": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "roles": [
+        "ADMIN"
+      ],
+      "relatedChunks": [
+        "users__id__PUT",
+        "users__root__GET",
+        "users__root__POST"
+      ]
+    }
+  },
+  "fileMap": {
+    "apps/api/src/app.controller.ts": [
+      "app__root__GET"
+    ],
+    "apps/api/src/app.service.ts": [
+      "app__root__GET"
+    ],
+    "apps/api/src/modules/auth/auth.controller.ts": [
+      "auth__signup__POST",
+      "auth__login__POST",
+      "auth__refresh__POST",
+      "auth__me__GET",
+      "auth__logout__POST"
+    ],
+    "apps/api/src/modules/auth/dto/signup.dto.ts": [
+      "auth__signup__POST"
+    ],
+    "apps/api/src/modules/auth/auth.service.ts": [
+      "auth__signup__POST",
+      "auth__login__POST",
+      "auth__refresh__POST",
+      "auth__me__GET",
+      "auth__logout__POST"
+    ],
+    "apps/api/src/modules/auth/dto/login.dto.ts": [
+      "auth__login__POST"
+    ],
+    "apps/api/src/modules/auth/dto/refresh-token.dto.ts": [
+      "auth__refresh__POST"
+    ],
+    "apps/api/src/modules/projects/projects.controller.ts": [
+      "projects__root__GET",
+      "projects__id__GET",
+      "projects__root__POST",
+      "projects__id__PATCH",
+      "projects__id__DELETE",
+      "projects__id_assignments__POST",
+      "projects__id_assignments_userId__DELETE",
+      "projects__id_assignments_userId__PATCH"
+    ],
+    "apps/api/src/modules/projects/projects.service.ts": [
+      "projects__root__GET",
+      "projects__id__GET",
+      "projects__root__POST",
+      "projects__id__PATCH",
+      "projects__id__DELETE",
+      "projects__id_assignments__POST",
+      "projects__id_assignments_userId__DELETE",
+      "projects__id_assignments_userId__PATCH"
+    ],
+    "apps/api/src/modules/projects/dto/create-project.dto.ts": [
+      "projects__root__POST"
+    ],
+    "apps/api/src/modules/projects/dto/update-project.dto.ts": [
+      "projects__id__PATCH"
+    ],
+    "apps/api/src/modules/projects/dto/assign-user.dto.ts": [
+      "projects__id_assignments__POST"
+    ],
+    "apps/api/src/modules/projects/dto/update-assignment.dto.ts": [
+      "projects__id_assignments_userId__PATCH"
+    ],
+    "apps/api/src/modules/skill-matrix/skill-matrix.controller.ts": [
+      "skill-matrix__root__GET",
+      "skill-matrix__id__GET",
+      "skill-matrix__root__POST",
+      "skill-matrix__id__PATCH",
+      "skill-matrix__id__DELETE"
+    ],
+    "apps/api/src/modules/skill-matrix/dto/pagination-query.dto.ts": [
+      "skill-matrix__root__GET"
+    ],
+    "apps/api/src/modules/skill-matrix/skill-matrix.service.ts": [
+      "skill-matrix__root__GET",
+      "skill-matrix__id__GET",
+      "skill-matrix__root__POST",
+      "skill-matrix__id__PATCH",
+      "skill-matrix__id__DELETE"
+    ],
+    "apps/api/src/modules/skill-matrix/dto/create-skill-matrix.dto.ts": [
+      "skill-matrix__root__POST"
+    ],
+    "apps/api/src/modules/skill-matrix/dto/update-skill-matrix.dto.ts": [
+      "skill-matrix__id__PATCH"
+    ],
+    "apps/api/src/modules/sub-topics/sub-topics.controller.ts": [
+      "sub-topics__root__POST"
+    ],
+    "apps/api/src/modules/sub-topics/dto/create-sub-topics.dto.ts": [
+      "sub-topics__root__POST"
+    ],
+    "apps/api/src/modules/sub-topics/sub-topics.service.ts": [
+      "sub-topics__root__POST"
+    ],
+    "apps/api/src/modules/topics/topic.controller.ts": [
+      "topics__root__GET",
+      "topics__id__GET",
+      "topics__root__POST",
+      "topics__id__PATCH",
+      "topics__id__DELETE"
+    ],
+    "apps/api/src/modules/topics/dto/pagination-query.dto.ts": [
+      "topics__root__GET"
+    ],
+    "apps/api/src/modules/topics/topic.service.ts": [
+      "topics__root__GET",
+      "topics__id__GET",
+      "topics__root__POST",
+      "topics__id__PATCH",
+      "topics__id__DELETE"
+    ],
+    "apps/api/src/modules/topics/dto/create-topic.dto.ts": [
+      "topics__root__POST"
+    ],
+    "apps/api/src/modules/topics/dto/update-topic.dto.ts": [
+      "topics__id__PATCH"
+    ],
+    "apps/api/src/modules/users/users.controller.ts": [
+      "users__root__GET",
+      "users__root__POST",
+      "users__id__PUT",
+      "users__id__DELETE"
+    ],
+    "apps/api/src/modules/users/users.service.ts": [
+      "users__root__GET",
+      "users__root__POST",
+      "users__id__PUT",
+      "users__id__DELETE"
+    ],
+    "apps/api/src/modules/users/dto/create-user.dto.ts": [
+      "users__root__POST"
+    ],
+    "apps/api/src/modules/users/dto/update-user.dto.ts": [
+      "users__id__PUT"
+    ]
+  }
+}

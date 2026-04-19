@@ -1,0 +1,15 @@
+{
+  "name": "@dep-incubation-dashboard/mcp-docs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "build": "tsc",
+    "dev": "tsx src/server.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.0.0"
+  }
+}

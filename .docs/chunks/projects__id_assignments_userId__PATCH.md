@@ -1,0 +1,29 @@
+## PATCH /projects/:id/assignments/:userId
+**Module:** projects
+
+### What it does
+Update assignment status
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `id` | `number` | param |
+| `userId` | `number` | param |
+| `dto` | `UpdateAssignmentStatusDto` | body |
+
+### Response
+Assignment status updated
+
+### Business Logic
+`updateAssignmentStatus()` — Calls `projectAssignment.update`, `project.findUnique`, `topic.findMany`. May throw: ForbiddenException, NotFoundException.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 403 | Cannot update another user assignment |
+| 404 | Project not found |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

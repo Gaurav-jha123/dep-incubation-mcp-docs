@@ -1,0 +1,26 @@
+## GET /topics/:id
+**Module:** topics
+
+### What it does
+Get topic by ID
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `id` | `number` | param |
+
+### Response
+Topic found
+
+### Business Logic
+`findOne()` — Calls `topic.findUnique`. May throw: NotFoundException.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 404 | Topic not found |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

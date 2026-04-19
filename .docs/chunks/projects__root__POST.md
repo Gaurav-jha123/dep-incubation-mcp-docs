@@ -1,0 +1,22 @@
+## POST /projects
+**Module:** projects
+
+### What it does
+Create project
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `dto` | `CreateProjectDto` | body |
+
+### Response
+Project created
+
+### Business Logic
+`create()` — Calls `project.create`, `projectAssignment.createMany`, `project.findUnique`, `topic.findMany`. May throw: ConflictException.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+**Required roles:** ADMIN, MANAGER
+### Notes
+Requires JWT authentication. See module guards for role requirements.

@@ -1,0 +1,27 @@
+## DELETE /projects/:id
+**Module:** projects
+
+### What it does
+Delete project
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `id` | `number` | param |
+
+### Response
+Project deleted
+
+### Business Logic
+`remove()` — Calls `project.delete`, `project.findUnique`, `topic.findMany`.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+**Required roles:** ADMIN, MANAGER
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 404 | Project not found |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

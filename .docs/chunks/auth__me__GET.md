@@ -1,0 +1,26 @@
+## GET /auth/me
+**Module:** auth
+
+### What it does
+Get current user profile
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| — | — | — |
+
+### Response
+User profile
+
+### Business Logic
+`getProfile()` — Calls `user.findUnique`. May throw: UnauthorizedException.
+
+### Auth
+**Guards:** JwtAuthGuard
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 401 | Unauthorized |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

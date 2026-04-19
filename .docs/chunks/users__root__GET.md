@@ -1,0 +1,21 @@
+## GET /users
+**Module:** users
+
+### What it does
+Get all users
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| — | — | — |
+
+### Response
+List of users
+
+### Business Logic
+`findAll()` — Calls `user.findMany`.
+
+### Auth
+**Guards:** JwtAuthGuard, RolesGuard
+### Notes
+Requires JWT authentication. See module guards for role requirements.

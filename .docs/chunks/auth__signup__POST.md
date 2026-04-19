@@ -1,0 +1,23 @@
+## POST /auth/signup
+**Module:** auth
+
+### What it does
+Register a new user
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `dto` | `SignupDto` | body |
+
+### Response
+User registered successfully
+
+### Business Logic
+`signup()` — Calls `user.findUnique`, `user.create`. May throw: ConflictException.
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 409 | Email already registered |
+### Notes
+Requires JWT authentication. See module guards for role requirements.

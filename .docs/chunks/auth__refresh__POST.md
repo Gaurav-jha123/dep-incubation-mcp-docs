@@ -1,0 +1,23 @@
+## POST /auth/refresh
+**Module:** auth
+
+### What it does
+Refresh access token
+
+### Request
+| Param | Type | Source |
+|-------|------|--------|
+| `dto` | `RefreshTokenDto` | body |
+
+### Response
+Token refreshed
+
+### Business Logic
+`refreshToken()` — No direct DB calls. May throw: UnauthorizedException.
+
+### Errors
+| Status | Description |
+|--------|-------------|
+| 401 | Invalid refresh token |
+### Notes
+Requires JWT authentication. See module guards for role requirements.
