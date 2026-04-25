@@ -1,5 +1,5 @@
 ## GET /users
-**Module:** users
+**Module:** users | **Operation:** 📖 read | **Confidence:** ███████░░░ 70/100
 
 ### What it does
 Get all users
@@ -12,10 +12,15 @@ Get all users
 ### Response
 List of users
 
+### Execution Flow
+`findAll()` → `findAll()` → `user.findMany`
 ### Business Logic
 `findAll()` — Calls `user.findMany`.
 
 ### Auth
 **Guards:** JwtAuthGuard, RolesGuard
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard + RolesGuard.
+
+### Source
+[apps/api/src/modules/users/users.controller.ts](apps/api/src/modules/users/users.controller.ts#L33)

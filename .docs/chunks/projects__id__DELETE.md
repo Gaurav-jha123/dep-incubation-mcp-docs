@@ -1,5 +1,5 @@
 ## DELETE /projects/:id
-**Module:** projects
+**Module:** projects | **Operation:** 🔀 mixed | **Confidence:** █████████░ 90/100
 
 ### What it does
 Delete project
@@ -12,6 +12,8 @@ Delete project
 ### Response
 Project deleted
 
+### Execution Flow
+`remove()` → `remove()` → `project.delete`, `project.findUnique`, `topic.findMany`
 ### Business Logic
 `remove()` — Calls `project.delete`, `project.findUnique`, `topic.findMany`.
 
@@ -24,4 +26,7 @@ Project deleted
 |--------|-------------|
 | 404 | Project not found |
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard + RolesGuard. Required roles: ADMIN, MANAGER.
+
+### Source
+[apps/api/src/modules/projects/projects.controller.ts](apps/api/src/modules/projects/projects.controller.ts#L90)

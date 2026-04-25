@@ -10,6 +10,15 @@ function getSingleDoc(docsDir: string, chunkId: string, index: IndexData): strin
 
   let doc = readFileSync(resolve(docsDir, 'chunks', `${chunkId}.md`), 'utf-8');
 
+  // Role-aware warning — prepend a prominent callout for role-restricted endpoints
+  if (entry.roles.length > 0) {
+    const roleList = entry.roles.map((r) => `\`${r}\``).join(', ');
+    const warning = `> 🔐 **Access restricted** — requires role: ${roleList}\n\n`;
+    if (!doc.startsWith('> 🔐')) {
+      doc = warning + doc;
+    }
+  }
+
   // Append auth context
   const authLines: string[] = [];
   if (entry.guards.length > 0) {
@@ -40,6 +49,23 @@ function getSingleDoc(docsDir: string, chunkId: string, index: IndexData): strin
 export function getDoc(docsDir: string, chunkId: string): string {
   const raw = readFileSync(resolve(docsDir, 'index.json'), 'utf-8');
   const index = JSON.parse(raw) as IndexData;
+
+  // Support "METHOD /path" lookup — e.g. "GET /projects/:id"
+  // Normalised: uppercase method + exact path match
+  const methodPathMatch = chunkId.match(/^(GET|POST|PUT|PATCH|DELETE)\s+(\S+)$/i);
+  if (methodPathMatch) {
+    const targetMethod = methodPathMatch[1].toUpperCase();
+    const targetPath = methodPathMatch[2];
+    const found = Object.values(index.chunks).find(
+      (c) => c.method === targetMethod && c.path === targetPath,
+    );
+    if (!found) {
+      throw new Error(
+        `No endpoint found for ${targetMethod} ${targetPath}. Try list_modules or search_docs to find the right chunk.`,
+      );
+    }
+    return getSingleDoc(docsDir, found.chunkId, index);
+  }
 
   // Module-level summary: chunkId is a plain module name (no __ separator)
   const isModuleName = !chunkId.includes('__');

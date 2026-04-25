@@ -1,5 +1,5 @@
 ## POST /auth/logout
-**Module:** auth
+**Module:** auth | **Operation:** ❓ unknown | **Confidence:** █████░░░░░ 50/100
 
 ### What it does
 Logout current user
@@ -11,7 +11,6 @@ Logout current user
 
 ### Response
 Logged out successfully
-
 ### Business Logic
 No service methods inferred.
 
@@ -23,4 +22,7 @@ No service methods inferred.
 |--------|-------------|
 | 401 | Unauthorized |
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard.
+
+### Source
+[apps/api/src/modules/auth/auth.controller.ts](apps/api/src/modules/auth/auth.controller.ts#L64)

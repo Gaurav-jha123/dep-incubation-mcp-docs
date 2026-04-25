@@ -12,11 +12,20 @@ export type ServiceMethodMeta = {
   methodName: string;
   prismaCalls: string[]; // e.g. ["project.findMany", "topic.findMany"]
   throws: string[];     // e.g. ["NotFoundException", "ConflictException"]
+  hasTransaction: boolean; // true if service method body calls this.prisma.$transaction
 };
 
 export type ApiResponseMeta = {
   status: number;
   description: string;
+};
+
+export type DtoFieldMeta = {
+  name: string;
+  type: string;
+  optional: boolean;
+  validators: string[];  // e.g. ["IsString", "MinLength(1)"]
+  example: string | null;
 };
 
 export type EndpointMeta = {
@@ -35,6 +44,12 @@ export type EndpointMeta = {
   roles: string[];   // e.g. ["ADMIN", "MANAGER"]
   apiSummary: string | null;    // from @ApiOperation({ summary })
   apiResponses: ApiResponseMeta[];  // from @ApiResponse decorators
+  handlerLine: number;             // line number of the handler in the controller file
+  dtoFields: Record<string, DtoFieldMeta[]>; // keyed by DTO class name
+  operationType: 'read' | 'write' | 'mixed' | 'unknown';
+  confidenceScore: number;         // 0–100, deterministic (not LLM-judged)
+  executionFlow: string;           // pre-rendered call chain: handler → service → prisma
+  consistencyRisk: 'none' | 'low' | 'high'; // non-atomic write detection
 };
 
 export type ChunkEntry = {
@@ -49,12 +64,15 @@ export type ChunkEntry = {
   guards: string[];
   roles: string[];
   relatedChunks: string[];
+  handlerLine: number;
+  commitSha: string;
 };
 
 export type IndexData = {
   lastIndexed: string;
   chunks: Record<string, ChunkEntry>;
   fileMap: Record<string, string[]>;
+  modelMap: Record<string, string[]>; // Prisma model name → chunkIds that access it
 };
 
 // ---------------------------------------------------------------------------
@@ -336,7 +354,8 @@ function buildServiceMethodMap(
           if (!throws.includes(match[1])) throws.push(match[1]);
         }
 
-        methodMap.set(methodName, { methodName, prismaCalls, throws });
+        const hasTransaction = bodyText.includes('this.prisma.$transaction');
+        methodMap.set(methodName, { methodName, prismaCalls, throws, hasTransaction });
       }
 
       result.set(className, methodMap);
@@ -391,6 +410,233 @@ function traceHandlerServiceCalls(
   }
 
   return called;
+}
+
+/**
+ * Classify whether the endpoint performs read, write, or mixed DB operations
+ * based on Prisma call names across all traced service methods.
+ *
+ * Read operations:  findMany, findFirst, findUnique, findUniqueOrThrow, count, aggregate, groupBy
+ * Write operations: create, createMany, update, updateMany, upsert, delete, deleteMany
+ */
+export function classifyOperationType(
+  serviceMethods: ServiceMethodMeta[],
+): EndpointMeta['operationType'] {
+  const READ_OPS = new Set([
+    'findMany', 'findFirst', 'findUnique', 'findUniqueOrThrow',
+    'findFirstOrThrow', 'count', 'aggregate', 'groupBy',
+  ]);
+  const WRITE_OPS = new Set([
+    'create', 'createMany', 'update', 'updateMany', 'upsert',
+    'delete', 'deleteMany',
+  ]);
+
+  let hasRead = false;
+  let hasWrite = false;
+
+  for (const sm of serviceMethods) {
+    for (const call of sm.prismaCalls) {
+      const op = call.split('.')[1]; // e.g. "project.findMany" → "findMany"
+      if (op && READ_OPS.has(op)) hasRead = true;
+      if (op && WRITE_OPS.has(op)) hasWrite = true;
+    }
+  }
+
+  if (hasRead && hasWrite) return 'mixed';
+  if (hasRead) return 'read';
+  if (hasWrite) return 'write';
+  return 'unknown';
+}
+
+/**
+ * Compute a deterministic confidence score 0–100 based on metadata completeness.
+ * Higher score = more metadata available = more trustworthy doc.
+ *
+ * Scoring rubric:
+ *  +20  has apiSummary (from @ApiOperation)
+ *  +20  has ≥1 apiResponse
+ *  +20  has ≥1 serviceMethod with Prisma calls
+ *  +20  has params (body/param/query declared)
+ *  +10  guards are declared (auth is explicit)
+ *  +10  dtoFields has ≥1 entry (body shape is known)
+ */
+export type ConfidenceInput = Pick<
+  EndpointMeta,
+  'apiSummary' | 'apiResponses' | 'serviceMethods' | 'params' | 'guards' | 'dtoFields'
+>;
+
+export function computeConfidenceScore(meta: ConfidenceInput): number {
+  let score = 0;
+  if (meta.apiSummary) score += 20;
+  if (meta.apiResponses.length > 0) score += 20;
+  if (meta.serviceMethods.some((sm) => sm.prismaCalls.length > 0)) score += 20;
+  if (meta.params.length > 0) score += 20;
+  if (meta.guards.length > 0) score += 10;
+  if (Object.keys(meta.dtoFields).length > 0) score += 10;
+  return score;
+}
+
+/**
+ * Detect non-atomic write risk across service methods.
+ *
+ * 'none'  — 0 or 1 write op total, or all multi-write methods use $transaction
+ * 'low'   — multiple writes in a single service method without $transaction
+ * 'high'  — writes spread across multiple service method calls without $transaction
+ */
+const WRITE_OPS_SET = new Set([
+  'create', 'createMany', 'update', 'updateMany', 'upsert', 'delete', 'deleteMany',
+]);
+
+export function computeConsistencyRisk(
+  serviceMethods: ServiceMethodMeta[],
+): 'none' | 'low' | 'high' {
+  const writingMethods = serviceMethods.filter((sm) =>
+    sm.prismaCalls.some((c) => WRITE_OPS_SET.has(c.split('.')[1] ?? '')),
+  );
+
+  const totalWrites = writingMethods.reduce(
+    (sum, sm) => sum + sm.prismaCalls.filter((c) => WRITE_OPS_SET.has(c.split('.')[1] ?? '')).length,
+    0,
+  );
+
+  if (totalWrites <= 1) return 'none';
+
+  // All writing methods are wrapped in $transaction → safe
+  if (writingMethods.every((sm) => sm.hasTransaction)) return 'none';
+
+  // Writes spread across multiple controller-level service method calls → high risk
+  if (writingMethods.length > 1) return 'high';
+
+  // Multiple writes in a single service method without $transaction → low risk
+  return 'low';
+}
+
+/**
+ * Build a text execution-flow string from handler → service method(s) → Prisma calls.
+ * Used to render `### Execution Flow` in doc chunks.
+ */
+export function buildExecutionFlow(
+  handlerName: string,
+  serviceMethods: ServiceMethodMeta[],
+): string {
+  if (serviceMethods.length === 0) return `\`${handlerName}()\` → (no service calls traced)`;
+
+  return serviceMethods
+    .map((sm) => {
+      const dbPart =
+        sm.prismaCalls.length > 0
+          ? ` → ${sm.prismaCalls.map((c) => `\`${c}\``).join(', ')}`
+          : '';
+      const txBadge = sm.hasTransaction ? ' 🔒' : '';
+      return `\`${handlerName}()\` → \`${sm.methodName}()\`${txBadge}${dbPart}`;
+    })
+    .join('\n');
+}
+
+/**
+ * Render a `### Execution Flow` markdown section from EndpointMeta.
+ * Exported for use in all doc templates.
+ */
+export function renderExecutionFlow(meta: EndpointMeta): string {
+  if (!meta.executionFlow || meta.executionFlow.includes('no service calls traced')) return '';
+  return `\n### Execution Flow\n${meta.executionFlow}\n`;
+}
+
+/**
+ * Render a `### Error Conditions` markdown section from EndpointMeta.
+ * Collects all unique thrown exceptions across all service methods.
+ */
+export function renderErrorConditions(meta: EndpointMeta): string {
+  const allThrows = meta.serviceMethods.flatMap((sm) => sm.throws);
+  const unique = [...new Set(allThrows)];
+  if (unique.length === 0) return '';
+  const rows = unique.map((e) => `| \`${e}\` |`).join('\n');
+  return `\n### Error Conditions\n| Exception |\n|-----------|\n${rows}\n`;
+}
+
+/**
+ * Extract all public properties from DTO classes in the given source files.
+ * Returns a map of DTO class name → field metadata.
+ */
+function extractDtoFields(
+  project: Project,
+  dtoFiles: string[],
+): Record<string, DtoFieldMeta[]> {
+  const result: Record<string, DtoFieldMeta[]> = {};
+
+  for (const filePath of dtoFiles) {
+    const sourceFile = project.getSourceFile(filePath);
+    if (!sourceFile) continue;
+
+    for (const classDecl of sourceFile.getClasses()) {
+      const className = classDecl.getName();
+      if (!className) continue;
+
+      const fields: DtoFieldMeta[] = [];
+
+      for (const prop of classDecl.getProperties()) {
+        const mods = prop.getModifiers().map((m) => m.getText());
+        if (mods.includes('private') || mods.includes('protected')) continue;
+
+        const name = prop.getName();
+        const type = prop.getTypeNode()?.getText() ?? 'unknown';
+        let optional = prop.hasQuestionToken();
+        const validators: string[] = [];
+        let example: string | null = null;
+
+        for (const dec of prop.getDecorators()) {
+          const decName = dec.getName();
+          if (decName === 'ApiProperty' || decName === 'ApiPropertyOptional') {
+            const args = dec.getArguments();
+            if (args[0]) {
+              const text = args[0].getText();
+              const m = text.match(/example\s*:\s*(?:'([^']*)'|"([^"]*)"|`([^`]*)`|([\w.]+))/);
+              if (m) example = m[1] ?? m[2] ?? m[3] ?? m[4] ?? null;
+            }
+          } else if (decName === 'IsOptional') {
+            optional = true;
+          } else {
+            const args = dec.getArguments();
+            const argsStr = args.length > 0 ? `(${args.map((a) => a.getText()).join(', ')})` : '';
+            validators.push(`${decName}${argsStr}`);
+          }
+        }
+
+        fields.push({ name, type, optional, validators, example });
+      }
+
+      if (fields.length > 0) result[className] = fields;
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Render a `### Request Body Fields` markdown section from EndpointMeta.
+ * Exported so indexer, updater, and template functions can use it uniformly.
+ */
+export function renderDtoFieldsSection(meta: EndpointMeta): string {
+  const bodyParams = meta.params.filter((p) => p.source === 'body');
+  const sections: string[] = [];
+
+  for (const bp of bodyParams) {
+    const fields = meta.dtoFields[bp.type];
+    if (!fields || fields.length === 0) continue;
+
+    const rows = fields
+      .map(
+        (f) =>
+          `| \`${f.name}\` | \`${f.type}\` | ${f.optional ? 'No' : 'Yes'} | ${f.example ?? '—'} |`,
+      )
+      .join('\n');
+
+    sections.push(
+      `**${bp.type}**\n| Field | Type | Required | Example |\n|-------|------|----------|---------|\n${rows}`,
+    );
+  }
+
+  return sections.length > 0 ? `\n### Request Body Fields\n${sections.join('\n\n')}\n` : '';
 }
 
 // ---------------------------------------------------------------------------
@@ -454,6 +700,7 @@ export function parseControllers(apiSrcDir: string): EndpointMeta[] {
             methodDecl.getReturnTypeNode()?.getText() ?? 'unknown';
 
           const dtoFiles = resolveDtoImports(sourceFile, paramTypes);
+          const dtoFields = extractDtoFields(project, dtoFiles);
           const serviceFiles = resolveServiceImports(sourceFile);
           const controllerPath = sourceFile.getFilePath();
           const sourceFiles = [controllerPath, ...dtoFiles, ...serviceFiles];
@@ -479,7 +726,7 @@ export function parseControllers(apiSrcDir: string): EndpointMeta[] {
           const roles = extractRoles(methodDecl);
           const { apiSummary, apiResponses } = extractSwaggerMeta(methodDecl);
 
-          results.push({
+          const partialMeta = {
             chunkId,
             module: moduleName,
             method: httpMethod,
@@ -495,6 +742,20 @@ export function parseControllers(apiSrcDir: string): EndpointMeta[] {
             roles,
             apiSummary,
             apiResponses,
+            handlerLine: methodDecl.getStartLineNumber(),
+            dtoFields,
+          };
+
+          const operationType = classifyOperationType(serviceMethods);
+          const consistencyRisk = computeConsistencyRisk(serviceMethods);
+          const executionFlow = buildExecutionFlow(partialMeta.handlerName, serviceMethods);
+
+          results.push({
+            ...partialMeta,
+            operationType,
+            confidenceScore: computeConfidenceScore(partialMeta),
+            executionFlow,
+            consistencyRisk,
           });
 
           break; // only one HTTP decorator per method

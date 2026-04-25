@@ -1,5 +1,5 @@
 {
-  "lastIndexed": "2026-04-19T04:09:18.921Z",
+  "lastIndexed": "2026-04-25T07:51:09.201Z",
   "chunks": {
     "app__root__GET": {
       "chunkId": "app__root__GET",
@@ -12,10 +12,12 @@
         "apps/api/src/app.service.ts"
       ],
       "docFile": ".docs/chunks/app__root__GET.md",
-      "lastUpdated": "2026-04-19T04:02:18.655Z",
+      "lastUpdated": "2026-04-25T07:51:09.146Z",
       "guards": [],
       "roles": [],
-      "relatedChunks": []
+      "relatedChunks": [],
+      "handlerLine": 10,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "auth__signup__POST": {
       "chunkId": "auth__signup__POST",
@@ -29,7 +31,7 @@
         "apps/api/src/modules/auth/auth.service.ts"
       ],
       "docFile": ".docs/chunks/auth__signup__POST.md",
-      "lastUpdated": "2026-04-19T04:02:33.661Z",
+      "lastUpdated": "2026-04-25T07:51:09.149Z",
       "guards": [],
       "roles": [],
       "relatedChunks": [
@@ -37,7 +39,9 @@
         "auth__logout__POST",
         "auth__me__GET",
         "auth__refresh__POST"
-      ]
+      ],
+      "handlerLine": 28,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "auth__login__POST": {
       "chunkId": "auth__login__POST",
@@ -51,7 +55,7 @@
         "apps/api/src/modules/auth/auth.service.ts"
       ],
       "docFile": ".docs/chunks/auth__login__POST.md",
-      "lastUpdated": "2026-04-19T04:02:48.665Z",
+      "lastUpdated": "2026-04-25T07:51:09.151Z",
       "guards": [],
       "roles": [],
       "relatedChunks": [
@@ -59,7 +63,9 @@
         "auth__me__GET",
         "auth__refresh__POST",
         "auth__signup__POST"
-      ]
+      ],
+      "handlerLine": 36,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "auth__refresh__POST": {
       "chunkId": "auth__refresh__POST",
@@ -73,7 +79,7 @@
         "apps/api/src/modules/auth/auth.service.ts"
       ],
       "docFile": ".docs/chunks/auth__refresh__POST.md",
-      "lastUpdated": "2026-04-19T04:03:03.669Z",
+      "lastUpdated": "2026-04-25T07:51:09.154Z",
       "guards": [],
       "roles": [],
       "relatedChunks": [
@@ -81,7 +87,9 @@
         "auth__logout__POST",
         "auth__me__GET",
         "auth__signup__POST"
-      ]
+      ],
+      "handlerLine": 45,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "auth__me__GET": {
       "chunkId": "auth__me__GET",
@@ -94,7 +102,7 @@
         "apps/api/src/modules/auth/auth.service.ts"
       ],
       "docFile": ".docs/chunks/auth__me__GET.md",
-      "lastUpdated": "2026-04-19T04:03:18.683Z",
+      "lastUpdated": "2026-04-25T07:51:09.157Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -104,7 +112,9 @@
         "auth__logout__POST",
         "auth__refresh__POST",
         "auth__signup__POST"
-      ]
+      ],
+      "handlerLine": 54,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "auth__logout__POST": {
       "chunkId": "auth__logout__POST",
@@ -117,7 +127,7 @@
         "apps/api/src/modules/auth/auth.service.ts"
       ],
       "docFile": ".docs/chunks/auth__logout__POST.md",
-      "lastUpdated": "2026-04-19T04:03:33.702Z",
+      "lastUpdated": "2026-04-25T07:51:09.158Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -127,7 +137,9 @@
         "auth__me__GET",
         "auth__refresh__POST",
         "auth__signup__POST"
-      ]
+      ],
+      "handlerLine": 64,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "projects__root__GET": {
       "chunkId": "projects__root__GET",
@@ -140,7 +152,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__root__GET.md",
-      "lastUpdated": "2026-04-19T04:03:48.711Z",
+      "lastUpdated": "2026-04-25T07:51:09.160Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -154,7 +166,9 @@
         "projects__id_assignments_userId__DELETE",
         "projects__id_assignments_userId__PATCH",
         "projects__root__POST"
-      ]
+      ],
+      "handlerLine": 40,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "projects__id__GET": {
       "chunkId": "projects__id__GET",
@@ -167,7 +181,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id__GET.md",
-      "lastUpdated": "2026-04-19T04:04:03.722Z",
+      "lastUpdated": "2026-04-25T07:51:09.162Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -181,7 +195,9 @@
         "projects__id_assignments_userId__PATCH",
         "projects__root__GET",
         "projects__root__POST"
-      ]
+      ],
+      "handlerLine": 51,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "projects__root__POST": {
       "chunkId": "projects__root__POST",
@@ -195,7 +211,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__root__POST.md",
-      "lastUpdated": "2026-04-19T04:04:18.739Z",
+      "lastUpdated": "2026-04-25T07:51:09.165Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -212,7 +228,9 @@
         "projects__id_assignments_userId__DELETE",
         "projects__id_assignments_userId__PATCH",
         "projects__root__GET"
-      ]
+      ],
+      "handlerLine": 64,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "projects__id__PATCH": {
       "chunkId": "projects__id__PATCH",
@@ -226,7 +244,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id__PATCH.md",
-      "lastUpdated": "2026-04-19T04:04:33.756Z",
+      "lastUpdated": "2026-04-25T07:51:09.167Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -243,7 +261,9 @@
         "projects__id_assignments_userId__PATCH",
         "projects__root__GET",
         "projects__root__POST"
-      ]
+      ],
+      "handlerLine": 76,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "projects__id__DELETE": {
       "chunkId": "projects__id__DELETE",
@@ -256,7 +276,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id__DELETE.md",
-      "lastUpdated": "2026-04-19T04:04:48.768Z",
+      "lastUpdated": "2026-04-25T07:51:09.169Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -273,7 +293,9 @@
         "projects__id_assignments_userId__PATCH",
         "projects__root__GET",
         "projects__root__POST"
-      ]
+      ],
+      "handlerLine": 90,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "projects__id_assignments__POST": {
       "chunkId": "projects__id_assignments__POST",
@@ -287,7 +309,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id_assignments__POST.md",
-      "lastUpdated": "2026-04-19T04:05:03.784Z",
+      "lastUpdated": "2026-04-25T07:51:09.171Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -304,7 +326,9 @@
         "projects__id_assignments_userId__PATCH",
         "projects__root__GET",
         "projects__root__POST"
-      ]
+      ],
+      "handlerLine": 100,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "projects__id_assignments_userId__DELETE": {
       "chunkId": "projects__id_assignments_userId__DELETE",
@@ -317,7 +341,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id_assignments_userId__DELETE.md",
-      "lastUpdated": "2026-04-19T04:05:18.801Z",
+      "lastUpdated": "2026-04-25T07:51:09.172Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -334,7 +358,9 @@
         "projects__id_assignments_userId__PATCH",
         "projects__root__GET",
         "projects__root__POST"
-      ]
+      ],
+      "handlerLine": 117,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "projects__id_assignments_userId__PATCH": {
       "chunkId": "projects__id_assignments_userId__PATCH",
@@ -348,7 +374,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id_assignments_userId__PATCH.md",
-      "lastUpdated": "2026-04-19T04:05:33.812Z",
+      "lastUpdated": "2026-04-25T07:51:09.174Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -362,7 +388,9 @@
         "projects__id_assignments_userId__DELETE",
         "projects__root__GET",
         "projects__root__POST"
-      ]
+      ],
+      "handlerLine": 135,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "skill-matrix__root__GET": {
       "chunkId": "skill-matrix__root__GET",
@@ -376,7 +404,7 @@
         "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
       ],
       "docFile": ".docs/chunks/skill-matrix__root__GET.md",
-      "lastUpdated": "2026-04-19T04:05:48.814Z",
+      "lastUpdated": "2026-04-25T07:51:09.176Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -386,7 +414,9 @@
         "skill-matrix__id__GET",
         "skill-matrix__id__PATCH",
         "skill-matrix__root__POST"
-      ]
+      ],
+      "handlerLine": 34,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "skill-matrix__id__GET": {
       "chunkId": "skill-matrix__id__GET",
@@ -399,7 +429,7 @@
         "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
       ],
       "docFile": ".docs/chunks/skill-matrix__id__GET.md",
-      "lastUpdated": "2026-04-19T04:06:03.821Z",
+      "lastUpdated": "2026-04-25T07:51:09.178Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -409,7 +439,9 @@
         "skill-matrix__id__PATCH",
         "skill-matrix__root__GET",
         "skill-matrix__root__POST"
-      ]
+      ],
+      "handlerLine": 45,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "skill-matrix__root__POST": {
       "chunkId": "skill-matrix__root__POST",
@@ -423,7 +455,7 @@
         "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
       ],
       "docFile": ".docs/chunks/skill-matrix__root__POST.md",
-      "lastUpdated": "2026-04-19T04:06:18.828Z",
+      "lastUpdated": "2026-04-25T07:51:09.179Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -433,7 +465,9 @@
         "skill-matrix__id__GET",
         "skill-matrix__id__PATCH",
         "skill-matrix__root__GET"
-      ]
+      ],
+      "handlerLine": 54,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "skill-matrix__id__PATCH": {
       "chunkId": "skill-matrix__id__PATCH",
@@ -447,7 +481,7 @@
         "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
       ],
       "docFile": ".docs/chunks/skill-matrix__id__PATCH.md",
-      "lastUpdated": "2026-04-19T04:06:33.840Z",
+      "lastUpdated": "2026-04-25T07:51:09.181Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -457,7 +491,9 @@
         "skill-matrix__id__GET",
         "skill-matrix__root__GET",
         "skill-matrix__root__POST"
-      ]
+      ],
+      "handlerLine": 69,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "skill-matrix__id__DELETE": {
       "chunkId": "skill-matrix__id__DELETE",
@@ -470,7 +506,7 @@
         "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
       ],
       "docFile": ".docs/chunks/skill-matrix__id__DELETE.md",
-      "lastUpdated": "2026-04-19T04:06:48.851Z",
+      "lastUpdated": "2026-04-25T07:51:09.183Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -480,7 +516,9 @@
         "skill-matrix__id__PATCH",
         "skill-matrix__root__GET",
         "skill-matrix__root__POST"
-      ]
+      ],
+      "handlerLine": 87,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "sub-topics__root__POST": {
       "chunkId": "sub-topics__root__POST",
@@ -494,7 +532,7 @@
         "apps/api/src/modules/sub-topics/sub-topics.service.ts"
       ],
       "docFile": ".docs/chunks/sub-topics__root__POST.md",
-      "lastUpdated": "2026-04-19T04:07:03.859Z",
+      "lastUpdated": "2026-04-25T07:51:09.185Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -502,7 +540,9 @@
       "roles": [
         "ADMIN"
       ],
-      "relatedChunks": []
+      "relatedChunks": [],
+      "handlerLine": 21,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "topics__root__GET": {
       "chunkId": "topics__root__GET",
@@ -516,7 +556,7 @@
         "apps/api/src/modules/topics/topic.service.ts"
       ],
       "docFile": ".docs/chunks/topics__root__GET.md",
-      "lastUpdated": "2026-04-19T04:07:18.864Z",
+      "lastUpdated": "2026-04-25T07:51:09.186Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -527,7 +567,9 @@
         "topics__id__GET",
         "topics__id__PATCH",
         "topics__root__POST"
-      ]
+      ],
+      "handlerLine": 35,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "topics__id__GET": {
       "chunkId": "topics__id__GET",
@@ -540,7 +582,7 @@
         "apps/api/src/modules/topics/topic.service.ts"
       ],
       "docFile": ".docs/chunks/topics__id__GET.md",
-      "lastUpdated": "2026-04-19T04:07:33.870Z",
+      "lastUpdated": "2026-04-25T07:51:09.188Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -551,7 +593,9 @@
         "topics__id__PATCH",
         "topics__root__GET",
         "topics__root__POST"
-      ]
+      ],
+      "handlerLine": 42,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "topics__root__POST": {
       "chunkId": "topics__root__POST",
@@ -565,7 +609,7 @@
         "apps/api/src/modules/topics/topic.service.ts"
       ],
       "docFile": ".docs/chunks/topics__root__POST.md",
-      "lastUpdated": "2026-04-19T04:07:48.875Z",
+      "lastUpdated": "2026-04-25T07:51:09.190Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -578,7 +622,9 @@
         "topics__id__GET",
         "topics__id__PATCH",
         "topics__root__GET"
-      ]
+      ],
+      "handlerLine": 51,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "topics__id__PATCH": {
       "chunkId": "topics__id__PATCH",
@@ -592,7 +638,7 @@
         "apps/api/src/modules/topics/topic.service.ts"
       ],
       "docFile": ".docs/chunks/topics__id__PATCH.md",
-      "lastUpdated": "2026-04-19T04:08:03.883Z",
+      "lastUpdated": "2026-04-25T07:51:09.192Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -605,7 +651,9 @@
         "topics__id__GET",
         "topics__root__GET",
         "topics__root__POST"
-      ]
+      ],
+      "handlerLine": 59,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "topics__id__DELETE": {
       "chunkId": "topics__id__DELETE",
@@ -618,7 +666,7 @@
         "apps/api/src/modules/topics/topic.service.ts"
       ],
       "docFile": ".docs/chunks/topics__id__DELETE.md",
-      "lastUpdated": "2026-04-19T04:08:18.891Z",
+      "lastUpdated": "2026-04-25T07:51:09.193Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -631,7 +679,9 @@
         "topics__id__PATCH",
         "topics__root__GET",
         "topics__root__POST"
-      ]
+      ],
+      "handlerLine": 67,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "users__root__GET": {
       "chunkId": "users__root__GET",
@@ -644,7 +694,7 @@
         "apps/api/src/modules/users/users.service.ts"
       ],
       "docFile": ".docs/chunks/users__root__GET.md",
-      "lastUpdated": "2026-04-19T04:08:33.897Z",
+      "lastUpdated": "2026-04-25T07:51:09.195Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -654,7 +704,9 @@
         "users__id__DELETE",
         "users__id__PUT",
         "users__root__POST"
-      ]
+      ],
+      "handlerLine": 33,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "users__root__POST": {
       "chunkId": "users__root__POST",
@@ -668,7 +720,7 @@
         "apps/api/src/modules/users/users.service.ts"
       ],
       "docFile": ".docs/chunks/users__root__POST.md",
-      "lastUpdated": "2026-04-19T04:08:48.901Z",
+      "lastUpdated": "2026-04-25T07:51:09.198Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -680,7 +732,9 @@
         "users__id__DELETE",
         "users__id__PUT",
         "users__root__GET"
-      ]
+      ],
+      "handlerLine": 40,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "users__id__PUT": {
       "chunkId": "users__id__PUT",
@@ -694,7 +748,7 @@
         "apps/api/src/modules/users/users.service.ts"
       ],
       "docFile": ".docs/chunks/users__id__PUT.md",
-      "lastUpdated": "2026-04-19T04:09:03.917Z",
+      "lastUpdated": "2026-04-25T07:51:09.199Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -706,7 +760,9 @@
         "users__id__DELETE",
         "users__root__GET",
         "users__root__POST"
-      ]
+      ],
+      "handlerLine": 52,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     },
     "users__id__DELETE": {
       "chunkId": "users__id__DELETE",
@@ -719,7 +775,7 @@
         "apps/api/src/modules/users/users.service.ts"
       ],
       "docFile": ".docs/chunks/users__id__DELETE.md",
-      "lastUpdated": "2026-04-19T04:09:18.921Z",
+      "lastUpdated": "2026-04-25T07:51:09.201Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -731,7 +787,9 @@
         "users__id__PUT",
         "users__root__GET",
         "users__root__POST"
-      ]
+      ],
+      "handlerLine": 66,
+      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
     }
   },
   "fileMap": {
@@ -868,6 +926,58 @@
     ],
     "apps/api/src/modules/users/dto/update-user.dto.ts": [
       "users__id__PUT"
+    ]
+  },
+  "modelMap": {
+    "User": [
+      "auth__signup__POST",
+      "auth__login__POST",
+      "auth__me__GET",
+      "users__root__GET",
+      "users__root__POST",
+      "users__id__PUT",
+      "users__id__DELETE"
+    ],
+    "Project": [
+      "projects__root__GET",
+      "projects__id__GET",
+      "projects__root__POST",
+      "projects__id__PATCH",
+      "projects__id__DELETE",
+      "projects__id_assignments__POST",
+      "projects__id_assignments_userId__DELETE",
+      "projects__id_assignments_userId__PATCH"
+    ],
+    "Topic": [
+      "projects__root__GET",
+      "projects__id__GET",
+      "projects__root__POST",
+      "projects__id__PATCH",
+      "projects__id__DELETE",
+      "projects__id_assignments__POST",
+      "projects__id_assignments_userId__DELETE",
+      "projects__id_assignments_userId__PATCH",
+      "topics__root__GET",
+      "topics__id__GET",
+      "topics__root__POST",
+      "topics__id__PATCH",
+      "topics__id__DELETE"
+    ],
+    "ProjectAssignment": [
+      "projects__root__POST",
+      "projects__id_assignments__POST",
+      "projects__id_assignments_userId__DELETE",
+      "projects__id_assignments_userId__PATCH"
+    ],
+    "SkillMatrix": [
+      "skill-matrix__root__GET",
+      "skill-matrix__id__GET",
+      "skill-matrix__root__POST",
+      "skill-matrix__id__PATCH",
+      "skill-matrix__id__DELETE"
+    ],
+    "SubTopic": [
+      "sub-topics__root__POST"
     ]
   }
 }

@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { IndexData } from '../types.js';
 
@@ -104,18 +104,30 @@ function computeIdf(corpus: ChunkCorpusEntry[], token: string): number {
 }
 
 // ---------------------------------------------------------------------------
-// Public API
+// Module-level corpus cache — rebuilt only when index.json mtime changes.
+// This avoids re-reading 30+ files on every search_docs call.
 // ---------------------------------------------------------------------------
 
-export function searchDocs(docsDir: string, query: string): SearchResult[] {
-  const raw = readFileSync(resolve(docsDir, 'index.json'), 'utf-8');
+type CorpusCache = {
+  mtime: number;
+  docsDir: string;
+  corpus: ChunkCorpusEntry[];
+};
+
+let _cache: CorpusCache | null = null;
+
+function getCorpus(docsDir: string): ChunkCorpusEntry[] {
+  const indexPath = resolve(docsDir, 'index.json');
+  const mtime = statSync(indexPath).mtimeMs;
+
+  if (_cache && _cache.docsDir === docsDir && _cache.mtime === mtime) {
+    return _cache.corpus;
+  }
+
+  const raw = readFileSync(indexPath, 'utf-8');
   const index = JSON.parse(raw) as IndexData;
 
-  const rawTokens = tokenize(query);
-  const queryTokens = expandTokens(rawTokens);
-
   const corpus: ChunkCorpusEntry[] = Object.values(index.chunks).map((entry) => {
-    // Fix 2: load doc content for each chunk so body text is searchable
     let docContent = '';
     try {
       docContent = readFileSync(resolve(docsDir, 'chunks', `${entry.chunkId}.md`), 'utf-8');
@@ -130,6 +142,20 @@ export function searchDocs(docsDir: string, query: string): SearchResult[] {
       tf: buildTf(entry, docContent),
     };
   });
+
+  _cache = { mtime, docsDir, corpus };
+  return corpus;
+}
+
+// ---------------------------------------------------------------------------
+// Public API
+// ---------------------------------------------------------------------------
+
+export function searchDocs(docsDir: string, query: string): SearchResult[] {
+  const corpus = getCorpus(docsDir);
+
+  const rawTokens = tokenize(query);
+  const queryTokens = expandTokens(rawTokens);
 
   // Pre-compute IDF for each query token
   const idfCache = new Map<string, number>();

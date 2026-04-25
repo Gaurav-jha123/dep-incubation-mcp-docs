@@ -1,5 +1,5 @@
 ## DELETE /projects/:id/assignments/:userId
-**Module:** projects
+**Module:** projects | **Operation:** 🔀 mixed | **Confidence:** █████████░ 90/100
 
 ### What it does
 Remove a user from a project
@@ -13,6 +13,8 @@ Remove a user from a project
 ### Response
 User removed
 
+### Execution Flow
+`removeUser()` → `removeUser()` → `projectAssignment.delete`, `project.findUnique`, `topic.findMany`
 ### Business Logic
 `removeUser()` — Calls `projectAssignment.delete`, `project.findUnique`, `topic.findMany`.
 
@@ -25,4 +27,7 @@ User removed
 |--------|-------------|
 | 404 | Project not found |
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard + RolesGuard. Required roles: ADMIN, MANAGER.
+
+### Source
+[apps/api/src/modules/projects/projects.controller.ts](apps/api/src/modules/projects/projects.controller.ts#L117)

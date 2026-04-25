@@ -1,5 +1,5 @@
 ## GET /auth/me
-**Module:** auth
+**Module:** auth | **Operation:** 📖 read | **Confidence:** ███████░░░ 70/100
 
 ### What it does
 Get current user profile
@@ -12,6 +12,13 @@ Get current user profile
 ### Response
 User profile
 
+### Execution Flow
+`getProfile()` → `getProfile()` → `user.findUnique`
+
+### Error Conditions
+| Exception |
+|-----------|
+| `UnauthorizedException` |
 ### Business Logic
 `getProfile()` — Calls `user.findUnique`. May throw: UnauthorizedException.
 
@@ -23,4 +30,7 @@ User profile
 |--------|-------------|
 | 401 | Unauthorized |
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard.
+
+### Source
+[apps/api/src/modules/auth/auth.controller.ts](apps/api/src/modules/auth/auth.controller.ts#L54)

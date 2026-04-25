@@ -1,5 +1,5 @@
 ## GET /
-**Module:** app
+**Module:** app | **Operation:** ❓ unknown | **Confidence:** ██░░░░░░░░ 20/100
 
 ### What it does
 Health check
@@ -12,7 +12,12 @@ Health check
 ### Response
 `string`
 
+### Execution Flow
+`getHello()` → `getHello()`
 ### Business Logic
 `getHello()` — No direct DB calls.
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+No authentication required (public endpoint).
+
+### Source
+[apps/api/src/app.controller.ts](apps/api/src/app.controller.ts#L10)

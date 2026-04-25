@@ -7,7 +7,8 @@
     "index": "node --env-file=.env --import tsx/esm src/indexer.ts",
     "update": "node --env-file=.env --import tsx/esm src/updater.ts",
     "preview": "node --env-file=.env --import tsx/esm src/preview.ts",
-    "mintlify-sync": "node --import tsx/esm src/mintlify-sync.ts"
+    "mintlify-sync": "node --import tsx/esm src/mintlify-sync.ts",
+    "test": "node --import tsx/esm --test src/**/*.test.ts"
   },
   "dependencies": {
     "simple-git": "^3.36.0",

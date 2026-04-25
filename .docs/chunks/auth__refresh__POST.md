@@ -1,5 +1,5 @@
 ## POST /auth/refresh
-**Module:** auth
+**Module:** auth | **Operation:** ❓ unknown | **Confidence:** ███████░░░ 70/100
 
 ### What it does
 Refresh access token
@@ -9,9 +9,22 @@ Refresh access token
 |-------|------|--------|
 | `dto` | `RefreshTokenDto` | body |
 
+### Request Body Fields
+**RefreshTokenDto**
+| Field | Type | Required | Example |
+|-------|------|----------|---------|
+| `refreshToken` | `string` | Yes | eyJhbGciOiJIUzI1NiIs... |
+
 ### Response
 Token refreshed
 
+### Execution Flow
+`refresh()` → `refreshToken()`
+
+### Error Conditions
+| Exception |
+|-----------|
+| `UnauthorizedException` |
 ### Business Logic
 `refreshToken()` — No direct DB calls. May throw: UnauthorizedException.
 
@@ -20,4 +33,7 @@ Token refreshed
 |--------|-------------|
 | 401 | Invalid refresh token |
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+No authentication required (public endpoint).
+
+### Source
+[apps/api/src/modules/auth/auth.controller.ts](apps/api/src/modules/auth/auth.controller.ts#L45)

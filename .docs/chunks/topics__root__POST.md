@@ -1,5 +1,5 @@
 ## POST /topics
-**Module:** topics
+**Module:** topics | **Operation:** ✏️ write | **Confidence:** ██████████ 100/100
 
 ### What it does
 Create topic
@@ -9,9 +9,18 @@ Create topic
 |-------|------|--------|
 | `dto` | `CreateTopicDto` | body |
 
+### Request Body Fields
+**CreateTopicDto**
+| Field | Type | Required | Example |
+|-------|------|----------|---------|
+| `label` | `string` | Yes | — |
+| `description` | `string` | No | — |
+
 ### Response
 Topic created
 
+### Execution Flow
+`create()` → `create()` → `topic.create`
 ### Business Logic
 `create()` — Calls `topic.create`.
 
@@ -19,4 +28,7 @@ Topic created
 **Guards:** JwtAuthGuard, RolesGuard
 **Required roles:** ADMIN
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard + RolesGuard. Required roles: ADMIN.
+
+### Source
+[apps/api/src/modules/topics/topic.controller.ts](apps/api/src/modules/topics/topic.controller.ts#L51)

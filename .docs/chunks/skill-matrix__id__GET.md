@@ -1,5 +1,5 @@
 ## GET /skill-matrix/:id
-**Module:** skill-matrix
+**Module:** skill-matrix | **Operation:** 📖 read | **Confidence:** █████████░ 90/100
 
 ### What it does
 Get a skill matrix entry by ID
@@ -12,6 +12,13 @@ Get a skill matrix entry by ID
 ### Response
 Skill matrix entry found
 
+### Execution Flow
+`findOne()` → `findOne()` → `skillMatrix.findUnique`
+
+### Error Conditions
+| Exception |
+|-----------|
+| `NotFoundException` |
 ### Business Logic
 `findOne()` — Calls `skillMatrix.findUnique`. May throw: NotFoundException.
 
@@ -23,4 +30,7 @@ Skill matrix entry found
 |--------|-------------|
 | 404 | Skill matrix entry not found |
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard.
+
+### Source
+[apps/api/src/modules/skill-matrix/skill-matrix.controller.ts](apps/api/src/modules/skill-matrix/skill-matrix.controller.ts#L45)
