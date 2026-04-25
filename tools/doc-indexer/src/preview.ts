@@ -14,7 +14,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseControllers } from './parser.js';
+import { parseControllers, renderDtoFieldsSection, renderExecutionFlow, renderErrorConditions } from './parser.js';
 import type { IndexData } from './parser.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -73,8 +73,29 @@ function templateDoc(meta: ReturnType<typeof parseControllers>[number]): string 
   const successResponse = meta.apiResponses.find((r) => r.status < 400);
   const responseDesc = successResponse ? successResponse.description : `\`${meta.returnType}\``;
 
+  const notesLine = meta.guards.length > 0
+    ? `Requires ${meta.guards.join(' + ')}.${meta.roles.length > 0 ? ` Required roles: ${meta.roles.join(', ')}.` : ''}`
+    : 'No authentication required (public endpoint).';
+
+  const normalizedController = (meta.sourceFiles[0] ?? '').replace(/\\/g, '/');
+  const appsIdx = normalizedController.indexOf('apps/api/src');
+  const sourceSection = appsIdx >= 0
+    ? `\n### Source\n[${normalizedController.slice(appsIdx)}](${normalizedController.slice(appsIdx)}#L${meta.handlerLine})\n`
+    : '';
+
+  const dtoFieldsSection = renderDtoFieldsSection(meta);
+  const executionFlowSection = renderExecutionFlow(meta);
+  const errorConditionsSection = renderErrorConditions(meta);
+
+  const riskBadge = meta.consistencyRisk !== 'none'
+    ? `\n> ⚠️ **Consistency risk (${meta.consistencyRisk}):** multiple writes without \`$transaction\` detected.\n`
+    : '';
+
+  const opEmoji = { read: '📖', write: '✏️', mixed: '🔀', unknown: '❓' }[meta.operationType];
+  const confBar = '█'.repeat(Math.round(meta.confidenceScore / 10)) + '░'.repeat(10 - Math.round(meta.confidenceScore / 10));
+
   return `## ${meta.method} ${meta.path}
-**Module:** ${meta.module}
+**Module:** ${meta.module} | **Operation:** ${opEmoji} ${meta.operationType} | **Confidence:** ${confBar} ${meta.confidenceScore}/100
 
 ### What it does
 ${whatItDoes}
@@ -83,15 +104,14 @@ ${whatItDoes}
 | Param | Type | Source |
 |-------|------|--------|
 ${paramsTable}
-
+${dtoFieldsSection}
 ### Response
 ${responseDesc}
-
-### Business Logic
+${executionFlowSection}${errorConditionsSection}### Business Logic
 ${businessLogic}
-${authSection}${errorsSection}### Notes
-[Run \`pnpm --filter doc-indexer index\` to regenerate with LLM content]
-`;
+${authSection}${errorsSection}${riskBadge}### Notes
+${notesLine}
+${sourceSection}`;
 }
 
 function main(): void {

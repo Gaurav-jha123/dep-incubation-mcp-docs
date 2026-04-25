@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { resolve, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { simpleGit } from 'simple-git';
-import { parseControllers } from './parser.js';
+import { parseControllers, renderDtoFieldsSection, renderExecutionFlow, renderErrorConditions } from './parser.js';
 import type { IndexData, ChunkEntry } from './parser.js';
 import { computeFingerprint } from './utils/fingerprint.js';
 import { generateDoc } from './utils/llm.js';
@@ -57,6 +57,17 @@ function buildPrompt(meta: ReturnType<typeof parseControllers>[number]): string 
           .join('\n')
       : 'None inferred.';
 
+  const notesContext = meta.guards.length > 0
+    ? `Requires ${meta.guards.join(' + ')}.${meta.roles.length > 0 ? ` Required roles: ${meta.roles.join(', ')}.` : ''} Note any additional edge cases.`
+    : 'No authentication required (public endpoint). Note any edge cases.';
+
+  const dtoFieldsSection = renderDtoFieldsSection(meta);
+  const executionFlowSection = renderExecutionFlow(meta);
+  const errorConditionsSection = renderErrorConditions(meta);
+
+  const opEmoji = { read: '📖', write: '✏️', mixed: '🔀', unknown: '❓' }[meta.operationType];
+  const confBar = '█'.repeat(Math.round(meta.confidenceScore / 10)) + '░'.repeat(10 - Math.round(meta.confidenceScore / 10));
+
   return `You are a technical writer. Write a concise feature doc for this REST API endpoint.
 
 Endpoint metadata:
@@ -65,7 +76,7 @@ ${JSON.stringify(meta, null, 2)}
 Output ONLY this markdown, no preamble:
 
 ## ${meta.method} ${meta.path}
-**Module:** ${meta.module}
+**Module:** ${meta.module} | **Operation:** ${opEmoji} ${meta.operationType} | **Confidence:** ${confBar} ${meta.confidenceScore}/100
 
 ### What it does
 [1-2 sentence plain English description of what this endpoint does]
@@ -74,18 +85,17 @@ Output ONLY this markdown, no preamble:
 | Param | Type | Source |
 |-------|------|--------|
 ${paramsTable}
-
+${dtoFieldsSection}
 ### Response
 \`${meta.returnType}\` — [one sentence description of what is returned]
-
-### Business Logic
+${executionFlowSection}${errorConditionsSection}### Business Logic
 [2-4 sentences describing the database operations, business rules, and error handling based on the service methods below. Be specific about what Prisma operations occur and what errors can be thrown.]
 
 Service methods called:
 ${serviceMethodsSection}
 
 ### Notes
-[Auth requirements, edge cases, or notable behaviors inferred from the code. If none, write "None."]`;
+${notesContext}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -97,6 +107,7 @@ async function main(): Promise<void> {
 
   // 1. Discover which files changed in the last commit
   const git = simpleGit(REPO_ROOT);
+  const commitSha = (await git.revparse(['HEAD'])).trim();
   const diffOutput = await git.diff(['HEAD~1', 'HEAD', '--name-only']);
   const changedFiles = diffOutput
     .split('\n')
@@ -143,7 +154,17 @@ async function main(): Promise<void> {
     console.log(`  ${chunkId}: fingerprint changed — regenerating…`);
 
     const prompt = buildPrompt(fresh);
-    const doc = await generateDoc(prompt, fresh);
+    let doc = await generateDoc(prompt, fresh);
+
+    // Append deterministic source link only if template didn't already include it
+    if (!doc.includes('### Source')) {
+      const normalizedController = (fresh.sourceFiles[0] ?? '').replace(/\\/g, '/');
+      const appsIdx = normalizedController.indexOf('apps/api/src');
+      if (appsIdx >= 0) {
+        const relPath = normalizedController.slice(appsIdx);
+        doc += `\n### Source\n[${relPath}](${relPath}#L${fresh.handlerLine})\n`;
+      }
+    }
 
     const chunkPath = resolve(CHUNKS_DIR, `${chunkId}.md`);
     writeFileSync(chunkPath, doc, 'utf-8');
@@ -160,6 +181,8 @@ async function main(): Promise<void> {
       guards: fresh.guards,
       roles: fresh.roles,
       relatedChunks: [], // recomputed below after all chunks are updated
+      handlerLine: fresh.handlerLine,
+      commitSha,
     };
 
     index.chunks[chunkId] = entry;

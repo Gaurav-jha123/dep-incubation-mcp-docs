@@ -3,6 +3,9 @@ import { fileURLToPath } from 'node:url';
 import { listModules } from './tools/list-modules.js';
 import { getDoc } from './tools/get-doc.js';
 import { searchDocs } from './tools/search-docs.js';
+import { getSchema } from './tools/get-schema.js';
+import { getImpact } from './tools/get-impact.js';
+import { reportIssue } from './tools/report-issue.js';
 
 // ---------------------------------------------------------------------------
 // Resolve .docs directory
@@ -34,15 +37,17 @@ export const TOOLS_SCHEMA = [
   {
     name: 'get_doc',
     description:
-      'Get the full markdown doc for a specific endpoint chunk, or all endpoints in a module at once. ' +
-      'Pass a chunkId (e.g. "projects__id__GET") for a single endpoint, or a module name (e.g. "projects") to get all endpoints in that module concatenated.',
+      'Get the full markdown doc for a specific endpoint. ' +
+      'Accepts: (1) a chunkId like "projects__id__GET", ' +
+      '(2) a module name like "projects" to get all endpoints in that module, or ' +
+      '(3) "METHOD /path" like "GET /projects/:id" for direct lookup.',
     inputSchema: {
       type: 'object',
       properties: {
         chunkId: {
           type: 'string',
           description:
-            'A chunk ID (e.g. "projects__id__GET") or a module name (e.g. "projects") to fetch all endpoints in that module.',
+            'A chunkId (e.g. "projects__id__GET"), a module name (e.g. "projects"), or "METHOD /path" (e.g. "GET /projects/:id").',
         },
       },
       required: ['chunkId'],
@@ -61,6 +66,62 @@ export const TOOLS_SCHEMA = [
         },
       },
       required: ['query'],
+    },
+  },
+  {
+    name: 'get_schema',
+    description:
+      'Get the Prisma model or enum definition as a markdown doc. ' +
+      'Pass a model/enum name (e.g. "Project", "ProjectType") to get its fields and relations. ' +
+      'Omit the name to list all available models and enums.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string',
+          description: 'Model or enum name (e.g. "Project", "Role"). Omit to list all.',
+        },
+      },
+      required: [],
+    },
+  },
+  {
+    name: 'get_impact',
+    description:
+      'List all endpoints that access a given Prisma model. ' +
+      'Pass a model name (e.g. "Project") to see which endpoints read or write to it. ' +
+      'Omit the name to list all tracked models with endpoint counts. ' +
+      'Useful for impact analysis before changing a schema model.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        model: {
+          type: 'string',
+          description: 'Prisma model name (e.g. "Project"). Omit to list all models.',
+        },
+      },
+      required: [],
+    },
+  },
+  {
+    name: 'report_issue',
+    description:
+      'Report an inaccuracy or missing information in a doc chunk. ' +
+      'Feedback is stored server-side for maintainers to review. ' +
+      'Provide the chunkId (e.g. "projects__id__GET") and a short issue description.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        chunkId: {
+          type: 'string',
+          description: 'The chunk ID to report an issue for.',
+        },
+        issue: {
+          type: 'string',
+          description: 'A short description of the inaccuracy or gap.',
+        },
+      },
+      required: ['chunkId', 'issue'],
     },
   },
 ] as const;
@@ -133,6 +194,16 @@ export async function handleRpc(
             null,
             2,
           );
+        } else if (name === 'get_schema') {
+          text = getSchema(DOCS_DIR, args['name'] as string | undefined);
+        } else if (name === 'get_impact') {
+          text = getImpact(DOCS_DIR, args['model'] as string | undefined);
+        } else if (name === 'report_issue') {
+          text = reportIssue(
+            DOCS_DIR,
+            args['chunkId'] as string,
+            args['issue'] as string,
+          );
         } else {
           throw new Error(`Unknown tool: ${name}`);
         }
@@ -182,6 +253,28 @@ if (isMainModule) {
       res.writeHead(405, { 'Content-Type': 'text/plain' });
       res.end('Method Not Allowed');
       return;
+    }
+
+    // API key auth — check MCP_API_KEY env var if set
+    const requiredKey = process.env.MCP_API_KEY;
+    if (requiredKey) {
+      const authHeader = (req.headers['authorization'] as string | undefined) ?? '';
+      const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+      let diff = token.length !== requiredKey.length ? 1 : 0;
+      for (let i = 0; i < Math.min(token.length, requiredKey.length); i++) {
+        diff |= token.charCodeAt(i) ^ requiredKey.charCodeAt(i);
+      }
+      if (diff !== 0) {
+        res.writeHead(401, { 'Content-Type': 'application/json' });
+        res.end(
+          JSON.stringify({
+            jsonrpc: '2.0',
+            id: null,
+            error: { code: -32600, message: 'Unauthorized' },
+          }),
+        );
+        return;
+      }
     }
 
     const chunks: Buffer[] = [];

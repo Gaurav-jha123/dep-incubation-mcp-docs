@@ -1,5 +1,5 @@
 ## PATCH /projects/:id
-**Module:** projects
+**Module:** projects | **Operation:** 🔀 mixed | **Confidence:** █████████░ 90/100
 
 ### What it does
 Update project
@@ -13,6 +13,8 @@ Update project
 ### Response
 Project updated
 
+### Execution Flow
+`update()` → `update()` → `project.update`, `project.findUnique`, `topic.findMany`
 ### Business Logic
 `update()` — Calls `project.update`, `project.findUnique`, `topic.findMany`.
 
@@ -25,4 +27,7 @@ Project updated
 |--------|-------------|
 | 404 | Project not found |
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard + RolesGuard. Required roles: ADMIN, MANAGER.
+
+### Source
+[apps/api/src/modules/projects/projects.controller.ts](apps/api/src/modules/projects/projects.controller.ts#L76)

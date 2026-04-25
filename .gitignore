@@ -50,3 +50,4 @@ CLAUDE.md
 Agents.md
 CLAUDE.md
 .mcp.json
+.env*.local

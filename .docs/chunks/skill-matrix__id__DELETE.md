@@ -1,5 +1,5 @@
 ## DELETE /skill-matrix/:id
-**Module:** skill-matrix
+**Module:** skill-matrix | **Operation:** 🔀 mixed | **Confidence:** █████████░ 90/100
 
 ### What it does
 Delete a skill matrix entry
@@ -12,6 +12,13 @@ Delete a skill matrix entry
 ### Response
 Skill matrix entry deleted successfully
 
+### Execution Flow
+`remove()` → `remove()` → `skillMatrix.delete`, `skillMatrix.findUnique`
+
+### Error Conditions
+| Exception |
+|-----------|
+| `ForbiddenException` |
 ### Business Logic
 `remove()` — Calls `skillMatrix.delete`, `skillMatrix.findUnique`. May throw: ForbiddenException.
 
@@ -25,4 +32,7 @@ Skill matrix entry deleted successfully
 | 403 | Forbidden — not your entry |
 | 404 | Skill matrix entry not found |
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard.
+
+### Source
+[apps/api/src/modules/skill-matrix/skill-matrix.controller.ts](apps/api/src/modules/skill-matrix/skill-matrix.controller.ts#L87)

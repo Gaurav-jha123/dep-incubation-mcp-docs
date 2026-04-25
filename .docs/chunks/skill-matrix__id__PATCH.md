@@ -1,5 +1,5 @@
 ## PATCH /skill-matrix/:id
-**Module:** skill-matrix
+**Module:** skill-matrix | **Operation:** 🔀 mixed | **Confidence:** ██████████ 100/100
 
 ### What it does
 Update a skill matrix entry
@@ -10,9 +10,23 @@ Update a skill matrix entry
 | `id` | `number` | param |
 | `dto` | `UpdateSkillMatrixDto` | body |
 
+### Request Body Fields
+**UpdateSkillMatrixDto**
+| Field | Type | Required | Example |
+|-------|------|----------|---------|
+| `topicId` | `number` | No | 1 |
+| `value` | `number` | No | 85 |
+
 ### Response
 Skill matrix entry updated successfully
 
+### Execution Flow
+`update()` → `update()` → `skillMatrix.update`, `skillMatrix.findUnique`
+
+### Error Conditions
+| Exception |
+|-----------|
+| `ForbiddenException` |
 ### Business Logic
 `update()` — Calls `skillMatrix.update`, `skillMatrix.findUnique`. May throw: ForbiddenException.
 
@@ -26,4 +40,7 @@ Skill matrix entry updated successfully
 | 403 | Forbidden — not your entry |
 | 404 | Skill matrix entry not found |
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard.
+
+### Source
+[apps/api/src/modules/skill-matrix/skill-matrix.controller.ts](apps/api/src/modules/skill-matrix/skill-matrix.controller.ts#L69)

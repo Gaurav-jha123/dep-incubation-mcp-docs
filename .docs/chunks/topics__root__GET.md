@@ -1,5 +1,5 @@
 ## GET /topics
-**Module:** topics
+**Module:** topics | **Operation:** 📖 read | **Confidence:** ██████████ 100/100
 
 ### What it does
 Get all topics
@@ -12,10 +12,15 @@ Get all topics
 ### Response
 List of topics
 
+### Execution Flow
+`findAll()` → `findAll()` → `topic.findMany`, `topic.count`
 ### Business Logic
 `findAll()` — Calls `topic.findMany`, `topic.count`.
 
 ### Auth
 **Guards:** JwtAuthGuard, RolesGuard
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard + RolesGuard.
+
+### Source
+[apps/api/src/modules/topics/topic.controller.ts](apps/api/src/modules/topics/topic.controller.ts#L35)

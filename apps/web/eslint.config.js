@@ -9,7 +9,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 
-export default defineConfig([globalIgnores(['dist']), jsxA11y.flatConfigs.recommended, {
+export default defineConfig([globalIgnores(['dist', 'storybook-static', 'build']), jsxA11y.flatConfigs.recommended, {
   files: ['**/*.{ts,tsx}'],
    ignores: [
       "storybook-static/**",

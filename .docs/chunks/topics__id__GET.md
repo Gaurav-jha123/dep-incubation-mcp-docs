@@ -1,5 +1,5 @@
 ## GET /topics/:id
-**Module:** topics
+**Module:** topics | **Operation:** 📖 read | **Confidence:** █████████░ 90/100
 
 ### What it does
 Get topic by ID
@@ -12,6 +12,13 @@ Get topic by ID
 ### Response
 Topic found
 
+### Execution Flow
+`findOne()` → `findOne()` → `topic.findUnique`
+
+### Error Conditions
+| Exception |
+|-----------|
+| `NotFoundException` |
 ### Business Logic
 `findOne()` — Calls `topic.findUnique`. May throw: NotFoundException.
 
@@ -23,4 +30,7 @@ Topic found
 |--------|-------------|
 | 404 | Topic not found |
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard + RolesGuard.
+
+### Source
+[apps/api/src/modules/topics/topic.controller.ts](apps/api/src/modules/topics/topic.controller.ts#L42)

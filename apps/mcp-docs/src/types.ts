@@ -10,6 +10,8 @@ export type ChunkEntry = {
   guards: string[];
   roles: string[];
   relatedChunks: string[];
+  handlerLine: number;
+  commitSha: string;
 };
 
 export type IndexData = {

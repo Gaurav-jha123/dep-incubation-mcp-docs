@@ -1,5 +1,5 @@
 ## GET /projects/:id
-**Module:** projects
+**Module:** projects | **Operation:** 📖 read | **Confidence:** █████████░ 90/100
 
 ### What it does
 Get project by ID
@@ -12,6 +12,13 @@ Get project by ID
 ### Response
 Project with full details including skills and assignments
 
+### Execution Flow
+`findOne()` → `findOne()` → `project.findUnique`, `topic.findMany`
+
+### Error Conditions
+| Exception |
+|-----------|
+| `NotFoundException` |
 ### Business Logic
 `findOne()` — Calls `project.findUnique`, `topic.findMany`. May throw: NotFoundException.
 
@@ -23,4 +30,7 @@ Project with full details including skills and assignments
 |--------|-------------|
 | 404 | Project not found |
 ### Notes
-Requires JWT authentication. See module guards for role requirements.
+Requires JwtAuthGuard + RolesGuard.
+
+### Source
+[apps/api/src/modules/projects/projects.controller.ts](apps/api/src/modules/projects/projects.controller.ts#L51)
