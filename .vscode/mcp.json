@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "dep-incubation-docs": {
+      "type": "http",
+      "url": "https://dep-incubation-mcp-docs.vercel.app"
+    }
+  }
+}
