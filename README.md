@@ -141,3 +141,85 @@ The backend uses **Prisma ORM** with PostgreSQL. For the complete schema definit
 - **Branching**: Feature branches off `dev`
 - **Linting**: Runs automatically on pre-commit via lint-staged
 - **Build check**: Runs on pre-push
+
+---
+
+## AI Developer Tooling — MCP Doc Server
+
+This repo ships a live **Model Context Protocol (MCP) server** that gives AI agents (GitHub Copilot, Claude Code) instant access to structured API documentation without reading raw source files.
+
+**Live endpoint:** `https://dep-incubation-mcp-docs.vercel.app`
+
+### How it works for you as a developer
+
+When you open this repo in VS Code, Copilot automatically discovers the MCP server via [.vscode/mcp.json](.vscode/mcp.json). From that point, any Copilot agent session can query the server instead of reading source files.
+
+#### Scenario 1 — "How do I call the login endpoint?"
+
+Without MCP, Copilot reads `auth.controller.ts` + `login.dto.ts` + `auth.service.ts` (~1,400 tokens, multiple file reads).
+
+With MCP, Copilot makes two calls:
+
+```
+search_docs("auth login")
+→ auth__login__POST  (score 61)
+→ auth__signup__POST (score 52)
+→ auth__logout__POST (score 50)
+
+get_doc("auth__login__POST")
+→ ## POST /auth/login
+   Request: { email: string (body), password: string (body) }
+   Response: Login successful
+   Auth: public endpoint — no guard required
+   Errors: 401 UnauthorizedException
+```
+
+**~350 tokens total. Structured. No ambiguity.**
+
+#### Scenario 2 — "Who can assign users to a project?"
+
+```
+search_docs("assign user project")
+→ projects__id_assignments__POST  (score 102) ← top hit
+
+get_doc("projects__id_assignments__POST")
+→ ## POST /projects/:id/assignments
+   Auth: JwtAuthGuard + RolesGuard — requires ADMIN or MANAGER
+   Request body: { userId: number, startDate?: string, endDate?: string }
+   Errors: 404 Project not found, 409 ConflictException
+   Execution: assignUser() → projectAssignment.create, project.findUnique, topic.findMany
+```
+
+The agent immediately knows the role requirement, DTO shape, and error conditions — without reading a single source file.
+
+### Available tools
+
+| Tool | Input | Returns |
+|------|-------|---------|
+| `search_docs` | `{ query: string }` | Top 5 matching endpoints with relevance scores |
+| `get_doc` | `{ chunkId: string }` | Full structured markdown doc for one endpoint |
+| `list_modules` | none | All modules and their endpoint IDs |
+| `get_schema` | `{ modelName: string }` | Prisma model fields and relations |
+| `get_impact` | `{ modelName: string }` | Which endpoints are affected by a model change |
+| `report_issue` | `{ chunkId, issue }` | Flag a doc as inaccurate (saved to `.docs/feedback.jsonl`) |
+
+### Keeping docs up to date
+
+Docs regenerate automatically. When a push lands on `main`:
+
+1. GitHub Action runs `pnpm --filter doc-indexer update`
+2. Only endpoints whose source files changed get re-indexed (fingerprint check)
+3. Updated `.docs/` is committed back with `[skip ci]`
+4. Vercel picks up the new commit and redeploys in ~30s
+
+Zero manual steps for developers after the initial setup.
+
+### Manual re-index (if needed)
+
+```bash
+# Regenerate all docs from scratch
+GROQ_API_KEY=<key> pnpm --filter doc-indexer index
+
+# Regenerate only changed docs (same as CI)
+GROQ_API_KEY=<key> pnpm --filter doc-indexer update
+```
