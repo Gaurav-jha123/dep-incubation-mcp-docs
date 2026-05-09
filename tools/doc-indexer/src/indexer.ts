@@ -2,7 +2,7 @@ import { mkdirSync, writeFileSync, existsSync, readFileSync, rmSync } from 'node
 import { resolve, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { simpleGit } from 'simple-git';
-import { parseControllers, renderDtoFieldsSection, renderExecutionFlow, renderErrorConditions, endpointMetaToChunkData, type ChunkData } from './parser.js';
+import { parseControllers, renderDtoFieldsSection, renderExecutionFlow, renderErrorConditions, endpointMetaToChunkData, renderConfidenceBadge, renderProvenance, type ChunkData } from './parser.js';
 import type { EndpointMeta, IndexData, ChunkEntry } from './parser.js';
 import { parseSchema, renderModelDoc, renderEnumDoc } from './schema-parser.js';
 import { generateDoc } from './utils/llm.js';
@@ -77,7 +77,7 @@ function buildPrompt(meta: EndpointMeta): string {
   const errorConditionsSection = renderErrorConditions(meta);
 
   const opEmoji = { read: '📖', write: '✏️', mixed: '🔀', unknown: '❓' }[meta.operationType];
-  const confBar = '█'.repeat(Math.round(meta.confidenceScore / 10)) + '░'.repeat(10 - Math.round(meta.confidenceScore / 10));
+  const confBadge = renderConfidenceBadge(meta.confidenceScore);
 
   return `You are a technical writer. Write a concise feature doc for this REST API endpoint.
 
@@ -87,7 +87,7 @@ ${JSON.stringify(meta, null, 2)}
 Output ONLY this markdown, no preamble:
 
 ## ${meta.method} ${meta.path}
-**Module:** ${meta.module} | **Operation:** ${opEmoji} ${meta.operationType} | **Confidence:** ${confBar} ${meta.confidenceScore}/100
+**Module:** ${meta.module} | **Operation:** ${opEmoji} ${meta.operationType} | **Confidence:** ${confBadge}
 
 ### What it does
 ${whatItDoes}

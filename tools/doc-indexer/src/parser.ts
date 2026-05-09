@@ -846,3 +846,16 @@ export function endpointMetaToChunkData(meta: EndpointMeta, summary: string | nu
     },
   };
 }
+
+// Render confidence badge: █ for filled, ░ for empty (10-char scale)
+export function renderConfidenceBadge(confidence: number): string {
+  const filled = Math.round(confidence / 10);
+  const empty = 10 - filled;
+  return `[${'█'.repeat(filled)}${'░'.repeat(empty)} ${Math.round(confidence)}/100]`;
+}
+
+// Render provenance indicator
+export function renderProvenance(provenance: ProvenanceType): string {
+  const map = { AST: '🔧', LLM_GENERATED: '🤖', INFERRED: '🔍' };
+  return map[provenance] || '?';
+}
