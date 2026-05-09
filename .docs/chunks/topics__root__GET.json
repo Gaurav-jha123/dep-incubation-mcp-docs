@@ -1,0 +1,140 @@
+{
+  "chunkId": "topics__root__GET",
+  "module": "topics",
+  "structural": {
+    "route": {
+      "value": "/topics",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "GET",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "query",
+          "type": "PaginationQueryDto",
+          "source": "query"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "PaginationQueryDto": [
+          {
+            "name": "page",
+            "type": "number",
+            "optional": true,
+            "validators": [
+              "Type(() => Number)",
+              "IsInt",
+              "Min(1)"
+            ],
+            "example": null
+          },
+          {
+            "name": "limit",
+            "type": "number",
+            "optional": true,
+            "validators": [
+              "Type(() => Number)",
+              "IsInt",
+              "Min(1)"
+            ],
+            "example": null
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "List of topics"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": null,
+      "confidence": 0,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `findAll()` method retrieves all topics from the database by calling `topic.findMany`. It also retrieves the total count of topics using `topic.count`. The method executes this logic within the context of a transaction if it's enabled. In case an error occurs during the execution, it's propagated as an error response. The pagination query parameters received with the request are used to determine the limit and offset of the topics to be returned.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`findAll()` → `findAll()` → `topic.findMany`, `topic.count`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "read",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "findAll",
+          "prismaCalls": [
+            "topic.findMany",
+            "topic.count"
+          ],
+          "throws": [],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "a86dd10334cfeb8c94bcf9951361eba6a3170b5132a4d54ea3102807e9d8e897",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/topics/topic.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/topics/dto/pagination-query.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/topics/topic.service.ts"
+    ],
+    "handlerLine": 35,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:51:59.486Z"
+  }
+}

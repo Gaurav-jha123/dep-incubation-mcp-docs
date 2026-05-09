@@ -1,0 +1,147 @@
+{
+  "chunkId": "skill-matrix__root__POST",
+  "module": "skill-matrix",
+  "structural": {
+    "route": {
+      "value": "/skill-matrix",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "POST",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "dto",
+          "type": "CreateSkillMatrixDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "CreateSkillMatrixDto": [
+          {
+            "name": "topicId",
+            "type": "number",
+            "optional": false,
+            "validators": [
+              "IsInt",
+              "IsNotEmpty"
+            ],
+            "example": "1"
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "optional": false,
+            "validators": [
+              "IsInt",
+              "Min(0)",
+              "Max(100)"
+            ],
+            "example": "75"
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 201,
+          "description": "Skill matrix entry created successfully"
+        },
+        {
+          "status": 400,
+          "description": "Validation error"
+        },
+        {
+          "status": 401,
+          "description": "Unauthorized"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Create a new skill matrix entry",
+      "confidence": 0.65,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "When the `create()` method is called, it performs a Prisma operation `skillMatrix.create` to persist the new skill matrix entry. If a duplicate entry is attempted to be created, a `ConflictException` is thrown. Error handling is implemented to catch and handle invalid input, including field-specific validation and conflict errors.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`create()` → `create()` → `skillMatrix.create`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "write",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "create",
+          "prismaCalls": [
+            "skillMatrix.create"
+          ],
+          "throws": [
+            "ConflictException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "cd66901ea7de19b97fb54bd9983ba0ae2bb0663913101630863a3101706863e2",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/skill-matrix.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/dto/create-skill-matrix.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
+    ],
+    "handlerLine": 54,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:50:56.980Z"
+  }
+}

@@ -108,11 +108,21 @@ export type ChunkEntry = {
   commitSha: string;
 };
 
+export type RelationshipType = 'mutates' | 'reads' | 'guards' | 'co-located';
+
+export type Relationship = {
+  from: string;          // chunkId
+  to: string;            // chunkId or model/guard name
+  type: RelationshipType;
+  targetKind: 'chunk' | 'model' | 'guard';
+};
+
 export type IndexData = {
   lastIndexed: string;
   chunks: Record<string, ChunkEntry>;
   fileMap: Record<string, string[]>;
   modelMap: Record<string, string[]>; // Prisma model name → chunkIds that access it
+  relationships: Relationship[];
 };
 
 // ---------------------------------------------------------------------------

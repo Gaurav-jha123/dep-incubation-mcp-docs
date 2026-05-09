@@ -1,0 +1,118 @@
+{
+  "chunkId": "skill-matrix__id__GET",
+  "module": "skill-matrix",
+  "structural": {
+    "route": {
+      "value": "/skill-matrix/:id",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "GET",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {},
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "Skill matrix entry found"
+        },
+        {
+          "status": 404,
+          "description": "Skill matrix entry not found"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Get a skill matrix entry by ID",
+      "confidence": 0.65,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "This API endpoint retrieves a skill matrix entry from the database using Prisma's `findUnique` method on the `skillMatrix` model. The business rule is that a skill matrix entry must exist in the database. If the entry is not found, a `NotFoundException` is thrown.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`findOne()` → `findOne()` → `skillMatrix.findUnique`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "read",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "findOne",
+          "prismaCalls": [
+            "skillMatrix.findUnique"
+          ],
+          "throws": [
+            "NotFoundException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "e7b25c23114e9dce7d3d2d7f8efde65cd5788ab2bd527a22f21ff7ac34079eb9",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/skill-matrix.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
+    ],
+    "handlerLine": 45,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:50:41.184Z"
+  }
+}

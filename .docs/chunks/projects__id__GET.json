@@ -1,0 +1,120 @@
+{
+  "chunkId": "projects__id__GET",
+  "module": "projects",
+  "structural": {
+    "route": {
+      "value": "/projects/:id",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "GET",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {},
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "Project with full details including skills and assignments"
+        },
+        {
+          "status": 404,
+          "description": "Project not found"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": null,
+      "confidence": 0,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The business logic for this operation retrieves a project by its unique ID, including its associated skills and topics. It does this by using `project.findUnique` to query the Prisma database and fetching related topics with `topic.findMany`. If the project is not found, a `NotFoundException` is thrown.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`findOne()` → `findOne()` → `project.findUnique`, `topic.findMany`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "read",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "findOne",
+          "prismaCalls": [
+            "project.findUnique",
+            "topic.findMany"
+          ],
+          "throws": [
+            "NotFoundException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "dc4ff555349820bd9a58f28d82b10941b04e5a519a7f7aab3ded4cea23e78075",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.service.ts"
+    ],
+    "handlerLine": 51,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:48:35.760Z"
+  }
+}

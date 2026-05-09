@@ -1,0 +1,127 @@
+{
+  "chunkId": "skill-matrix__id__DELETE",
+  "module": "skill-matrix",
+  "structural": {
+    "route": {
+      "value": "/skill-matrix/:id",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "DELETE",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {},
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "Skill matrix entry deleted successfully"
+        },
+        {
+          "status": 401,
+          "description": "Unauthorized"
+        },
+        {
+          "status": 403,
+          "description": "Forbidden — not your entry"
+        },
+        {
+          "status": 404,
+          "description": "Skill matrix entry not found"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Delete a skill matrix entry",
+      "confidence": 0.65,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `skills-matrix.delete` operation is called to permanently delete a skill matrix entry. Before deletion, the `skillMatrix.findUnique` operation checks if the entry exists. If the deletion is not permitted (i.e., the user is not the owner), a `ForbiddenException` is thrown, displaying a 403 status code.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`remove()` → `remove()` → `skillMatrix.delete`, `skillMatrix.findUnique`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "remove",
+          "prismaCalls": [
+            "skillMatrix.delete",
+            "skillMatrix.findUnique"
+          ],
+          "throws": [
+            "ForbiddenException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "58e7ee38034967e23a4babb341934451e0b97eef8b09e1f7037ee1545b448d21",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/skill-matrix.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
+    ],
+    "handlerLine": 87,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:51:28.345Z"
+  }
+}

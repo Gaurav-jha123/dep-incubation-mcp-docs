@@ -1,0 +1,97 @@
+{
+  "chunkId": "app__root__GET",
+  "module": "app",
+  "structural": {
+    "route": {
+      "value": "/",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "GET",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "string",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {},
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": null,
+      "confidence": 0,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `getHello()` service method is called, which does not perform any direct database operations via Prisma. As a result, the execution flow is quite basic and straightforward, with the only action being the invocation of the `getHello()` function recursively. No specific business rules or error handling is involved in this endpoint.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`getHello()` → `getHello()`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "unknown",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "getHello",
+          "prismaCalls": [],
+          "throws": [],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "75b87eb8c85a46bb5862f4b145d74b494791b3b28a74fe125fbfd9feb55431f7",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/app.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/app.service.ts"
+    ],
+    "handlerLine": 10,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:46:45.788Z"
+  }
+}

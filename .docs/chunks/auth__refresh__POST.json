@@ -1,0 +1,128 @@
+{
+  "chunkId": "auth__refresh__POST",
+  "module": "auth",
+  "structural": {
+    "route": {
+      "value": "/auth/refresh",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "POST",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "dto",
+          "type": "RefreshTokenDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "RefreshTokenDto": [
+          {
+            "name": "refreshToken",
+            "type": "string",
+            "optional": false,
+            "validators": [
+              "IsString",
+              "IsNotEmpty"
+            ],
+            "example": "eyJhbGciOiJIUzI1NiIs..."
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "Token refreshed"
+        },
+        {
+          "status": 401,
+          "description": "Invalid refresh token"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Refresh access token",
+      "confidence": 0.4,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `refreshToken()` method, called by the `refresh()` handler, retrieves a new access token without making any direct database calls. It validates the provided refresh token and throws an `UnauthorizedException` if it is invalid. The method does not utilize Prisma operations.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`refresh()` → `refreshToken()`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "unknown",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "refreshToken",
+          "prismaCalls": [],
+          "throws": [
+            "UnauthorizedException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "4eb8e9a38f6f037924c3e173480f3b2fd9eb9be01a907550152bcf5c0223d662",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/auth/auth.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/auth/dto/refresh-token.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/auth/auth.service.ts"
+    ],
+    "handlerLine": 45,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:47:32.798Z"
+  }
+}

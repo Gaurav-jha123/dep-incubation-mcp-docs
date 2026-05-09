@@ -1,0 +1,141 @@
+{
+  "chunkId": "sub-topics__root__POST",
+  "module": "sub-topics",
+  "structural": {
+    "route": {
+      "value": "/sub-topics",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "POST",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [
+        "ADMIN"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "dto",
+          "type": "CreateSubTopicDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "CreateSubTopicDto": [
+          {
+            "name": "topicId",
+            "type": "number",
+            "optional": false,
+            "validators": [
+              "IsInt",
+              "IsNotEmpty"
+            ],
+            "example": "1"
+          },
+          {
+            "name": "subTopics",
+            "type": "string[]",
+            "optional": false,
+            "validators": [
+              "IsArray"
+            ],
+            "example": null
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 201,
+          "description": "Sub-topic created"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": null,
+      "confidence": 0,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `create()` method performs a `subTopic.findFirst` operation to retrieve existing sub-topics, followed by a `subTopic.create` operation to insert the new sub-topic. This process throws a `ConflictException` if there is a duplicate sub-topic entry with the same topic Id. The `ConflictException` is thrown as a result of the Prisma `subTopic.create` operation.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`create()` → `create()` → `subTopic.findFirst`, `subTopic.create`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "create",
+          "prismaCalls": [
+            "subTopic.findFirst",
+            "subTopic.create"
+          ],
+          "throws": [
+            "ConflictException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "69d93d0028b0607b84453703d5d485aff56fb59675aad6be6f367f89443715e0",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/sub-topics/sub-topics.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/sub-topics/dto/create-sub-topics.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/sub-topics/sub-topics.service.ts"
+    ],
+    "handlerLine": 21,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:51:43.948Z"
+  }
+}

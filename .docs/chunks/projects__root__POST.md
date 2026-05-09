@@ -1,5 +1,5 @@
 ## POST /projects
-**Module:** projects | **Operation:** 🔀 mixed | **Confidence:** ██████████ 100/100
+**Module:** projects | **Operation:** 🔀 mixed | **Confidence:** [██████████ 100/100]
 
 ### What it does
 Create project
@@ -7,7 +7,7 @@ Create project
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
-| `dto` | `CreateProjectDto` | body |
+| dto | `CreateProjectDto` | body |
 
 ### Request Body Fields
 **CreateProjectDto**
@@ -34,16 +34,16 @@ Project created
 | Exception |
 |-----------|
 | `ConflictException` |
+
 ### Business Logic
-`create()` — Calls `project.create`, `projectAssignment.createMany`, `project.findUnique`, `topic.findMany`. May throw: ConflictException.
-
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-**Required roles:** ADMIN, MANAGER
-
-> ⚠️ **Consistency risk (low):** multiple writes without `$transaction` detected.
-### Notes
-Requires JwtAuthGuard + RolesGuard. Required roles: ADMIN, MANAGER.
-
+When creating a project, this endpoint performs the following database operations: it creates a new project using `project.create`, creates project assignments using `projectAssignment.createMany`, retrieves an existing project using `project.findUnique`, and retrieves related topics using `topic.findMany`. If a project with the same code already exists, a ConflictException is thrown. Required roles for this endpoint are ADMIN and MANAGER.
 ### Source
 [apps/api/src/modules/projects/projects.controller.ts](apps/api/src/modules/projects/projects.controller.ts#L64)
+
+---
+### Provenance
+🔧 **AST** (high confidence): route, method, guards, roles, parameters, response types, decorators
+🤖 **LLM_GENERATED** (medium confidence): summary, business logic descriptions
+🔍 **INFERRED** (medium confidence): execution flow, operation type, consistency analysis
+
+**Last updated:** 2026-05-09T10:48:36.521Z

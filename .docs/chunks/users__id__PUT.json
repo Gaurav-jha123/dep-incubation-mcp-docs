@@ -1,0 +1,146 @@
+{
+  "chunkId": "users__id__PUT",
+  "module": "users",
+  "structural": {
+    "route": {
+      "value": "/users/:id",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "PUT",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [
+        "ADMIN"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        },
+        {
+          "name": "dto",
+          "type": "UpdateUserDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "UpdateUserDto": [
+          {
+            "name": "username",
+            "type": "string",
+            "optional": false,
+            "validators": [
+              "IsString",
+              "IsNotEmpty"
+            ],
+            "example": "john.updated"
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "User updated successfully"
+        },
+        {
+          "status": 404,
+          "description": "User not found"
+        },
+        {
+          "status": 409,
+          "description": "Generated email already registered"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": null,
+      "confidence": 0,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `updateUser()` method performs the following database operations: it first calls `user.findUnique` to retrieve the user by ID, and then calls `user.update` to update the user's information based on the provided `UpdateUserDto`. This process throws a `NotFoundException` if the user is not found, or a `ConflictException` if the generated email is already registered. The update operation requires the user to have the correct role (ADMIN) and be authenticated with a valid JWT.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`update()` → `updateUser()` → `user.findUnique`, `user.update`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "updateUser",
+          "prismaCalls": [
+            "user.findUnique",
+            "user.update"
+          ],
+          "throws": [
+            "NotFoundException",
+            "ConflictException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "1a12281bbf268a8ce86452e64c70a7bd51625ead78a98593f97a2a3bb952aa85",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/users/users.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/users/dto/update-user.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/users/users.service.ts"
+    ],
+    "handlerLine": 52,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:53:48.594Z"
+  }
+}

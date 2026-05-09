@@ -1,0 +1,111 @@
+{
+  "chunkId": "topics__id__DELETE",
+  "module": "topics",
+  "structural": {
+    "route": {
+      "value": "/topics/:id",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "DELETE",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [
+        "ADMIN"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {},
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Delete a topic with the specified `id`.",
+      "confidence": 0.65,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `remove()` method is called, which executes `topic.delete` to delete the topic from the database. Additionally, `topic.findUnique` is also used to retrieve the topic before deletion, possibly for auditing or caching purposes. If the topic with the specified `id` does not exist, the deletion operation will fail, but no specific error is documented. The method does not support transactions.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`remove()` → `remove()` → `topic.delete`, `topic.findUnique`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "remove",
+          "prismaCalls": [
+            "topic.delete",
+            "topic.findUnique"
+          ],
+          "throws": [],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "6078bf7cc8808dee69e56871c4928edeb32cb658902072e4585a42533eb12b30",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/topics/topic.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/topics/topic.service.ts"
+    ],
+    "handlerLine": 67,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:53:01.634Z"
+  }
+}

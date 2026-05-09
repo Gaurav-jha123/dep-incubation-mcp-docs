@@ -1,0 +1,156 @@
+{
+  "chunkId": "skill-matrix__id__PATCH",
+  "module": "skill-matrix",
+  "structural": {
+    "route": {
+      "value": "/skill-matrix/:id",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "PATCH",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        },
+        {
+          "name": "dto",
+          "type": "UpdateSkillMatrixDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "UpdateSkillMatrixDto": [
+          {
+            "name": "topicId",
+            "type": "number",
+            "optional": true,
+            "validators": [
+              "IsInt"
+            ],
+            "example": "1"
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "optional": true,
+            "validators": [
+              "IsInt",
+              "Min(0)",
+              "Max(100)"
+            ],
+            "example": "85"
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "Skill matrix entry updated successfully"
+        },
+        {
+          "status": 401,
+          "description": "Unauthorized"
+        },
+        {
+          "status": 403,
+          "description": "Forbidden — not your entry"
+        },
+        {
+          "status": 404,
+          "description": "Skill matrix entry not found"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Update a skill matrix entry",
+      "confidence": 0.65,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `update()` service method updates a skill matrix entry by invoking `skillMatrix.update` and `skillMatrix.findUnique` Prisma operations. The `update()` method throws a `ForbiddenException` if the user lacks permission to update the skill matrix entry. Additionally, error handling is present to catch cases where the skill matrix entry is not found.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`update()` → `update()` → `skillMatrix.update`, `skillMatrix.findUnique`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "update",
+          "prismaCalls": [
+            "skillMatrix.update",
+            "skillMatrix.findUnique"
+          ],
+          "throws": [
+            "ForbiddenException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "a5eb4c0f0de6f92dc368e83b858f84dfdf78fff6f05647387449c75e5eaaff3c",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/skill-matrix.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/dto/update-skill-matrix.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
+    ],
+    "handlerLine": 69,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:51:12.590Z"
+  }
+}

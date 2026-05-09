@@ -1,0 +1,151 @@
+{
+  "chunkId": "auth__signup__POST",
+  "module": "auth",
+  "structural": {
+    "route": {
+      "value": "/auth/signup",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "POST",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "dto",
+          "type": "SignupDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "SignupDto": [
+          {
+            "name": "name",
+            "type": "string",
+            "optional": false,
+            "validators": [
+              "IsString",
+              "IsNotEmpty"
+            ],
+            "example": "John Doe"
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "optional": false,
+            "validators": [
+              "IsEmail",
+              "IsNotEmpty"
+            ],
+            "example": "john@example.com"
+          },
+          {
+            "name": "password",
+            "type": "string",
+            "optional": false,
+            "validators": [
+              "IsString",
+              "MinLength(6)"
+            ],
+            "example": "password123"
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 201,
+          "description": "User registered successfully"
+        },
+        {
+          "status": 409,
+          "description": "Email already registered"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": null,
+      "confidence": 0,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "When a new user attempts to register, the `signup()` method checks if an existing user with the same email already exists in the database using the `user.findUnique` Prisma operation. If a match is found, a `ConflictException` is thrown. If no match is found, the method creates a new user using the `user.create` Prisma operation.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`signup()` → `signup()` → `user.findUnique`, `user.create`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "signup",
+          "prismaCalls": [
+            "user.findUnique",
+            "user.create"
+          ],
+          "throws": [
+            "ConflictException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "000e3acfe8b368d0685e0876d118b63b26e05cd0f26b9f763b026fd4a5e185f9",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/auth/auth.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/auth/dto/signup.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/auth/auth.service.ts"
+    ],
+    "handlerLine": 28,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:47:01.430Z"
+  }
+}

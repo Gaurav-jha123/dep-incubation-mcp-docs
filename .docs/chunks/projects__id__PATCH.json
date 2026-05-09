@@ -1,0 +1,128 @@
+{
+  "chunkId": "projects__id__PATCH",
+  "module": "projects",
+  "structural": {
+    "route": {
+      "value": "/projects/:id",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "PATCH",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [
+        "ADMIN",
+        "MANAGER"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        },
+        {
+          "name": "dto",
+          "type": "UpdateProjectDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {},
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "Project updated"
+        },
+        {
+          "status": 404,
+          "description": "Project not found"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": null,
+      "confidence": 0,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `update()` service method performs three Prisma operations: `project.update`, `project.findUnique`, and `topic.findMany`. It retrieves a project by ID (`project.findUnique`) and updates the existing project (`project.update`) based on the provided `UpdateProjectDto`. Additionally, it fetches all associated topics (`topic.findMany`) for the project. If the project is not found, it returns a 404 error. The `JwtAuthGuard` and `RolesGuard` are applied to ensure authentication and authorization, requiring either an ADMIN or MANAGER role to invoke this endpoint.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`update()` → `update()` → `project.update`, `project.findUnique`, `topic.findMany`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "update",
+          "prismaCalls": [
+            "project.update",
+            "project.findUnique",
+            "topic.findMany"
+          ],
+          "throws": [],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "43c5d9b07b438921043e1729ab3bd427424e97f7d5a1e9fa32161977cc6e1ca9",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/dto/update-project.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.service.ts"
+    ],
+    "handlerLine": 76,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:49:07.161Z"
+  }
+}
