@@ -2,7 +2,7 @@ import { mkdirSync, writeFileSync, existsSync, readFileSync, rmSync } from 'node
 import { resolve, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { simpleGit } from 'simple-git';
-import { parseControllers, renderDtoFieldsSection, renderExecutionFlow, renderErrorConditions } from './parser.js';
+import { parseControllers, renderDtoFieldsSection, renderExecutionFlow, renderErrorConditions, endpointMetaToChunkData, type ChunkData } from './parser.js';
 import type { EndpointMeta, IndexData, ChunkEntry } from './parser.js';
 import { parseSchema, renderModelDoc, renderEnumDoc } from './schema-parser.js';
 import { generateDoc } from './utils/llm.js';
@@ -200,6 +200,17 @@ async function main(): Promise<void> {
     const chunkPath = resolve(CHUNKS_DIR, `${meta.chunkId}.md`);
     writeFileSync(chunkPath, doc, 'utf-8');
 
+    // Extract summary and businessLogic from generated markdown
+    const summaryMatch = doc.match(/### What it does\n(.*?)(?=\n###|$)/s);
+    const summary = summaryMatch ? summaryMatch[1]?.trim() : null;
+    const businessLogicMatch = doc.match(/### Business Logic\n(.*?)(?=\n###|$)/s);
+    const businessLogic = businessLogicMatch ? businessLogicMatch[1]?.trim() : null;
+
+    // Convert to ChunkData and save JSON
+    const chunkData = endpointMetaToChunkData(meta, summary ?? null, businessLogic ?? null);
+    const jsonPath = resolve(CHUNKS_DIR, `${meta.chunkId}.json`);
+    writeFileSync(jsonPath, JSON.stringify(chunkData, null, 2), 'utf-8');
+
     chunks[meta.chunkId] = buildChunkEntry(meta, commitSha);
 
     // Populate fileMap
@@ -240,9 +251,13 @@ async function main(): Promise<void> {
     for (const oldId of Object.keys(oldIndex.chunks)) {
       if (!freshIds.has(oldId)) {
         const stalePath = resolve(CHUNKS_DIR, `${oldId}.md`);
+        const staleJsonPath = resolve(CHUNKS_DIR, `${oldId}.json`);
         if (existsSync(stalePath)) {
           rmSync(stalePath);
           console.log(`  Removed stale chunk: ${oldId}`);
+        }
+        if (existsSync(staleJsonPath)) {
+          rmSync(staleJsonPath);
         }
       }
     }
