@@ -8,6 +8,7 @@ export type SearchResult = {
   method: string;
   path: string;
   score: number;
+  confidence?: number; // Per-field confidence from JSON chunk
 };
 
 // ---------------------------------------------------------------------------
@@ -59,6 +60,7 @@ type ChunkCorpusEntry = {
   module: string;
   method: string;
   path: string;
+  confidence?: number;
   // pre-tokenized weighted term frequency map
   tf: Map<string, number>;
 };
@@ -129,16 +131,25 @@ function getCorpus(docsDir: string): ChunkCorpusEntry[] {
 
   const corpus: ChunkCorpusEntry[] = Object.values(index.chunks).map((entry) => {
     let docContent = '';
+    let confidence: number | undefined;
     try {
       docContent = readFileSync(resolve(docsDir, 'chunks', `${entry.chunkId}.md`), 'utf-8');
     } catch {
       // chunk file missing — skip content
+    }
+    try {
+      const jsonData = readFileSync(resolve(docsDir, 'chunks', `${entry.chunkId}.json`), 'utf-8');
+      const parsed = JSON.parse(jsonData) as { semantic?: { summary?: { confidence?: number } } };
+      confidence = parsed.semantic?.summary?.confidence;
+    } catch {
+      // JSON file missing — skip confidence
     }
     return {
       chunkId: entry.chunkId,
       module: entry.module,
       method: entry.method,
       path: entry.path,
+      confidence,
       tf: buildTf(entry, docContent),
     };
   });
@@ -177,6 +188,7 @@ export function searchDocs(docsDir: string, query: string): SearchResult[] {
       method: doc.method,
       path: doc.path,
       score: Math.round(tfidfScore * 100) / 100,
+      confidence: doc.confidence,
     };
   });
 
