@@ -3,9 +3,10 @@ import { resolve, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { simpleGit } from 'simple-git';
 import { parseControllers, renderDtoFieldsSection, renderExecutionFlow, renderErrorConditions, endpointMetaToChunkData, renderConfidenceBadge, renderProvenance, type ChunkData } from './parser.js';
-import type { EndpointMeta, IndexData, ChunkEntry } from './parser.js';
+import type { EndpointMeta, IndexData, ChunkEntry, Relationship } from './parser.js';
 import { parseSchema, renderModelDoc, renderEnumDoc } from './schema-parser.js';
 import { generateDoc } from './utils/llm.js';
+import { validateChunkData, applyValidationFallback } from './validator.js';
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -135,6 +136,57 @@ function buildChunkEntry(meta: EndpointMeta, commitSha: string): ChunkEntry {
   };
 }
 
+function computeRelationships(
+  endpoints: EndpointMeta[],
+  fileMap: Record<string, string[]>,
+): Relationship[] {
+  const relationships: Relationship[] = [];
+
+  for (const meta of endpoints) {
+    for (const sm of meta.serviceMethods) {
+      for (const call of sm.prismaCalls) {
+        const raw = call.split('.')[0] ?? '';
+        const model = raw.charAt(0).toUpperCase() + raw.slice(1);
+        if (!model) continue;
+        const operation = call.split('.')[1] ?? '';
+        const isWrite = /create|update|upsert|delete/i.test(operation);
+        relationships.push({
+          from: meta.chunkId,
+          to: model,
+          type: isWrite ? 'mutates' : 'reads',
+          targetKind: 'model',
+        });
+      }
+    }
+
+    for (const guard of meta.guards) {
+      relationships.push({
+        from: meta.chunkId,
+        to: guard,
+        type: 'guards',
+        targetKind: 'guard',
+      });
+    }
+
+    for (const srcFile of meta.sourceFiles) {
+      const key = srcFile.replace(/\\/g, '/');
+      const siblings = fileMap[key] ?? [];
+      for (const sibling of siblings) {
+        if (sibling !== meta.chunkId) {
+          relationships.push({
+            from: meta.chunkId,
+            to: sibling,
+            type: 'co-located',
+            targetKind: 'chunk',
+          });
+        }
+      }
+    }
+  }
+
+  return relationships;
+}
+
 /**
  * For each chunk, find other chunks that share at least one sourceFile.
  * Mutual relationships — if A relates to B then B relates to A.
@@ -215,8 +267,13 @@ async function main(): Promise<void> {
     const businessLogicMatch = doc.match(/### Business Logic\n(.*?)(?=\n###|$)/s);
     const businessLogic = businessLogicMatch ? businessLogicMatch[1]?.trim() : null;
 
-    // Convert to ChunkData and save JSON
-    const chunkData = endpointMetaToChunkData(meta, summary ?? null, businessLogic ?? null);
+    // Convert to ChunkData, validate, then save JSON
+    let chunkData = endpointMetaToChunkData(meta, summary ?? null, businessLogic ?? null);
+    const validation = validateChunkData(chunkData);
+    if (!validation.valid) {
+      console.warn(`  WARN: ${meta.chunkId} validation warnings: ${validation.warnings.join('; ')}`);
+      chunkData = applyValidationFallback(chunkData, validation);
+    }
     const jsonPath = resolve(CHUNKS_DIR, `${meta.chunkId}.json`);
     writeFileSync(jsonPath, JSON.stringify(chunkData, null, 2), 'utf-8');
 
@@ -243,15 +300,17 @@ async function main(): Promise<void> {
     }
   }
 
+  // Post-process: compute related chunks and relationships
+  computeRelatedChunks(chunks, fileMap);
+  const relationships = computeRelationships(endpoints, fileMap);
+
   const indexData: IndexData = {
     lastIndexed: new Date().toISOString(),
     chunks,
     fileMap,
     modelMap,
+    relationships,
   };
-
-  // Post-process: compute related chunks from fileMap
-  computeRelatedChunks(chunks, fileMap);
 
   // Fix 4: Remove stale chunks — delete .md files for endpoints that no longer exist
   if (existsSync(INDEX_FILE)) {

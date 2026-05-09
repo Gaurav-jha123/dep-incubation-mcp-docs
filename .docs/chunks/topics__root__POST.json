@@ -1,0 +1,137 @@
+{
+  "chunkId": "topics__root__POST",
+  "module": "topics",
+  "structural": {
+    "route": {
+      "value": "/topics",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "POST",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [
+        "ADMIN"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "dto",
+          "type": "CreateTopicDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "CreateTopicDto": [
+          {
+            "name": "label",
+            "type": "string",
+            "optional": false,
+            "validators": [
+              "IsString"
+            ],
+            "example": null
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "optional": true,
+            "validators": [
+              "IsString"
+            ],
+            "example": null
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 201,
+          "description": "Topic created"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": null,
+      "confidence": 0,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `create()` service method is called, which performs a Prisma operation of type `topic.create` to insert a new topic into the database. This operation creates a new topic with the provided `label` and optional `description`. If a topic with the same label already exists, an error is thrown. Error handling is performed by the guard services and service methods to ensure that only valid requests are processed, and invalid requests receive clear error messages.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`create()` → `create()` → `topic.create`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "write",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "create",
+          "prismaCalls": [
+            "topic.create"
+          ],
+          "throws": [],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "8e687bcb47dd37718a97dcd3e61083c050df0a6f9bcaff92f6194b4ad0290e3f",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/topics/topic.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/topics/dto/create-topic.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/topics/topic.service.ts"
+    ],
+    "handlerLine": 51,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:52:30.465Z"
+  }
+}

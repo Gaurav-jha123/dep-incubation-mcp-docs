@@ -1,0 +1,139 @@
+{
+  "chunkId": "skill-matrix__root__GET",
+  "module": "skill-matrix",
+  "structural": {
+    "route": {
+      "value": "/skill-matrix",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "GET",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "query",
+          "type": "PaginationQueryDto",
+          "source": "query"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "PaginationQueryDto": [
+          {
+            "name": "page",
+            "type": "number",
+            "optional": true,
+            "validators": [
+              "Type(() => Number)",
+              "IsInt",
+              "Min(1)"
+            ],
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "type": "number",
+            "optional": true,
+            "validators": [
+              "Type(() => Number)",
+              "IsInt",
+              "Min(1)"
+            ],
+            "example": "10"
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "List of skill matrix entries"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Get all skill matrix entries",
+      "confidence": 0.65,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `findAll()` method calls two Prisma operations: `skillMatrix.findMany` to retrieve all skill matrix entries and `skillMatrix.count` to retrieve the total count of entries. It does not handle errors, but the JwtAuthGuard ensures that only authenticated users can access this endpoint. If the query parameter is invalid (e.g., has an invalid page or limit), it may not throw any specific error, but it will return an HTTP response with a non-specific error message.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`findAll()` → `findAll()` → `skillMatrix.findMany`, `skillMatrix.count`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "read",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "findAll",
+          "prismaCalls": [
+            "skillMatrix.findMany",
+            "skillMatrix.count"
+          ],
+          "throws": [],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "c878ed2e750f15d669e79b60140ff9e8d11b5c5c6b2431f55e7e3a6c0c3455b6",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/skill-matrix.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/dto/pagination-query.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
+    ],
+    "handlerLine": 34,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:50:25.400Z"
+  }
+}

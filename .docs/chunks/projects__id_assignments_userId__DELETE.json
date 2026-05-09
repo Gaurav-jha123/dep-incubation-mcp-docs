@@ -1,0 +1,127 @@
+{
+  "chunkId": "projects__id_assignments_userId__DELETE",
+  "module": "projects",
+  "structural": {
+    "route": {
+      "value": "/projects/:id/assignments/:userId",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "DELETE",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [
+        "ADMIN",
+        "MANAGER"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        },
+        {
+          "name": "userId",
+          "type": "number",
+          "source": "param"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {},
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "User removed"
+        },
+        {
+          "status": 404,
+          "description": "Project not found"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Remove a user from a project",
+      "confidence": 0.65,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `removeUser()` service method performs the following operations:\n- Deletes the user's assignment from the `projectAssignment` table using `projectAssignment.delete`.\n- Retrieves the project details from the `project` table using `project.findUnique`.\n- Retrieves the topics associated with the project from the `topic` table using `topic.findMany`.\nIf any of these operations fail, an error is thrown.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`removeUser()` → `removeUser()` → `projectAssignment.delete`, `project.findUnique`, `topic.findMany`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "removeUser",
+          "prismaCalls": [
+            "projectAssignment.delete",
+            "project.findUnique",
+            "topic.findMany"
+          ],
+          "throws": [],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "fb68750338437e858bd46d29ddee636a637e78bcd03909e7e55640d207252354",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.service.ts"
+    ],
+    "handlerLine": 117,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:49:54.270Z"
+  }
+}

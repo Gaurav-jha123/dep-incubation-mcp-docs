@@ -1,0 +1,140 @@
+{
+  "chunkId": "auth__login__POST",
+  "module": "auth",
+  "structural": {
+    "route": {
+      "value": "/auth/login",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "POST",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "dto",
+          "type": "LoginDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "LoginDto": [
+          {
+            "name": "email",
+            "type": "string",
+            "optional": false,
+            "validators": [
+              "IsEmail",
+              "IsNotEmpty"
+            ],
+            "example": "john@example.com"
+          },
+          {
+            "name": "password",
+            "type": "string",
+            "optional": false,
+            "validators": [
+              "IsString",
+              "IsNotEmpty"
+            ],
+            "example": "password123"
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "Login successful"
+        },
+        {
+          "status": 401,
+          "description": "Invalid credentials"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Login with email and password",
+      "confidence": 0.65,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `login()` method is called twice in sequence, first to initiate the login process and second to verify the user. It performs a Prisma operation `user.findUnique` to retrieve the user from the database. If the user is not found or the provided credentials are invalid, it throws an `UnauthorizedException`.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`login()` → `login()` → `user.findUnique`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "read",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "login",
+          "prismaCalls": [
+            "user.findUnique"
+          ],
+          "throws": [
+            "UnauthorizedException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "2aab320a0c1c61d684754c2ac42e80052ed6fef8d7ff79cc456ed340dac04c44",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/auth/auth.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/auth/dto/login.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/auth/auth.service.ts"
+    ],
+    "handlerLine": 36,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:47:17.018Z"
+  }
+}

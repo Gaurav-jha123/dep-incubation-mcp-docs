@@ -1,5 +1,5 @@
 {
-  "lastIndexed": "2026-04-25T07:51:09.201Z",
+  "lastIndexed": "2026-05-09T10:54:04.197Z",
   "chunks": {
     "app__root__GET": {
       "chunkId": "app__root__GET",
@@ -12,12 +12,12 @@
         "apps/api/src/app.service.ts"
       ],
       "docFile": ".docs/chunks/app__root__GET.md",
-      "lastUpdated": "2026-04-25T07:51:09.146Z",
+      "lastUpdated": "2026-05-09T10:46:45.792Z",
       "guards": [],
       "roles": [],
       "relatedChunks": [],
       "handlerLine": 10,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "auth__signup__POST": {
       "chunkId": "auth__signup__POST",
@@ -31,7 +31,7 @@
         "apps/api/src/modules/auth/auth.service.ts"
       ],
       "docFile": ".docs/chunks/auth__signup__POST.md",
-      "lastUpdated": "2026-04-25T07:51:09.149Z",
+      "lastUpdated": "2026-05-09T10:47:01.434Z",
       "guards": [],
       "roles": [],
       "relatedChunks": [
@@ -41,7 +41,7 @@
         "auth__refresh__POST"
       ],
       "handlerLine": 28,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "auth__login__POST": {
       "chunkId": "auth__login__POST",
@@ -55,7 +55,7 @@
         "apps/api/src/modules/auth/auth.service.ts"
       ],
       "docFile": ".docs/chunks/auth__login__POST.md",
-      "lastUpdated": "2026-04-25T07:51:09.151Z",
+      "lastUpdated": "2026-05-09T10:47:17.019Z",
       "guards": [],
       "roles": [],
       "relatedChunks": [
@@ -65,7 +65,7 @@
         "auth__signup__POST"
       ],
       "handlerLine": 36,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "auth__refresh__POST": {
       "chunkId": "auth__refresh__POST",
@@ -79,7 +79,7 @@
         "apps/api/src/modules/auth/auth.service.ts"
       ],
       "docFile": ".docs/chunks/auth__refresh__POST.md",
-      "lastUpdated": "2026-04-25T07:51:09.154Z",
+      "lastUpdated": "2026-05-09T10:47:32.800Z",
       "guards": [],
       "roles": [],
       "relatedChunks": [
@@ -89,7 +89,7 @@
         "auth__signup__POST"
       ],
       "handlerLine": 45,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "auth__me__GET": {
       "chunkId": "auth__me__GET",
@@ -102,7 +102,7 @@
         "apps/api/src/modules/auth/auth.service.ts"
       ],
       "docFile": ".docs/chunks/auth__me__GET.md",
-      "lastUpdated": "2026-04-25T07:51:09.157Z",
+      "lastUpdated": "2026-05-09T10:47:48.550Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -114,7 +114,7 @@
         "auth__signup__POST"
       ],
       "handlerLine": 54,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "auth__logout__POST": {
       "chunkId": "auth__logout__POST",
@@ -127,7 +127,7 @@
         "apps/api/src/modules/auth/auth.service.ts"
       ],
       "docFile": ".docs/chunks/auth__logout__POST.md",
-      "lastUpdated": "2026-04-25T07:51:09.158Z",
+      "lastUpdated": "2026-05-09T10:48:04.042Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -139,7 +139,7 @@
         "auth__signup__POST"
       ],
       "handlerLine": 64,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "projects__root__GET": {
       "chunkId": "projects__root__GET",
@@ -152,7 +152,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__root__GET.md",
-      "lastUpdated": "2026-04-25T07:51:09.160Z",
+      "lastUpdated": "2026-05-09T10:48:19.872Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -168,7 +168,7 @@
         "projects__root__POST"
       ],
       "handlerLine": 40,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "projects__id__GET": {
       "chunkId": "projects__id__GET",
@@ -181,7 +181,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id__GET.md",
-      "lastUpdated": "2026-04-25T07:51:09.162Z",
+      "lastUpdated": "2026-05-09T10:48:35.763Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -197,7 +197,7 @@
         "projects__root__POST"
       ],
       "handlerLine": 51,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "projects__root__POST": {
       "chunkId": "projects__root__POST",
@@ -211,7 +211,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__root__POST.md",
-      "lastUpdated": "2026-04-25T07:51:09.165Z",
+      "lastUpdated": "2026-05-09T10:48:51.532Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -230,7 +230,7 @@
         "projects__root__GET"
       ],
       "handlerLine": 64,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "projects__id__PATCH": {
       "chunkId": "projects__id__PATCH",
@@ -244,7 +244,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id__PATCH.md",
-      "lastUpdated": "2026-04-25T07:51:09.167Z",
+      "lastUpdated": "2026-05-09T10:49:07.164Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -263,7 +263,7 @@
         "projects__root__POST"
       ],
       "handlerLine": 76,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "projects__id__DELETE": {
       "chunkId": "projects__id__DELETE",
@@ -276,7 +276,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id__DELETE.md",
-      "lastUpdated": "2026-04-25T07:51:09.169Z",
+      "lastUpdated": "2026-05-09T10:49:22.786Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -295,7 +295,7 @@
         "projects__root__POST"
       ],
       "handlerLine": 90,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "projects__id_assignments__POST": {
       "chunkId": "projects__id_assignments__POST",
@@ -309,7 +309,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id_assignments__POST.md",
-      "lastUpdated": "2026-04-25T07:51:09.171Z",
+      "lastUpdated": "2026-05-09T10:49:38.504Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -328,7 +328,7 @@
         "projects__root__POST"
       ],
       "handlerLine": 100,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "projects__id_assignments_userId__DELETE": {
       "chunkId": "projects__id_assignments_userId__DELETE",
@@ -341,7 +341,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id_assignments_userId__DELETE.md",
-      "lastUpdated": "2026-04-25T07:51:09.172Z",
+      "lastUpdated": "2026-05-09T10:49:54.272Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -360,7 +360,7 @@
         "projects__root__POST"
       ],
       "handlerLine": 117,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "projects__id_assignments_userId__PATCH": {
       "chunkId": "projects__id_assignments_userId__PATCH",
@@ -374,7 +374,7 @@
         "apps/api/src/modules/projects/projects.service.ts"
       ],
       "docFile": ".docs/chunks/projects__id_assignments_userId__PATCH.md",
-      "lastUpdated": "2026-04-25T07:51:09.174Z",
+      "lastUpdated": "2026-05-09T10:50:09.843Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -390,7 +390,7 @@
         "projects__root__POST"
       ],
       "handlerLine": 135,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "skill-matrix__root__GET": {
       "chunkId": "skill-matrix__root__GET",
@@ -404,7 +404,7 @@
         "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
       ],
       "docFile": ".docs/chunks/skill-matrix__root__GET.md",
-      "lastUpdated": "2026-04-25T07:51:09.176Z",
+      "lastUpdated": "2026-05-09T10:50:25.401Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -416,7 +416,7 @@
         "skill-matrix__root__POST"
       ],
       "handlerLine": 34,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "skill-matrix__id__GET": {
       "chunkId": "skill-matrix__id__GET",
@@ -429,7 +429,7 @@
         "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
       ],
       "docFile": ".docs/chunks/skill-matrix__id__GET.md",
-      "lastUpdated": "2026-04-25T07:51:09.178Z",
+      "lastUpdated": "2026-05-09T10:50:41.186Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -441,7 +441,7 @@
         "skill-matrix__root__POST"
       ],
       "handlerLine": 45,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "skill-matrix__root__POST": {
       "chunkId": "skill-matrix__root__POST",
@@ -455,7 +455,7 @@
         "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
       ],
       "docFile": ".docs/chunks/skill-matrix__root__POST.md",
-      "lastUpdated": "2026-04-25T07:51:09.179Z",
+      "lastUpdated": "2026-05-09T10:50:56.982Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -467,7 +467,7 @@
         "skill-matrix__root__GET"
       ],
       "handlerLine": 54,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "skill-matrix__id__PATCH": {
       "chunkId": "skill-matrix__id__PATCH",
@@ -481,7 +481,7 @@
         "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
       ],
       "docFile": ".docs/chunks/skill-matrix__id__PATCH.md",
-      "lastUpdated": "2026-04-25T07:51:09.181Z",
+      "lastUpdated": "2026-05-09T10:51:12.591Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -493,7 +493,7 @@
         "skill-matrix__root__POST"
       ],
       "handlerLine": 69,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "skill-matrix__id__DELETE": {
       "chunkId": "skill-matrix__id__DELETE",
@@ -506,7 +506,7 @@
         "apps/api/src/modules/skill-matrix/skill-matrix.service.ts"
       ],
       "docFile": ".docs/chunks/skill-matrix__id__DELETE.md",
-      "lastUpdated": "2026-04-25T07:51:09.183Z",
+      "lastUpdated": "2026-05-09T10:51:28.348Z",
       "guards": [
         "JwtAuthGuard"
       ],
@@ -518,7 +518,7 @@
         "skill-matrix__root__POST"
       ],
       "handlerLine": 87,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "sub-topics__root__POST": {
       "chunkId": "sub-topics__root__POST",
@@ -532,7 +532,7 @@
         "apps/api/src/modules/sub-topics/sub-topics.service.ts"
       ],
       "docFile": ".docs/chunks/sub-topics__root__POST.md",
-      "lastUpdated": "2026-04-25T07:51:09.185Z",
+      "lastUpdated": "2026-05-09T10:51:43.951Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -542,7 +542,7 @@
       ],
       "relatedChunks": [],
       "handlerLine": 21,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "topics__root__GET": {
       "chunkId": "topics__root__GET",
@@ -556,7 +556,7 @@
         "apps/api/src/modules/topics/topic.service.ts"
       ],
       "docFile": ".docs/chunks/topics__root__GET.md",
-      "lastUpdated": "2026-04-25T07:51:09.186Z",
+      "lastUpdated": "2026-05-09T10:51:59.488Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -569,7 +569,7 @@
         "topics__root__POST"
       ],
       "handlerLine": 35,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "topics__id__GET": {
       "chunkId": "topics__id__GET",
@@ -582,7 +582,7 @@
         "apps/api/src/modules/topics/topic.service.ts"
       ],
       "docFile": ".docs/chunks/topics__id__GET.md",
-      "lastUpdated": "2026-04-25T07:51:09.188Z",
+      "lastUpdated": "2026-05-09T10:52:14.967Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -595,7 +595,7 @@
         "topics__root__POST"
       ],
       "handlerLine": 42,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "topics__root__POST": {
       "chunkId": "topics__root__POST",
@@ -609,7 +609,7 @@
         "apps/api/src/modules/topics/topic.service.ts"
       ],
       "docFile": ".docs/chunks/topics__root__POST.md",
-      "lastUpdated": "2026-04-25T07:51:09.190Z",
+      "lastUpdated": "2026-05-09T10:52:30.467Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -624,7 +624,7 @@
         "topics__root__GET"
       ],
       "handlerLine": 51,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "topics__id__PATCH": {
       "chunkId": "topics__id__PATCH",
@@ -638,7 +638,7 @@
         "apps/api/src/modules/topics/topic.service.ts"
       ],
       "docFile": ".docs/chunks/topics__id__PATCH.md",
-      "lastUpdated": "2026-04-25T07:51:09.192Z",
+      "lastUpdated": "2026-05-09T10:52:46.010Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -653,7 +653,7 @@
         "topics__root__POST"
       ],
       "handlerLine": 59,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "topics__id__DELETE": {
       "chunkId": "topics__id__DELETE",
@@ -666,7 +666,7 @@
         "apps/api/src/modules/topics/topic.service.ts"
       ],
       "docFile": ".docs/chunks/topics__id__DELETE.md",
-      "lastUpdated": "2026-04-25T07:51:09.193Z",
+      "lastUpdated": "2026-05-09T10:53:01.635Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -681,7 +681,7 @@
         "topics__root__POST"
       ],
       "handlerLine": 67,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "users__root__GET": {
       "chunkId": "users__root__GET",
@@ -694,7 +694,7 @@
         "apps/api/src/modules/users/users.service.ts"
       ],
       "docFile": ".docs/chunks/users__root__GET.md",
-      "lastUpdated": "2026-04-25T07:51:09.195Z",
+      "lastUpdated": "2026-05-09T10:53:17.128Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -706,7 +706,7 @@
         "users__root__POST"
       ],
       "handlerLine": 33,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "users__root__POST": {
       "chunkId": "users__root__POST",
@@ -720,7 +720,7 @@
         "apps/api/src/modules/users/users.service.ts"
       ],
       "docFile": ".docs/chunks/users__root__POST.md",
-      "lastUpdated": "2026-04-25T07:51:09.198Z",
+      "lastUpdated": "2026-05-09T10:53:32.791Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -734,7 +734,7 @@
         "users__root__GET"
       ],
       "handlerLine": 40,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "users__id__PUT": {
       "chunkId": "users__id__PUT",
@@ -748,7 +748,7 @@
         "apps/api/src/modules/users/users.service.ts"
       ],
       "docFile": ".docs/chunks/users__id__PUT.md",
-      "lastUpdated": "2026-04-25T07:51:09.199Z",
+      "lastUpdated": "2026-05-09T10:53:48.595Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -762,7 +762,7 @@
         "users__root__POST"
       ],
       "handlerLine": 52,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     },
     "users__id__DELETE": {
       "chunkId": "users__id__DELETE",
@@ -775,7 +775,7 @@
         "apps/api/src/modules/users/users.service.ts"
       ],
       "docFile": ".docs/chunks/users__id__DELETE.md",
-      "lastUpdated": "2026-04-25T07:51:09.201Z",
+      "lastUpdated": "2026-05-09T10:54:04.196Z",
       "guards": [
         "JwtAuthGuard",
         "RolesGuard"
@@ -789,7 +789,7 @@
         "users__root__POST"
       ],
       "handlerLine": 66,
-      "commitSha": "927c5b12cc73a5885b3b5f121dc432d17f0f7565"
+      "commitSha": "bd638d9301e72a7c016eafff9cca025af6e783a2"
     }
   },
   "fileMap": {
@@ -979,5 +979,577 @@
     "SubTopic": [
       "sub-topics__root__POST"
     ]
-  }
+  },
+  "relationships": [
+    {
+      "from": "auth__signup__POST",
+      "to": "User",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "auth__signup__POST",
+      "to": "User",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "auth__login__POST",
+      "to": "User",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "auth__me__GET",
+      "to": "User",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "auth__me__GET",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "auth__logout__POST",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__root__GET",
+      "to": "Project",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__root__GET",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__root__GET",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__root__GET",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id__GET",
+      "to": "Project",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id__GET",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id__GET",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id__GET",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__root__POST",
+      "to": "Project",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__root__POST",
+      "to": "ProjectAssignment",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__root__POST",
+      "to": "Project",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__root__POST",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__root__POST",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__root__POST",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id__PATCH",
+      "to": "Project",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id__PATCH",
+      "to": "Project",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id__PATCH",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id__PATCH",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id__PATCH",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id__DELETE",
+      "to": "Project",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id__DELETE",
+      "to": "Project",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id__DELETE",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id__DELETE",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id__DELETE",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id_assignments__POST",
+      "to": "ProjectAssignment",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id_assignments__POST",
+      "to": "Project",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id_assignments__POST",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id_assignments__POST",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id_assignments__POST",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id_assignments_userId__DELETE",
+      "to": "ProjectAssignment",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id_assignments_userId__DELETE",
+      "to": "Project",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id_assignments_userId__DELETE",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id_assignments_userId__DELETE",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id_assignments_userId__DELETE",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id_assignments_userId__PATCH",
+      "to": "ProjectAssignment",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id_assignments_userId__PATCH",
+      "to": "Project",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id_assignments_userId__PATCH",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "projects__id_assignments_userId__PATCH",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "projects__id_assignments_userId__PATCH",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "skill-matrix__root__GET",
+      "to": "SkillMatrix",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "skill-matrix__root__GET",
+      "to": "SkillMatrix",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "skill-matrix__root__GET",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "skill-matrix__id__GET",
+      "to": "SkillMatrix",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "skill-matrix__id__GET",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "skill-matrix__root__POST",
+      "to": "SkillMatrix",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "skill-matrix__root__POST",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "skill-matrix__id__PATCH",
+      "to": "SkillMatrix",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "skill-matrix__id__PATCH",
+      "to": "SkillMatrix",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "skill-matrix__id__PATCH",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "skill-matrix__id__DELETE",
+      "to": "SkillMatrix",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "skill-matrix__id__DELETE",
+      "to": "SkillMatrix",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "skill-matrix__id__DELETE",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "sub-topics__root__POST",
+      "to": "SubTopic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "sub-topics__root__POST",
+      "to": "SubTopic",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "sub-topics__root__POST",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "sub-topics__root__POST",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "topics__root__GET",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "topics__root__GET",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "topics__root__GET",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "topics__root__GET",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "topics__id__GET",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "topics__id__GET",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "topics__id__GET",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "topics__root__POST",
+      "to": "Topic",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "topics__root__POST",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "topics__root__POST",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "topics__id__PATCH",
+      "to": "Topic",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "topics__id__PATCH",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "topics__id__PATCH",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "topics__id__PATCH",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "topics__id__DELETE",
+      "to": "Topic",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "topics__id__DELETE",
+      "to": "Topic",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "topics__id__DELETE",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "topics__id__DELETE",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "users__root__GET",
+      "to": "User",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "users__root__GET",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "users__root__GET",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "users__root__POST",
+      "to": "User",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "users__root__POST",
+      "to": "User",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "users__root__POST",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "users__root__POST",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "users__id__PUT",
+      "to": "User",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "users__id__PUT",
+      "to": "User",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "users__id__PUT",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "users__id__PUT",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "users__id__DELETE",
+      "to": "User",
+      "type": "reads",
+      "targetKind": "model"
+    },
+    {
+      "from": "users__id__DELETE",
+      "to": "User",
+      "type": "mutates",
+      "targetKind": "model"
+    },
+    {
+      "from": "users__id__DELETE",
+      "to": "JwtAuthGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    },
+    {
+      "from": "users__id__DELETE",
+      "to": "RolesGuard",
+      "type": "guards",
+      "targetKind": "guard"
+    }
+  ]
 }

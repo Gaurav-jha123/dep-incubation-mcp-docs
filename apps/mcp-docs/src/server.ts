@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { listModules } from './tools/list-modules.js';
 import { getDoc } from './tools/get-doc.js';
 import { getDocJson } from './tools/get-doc-json.js';
+import { getDocSource } from './tools/get-doc-source.js';
 import { searchDocs } from './tools/search-docs.js';
 import { getSchema } from './tools/get-schema.js';
 import { getImpact } from './tools/get-impact.js';
@@ -11,15 +12,17 @@ import { reportIssue } from './tools/report-issue.js';
 // ---------------------------------------------------------------------------
 // Resolve .docs directory
 // Env var DOCS_ROOT takes precedence; otherwise resolve relative to repo root.
-// apps/mcp-docs/src/ → ../../.. → repo root
+// Compiled output lands at dist/src/server.js → ../../../../ = repo root
 // ---------------------------------------------------------------------------
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const REPO_ROOT = resolve(__dirname, '../../../');
+const REPO_ROOT = resolve(__dirname, '../../../../');
 
 export const DOCS_DIR: string = process.env.DOCS_ROOT
   ? resolve(process.env.DOCS_ROOT)
   : resolve(REPO_ROOT, '.docs');
+
+export const REPO_ROOT_DIR: string = REPO_ROOT;
 
 // ---------------------------------------------------------------------------
 // MCP tool schema definitions
@@ -49,6 +52,23 @@ export const TOOLS_SCHEMA = [
           type: 'string',
           description:
             'A chunkId (e.g. "projects__id__GET"), a module name (e.g. "projects"), or "METHOD /path" (e.g. "GET /projects/:id").',
+        },
+      },
+      required: ['chunkId'],
+    },
+  },
+  {
+    name: 'get_doc_source',
+    description:
+      'Get the raw TypeScript source (handler + service) for an endpoint. ' +
+      'Use this when confidence < 0.65 on a chunk\'s summary or businessLogic fields. ' +
+      'Pass a chunkId like "projects__id__GET".',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        chunkId: {
+          type: 'string',
+          description: 'The chunk ID to fetch source for (e.g. "projects__id__GET").',
         },
       },
       required: ['chunkId'],
@@ -125,8 +145,8 @@ export const TOOLS_SCHEMA = [
     name: 'report_issue',
     description:
       'Report an inaccuracy or missing information in a doc chunk. ' +
-      'Feedback is stored server-side for maintainers to review. ' +
-      'Provide the chunkId (e.g. "projects__id__GET") and a short issue description.',
+      'Feedback is stored in .docs/feedback.jsonl for maintainers to review. ' +
+      'Optionally include the specific field name, a suggested correction, and the confidence score you observed.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -137,6 +157,18 @@ export const TOOLS_SCHEMA = [
         issue: {
           type: 'string',
           description: 'A short description of the inaccuracy or gap.',
+        },
+        fieldName: {
+          type: 'string',
+          description: 'Optional: the specific field with the issue (e.g. "summary", "businessLogic").',
+        },
+        suggestedValue: {
+          type: 'string',
+          description: 'Optional: the correct value you believe this field should have.',
+        },
+        observedConfidence: {
+          type: 'number',
+          description: 'Optional: the confidence score shown for this field (0–1).',
         },
       },
       required: ['chunkId', 'issue'],
@@ -202,7 +234,9 @@ export async function handleRpc(
 
         let text: string;
 
-        if (name === 'list_modules') {
+        if (name === 'get_doc_source') {
+          text = getDocSource(DOCS_DIR, REPO_ROOT_DIR, args['chunkId'] as string);
+        } else if (name === 'list_modules') {
           text = JSON.stringify(listModules(DOCS_DIR), null, 2);
         } else if (name === 'get_doc') {
           text = getDoc(DOCS_DIR, args['chunkId'] as string);
@@ -223,6 +257,9 @@ export async function handleRpc(
             DOCS_DIR,
             args['chunkId'] as string,
             args['issue'] as string,
+            args['fieldName'] as string | undefined,
+            args['suggestedValue'] as string | undefined,
+            args['observedConfidence'] as number | undefined,
           );
         } else {
           throw new Error(`Unknown tool: ${name}`);

@@ -1,0 +1,160 @@
+{
+  "chunkId": "projects__id_assignments__POST",
+  "module": "projects",
+  "structural": {
+    "route": {
+      "value": "/projects/:id/assignments",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "POST",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [
+        "ADMIN",
+        "MANAGER"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        },
+        {
+          "name": "dto",
+          "type": "AssignUserDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "AssignUserDto": [
+          {
+            "name": "userId",
+            "type": "number",
+            "optional": false,
+            "validators": [
+              "IsInt"
+            ],
+            "example": "3"
+          },
+          {
+            "name": "startDate",
+            "type": "string",
+            "optional": true,
+            "validators": [
+              "IsISO8601"
+            ],
+            "example": "2026-01-01"
+          },
+          {
+            "name": "endDate",
+            "type": "string",
+            "optional": true,
+            "validators": [
+              "IsISO8601"
+            ],
+            "example": "2026-12-31"
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 201,
+          "description": "User assigned"
+        },
+        {
+          "status": 404,
+          "description": "Project not found"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Assign a user to a project by creating a new project assignment and retrieving the corresponding project and topic information. Business logic includes validating user permissions and ensuring a unique project assignment is created.",
+      "confidence": 0.65,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": null,
+      "confidence": 0.5,
+      "provenance": "INFERRED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`assignUser()` → `assignUser()` → `projectAssignment.create`, `project.findUnique`, `topic.findMany`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "assignUser",
+          "prismaCalls": [
+            "projectAssignment.create",
+            "project.findUnique",
+            "topic.findMany"
+          ],
+          "throws": [
+            "ConflictException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "bd41c86a0ad14c731ea5a2ba9e48524debf7bddd62acc2fd1ea6aeee49b83f66",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/dto/assign-user.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.service.ts"
+    ],
+    "handlerLine": 100,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:49:38.503Z"
+  }
+}

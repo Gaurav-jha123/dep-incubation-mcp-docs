@@ -1,0 +1,122 @@
+{
+  "chunkId": "users__id__DELETE",
+  "module": "users",
+  "structural": {
+    "route": {
+      "value": "/users/:id",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "DELETE",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [
+        "ADMIN"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {},
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "User deleted successfully"
+        },
+        {
+          "status": 404,
+          "description": "User not found"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": null,
+      "confidence": 0,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `removeUser()` method performs a database operation by first searching for the user with the specified ID through `user.findUnique`, and then deleting the user through `user.delete`. This operation assumes that the user exists in the database, and throws a `NotFoundException` if the user is not found. The `JwtAuthGuard` and `RolesGuard` are applied before processing this request, which requires the user's role to be set to 'ADMIN'.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`remove()` → `removeUser()` → `user.findUnique`, `user.delete`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "removeUser",
+          "prismaCalls": [
+            "user.findUnique",
+            "user.delete"
+          ],
+          "throws": [
+            "NotFoundException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "dbdd6a2e6c784edc28bae7384404af2eac981a4f289592e580b1a8d3f4096597",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/users/users.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/users/users.service.ts"
+    ],
+    "handlerLine": 66,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:54:04.193Z"
+  }
+}

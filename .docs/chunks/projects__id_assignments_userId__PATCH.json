@@ -1,0 +1,149 @@
+{
+  "chunkId": "projects__id_assignments_userId__PATCH",
+  "module": "projects",
+  "structural": {
+    "route": {
+      "value": "/projects/:id/assignments/:userId",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "PATCH",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        },
+        {
+          "name": "userId",
+          "type": "number",
+          "source": "param"
+        },
+        {
+          "name": "dto",
+          "type": "UpdateAssignmentStatusDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "UpdateAssignmentStatusDto": [
+          {
+            "name": "status",
+            "type": "AssignmentStatus",
+            "optional": false,
+            "validators": [
+              "IsEnum(AssignmentStatus)"
+            ],
+            "example": "AssignmentStatus.ASSIGNED"
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 200,
+          "description": "Assignment status updated"
+        },
+        {
+          "status": 403,
+          "description": "Cannot update another user assignment"
+        },
+        {
+          "status": 404,
+          "description": "Project not found"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Update assignment status",
+      "confidence": 0.65,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "This endpoint updates the status of an assignment by calling the `updateAssignmentStatus()` service method. It performs a database operation to update the `projectAssignment` using `project.findUnique` and `topic.findMany` operations. If the authenticated user does not have the correct permissions, a `ForbiddenException` is thrown. If the project is not found, a `NotFoundException` is thrown.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`updateAssignmentStatus()` → `updateAssignmentStatus()` → `projectAssignment.update`, `project.findUnique`, `topic.findMany`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "updateAssignmentStatus",
+          "prismaCalls": [
+            "projectAssignment.update",
+            "project.findUnique",
+            "topic.findMany"
+          ],
+          "throws": [
+            "ForbiddenException",
+            "NotFoundException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "2d9d71f42829495876e73abc7e200b777a9db14aefb61cd8235998dd3814dc7b",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/dto/update-assignment.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.service.ts"
+    ],
+    "handlerLine": 135,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:50:09.841Z"
+  }
+}

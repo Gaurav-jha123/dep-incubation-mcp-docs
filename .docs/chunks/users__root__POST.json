@@ -1,0 +1,136 @@
+{
+  "chunkId": "users__root__POST",
+  "module": "users",
+  "structural": {
+    "route": {
+      "value": "/users",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "POST",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [
+        "ADMIN"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "dto",
+          "type": "CreateUserDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "CreateUserDto": [
+          {
+            "name": "username",
+            "type": "string",
+            "optional": false,
+            "validators": [
+              "IsString",
+              "IsNotEmpty"
+            ],
+            "example": "john.doe"
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 201,
+          "description": "User created successfully"
+        },
+        {
+          "status": 409,
+          "description": "Generated email already registered"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": "Create user with username only",
+      "confidence": 0.65,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "Upon receiving a `CreateUserDto` in the request body, `createUser()` method is invoked which calls `user.findUnique` to check if a user with the provided username already exists. If not found, it proceeds to call `user.create` to create a new user with the given credentials. The method throws a `ConflictException` if the email associated with the created user is already registered.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`create()` → `createUser()` → `user.findUnique`, `user.create`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "createUser",
+          "prismaCalls": [
+            "user.findUnique",
+            "user.create"
+          ],
+          "throws": [
+            "ConflictException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "bac31d99f4dbdaee5fab2482f7b33be812a89cf5909a426ad071e9fff14d5769",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/users/users.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/users/dto/create-user.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/users/users.service.ts"
+    ],
+    "handlerLine": 40,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:53:32.789Z"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "chunkId": "topics__id__PATCH",
+  "module": "topics",
+  "structural": {
+    "route": {
+      "value": "/topics/:id",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "PATCH",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [
+        "ADMIN"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "id",
+          "type": "number",
+          "source": "param"
+        },
+        {
+          "name": "dto",
+          "type": "UpdateTopicDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "UpdateTopicDto": [
+          {
+            "name": "label",
+            "type": "string",
+            "optional": true,
+            "validators": [
+              "IsString"
+            ],
+            "example": "JavaScript"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "optional": true,
+            "validators": [
+              "IsString"
+            ],
+            "example": "Core concepts of JS like closures, promises, etc."
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": null,
+      "confidence": 0,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "The `/topics/:id` endpoint calls the `update()` service method, which performs a Prisma operation to update the topic with the provided `id` using `topic.update` and checks if the topic exists using `topic.findUnique`. If the topic is found, the update operation will succeed, otherwise, it will throw an error. The endpoint is secured by JwtAuthGuard and RolesGuard, requiring the ADMIN role for access.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`update()` → `update()` → `topic.update`, `topic.findUnique`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "none",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "update",
+          "prismaCalls": [
+            "topic.update",
+            "topic.findUnique"
+          ],
+          "throws": [],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "a27d736c744f3c400856254e6e88a1b2a55559fbb9364e41a8f073d695e891e8",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/topics/topic.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/topics/dto/update-topic.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/topics/topic.service.ts"
+    ],
+    "handlerLine": 59,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:52:46.008Z"
+  }
+}

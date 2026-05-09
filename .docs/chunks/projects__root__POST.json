@@ -1,0 +1,219 @@
+{
+  "chunkId": "projects__root__POST",
+  "module": "projects",
+  "structural": {
+    "route": {
+      "value": "/projects",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "method": {
+      "value": "POST",
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "guards": {
+      "value": [
+        "JwtAuthGuard",
+        "RolesGuard"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "roles": {
+      "value": [
+        "ADMIN",
+        "MANAGER"
+      ],
+      "confidence": 0.99,
+      "provenance": "AST"
+    },
+    "params": {
+      "value": [
+        {
+          "name": "dto",
+          "type": "CreateProjectDto",
+          "source": "body"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "returnType": {
+      "value": "unknown",
+      "confidence": 0.95,
+      "provenance": "AST"
+    },
+    "dtoFields": {
+      "value": {
+        "CreateProjectDto": [
+          {
+            "name": "code",
+            "type": "string",
+            "optional": false,
+            "validators": [
+              "IsString",
+              "MinLength(1)"
+            ],
+            "example": "UKG-HPAY"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "optional": false,
+            "validators": [
+              "IsString",
+              "MinLength(1)"
+            ],
+            "example": "Client Portal Alpha"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "optional": true,
+            "validators": [
+              "IsString"
+            ],
+            "example": "Frontend portal for Acme Corp"
+          },
+          {
+            "name": "type",
+            "type": "ProjectType",
+            "optional": false,
+            "validators": [
+              "IsEnum(ProjectType)"
+            ],
+            "example": "ProjectType.CLIENT"
+          },
+          {
+            "name": "status",
+            "type": "ProjectStatus",
+            "optional": true,
+            "validators": [
+              "IsEnum(ProjectStatus)"
+            ],
+            "example": "ProjectStatus.ACTIVE"
+          },
+          {
+            "name": "clientName",
+            "type": "string",
+            "optional": true,
+            "validators": [
+              "IsString"
+            ],
+            "example": "Acme Corp"
+          },
+          {
+            "name": "startDate",
+            "type": "string",
+            "optional": true,
+            "validators": [
+              "IsISO8601"
+            ],
+            "example": "2026-01-01"
+          },
+          {
+            "name": "endDate",
+            "type": "string",
+            "optional": true,
+            "validators": [
+              "IsISO8601"
+            ],
+            "example": "2026-12-31"
+          },
+          {
+            "name": "skillIds",
+            "type": "number[]",
+            "optional": true,
+            "validators": [
+              "IsArray",
+              "IsInt({ each: true })"
+            ],
+            "example": null
+          },
+          {
+            "name": "userIds",
+            "type": "number[]",
+            "optional": true,
+            "validators": [
+              "IsArray",
+              "IsInt({ each: true })"
+            ],
+            "example": null
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "provenance": "AST"
+    },
+    "apiResponses": {
+      "value": [
+        {
+          "status": 201,
+          "description": "Project created"
+        }
+      ],
+      "confidence": 0.95,
+      "provenance": "AST"
+    }
+  },
+  "semantic": {
+    "summary": {
+      "value": null,
+      "confidence": 0,
+      "provenance": "LLM_GENERATED"
+    },
+    "businessLogic": {
+      "value": "When creating a project, this endpoint performs the following database operations: it creates a new project using `project.create`, creates project assignments using `projectAssignment.createMany`, retrieves an existing project using `project.findUnique`, and retrieves related topics using `topic.findMany`. If a project with the same code already exists, a ConflictException is thrown. Required roles for this endpoint are ADMIN and MANAGER.",
+      "confidence": 0.7,
+      "provenance": "LLM_GENERATED"
+    }
+  },
+  "derived": {
+    "executionFlow": {
+      "value": "`create()` → `create()` → `project.create`, `projectAssignment.createMany`, `project.findUnique`, `topic.findMany`",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "operationType": {
+      "value": "mixed",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "consistencyRisk": {
+      "value": "low",
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    },
+    "serviceMethods": {
+      "value": [
+        {
+          "methodName": "create",
+          "prismaCalls": [
+            "project.create",
+            "projectAssignment.createMany",
+            "project.findUnique",
+            "topic.findMany"
+          ],
+          "throws": [
+            "ConflictException"
+          ],
+          "hasTransaction": false
+        }
+      ],
+      "confidence": 0.75,
+      "provenance": "INFERRED"
+    }
+  },
+  "metadata": {
+    "fingerprint": "c4660dacf199ca83ee2c303a918f282d42c35a464f033781a1c18920a9f86ff3",
+    "sourceFiles": [
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.controller.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/dto/create-project.dto.ts",
+      "C:/Users/Gaurav_Jha/Desktop/incubation/dep-incubation-dashboard/apps/api/src/modules/projects/projects.service.ts"
+    ],
+    "handlerLine": 64,
+    "jsdoc": null,
+    "lastUpdated": "2026-05-09T10:48:51.531Z"
+  }
+}
