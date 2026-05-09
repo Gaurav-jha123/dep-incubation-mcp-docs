@@ -4,29 +4,40 @@ description: "Create user with username only"
 ---
 
 ## POST /users
-**Module:** users
+**Module:** `users`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
+- **Roles:** `ADMIN`
 
 ### What it does
-Create user with username only
+🔴 Create user with username only
+
+### Business Logic
+🟡 Upon receiving a `CreateUserDto` in the request body, `createUser()` method is invoked which calls `user.findUnique` to check if a user with the provided username already exists. If not found, it proceeds to call `user.create` to create a new user with the given credentials. The method throws a `ConflictException` if the email associated with the created user is already registered.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `dto` | `CreateUserDto` | body |
 
-### Response
-User created successfully
+### DTO Fields
+**`CreateUserDto`**
 
-### Business Logic
-`createUser()` — Calls `user.findUnique`, `user.create`. May throw: ConflictException.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `username` | `string` | Yes | IsString, IsNotEmpty | john.doe |
 
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-**Required roles:** ADMIN
-
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 201 | User created successfully |
 | 409 | Generated email already registered |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`create()` → `createUser()` → `user.findUnique`, `user.create`
+
+### Service Details
+**`createUser()`**
+- Prisma: `user.findUnique`, `user.create`
+- Throws: `ConflictException`

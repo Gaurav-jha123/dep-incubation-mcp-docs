@@ -1,23 +1,19 @@
 ---
 title: "GET /"
-description: "Health check"
+description: "No summary available"
 ---
 
 ## GET /
-**Module:** app
+**Module:** `app`
 
 ### What it does
-Health check
-
-### Request
-| Param | Type | Source |
-|-------|------|--------|
-| — | — | — |
-
-### Response
-`string`
+🔴 No summary available
 
 ### Business Logic
-`getHello()` — No direct DB calls.
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+🟡 The `getHello()` service method is called, which does not perform any direct database operations via Prisma. As a result, the execution flow is quite basic and straightforward, with the only action being the invocation of the `getHello()` function recursively. No specific business rules or error handling is involved in this endpoint.
+
+### Execution Flow
+`getHello()` → `getHello()`
+
+### Service Details
+**`getHello()`**

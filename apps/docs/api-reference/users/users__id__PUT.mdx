@@ -1,13 +1,20 @@
 ---
 title: "PUT /users/:id"
-description: "Update user by ID"
+description: "No summary available"
 ---
 
 ## PUT /users/:id
-**Module:** users
+**Module:** `users`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
+- **Roles:** `ADMIN`
 
 ### What it does
-Update user by ID
+🔴 No summary available
+
+### Business Logic
+🟡 The `updateUser()` method performs the following database operations: it first calls `user.findUnique` to retrieve the user by ID, and then calls `user.update` to update the user's information based on the provided `UpdateUserDto`. This process throws a `NotFoundException` if the user is not found, or a `ConflictException` if the generated email is already registered. The update operation requires the user to have the correct role (ADMIN) and be authenticated with a valid JWT.
 
 ### Request
 | Param | Type | Source |
@@ -15,20 +22,24 @@ Update user by ID
 | `id` | `number` | param |
 | `dto` | `UpdateUserDto` | body |
 
-### Response
-User updated successfully
+### DTO Fields
+**`UpdateUserDto`**
 
-### Business Logic
-`updateUser()` — Calls `user.findUnique`, `user.update`. May throw: NotFoundException, ConflictException.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `username` | `string` | Yes | IsString, IsNotEmpty | john.updated |
 
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-**Required roles:** ADMIN
-
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 200 | User updated successfully |
 | 404 | User not found |
 | 409 | Generated email already registered |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`update()` → `updateUser()` → `user.findUnique`, `user.update`
+
+### Service Details
+**`updateUser()`**
+- Prisma: `user.findUnique`, `user.update`
+- Throws: `NotFoundException`, `ConflictException`

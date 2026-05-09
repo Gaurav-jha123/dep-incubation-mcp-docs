@@ -1,31 +1,35 @@
 ---
 title: "GET /topics/:id"
-description: "Get topic by ID"
+description: "No summary available"
 ---
 
 ## GET /topics/:id
-**Module:** topics
+**Module:** `topics`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
 
 ### What it does
-Get topic by ID
+🔴 No summary available
+
+### Business Logic
+🟡 This endpoint executes the `findOne` service method which calls the `topic.findUnique` Prisma operation to retrieve a specific topic by ID. If the topic is not found, the `NotFoundException` is thrown. The endpoint enforces authentication and authorization using the JwtAuthGuard and RolesGuard.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `id` | `number` | param |
 
-### Response
-Topic found
-
-### Business Logic
-`findOne()` — Calls `topic.findUnique`. May throw: NotFoundException.
-
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 200 | Topic found |
 | 404 | Topic not found |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`findOne()` → `findOne()` → `topic.findUnique`
+
+### Service Details
+**`findOne()`**
+- Prisma: `topic.findUnique`
+- Throws: `NotFoundException`

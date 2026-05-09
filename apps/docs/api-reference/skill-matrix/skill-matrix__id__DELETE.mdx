@@ -4,30 +4,34 @@ description: "Delete a skill matrix entry"
 ---
 
 ## DELETE /skill-matrix/:id
-**Module:** skill-matrix
+**Module:** `skill-matrix`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`
 
 ### What it does
-Delete a skill matrix entry
+🔴 Delete a skill matrix entry
+
+### Business Logic
+🟡 The `skills-matrix.delete` operation is called to permanently delete a skill matrix entry. Before deletion, the `skillMatrix.findUnique` operation checks if the entry exists. If the deletion is not permitted (i.e., the user is not the owner), a `ForbiddenException` is thrown, displaying a 403 status code.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `id` | `number` | param |
 
-### Response
-Skill matrix entry deleted successfully
-
-### Business Logic
-`remove()` — Calls `skillMatrix.delete`, `skillMatrix.findUnique`. May throw: ForbiddenException.
-
-### Auth
-**Guards:** JwtAuthGuard
-
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 200 | Skill matrix entry deleted successfully |
 | 401 | Unauthorized |
 | 403 | Forbidden — not your entry |
 | 404 | Skill matrix entry not found |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`remove()` → `remove()` → `skillMatrix.delete`, `skillMatrix.findUnique`
+
+### Service Details
+**`remove()`**
+- Prisma: `skillMatrix.delete`, `skillMatrix.findUnique`
+- Throws: `ForbiddenException`

@@ -1,13 +1,17 @@
 ---
 title: "POST /projects/:id/assignments"
-description: "Assign a user to a project"
+description: "Assign a user to a project by creating a new project assignment and retrieving the corresponding project and topic information. Business logic includes validating user permissions and ensuring a unique project assignment is created."
 ---
 
 ## POST /projects/:id/assignments
-**Module:** projects
+**Module:** `projects`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
+- **Roles:** `ADMIN`, `MANAGER`
 
 ### What it does
-Assign a user to a project
+🔴 Assign a user to a project by creating a new project assignment and retrieving the corresponding project and topic information. Business logic includes validating user permissions and ensuring a unique project assignment is created.
 
 ### Request
 | Param | Type | Source |
@@ -15,19 +19,25 @@ Assign a user to a project
 | `id` | `number` | param |
 | `dto` | `AssignUserDto` | body |
 
-### Response
-User assigned
+### DTO Fields
+**`AssignUserDto`**
 
-### Business Logic
-`assignUser()` — Calls `projectAssignment.create`, `project.findUnique`, `topic.findMany`. May throw: ConflictException.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `userId` | `number` | Yes | IsInt | 3 |
+| `startDate` | `string` | No | IsISO8601 | 2026-01-01 |
+| `endDate` | `string` | No | IsISO8601 | 2026-12-31 |
 
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-**Required roles:** ADMIN, MANAGER
-
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 201 | User assigned |
 | 404 | Project not found |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`assignUser()` → `assignUser()` → `projectAssignment.create`, `project.findUnique`, `topic.findMany`
+
+### Service Details
+**`assignUser()`**
+- Prisma: `projectAssignment.create`, `project.findUnique`, `topic.findMany`
+- Throws: `ConflictException`

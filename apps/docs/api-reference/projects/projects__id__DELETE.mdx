@@ -1,32 +1,35 @@
 ---
 title: "DELETE /projects/:id"
-description: "Delete project"
+description: "No summary available"
 ---
 
 ## DELETE /projects/:id
-**Module:** projects
+**Module:** `projects`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
+- **Roles:** `ADMIN`, `MANAGER`
 
 ### What it does
-Delete project
+🔴 No summary available
+
+### Business Logic
+🟡 The `remove()` service method deletes a project by calling the `project.delete` Prisma operation, which also triggers calls to `project.findUnique` for verification and `topic.findMany` for potentially related entities. This operation assumes the project exists in the database. If the project is not found, a 404 error is thrown. Additionally, the business logic assumes that the roles guard and JWT authentication guard have successfully authenticated the request.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `id` | `number` | param |
 
-### Response
-Project deleted
-
-### Business Logic
-`remove()` — Calls `project.delete`, `project.findUnique`, `topic.findMany`.
-
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-**Required roles:** ADMIN, MANAGER
-
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 200 | Project deleted |
 | 404 | Project not found |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`remove()` → `remove()` → `project.delete`, `project.findUnique`, `topic.findMany`
+
+### Service Details
+**`remove()`**
+- Prisma: `project.delete`, `project.findUnique`, `topic.findMany`

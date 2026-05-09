@@ -4,29 +4,41 @@ description: "Create a new skill matrix entry"
 ---
 
 ## POST /skill-matrix
-**Module:** skill-matrix
+**Module:** `skill-matrix`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`
 
 ### What it does
-Create a new skill matrix entry
+🔴 Create a new skill matrix entry
+
+### Business Logic
+🟡 When the `create()` method is called, it performs a Prisma operation `skillMatrix.create` to persist the new skill matrix entry. If a duplicate entry is attempted to be created, a `ConflictException` is thrown. Error handling is implemented to catch and handle invalid input, including field-specific validation and conflict errors.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `dto` | `CreateSkillMatrixDto` | body |
 
-### Response
-Skill matrix entry created successfully
+### DTO Fields
+**`CreateSkillMatrixDto`**
 
-### Business Logic
-`create()` — Calls `skillMatrix.create`. May throw: ConflictException.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `topicId` | `number` | Yes | IsInt, IsNotEmpty | 1 |
+| `value` | `number` | Yes | IsInt, Min(0), Max(100) | 75 |
 
-### Auth
-**Guards:** JwtAuthGuard
-
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 201 | Skill matrix entry created successfully |
 | 400 | Validation error |
 | 401 | Unauthorized |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`create()` → `create()` → `skillMatrix.create`
+
+### Service Details
+**`create()`**
+- Prisma: `skillMatrix.create`
+- Throws: `ConflictException`

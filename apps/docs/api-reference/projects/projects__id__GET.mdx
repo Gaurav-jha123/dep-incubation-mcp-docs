@@ -1,31 +1,35 @@
 ---
 title: "GET /projects/:id"
-description: "Get project by ID"
+description: "No summary available"
 ---
 
 ## GET /projects/:id
-**Module:** projects
+**Module:** `projects`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
 
 ### What it does
-Get project by ID
+🔴 No summary available
+
+### Business Logic
+🟡 The business logic for this operation retrieves a project by its unique ID, including its associated skills and topics. It does this by using `project.findUnique` to query the Prisma database and fetching related topics with `topic.findMany`. If the project is not found, a `NotFoundException` is thrown.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `id` | `number` | param |
 
-### Response
-Project with full details including skills and assignments
-
-### Business Logic
-`findOne()` — Calls `project.findUnique`, `topic.findMany`. May throw: NotFoundException.
-
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 200 | Project with full details including skills and assignments |
 | 404 | Project not found |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`findOne()` → `findOne()` → `project.findUnique`, `topic.findMany`
+
+### Service Details
+**`findOne()`**
+- Prisma: `project.findUnique`, `topic.findMany`
+- Throws: `NotFoundException`

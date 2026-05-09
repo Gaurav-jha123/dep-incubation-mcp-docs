@@ -1,26 +1,41 @@
 ---
 title: "GET /topics"
-description: "Get all topics"
+description: "No summary available"
 ---
 
 ## GET /topics
-**Module:** topics
+**Module:** `topics`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
 
 ### What it does
-Get all topics
+🔴 No summary available
+
+### Business Logic
+🟡 The `findAll()` method retrieves all topics from the database by calling `topic.findMany`. It also retrieves the total count of topics using `topic.count`. The method executes this logic within the context of a transaction if it's enabled. In case an error occurs during the execution, it's propagated as an error response. The pagination query parameters received with the request are used to determine the limit and offset of the topics to be returned.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `query` | `PaginationQueryDto` | query |
 
-### Response
-List of topics
+### DTO Fields
+**`PaginationQueryDto`**
 
-### Business Logic
-`findAll()` — Calls `topic.findMany`, `topic.count`.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `page` | `number` | No | Type(() => Number), IsInt, Min(1) | — |
+| `limit` | `number` | No | Type(() => Number), IsInt, Min(1) | — |
 
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+### Responses
+| Status | Description |
+|--------|-------------|
+| 200 | List of topics |
+
+### Execution Flow
+`findAll()` → `findAll()` → `topic.findMany`, `topic.count`
+
+### Service Details
+**`findAll()`**
+- Prisma: `topic.findMany`, `topic.count`

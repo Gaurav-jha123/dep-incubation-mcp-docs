@@ -1,27 +1,29 @@
 ---
 title: "DELETE /topics/:id"
-description: "Delete topic"
+description: "Delete a topic with the specified `id`."
 ---
 
 ## DELETE /topics/:id
-**Module:** topics
+**Module:** `topics`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
+- **Roles:** `ADMIN`
 
 ### What it does
-Delete topic
+🔴 Delete a topic with the specified `id`.
+
+### Business Logic
+🟡 The `remove()` method is called, which executes `topic.delete` to delete the topic from the database. Additionally, `topic.findUnique` is also used to retrieve the topic before deletion, possibly for auditing or caching purposes. If the topic with the specified `id` does not exist, the deletion operation will fail, but no specific error is documented. The method does not support transactions.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `id` | `number` | param |
 
-### Response
-`unknown`
+### Execution Flow
+`remove()` → `remove()` → `topic.delete`, `topic.findUnique`
 
-### Business Logic
-`remove()` — Calls `topic.delete`, `topic.findUnique`.
-
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-**Required roles:** ADMIN
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+### Service Details
+**`remove()`**
+- Prisma: `topic.delete`, `topic.findUnique`

@@ -1,13 +1,20 @@
 ---
 title: "PATCH /topics/:id"
-description: "Update topic"
+description: "No summary available"
 ---
 
 ## PATCH /topics/:id
-**Module:** topics
+**Module:** `topics`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
+- **Roles:** `ADMIN`
 
 ### What it does
-Update topic
+🔴 No summary available
+
+### Business Logic
+🟡 The `/topics/:id` endpoint calls the `update()` service method, which performs a Prisma operation to update the topic with the provided `id` using `topic.update` and checks if the topic exists using `topic.findUnique`. If the topic is found, the update operation will succeed, otherwise, it will throw an error. The endpoint is secured by JwtAuthGuard and RolesGuard, requiring the ADMIN role for access.
 
 ### Request
 | Param | Type | Source |
@@ -15,14 +22,17 @@ Update topic
 | `id` | `number` | param |
 | `dto` | `UpdateTopicDto` | body |
 
-### Response
-`unknown`
+### DTO Fields
+**`UpdateTopicDto`**
 
-### Business Logic
-`update()` — Calls `topic.update`, `topic.findUnique`.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `label` | `string` | No | IsString | JavaScript |
+| `description` | `string` | No | IsString | Core concepts of JS like closures, promises, etc. |
 
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-**Required roles:** ADMIN
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+### Execution Flow
+`update()` → `update()` → `topic.update`, `topic.findUnique`
+
+### Service Details
+**`update()`**
+- Prisma: `topic.update`, `topic.findUnique`
