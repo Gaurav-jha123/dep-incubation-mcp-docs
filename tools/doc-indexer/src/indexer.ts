@@ -192,6 +192,15 @@ async function main(): Promise<void> {
       }
     }
 
+    // Append provenance footer
+    if (!doc.includes('### Provenance')) {
+      doc += '\n---\n### Provenance\n';
+      doc += '🔧 **AST** (high confidence): route, method, guards, roles, parameters, response types, decorators\n';
+      doc += '🤖 **LLM_GENERATED** (medium confidence): summary, business logic descriptions\n';
+      doc += '🔍 **INFERRED** (medium confidence): execution flow, operation type, consistency analysis\n\n';
+      doc += `**Last updated:** ${new Date().toISOString()}\n`;
+    }
+
     // Respect free-tier rate limit (~4 req/min → 1 req per 15s); skip in template mode
     if (process.env.USE_TEMPLATE_FALLBACK !== 'true') {
       await new Promise((r) => setTimeout(r, 15_000));
