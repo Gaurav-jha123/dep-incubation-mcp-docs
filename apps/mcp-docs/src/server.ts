@@ -2,6 +2,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { listModules } from './tools/list-modules.js';
 import { getDoc } from './tools/get-doc.js';
+import { getDocJson } from './tools/get-doc-json.js';
 import { searchDocs } from './tools/search-docs.js';
 import { getSchema } from './tools/get-schema.js';
 import { getImpact } from './tools/get-impact.js';
@@ -48,6 +49,23 @@ export const TOOLS_SCHEMA = [
           type: 'string',
           description:
             'A chunkId (e.g. "projects__id__GET"), a module name (e.g. "projects"), or "METHOD /path" (e.g. "GET /projects/:id").',
+        },
+      },
+      required: ['chunkId'],
+    },
+  },
+  {
+    name: 'get_doc_json',
+    description:
+      'Get the structured JSON data for a specific endpoint chunk. ' +
+      'Returns confidence scores and provenance metadata for each field. ' +
+      'Pass a chunkId like "projects__id__GET".',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        chunkId: {
+          type: 'string',
+          description: 'The chunk ID to fetch (e.g. "projects__id__GET").',
         },
       },
       required: ['chunkId'],
@@ -188,6 +206,8 @@ export async function handleRpc(
           text = JSON.stringify(listModules(DOCS_DIR), null, 2);
         } else if (name === 'get_doc') {
           text = getDoc(DOCS_DIR, args['chunkId'] as string);
+        } else if (name === 'get_doc_json') {
+          text = getDocJson(DOCS_DIR, args['chunkId'] as string);
         } else if (name === 'search_docs') {
           text = JSON.stringify(
             searchDocs(DOCS_DIR, args['query'] as string),

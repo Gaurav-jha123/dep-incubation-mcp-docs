@@ -28,6 +28,46 @@ export type DtoFieldMeta = {
   example: string | null;
 };
 
+export type ProvenanceType = 'AST' | 'LLM_GENERATED' | 'INFERRED';
+
+export type FieldConfidence = {
+  value: unknown;
+  confidence: number;
+  provenance: ProvenanceType;
+};
+
+export type ChunkData = {
+  chunkId: string;
+  module: string;
+  structural: {
+    route: { value: string; confidence: 0.99; provenance: 'AST' };
+    method: { value: string; confidence: 0.99; provenance: 'AST' };
+    guards: { value: string[]; confidence: 0.99; provenance: 'AST' };
+    roles: { value: string[]; confidence: 0.99; provenance: 'AST' };
+    params: { value: EndpointMeta['params']; confidence: 0.95; provenance: 'AST' };
+    returnType: { value: string; confidence: 0.95; provenance: 'AST' };
+    dtoFields: { value: Record<string, DtoFieldMeta[]>; confidence: 0.9; provenance: 'AST' };
+    apiResponses: { value: ApiResponseMeta[]; confidence: 0.95; provenance: 'AST' };
+  };
+  semantic: {
+    summary: { value: string | null; confidence: number; provenance: ProvenanceType };
+    businessLogic: { value: string | null; confidence: number; provenance: ProvenanceType };
+  };
+  derived: {
+    executionFlow: { value: string; confidence: 0.75; provenance: 'INFERRED' };
+    operationType: { value: 'read' | 'write' | 'mixed' | 'unknown'; confidence: 0.75; provenance: 'INFERRED' };
+    consistencyRisk: { value: 'none' | 'low' | 'high'; confidence: 0.75; provenance: 'INFERRED' };
+    serviceMethods: { value: ServiceMethodMeta[]; confidence: 0.75; provenance: 'INFERRED' };
+  };
+  metadata: {
+    fingerprint: string;
+    sourceFiles: string[];
+    handlerLine: number;
+    jsdoc: string | null;
+    lastUpdated: string;
+  };
+};
+
 export type EndpointMeta = {
   chunkId: string;
   module: string;
@@ -765,4 +805,57 @@ export function parseControllers(apiSrcDir: string): EndpointMeta[] {
   }
 
   return results;
+}
+
+// Convert EndpointMeta to ChunkData with confidence and provenance
+export function endpointMetaToChunkData(meta: EndpointMeta, summary: string | null, businessLogic: string | null): ChunkData {
+  const summaryConfidence = summary && summary.length > 20 ? 0.65 : 0.4;
+  const summaryProvenance: ProvenanceType = summary ? 'LLM_GENERATED' : 'INFERRED';
+  const businessLogicConfidence = businessLogic && businessLogic.length > 20 ? 0.7 : 0.5;
+  const businessLogicProvenance: ProvenanceType = businessLogic ? 'LLM_GENERATED' : 'INFERRED';
+
+  return {
+    chunkId: meta.chunkId,
+    module: meta.module,
+    structural: {
+      route: { value: meta.path, confidence: 0.99, provenance: 'AST' },
+      method: { value: meta.method, confidence: 0.99, provenance: 'AST' },
+      guards: { value: meta.guards, confidence: 0.99, provenance: 'AST' },
+      roles: { value: meta.roles, confidence: 0.99, provenance: 'AST' },
+      params: { value: meta.params, confidence: 0.95, provenance: 'AST' },
+      returnType: { value: meta.returnType, confidence: 0.95, provenance: 'AST' },
+      dtoFields: { value: meta.dtoFields, confidence: 0.9, provenance: 'AST' },
+      apiResponses: { value: meta.apiResponses, confidence: 0.95, provenance: 'AST' },
+    },
+    semantic: {
+      summary: { value: summary, confidence: summaryConfidence, provenance: summaryProvenance },
+      businessLogic: { value: businessLogic, confidence: businessLogicConfidence, provenance: businessLogicProvenance },
+    },
+    derived: {
+      executionFlow: { value: meta.executionFlow, confidence: 0.75, provenance: 'INFERRED' },
+      operationType: { value: meta.operationType, confidence: 0.75, provenance: 'INFERRED' },
+      consistencyRisk: { value: meta.consistencyRisk, confidence: 0.75, provenance: 'INFERRED' },
+      serviceMethods: { value: meta.serviceMethods, confidence: 0.75, provenance: 'INFERRED' },
+    },
+    metadata: {
+      fingerprint: meta.fingerprint,
+      sourceFiles: meta.sourceFiles,
+      handlerLine: meta.handlerLine,
+      jsdoc: meta.jsdoc,
+      lastUpdated: new Date().toISOString(),
+    },
+  };
+}
+
+// Render confidence badge: █ for filled, ░ for empty (10-char scale)
+export function renderConfidenceBadge(confidence: number): string {
+  const filled = Math.round(confidence / 10);
+  const empty = 10 - filled;
+  return `[${'█'.repeat(filled)}${'░'.repeat(empty)} ${Math.round(confidence)}/100]`;
+}
+
+// Render provenance indicator
+export function renderProvenance(provenance: ProvenanceType): string {
+  const map = { AST: '🔧', LLM_GENERATED: '🤖', INFERRED: '🔍' };
+  return map[provenance] || '?';
 }

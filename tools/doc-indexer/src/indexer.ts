@@ -2,7 +2,7 @@ import { mkdirSync, writeFileSync, existsSync, readFileSync, rmSync } from 'node
 import { resolve, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { simpleGit } from 'simple-git';
-import { parseControllers, renderDtoFieldsSection, renderExecutionFlow, renderErrorConditions } from './parser.js';
+import { parseControllers, renderDtoFieldsSection, renderExecutionFlow, renderErrorConditions, endpointMetaToChunkData, renderConfidenceBadge, renderProvenance, type ChunkData } from './parser.js';
 import type { EndpointMeta, IndexData, ChunkEntry } from './parser.js';
 import { parseSchema, renderModelDoc, renderEnumDoc } from './schema-parser.js';
 import { generateDoc } from './utils/llm.js';
@@ -77,7 +77,7 @@ function buildPrompt(meta: EndpointMeta): string {
   const errorConditionsSection = renderErrorConditions(meta);
 
   const opEmoji = { read: '📖', write: '✏️', mixed: '🔀', unknown: '❓' }[meta.operationType];
-  const confBar = '█'.repeat(Math.round(meta.confidenceScore / 10)) + '░'.repeat(10 - Math.round(meta.confidenceScore / 10));
+  const confBadge = renderConfidenceBadge(meta.confidenceScore);
 
   return `You are a technical writer. Write a concise feature doc for this REST API endpoint.
 
@@ -87,7 +87,7 @@ ${JSON.stringify(meta, null, 2)}
 Output ONLY this markdown, no preamble:
 
 ## ${meta.method} ${meta.path}
-**Module:** ${meta.module} | **Operation:** ${opEmoji} ${meta.operationType} | **Confidence:** ${confBar} ${meta.confidenceScore}/100
+**Module:** ${meta.module} | **Operation:** ${opEmoji} ${meta.operationType} | **Confidence:** ${confBadge}
 
 ### What it does
 ${whatItDoes}
@@ -192,6 +192,15 @@ async function main(): Promise<void> {
       }
     }
 
+    // Append provenance footer
+    if (!doc.includes('### Provenance')) {
+      doc += '\n---\n### Provenance\n';
+      doc += '🔧 **AST** (high confidence): route, method, guards, roles, parameters, response types, decorators\n';
+      doc += '🤖 **LLM_GENERATED** (medium confidence): summary, business logic descriptions\n';
+      doc += '🔍 **INFERRED** (medium confidence): execution flow, operation type, consistency analysis\n\n';
+      doc += `**Last updated:** ${new Date().toISOString()}\n`;
+    }
+
     // Respect free-tier rate limit (~4 req/min → 1 req per 15s); skip in template mode
     if (process.env.USE_TEMPLATE_FALLBACK !== 'true') {
       await new Promise((r) => setTimeout(r, 15_000));
@@ -199,6 +208,17 @@ async function main(): Promise<void> {
 
     const chunkPath = resolve(CHUNKS_DIR, `${meta.chunkId}.md`);
     writeFileSync(chunkPath, doc, 'utf-8');
+
+    // Extract summary and businessLogic from generated markdown
+    const summaryMatch = doc.match(/### What it does\n(.*?)(?=\n###|$)/s);
+    const summary = summaryMatch ? summaryMatch[1]?.trim() : null;
+    const businessLogicMatch = doc.match(/### Business Logic\n(.*?)(?=\n###|$)/s);
+    const businessLogic = businessLogicMatch ? businessLogicMatch[1]?.trim() : null;
+
+    // Convert to ChunkData and save JSON
+    const chunkData = endpointMetaToChunkData(meta, summary ?? null, businessLogic ?? null);
+    const jsonPath = resolve(CHUNKS_DIR, `${meta.chunkId}.json`);
+    writeFileSync(jsonPath, JSON.stringify(chunkData, null, 2), 'utf-8');
 
     chunks[meta.chunkId] = buildChunkEntry(meta, commitSha);
 
@@ -240,9 +260,13 @@ async function main(): Promise<void> {
     for (const oldId of Object.keys(oldIndex.chunks)) {
       if (!freshIds.has(oldId)) {
         const stalePath = resolve(CHUNKS_DIR, `${oldId}.md`);
+        const staleJsonPath = resolve(CHUNKS_DIR, `${oldId}.json`);
         if (existsSync(stalePath)) {
           rmSync(stalePath);
           console.log(`  Removed stale chunk: ${oldId}`);
+        }
+        if (existsSync(staleJsonPath)) {
+          rmSync(staleJsonPath);
         }
       }
     }
