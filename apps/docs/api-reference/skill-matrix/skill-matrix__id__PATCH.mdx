@@ -4,10 +4,16 @@ description: "Update a skill matrix entry"
 ---
 
 ## PATCH /skill-matrix/:id
-**Module:** skill-matrix
+**Module:** `skill-matrix`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`
 
 ### What it does
-Update a skill matrix entry
+🔴 Update a skill matrix entry
+
+### Business Logic
+🟡 The `update()` service method updates a skill matrix entry by invoking `skillMatrix.update` and `skillMatrix.findUnique` Prisma operations. The `update()` method throws a `ForbiddenException` if the user lacks permission to update the skill matrix entry. Additionally, error handling is present to catch cases where the skill matrix entry is not found.
 
 ### Request
 | Param | Type | Source |
@@ -15,20 +21,26 @@ Update a skill matrix entry
 | `id` | `number` | param |
 | `dto` | `UpdateSkillMatrixDto` | body |
 
-### Response
-Skill matrix entry updated successfully
+### DTO Fields
+**`UpdateSkillMatrixDto`**
 
-### Business Logic
-`update()` — Calls `skillMatrix.update`, `skillMatrix.findUnique`. May throw: ForbiddenException.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `topicId` | `number` | No | IsInt | 1 |
+| `value` | `number` | No | IsInt, Min(0), Max(100) | 85 |
 
-### Auth
-**Guards:** JwtAuthGuard
-
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 200 | Skill matrix entry updated successfully |
 | 401 | Unauthorized |
 | 403 | Forbidden — not your entry |
 | 404 | Skill matrix entry not found |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`update()` → `update()` → `skillMatrix.update`, `skillMatrix.findUnique`
+
+### Service Details
+**`update()`**
+- Prisma: `skillMatrix.update`, `skillMatrix.findUnique`
+- Throws: `ForbiddenException`

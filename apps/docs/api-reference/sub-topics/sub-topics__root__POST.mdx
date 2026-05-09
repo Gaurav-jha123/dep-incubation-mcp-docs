@@ -1,27 +1,43 @@
 ---
 title: "POST /sub-topics"
-description: "Create sub-topic"
+description: "No summary available"
 ---
 
 ## POST /sub-topics
-**Module:** sub-topics
+**Module:** `sub-topics`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
+- **Roles:** `ADMIN`
 
 ### What it does
-Create sub-topic
+🔴 No summary available
+
+### Business Logic
+🟡 The `create()` method performs a `subTopic.findFirst` operation to retrieve existing sub-topics, followed by a `subTopic.create` operation to insert the new sub-topic. This process throws a `ConflictException` if there is a duplicate sub-topic entry with the same topic Id. The `ConflictException` is thrown as a result of the Prisma `subTopic.create` operation.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `dto` | `CreateSubTopicDto` | body |
 
-### Response
-Sub-topic created
+### DTO Fields
+**`CreateSubTopicDto`**
 
-### Business Logic
-`create()` — Calls `subTopic.findFirst`, `subTopic.create`. May throw: ConflictException.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `topicId` | `number` | Yes | IsInt, IsNotEmpty | 1 |
+| `subTopics` | `string[]` | Yes | IsArray | — |
 
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-**Required roles:** ADMIN
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+### Responses
+| Status | Description |
+|--------|-------------|
+| 201 | Sub-topic created |
+
+### Execution Flow
+`create()` → `create()` → `subTopic.findFirst`, `subTopic.create`
+
+### Service Details
+**`create()`**
+- Prisma: `subTopic.findFirst`, `subTopic.create`
+- Throws: `ConflictException`

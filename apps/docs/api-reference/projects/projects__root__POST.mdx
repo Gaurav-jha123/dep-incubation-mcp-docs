@@ -1,27 +1,51 @@
 ---
 title: "POST /projects"
-description: "Create project"
+description: "No summary available"
 ---
 
 ## POST /projects
-**Module:** projects
+**Module:** `projects`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
+- **Roles:** `ADMIN`, `MANAGER`
 
 ### What it does
-Create project
+🔴 No summary available
+
+### Business Logic
+🟡 When creating a project, this endpoint performs the following database operations: it creates a new project using `project.create`, creates project assignments using `projectAssignment.createMany`, retrieves an existing project using `project.findUnique`, and retrieves related topics using `topic.findMany`. If a project with the same code already exists, a ConflictException is thrown. Required roles for this endpoint are ADMIN and MANAGER.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `dto` | `CreateProjectDto` | body |
 
-### Response
-Project created
+### DTO Fields
+**`CreateProjectDto`**
 
-### Business Logic
-`create()` — Calls `project.create`, `projectAssignment.createMany`, `project.findUnique`, `topic.findMany`. May throw: ConflictException.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `code` | `string` | Yes | IsString, MinLength(1) | UKG-HPAY |
+| `name` | `string` | Yes | IsString, MinLength(1) | Client Portal Alpha |
+| `description` | `string` | No | IsString | Frontend portal for Acme Corp |
+| `type` | `ProjectType` | Yes | IsEnum(ProjectType) | ProjectType.CLIENT |
+| `status` | `ProjectStatus` | No | IsEnum(ProjectStatus) | ProjectStatus.ACTIVE |
+| `clientName` | `string` | No | IsString | Acme Corp |
+| `startDate` | `string` | No | IsISO8601 | 2026-01-01 |
+| `endDate` | `string` | No | IsISO8601 | 2026-12-31 |
+| `skillIds` | `number[]` | No | IsArray, IsInt({ each: true }) | — |
+| `userIds` | `number[]` | No | IsArray, IsInt({ each: true }) | — |
 
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-**Required roles:** ADMIN, MANAGER
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+### Responses
+| Status | Description |
+|--------|-------------|
+| 201 | Project created |
+
+### Execution Flow
+`create()` → `create()` → `project.create`, `projectAssignment.createMany`, `project.findUnique`, `topic.findMany`
+
+### Service Details
+**`create()`**
+- Prisma: `project.create`, `projectAssignment.createMany`, `project.findUnique`, `topic.findMany`
+- Throws: `ConflictException`

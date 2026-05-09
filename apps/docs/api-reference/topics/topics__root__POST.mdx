@@ -1,27 +1,42 @@
 ---
 title: "POST /topics"
-description: "Create topic"
+description: "No summary available"
 ---
 
 ## POST /topics
-**Module:** topics
+**Module:** `topics`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
+- **Roles:** `ADMIN`
 
 ### What it does
-Create topic
+🔴 No summary available
+
+### Business Logic
+🟡 The `create()` service method is called, which performs a Prisma operation of type `topic.create` to insert a new topic into the database. This operation creates a new topic with the provided `label` and optional `description`. If a topic with the same label already exists, an error is thrown. Error handling is performed by the guard services and service methods to ensure that only valid requests are processed, and invalid requests receive clear error messages.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `dto` | `CreateTopicDto` | body |
 
-### Response
-Topic created
+### DTO Fields
+**`CreateTopicDto`**
 
-### Business Logic
-`create()` — Calls `topic.create`.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `label` | `string` | Yes | IsString | — |
+| `description` | `string` | No | IsString | — |
 
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-**Required roles:** ADMIN
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+### Responses
+| Status | Description |
+|--------|-------------|
+| 201 | Topic created |
+
+### Execution Flow
+`create()` → `create()` → `topic.create`
+
+### Service Details
+**`create()`**
+- Prisma: `topic.create`

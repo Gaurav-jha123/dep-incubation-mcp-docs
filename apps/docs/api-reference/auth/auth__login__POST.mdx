@@ -4,25 +4,37 @@ description: "Login with email and password"
 ---
 
 ## POST /auth/login
-**Module:** auth
+**Module:** `auth`
 
 ### What it does
-Login with email and password
+🔴 Login with email and password
+
+### Business Logic
+🟡 The `login()` method is called twice in sequence, first to initiate the login process and second to verify the user. It performs a Prisma operation `user.findUnique` to retrieve the user from the database. If the user is not found or the provided credentials are invalid, it throws an `UnauthorizedException`.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `dto` | `LoginDto` | body |
 
-### Response
-Login successful
+### DTO Fields
+**`LoginDto`**
 
-### Business Logic
-`login()` — Calls `user.findUnique`. May throw: UnauthorizedException.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `email` | `string` | Yes | IsEmail, IsNotEmpty | john@example.com |
+| `password` | `string` | Yes | IsString, IsNotEmpty | password123 |
 
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 200 | Login successful |
 | 401 | Invalid credentials |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`login()` → `login()` → `user.findUnique`
+
+### Service Details
+**`login()`**
+- Prisma: `user.findUnique`
+- Throws: `UnauthorizedException`

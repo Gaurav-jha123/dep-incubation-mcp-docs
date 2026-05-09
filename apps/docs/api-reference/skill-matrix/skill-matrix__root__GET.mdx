@@ -4,23 +4,38 @@ description: "Get all skill matrix entries"
 ---
 
 ## GET /skill-matrix
-**Module:** skill-matrix
+**Module:** `skill-matrix`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`
 
 ### What it does
-Get all skill matrix entries
+🔴 Get all skill matrix entries
+
+### Business Logic
+🟡 The `findAll()` method calls two Prisma operations: `skillMatrix.findMany` to retrieve all skill matrix entries and `skillMatrix.count` to retrieve the total count of entries. It does not handle errors, but the JwtAuthGuard ensures that only authenticated users can access this endpoint. If the query parameter is invalid (e.g., has an invalid page or limit), it may not throw any specific error, but it will return an HTTP response with a non-specific error message.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `query` | `PaginationQueryDto` | query |
 
-### Response
-List of skill matrix entries
+### DTO Fields
+**`PaginationQueryDto`**
 
-### Business Logic
-`findAll()` — Calls `skillMatrix.findMany`, `skillMatrix.count`.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `page` | `number` | No | Type(() => Number), IsInt, Min(1) | 1 |
+| `limit` | `number` | No | Type(() => Number), IsInt, Min(1) | 10 |
 
-### Auth
-**Guards:** JwtAuthGuard
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+### Responses
+| Status | Description |
+|--------|-------------|
+| 200 | List of skill matrix entries |
+
+### Execution Flow
+`findAll()` → `findAll()` → `skillMatrix.findMany`, `skillMatrix.count`
+
+### Service Details
+**`findAll()`**
+- Prisma: `skillMatrix.findMany`, `skillMatrix.count`

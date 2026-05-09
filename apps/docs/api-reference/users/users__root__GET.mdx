@@ -1,26 +1,28 @@
 ---
 title: "GET /users"
-description: "Get all users"
+description: "No summary available"
 ---
 
 ## GET /users
-**Module:** users
+**Module:** `users`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
 
 ### What it does
-Get all users
-
-### Request
-| Param | Type | Source |
-|-------|------|--------|
-| — | — | — |
-
-### Response
-List of users
+🔴 No summary available
 
 ### Business Logic
-`findAll()` — Calls `user.findMany`.
+🟡 This endpoint executes a Prisma query to retrieve a list of all users. It calls the `findAll` method, which is implemented in the `users.service.ts` file and utilizes the `user.findMany` operation to fetch data from the database. The method does not handle transactions. If there are any errors during database operations, none are explicitly documented, indicating a moderate level of risk.
 
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+### Responses
+| Status | Description |
+|--------|-------------|
+| 200 | List of users |
+
+### Execution Flow
+`findAll()` → `findAll()` → `user.findMany`
+
+### Service Details
+**`findAll()`**
+- Prisma: `user.findMany`

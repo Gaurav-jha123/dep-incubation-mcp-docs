@@ -1,13 +1,20 @@
 ---
 title: "PATCH /projects/:id"
-description: "Update project"
+description: "No summary available"
 ---
 
 ## PATCH /projects/:id
-**Module:** projects
+**Module:** `projects`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
+- **Roles:** `ADMIN`, `MANAGER`
 
 ### What it does
-Update project
+🔴 No summary available
+
+### Business Logic
+🟡 The `update()` service method performs three Prisma operations: `project.update`, `project.findUnique`, and `topic.findMany`. It retrieves a project by ID (`project.findUnique`) and updates the existing project (`project.update`) based on the provided `UpdateProjectDto`. Additionally, it fetches all associated topics (`topic.findMany`) for the project. If the project is not found, it returns a 404 error. The `JwtAuthGuard` and `RolesGuard` are applied to ensure authentication and authorization, requiring either an ADMIN or MANAGER role to invoke this endpoint.
 
 ### Request
 | Param | Type | Source |
@@ -15,19 +22,15 @@ Update project
 | `id` | `number` | param |
 | `dto` | `UpdateProjectDto` | body |
 
-### Response
-Project updated
-
-### Business Logic
-`update()` — Calls `project.update`, `project.findUnique`, `topic.findMany`.
-
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-**Required roles:** ADMIN, MANAGER
-
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 200 | Project updated |
 | 404 | Project not found |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`update()` → `update()` → `project.update`, `project.findUnique`, `topic.findMany`
+
+### Service Details
+**`update()`**
+- Prisma: `project.update`, `project.findUnique`, `topic.findMany`

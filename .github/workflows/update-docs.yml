@@ -1,0 +1,40 @@
+name: Update Feature Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/api/src/**/*.ts'
+      - '.docs/chunks/*.json'
+
+jobs:
+  sync-mintlify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate MDX from chunks
+        run: pnpm --filter doc-indexer mintlify-sync
+
+      - name: Commit updated docs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add apps/docs/api-reference/
+          git diff --cached --quiet || git commit -m "docs: auto-sync Mintlify from .docs/chunks"
+          git push

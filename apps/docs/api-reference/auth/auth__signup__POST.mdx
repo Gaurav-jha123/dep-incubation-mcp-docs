@@ -1,28 +1,41 @@
 ---
 title: "POST /auth/signup"
-description: "Register a new user"
+description: "No summary available"
 ---
 
 ## POST /auth/signup
-**Module:** auth
+**Module:** `auth`
 
 ### What it does
-Register a new user
+🔴 No summary available
+
+### Business Logic
+🟡 When a new user attempts to register, the `signup()` method checks if an existing user with the same email already exists in the database using the `user.findUnique` Prisma operation. If a match is found, a `ConflictException` is thrown. If no match is found, the method creates a new user using the `user.create` Prisma operation.
 
 ### Request
 | Param | Type | Source |
 |-------|------|--------|
 | `dto` | `SignupDto` | body |
 
-### Response
-User registered successfully
+### DTO Fields
+**`SignupDto`**
 
-### Business Logic
-`signup()` — Calls `user.findUnique`, `user.create`. May throw: ConflictException.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `name` | `string` | Yes | IsString, IsNotEmpty | John Doe |
+| `email` | `string` | Yes | IsEmail, IsNotEmpty | john@example.com |
+| `password` | `string` | Yes | IsString, MinLength(6) | password123 |
 
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 201 | User registered successfully |
 | 409 | Email already registered |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`signup()` → `signup()` → `user.findUnique`, `user.create`
+
+### Service Details
+**`signup()`**
+- Prisma: `user.findUnique`, `user.create`
+- Throws: `ConflictException`

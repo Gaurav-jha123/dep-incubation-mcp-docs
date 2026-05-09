@@ -4,10 +4,16 @@ description: "Update assignment status"
 ---
 
 ## PATCH /projects/:id/assignments/:userId
-**Module:** projects
+**Module:** `projects`
+
+### Authentication
+- **Guards:** `JwtAuthGuard`, `RolesGuard`
 
 ### What it does
-Update assignment status
+🔴 Update assignment status
+
+### Business Logic
+🟡 This endpoint updates the status of an assignment by calling the `updateAssignmentStatus()` service method. It performs a database operation to update the `projectAssignment` using `project.findUnique` and `topic.findMany` operations. If the authenticated user does not have the correct permissions, a `ForbiddenException` is thrown. If the project is not found, a `NotFoundException` is thrown.
 
 ### Request
 | Param | Type | Source |
@@ -16,19 +22,24 @@ Update assignment status
 | `userId` | `number` | param |
 | `dto` | `UpdateAssignmentStatusDto` | body |
 
-### Response
-Assignment status updated
+### DTO Fields
+**`UpdateAssignmentStatusDto`**
 
-### Business Logic
-`updateAssignmentStatus()` — Calls `projectAssignment.update`, `project.findUnique`, `topic.findMany`. May throw: ForbiddenException, NotFoundException.
+| Field | Type | Required | Validators | Example |
+|-------|------|----------|------------|---------|
+| `status` | `AssignmentStatus` | Yes | IsEnum(AssignmentStatus) | AssignmentStatus.ASSIGNED |
 
-### Auth
-**Guards:** JwtAuthGuard, RolesGuard
-
-### Errors
+### Responses
 | Status | Description |
 |--------|-------------|
+| 200 | Assignment status updated |
 | 403 | Cannot update another user assignment |
 | 404 | Project not found |
-### Notes
-Requires JWT authentication. See module guards for role requirements.
+
+### Execution Flow
+`updateAssignmentStatus()` → `updateAssignmentStatus()` → `projectAssignment.update`, `project.findUnique`, `topic.findMany`
+
+### Service Details
+**`updateAssignmentStatus()`**
+- Prisma: `projectAssignment.update`, `project.findUnique`, `topic.findMany`
+- Throws: `ForbiddenException`, `NotFoundException`
