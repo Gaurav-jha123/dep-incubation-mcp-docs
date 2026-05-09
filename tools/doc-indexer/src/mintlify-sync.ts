@@ -78,6 +78,10 @@ function confidenceBadge(confidence: number): string {
   return '🔴';
 }
 
+function escapeMdx(text: string): string {
+  return text.replace(/\{/g, '\\{').replace(/\}/g, '\\}');
+}
+
 function generateMdx(chunk: ChunkJson, meta: IndexChunkMeta): string {
   const { structural, semantic, derived } = chunk;
   const summary = semantic.summary.value ?? 'No summary available';
@@ -142,8 +146,8 @@ function generateMdx(chunk: ChunkJson, meta: IndexChunkMeta): string {
       lines.push('| Field | Type | Required | Validators | Example |');
       lines.push('|-------|------|----------|------------|---------|');
       for (const f of fields) {
-        const validators = (f.validators ?? []).join(', ') || '—';
-        const example = f.example ?? '—';
+        const validators = escapeMdx((f.validators ?? []).join(', ') || '—');
+        const example = escapeMdx(f.example ?? '—');
         lines.push(`| \`${f.name}\` | \`${f.type}\` | ${f.optional ? 'No' : 'Yes'} | ${validators} | ${example} |`);
       }
       lines.push('');
